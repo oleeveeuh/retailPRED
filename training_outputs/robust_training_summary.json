@@ -1,0 +1,69 @@
+{
+  "training_completed": "2025-12-18T04:54:25.483986",
+  "duration_seconds": 8.848706,
+  "duration_readable": "0:00:08.848706",
+  "categories": {
+    "total": 1,
+    "successful": 1,
+    "failed": 0,
+    "failed_list": []
+  },
+  "models": {
+    "total_trained": 1,
+    "available": [
+      "PatchTST"
+    ],
+    "statistics": {
+      "PatchTST": {
+        "avg_mape": 21.212154241991612,
+        "std_mape": 0.0,
+        "min_mape": 21.212154241991612,
+        "max_mape": 21.212154241991612,
+        "avg_smape": Infinity,
+        "std_smape": NaN,
+        "min_smape": Infinity,
+        "max_smape": Infinity,
+        "avg_mase": Infinity,
+        "std_mase": NaN,
+        "min_mase": Infinity,
+        "max_mase": Infinity,
+        "success_rate": 100.0
+      }
+    }
+  },
+  "overall_performance": {
+    "avg_mape": 21.212154241991612,
+    "median_mape": 21.212154241991612,
+    "std_mape": 0.0,
+    "avg_smape": Infinity,
+    "median_smape": Infinity,
+    "std_smape": NaN,
+    "avg_mase": Infinity,
+    "median_mase": Infinity,
+    "std_mase": NaN,
+    "total_predictions": 0
+  },
+  "detailed_results": {
+    "Health_Personal_Care": {
+      "category": "Health_Personal_Care",
+      "data_points": 132,
+      "models": {
+        "PatchTST": {
+          "mape": 21.212154241991612,
+          "smape": Infinity,
+          "mase": Infinity,
+          "rmse": 1329.2288292575438,
+          "mae": 1050.4536703279703,
+          "training_time": 8.758362054824829,
+          "successful": true,
+          "start_time": "04:54:16.704",
+          "end_time": "04:54:25.462",
+          "cv_samples": 27
+        }
+      },
+      "successful_models": 1,
+      "failed_models": 0,
+      "training_time": 8.758362054824829
+    }
+  }
+}

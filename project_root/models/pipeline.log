@@ -1,0 +1,38 @@
+2025-12-13 05:39:17,136 - __main__ - INFO - 🚀 Starting Retail Prediction Pipeline
+2025-12-13 05:39:17,136 - __main__ - INFO - Project root: /Users/olivialiau/retailPRED
+2025-12-13 05:39:17,136 - __main__ - INFO - Steps to run: ['data', 'enhanced-train', 'enhanced-inference']
+2025-12-13 05:39:17,136 - __main__ - INFO - 
+============================================================
+2025-12-13 05:39:17,136 - __main__ - INFO - STEP 1: BUILD CATEGORY-WISE DATASETS
+2025-12-13 05:39:17,136 - __main__ - INFO - ============================================================
+2025-12-13 05:39:17,136 - __main__ - INFO - 🚀 Running step: Build Category Datasets
+2025-12-13 05:51:42,295 - __main__ - INFO - 🚀 Starting Retail Prediction Pipeline
+2025-12-13 05:51:42,295 - __main__ - INFO - Project root: /Users/olivialiau/retailPRED
+2025-12-13 05:51:42,295 - __main__ - INFO - Steps to run: ['data', 'train']
+2025-12-13 05:51:42,295 - __main__ - INFO - 
+============================================================
+2025-12-13 05:51:42,295 - __main__ - INFO - STEP 1: BUILD CATEGORY-WISE DATASETS
+2025-12-13 05:51:42,295 - __main__ - INFO - ============================================================
+2025-12-13 05:51:42,295 - __main__ - INFO - 🚀 Running step: Build Category Datasets
+2025-12-13 05:59:42,123 - __main__ - INFO - ✅ Build Category Datasets completed successfully
+2025-12-13 05:59:42,124 - __main__ - INFO - 
+============================================================
+2025-12-13 05:59:42,124 - __main__ - INFO - STEP 2: TRAIN ALL TIMECOPILOT MODELS (ROBUST TRAINER)
+2025-12-13 05:59:42,124 - __main__ - INFO - ============================================================
+2025-12-13 05:59:42,124 - __main__ - INFO - 🚀 Running step: Train All Models with Robust Trainer
+2025-12-13 06:03:43,174 - __main__ - INFO - ✅ Train All Models with Robust Trainer completed successfully
+2025-12-13 06:03:43,175 - __main__ - INFO - 
+============================================================
+2025-12-13 06:03:43,176 - __main__ - INFO - 🎉 PIPELINE COMPLETED SUCCESSFULLY!
+2025-12-13 06:03:43,176 - __main__ - INFO - ============================================================
+2025-12-13 06:03:43,176 - __main__ - INFO - ⏱️  Total duration: 0:12:00.880015
+2025-12-13 06:03:43,176 - __main__ - INFO - 📁 Results saved in:
+2025-12-13 06:03:43,176 - __main__ - INFO -    - Data: /Users/olivialiau/retailPRED/data/processed
+2025-12-13 06:03:43,176 - __main__ - INFO -    - Training outputs: /Users/olivialiau/retailPRED/training_outputs
+2025-12-13 06:03:43,176 - __main__ - INFO -    - Model visualizations: /Users/olivialiau/retailPRED/training_outputs/visualizations
+2025-12-13 06:03:43,176 - __main__ - INFO - 
+📋 Next Steps:
+2025-12-13 06:03:43,176 - __main__ - INFO -    1. Review training report at training_outputs/training_report.md
+2025-12-13 06:03:43,176 - __main__ - INFO -    2. Examine model performance visualizations in training_outputs/visualizations/
+2025-12-13 06:03:43,176 - __main__ - INFO -    3. Check individual model plots and comparison charts
+2025-12-13 06:03:43,176 - __main__ - INFO -    4. For specific models: python project_root/models/robust_timecopilot_trainer.py --models LGBM RandomForest
