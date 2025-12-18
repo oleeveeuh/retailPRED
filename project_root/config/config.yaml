@@ -1,0 +1,244 @@
+# RetailPRED Configuration File
+# Configuration for multi-model time-series forecasting system
+
+# Database Configuration
+database:
+  # SQLite configuration
+  sqlite:
+    path: "data/retail_forecast.db"
+    backup_enabled: true
+    backup_path: "data/backups/"
+
+  # Snowflake configuration
+  snowflake:
+    account: "${SNOWFLAKE_ACCOUNT}"
+    user: "${SNOWFLAKE_USER}"
+    password: "${SNOWFLAKE_PASSWORD}"
+    warehouse: "${SNOWFLAKE_WAREHOUSE}"
+    database: "RETAIL_FORECAST"
+    schema: "RAW_DATA"
+    role: "${SNOWFLAKE_ROLE}"
+
+# Data Sources Configuration
+data_sources:
+  # Yahoo Finance configuration
+  yahoo_finance:
+    enabled: true
+    rate_limit: 2000  # requests per hour
+    timeout: 30
+    retry_attempts: 3
+
+  # FRED API configuration
+  fred:
+    enabled: true
+    api_key: "${FRED_API_KEY}"
+    base_url: "https://api.stlouisfed.org/fred"
+    rate_limit: 120  # requests per minute
+
+  # MRTS API configuration
+  mrts:
+    enabled: true
+    base_url: "https://api.census.gov/data/timeseries/eits/mrts"
+    timeout: 60
+    retry_attempts: 3
+
+# TimeCopilot API Configuration
+timecopilot:
+  # Economics model configuration
+  econ:
+    api_key: "${TIMECOPILOT_ECON_API_KEY}"
+    base_url: "https://api.timecopilot.ai/econ"
+    model_name: "TimeCopilot-Econ-Large"
+    max_forecast_horizon: 24  # months
+    default_confidence_level: 0.95
+
+  # Finance model configuration
+  finance:
+    api_key: "${TIMECOPILOT_FINANCE_API_KEY}"
+    base_url: "https://api.timecopilot.ai/finance"
+    model_name: "TimeCopilot-Finance-Large"
+    max_forecast_horizon: 504  # trading days
+    default_confidence_level: 0.95
+
+  # Multivariate model configuration
+  multivariate:
+    api_key: "${TIMECOPILOT_MULTIVARIATE_API_KEY}"
+    base_url: "https://api.timecopilot.ai/multivariate"
+    model_name: "TimeCopilot-Multivariate-Large"
+    max_features: 100
+    max_forecast_horizon: 24  # months
+    default_confidence_level: 0.95
+
+# Data Processing Configuration
+data_processing:
+  # Data quality settings
+  quality_checks:
+    max_missing_percentage: 20.0
+    max_outlier_std: 3.0
+    min_data_points: 24  # minimum observations
+
+  # Feature engineering settings
+  feature_engineering:
+    lag_periods: [1, 2, 3, 6, 12]  # months
+    rolling_windows: [3, 6, 12]  # months
+    technical_indicators:
+      ma_periods: [20, 50, 200]
+      rsi_period: 14
+      macd_params: [12, 26, 9]
+
+  # Data scaling settings
+  scaling:
+    method: "standard"  # standard, minmax, robust
+    handle_outliers: true
+
+# Model Configuration
+models:
+  # Ensemble settings
+  ensemble:
+    default_method: "weighted_average"  # weighted_average, stacking, bayesian
+    weights:
+      econ: 0.3
+      finance: 0.3
+      multivariate: 0.4
+    cross_validation_folds: 5
+    retrain_frequency: 30  # days
+
+  # Model evaluation settings
+  evaluation:
+    test_periods: 12  # months
+    metrics: ["mae", "rmse", "mape", "r2"]
+    confidence_intervals: true
+
+  # Backtesting settings
+  backtesting:
+    walk_forward: true
+    rolling_window: 24  # months
+    step_size: 1  # month
+
+# Target Variables Configuration
+targets:
+  # Economic targets
+  economic:
+    - "gdp_growth_rate"
+    - "cpi_inflation_rate"
+    - "unemployment_rate"
+    - "fed_funds_rate"
+    - "consumer_confidence_index"
+
+  # Financial targets
+  financial:
+    - "sp500_level"
+    - "nasdaq_level"
+    - "gold_price"
+    - "oil_price"
+    - "10yr_treasury_yield"
+
+  # Retail targets
+  retail:
+    - "total_retail_sales"
+    - "auto_sales"
+    - "electronics_sales"
+    - "clothing_sales"
+    - "restaurant_sales"
+    - "online_retail_sales"
+
+# Data Fetching Schedule
+scheduling:
+  # Daily tasks
+  daily:
+    - "fetch_market_data"
+    - "update_technical_indicators"
+
+  # Weekly tasks
+  weekly:
+    - "fetch_economic_data"
+    - "quality_checks"
+
+  # Monthly tasks
+  monthly:
+    - "fetch_mrts_data"
+    - "retrain_models"
+    - "backtest_performance"
+
+  # Quarterly tasks
+  quarterly:
+    - "model_selection_review"
+    - "feature_engineering_update"
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_path: "logs/retailpred.log"
+  max_file_size: "10MB"
+  backup_count: 5
+
+# Performance Configuration
+performance:
+  # Parallel processing
+  parallel_processing: true
+  max_workers: 4
+
+  # Caching
+  cache_enabled: true
+  cache_ttl: 3600  # seconds
+
+  # Memory management
+  max_memory_usage: "4GB"
+  chunk_size: 10000
+
+# Notification Configuration
+notifications:
+  # Email settings
+  email:
+    enabled: false
+    smtp_server: "${SMTP_SERVER}"
+    smtp_port: 587
+    username: "${SMTP_USERNAME}"
+    password: "${SMTP_PASSWORD}"
+    recipients: ["admin@company.com"]
+
+  # Slack settings
+  slack:
+    enabled: false
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#retail-predictions"
+
+# Development and Testing
+development:
+  debug_mode: false
+  test_data_subset: 0.1  # proportion of data to use for testing
+  mock_api_calls: false
+
+# Security
+security:
+  # API rate limiting
+  rate_limiting: true
+  max_requests_per_minute: 100
+
+  # Data encryption
+  encrypt_sensitive_data: true
+  encryption_key_path: "config/encryption.key"
+
+# Monitoring and Metrics
+monitoring:
+  # Performance monitoring
+  track_prediction_latency: true
+  track_model_accuracy: true
+  track_data_quality: true
+
+  # Health checks
+  health_check_interval: 300  # seconds
+  alert_on_failures: true
+
+# Environment Configuration
+environment:
+  # Environment type
+  env_type: "development"  # development, staging, production
+
+  # Paths
+  data_raw_path: "data_raw/"
+  data_processed_path: "data_processed/"
+  models_path: "models/"
+  logs_path: "logs/"
+  temp_path: "temp/"
