@@ -426,6 +426,193 @@ class SQLiteLoader:
 
         return stats
 
+    def save_forecast_results(self, results: Dict) -> bool:
+        """
+        Save forecast results to SQLite database
+
+        Args:
+            results: Dictionary containing forecast results for multiple targets
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
+        try:
+            if not self.connection:
+                self.logger.error("Database connection not available")
+                return False
+
+            cursor = self.connection.cursor()
+
+            # Create forecast results table if it doesn't exist
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS forecast_results (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    target_name TEXT NOT NULL,
+                    forecast_type TEXT NOT NULL,
+                    horizon INTEGER,
+                    run_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    predictions TEXT,
+                    confidence_intervals TEXT,
+                    performance_metrics TEXT,
+                    actual_values TEXT,
+                    backtest_dates TEXT,
+                    model_results TEXT,
+                    metadata TEXT,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+
+            # Create index for faster queries
+            cursor.execute("""
+                CREATE INDEX IF NOT EXISTS idx_forecast_target
+                ON forecast_results(target_name, run_timestamp)
+            """)
+
+            # Save results for each target
+            success_count = 0
+            total_count = 0
+
+            for target_name, target_results in results.items():
+                if target_name == 'error':
+                    continue
+
+                total_count += 1
+
+                try:
+                    # Determine forecast type
+                    forecast_type = 'prediction'
+                    if 'backtest_dates' in target_results:
+                        forecast_type = 'backtest'
+                    elif 'horizon' in target_results:
+                        forecast_type = 'forecast'
+
+                    # Extract data components
+                    horizon = target_results.get('horizon', None)
+                    predictions = target_results.get('predictions', [])
+                    confidence_intervals = target_results.get('confidence_intervals', {})
+                    performance_metrics = target_results.get('performance_metrics', {})
+                    actual_values = target_results.get('actuals', [])
+                    backtest_dates = target_results.get('backtest_dates', [])
+                    model_results = target_results.get('model_results', {})
+
+                    # Convert to JSON strings for storage
+                    import json
+
+                    # Helper function to safely convert data to JSON string
+                    def safe_json_serialize(data):
+                        """Safely serialize data to JSON string, handling numpy arrays"""
+                        if data is None or (isinstance(data, str) and not data.strip()):
+                            return None
+                        try:
+                            # Convert numpy arrays to lists first
+                            if hasattr(data, 'tolist'):
+                                data = data.tolist()
+                            # Handle other non-serializable objects
+                            elif hasattr(data, '__dict__'):
+                                data = str(data)
+                            # Serialize to JSON string
+                            return json.dumps(data, default=str)
+                        except (TypeError, ValueError) as e:
+                            self.logger.warning(f"JSON serialization error: {e}, using string conversion")
+                            return str(data)
+
+                    cursor.execute("""
+                        INSERT INTO forecast_results (
+                            target_name, forecast_type, horizon, predictions,
+                            confidence_intervals, performance_metrics, actual_values,
+                            backtest_dates, model_results, metadata
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        target_name,
+                        forecast_type,
+                        horizon,
+                        safe_json_serialize(predictions),
+                        safe_json_serialize(confidence_intervals),
+                        safe_json_serialize(performance_metrics),
+                        safe_json_serialize(actual_values),
+                        safe_json_serialize(backtest_dates),
+                        safe_json_serialize(model_results),
+                        json.dumps({
+                            'run_id': datetime.now().isoformat(),
+                            'total_results': len(results)
+                        })
+                    ))
+
+                    success_count += 1
+                    self.logger.debug(f"Saved forecast results for {target_name}")
+
+                except Exception as e:
+                    self.logger.warning(f"Failed to save results for {target_name}: {e}")
+                    continue
+
+            # Commit transaction
+            self.connection.commit()
+
+            self.logger.info(f"Successfully saved {success_count}/{total_count} forecast results to SQLite")
+
+            # Update metadata
+            self.set_metadata('last_forecast_run', datetime.now().isoformat())
+            self.set_metadata('total_forecasts_saved', str(success_count))
+
+            return success_count > 0
+
+        except Exception as e:
+            self.logger.error(f"Error saving forecast results: {e}")
+            if self.connection:
+                self.connection.rollback()
+            return False
+
+    def get_forecast_results(self, target_name: str = None,
+                           forecast_type: str = None,
+                           limit: int = 100) -> pd.DataFrame:
+        """
+        Retrieve forecast results from database
+
+        Args:
+            target_name: Filter by specific target name (optional)
+            forecast_type: Filter by forecast type ('prediction', 'backtest', 'forecast')
+            limit: Maximum number of results to return
+
+        Returns:
+            DataFrame with forecast results
+        """
+        try:
+            if not self.connection:
+                self.logger.error("Database connection not available")
+                return pd.DataFrame()
+
+            query = "SELECT * FROM forecast_results WHERE 1=1"
+            params = []
+
+            if target_name:
+                query += " AND target_name = ?"
+                params.append(target_name)
+
+            if forecast_type:
+                query += " AND forecast_type = ?"
+                params.append(forecast_type)
+
+            query += " ORDER BY run_timestamp DESC LIMIT ?"
+            params.append(limit)
+
+            df = pd.read_sql_query(query, self.connection, params=params)
+
+            # Parse JSON columns back to objects
+            import json
+
+            json_columns = ['predictions', 'confidence_intervals', 'performance_metrics',
+                          'actual_values', 'backtest_dates', 'model_results', 'metadata']
+
+            for col in json_columns:
+                if col in df.columns:
+                    df[col] = df[col].apply(lambda x: json.loads(x) if x else None)
+
+            return df
+
+        except Exception as e:
+            self.logger.error(f"Error retrieving forecast results: {e}")
+            return pd.DataFrame()
+
     def close(self):
         """Close database connection"""
         if self.connection:

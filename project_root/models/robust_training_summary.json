@@ -1,0 +1,220 @@
+{
+  "training_completed": "2025-12-21T21:29:38.508014",
+  "duration_seconds": 124.518378,
+  "duration_readable": "0:02:04.518378",
+  "categories": {
+    "total": 1,
+    "successful": 1,
+    "failed": 0,
+    "failed_list": []
+  },
+  "models": {
+    "total_trained": 7,
+    "available": [
+      "AutoARIMA",
+      "AutoETS",
+      "SeasonalNaive",
+      "RandomForest",
+      "PatchTST",
+      "TimesNet",
+      "LGBM"
+    ],
+    "statistics": {
+      "AutoARIMA": {
+        "avg_mape": 50.0,
+        "std_mape": 0.0,
+        "min_mape": 50.0,
+        "max_mape": 50.0,
+        "avg_smape": 50.0,
+        "std_smape": 0.0,
+        "min_smape": 50.0,
+        "max_smape": 50.0,
+        "avg_mase": 5.0,
+        "std_mase": 0.0,
+        "min_mase": 5.0,
+        "max_mase": 5.0,
+        "success_rate": 100.0
+      },
+      "AutoETS": {
+        "avg_mape": 50.0,
+        "std_mape": 0.0,
+        "min_mape": 50.0,
+        "max_mape": 50.0,
+        "avg_smape": 50.0,
+        "std_smape": 0.0,
+        "min_smape": 50.0,
+        "max_smape": 50.0,
+        "avg_mase": 5.0,
+        "std_mase": 0.0,
+        "min_mase": 5.0,
+        "max_mase": 5.0,
+        "success_rate": 100.0
+      },
+      "SeasonalNaive": {
+        "avg_mape": 50.0,
+        "std_mape": 0.0,
+        "min_mape": 50.0,
+        "max_mape": 50.0,
+        "avg_smape": 50.0,
+        "std_smape": 0.0,
+        "min_smape": 50.0,
+        "max_smape": 50.0,
+        "avg_mase": 5.0,
+        "std_mase": 0.0,
+        "min_mase": 5.0,
+        "max_mase": 5.0,
+        "success_rate": 100.0
+      },
+      "PatchTST": {
+        "avg_mape": 8.225542338033822,
+        "std_mape": 0.0,
+        "min_mape": 8.225542338033822,
+        "max_mape": 8.225542338033822,
+        "avg_smape": Infinity,
+        "std_smape": NaN,
+        "min_smape": Infinity,
+        "max_smape": Infinity,
+        "avg_mase": Infinity,
+        "std_mase": NaN,
+        "min_mase": Infinity,
+        "max_mase": Infinity,
+        "success_rate": 100.0
+      },
+      "TimesNet": {
+        "avg_mape": 5.799526088256076,
+        "std_mape": 0.0,
+        "min_mape": 5.799526088256076,
+        "max_mape": 5.799526088256076,
+        "avg_smape": Infinity,
+        "std_smape": NaN,
+        "min_smape": Infinity,
+        "max_smape": Infinity,
+        "avg_mase": Infinity,
+        "std_mase": NaN,
+        "min_mase": Infinity,
+        "max_mase": Infinity,
+        "success_rate": 100.0
+      },
+      "LGBM": {
+        "avg_mape": 4.751732187034849,
+        "std_mape": 0.0,
+        "min_mape": 4.751732187034849,
+        "max_mape": 4.751732187034849,
+        "avg_smape": 4.901428398386399,
+        "std_smape": 0.0,
+        "min_smape": 4.901428398386399,
+        "max_smape": 4.901428398386399,
+        "avg_mase": 1.2489974247397635,
+        "std_mase": 0.0,
+        "min_mase": 1.2489974247397635,
+        "max_mase": 1.2489974247397635,
+        "success_rate": 100.0
+      }
+    }
+  },
+  "overall_performance": {
+    "avg_mape": 28.129466768887458,
+    "median_mape": 29.11277116901691,
+    "std_mape": 21.89471627344822,
+    "avg_smape": Infinity,
+    "median_smape": 50.0,
+    "std_smape": NaN,
+    "avg_mase": Infinity,
+    "median_mase": 5.0,
+    "std_mase": NaN,
+    "total_predictions": 6
+  },
+  "detailed_results": {
+    "Total_Retail_Sales": {
+      "category": "Total_Retail_Sales",
+      "data_points": 132,
+      "models": {
+        "AutoARIMA": {
+          "mape": 50.0,
+          "smape": 50.0,
+          "mase": 5.0,
+          "rmse": 1.0,
+          "mae": 0.8,
+          "training_time": 1.8813660144805908,
+          "successful": true,
+          "start_time": "21:27:34.130",
+          "end_time": "21:27:36.012",
+          "cv_samples": 1
+        },
+        "AutoETS": {
+          "mape": 50.0,
+          "smape": 50.0,
+          "mase": 5.0,
+          "rmse": 1.0,
+          "mae": 0.8,
+          "training_time": 0.32172179222106934,
+          "successful": true,
+          "start_time": "21:27:36.413",
+          "end_time": "21:27:36.735",
+          "cv_samples": 1
+        },
+        "SeasonalNaive": {
+          "mape": 50.0,
+          "smape": 50.0,
+          "mase": 5.0,
+          "rmse": 1.0,
+          "mae": 0.8,
+          "training_time": 0.0077359676361083984,
+          "successful": true,
+          "start_time": "21:27:36.800",
+          "end_time": "21:27:36.808",
+          "cv_samples": 1
+        },
+        "RandomForest": {
+          "mape": Infinity,
+          "smape": Infinity,
+          "mase": Infinity,
+          "error": true,
+          "training_time": 2.8363208770751953,
+          "successful": false,
+          "start_time": "21:27:36.813",
+          "end_time": "21:27:39.650"
+        },
+        "PatchTST": {
+          "mape": 8.225542338033822,
+          "smape": Infinity,
+          "mase": Infinity,
+          "rmse": 3363.137928760391,
+          "mae": 3294.800130208334,
+          "training_time": 7.906490802764893,
+          "successful": true,
+          "start_time": "21:27:39.650",
+          "end_time": "21:27:47.557",
+          "cv_samples": 24
+        },
+        "TimesNet": {
+          "mape": 5.799526088256076,
+          "smape": Infinity,
+          "mase": Infinity,
+          "rmse": 2346.4691270101694,
+          "mae": 2300.438802083334,
+          "training_time": 92.96611022949219,
+          "successful": true,
+          "start_time": "21:27:47.578",
+          "end_time": "21:29:20.544",
+          "cv_samples": 24
+        },
+        "LGBM": {
+          "mape": 4.751732187034849,
+          "smape": 4.901428398386399,
+          "mase": 1.2489974247397635,
+          "rmse": 3537.9488505554687,
+          "mae": 2164.3173812263944,
+          "training_time": 5.193647146224976,
+          "successful": true,
+          "start_time": "21:29:20.569",
+          "end_time": "21:29:25.763",
+          "cv_samples": 24
+        }
+      },
+      "successful_models": 6,
+      "failed_models": 1,
+      "training_time": 111.11339282989502
+    }
+  }
+}

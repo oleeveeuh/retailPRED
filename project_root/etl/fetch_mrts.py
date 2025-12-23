@@ -90,12 +90,12 @@ class MRTSFetcher:
                 "unit": "Millions of Dollars"
             },
             "MRTSSM45521USS": {
-                "name": "Retail: Miscellaneous Store Retailers",
+                "name": "Retail: Miscellaneous Store Retailers (Mapped to 446)",
                 "category": "Miscellaneous",
                 "unit": "Millions of Dollars"
             },
             "MRTSSM45611USS": {
-                "name": "Retail: Nonstore Retailers",
+                "name": "Retail: Nonstore Retailers (Mapped to 444)",
                 "category": "E-commerce",
                 "unit": "Millions of Dollars"
             }
@@ -116,7 +116,7 @@ class MRTSFetcher:
         try:
             # Set default years if not provided
             if not start_year:
-                start_year = datetime.now().year - 5
+                start_year = datetime.now().year - 15
             if not end_year:
                 end_year = datetime.now().year
 
@@ -133,8 +133,8 @@ class MRTSFetcher:
                 "MRTSSM45221USS": "452",    # Clothing and Clothing Accessories
                 "MRTSSM45311USS": "453",    # Sporting Goods, Hobby, Musical Instrument
                 "MRTSSM45431USS": "454",    # General Merchandise Stores
-                "MRTSSM45521USS": "455",    # Miscellaneous Store Retailers
-                "MRTSSM45611USS": "456"     # Nonstore Retailers (E-commerce)
+                "MRTSSM45521USS": "446",    # Miscellaneous Store Retailers (mapped from non-existent 455)
+                "MRTSSM45611USS": "444"     # Nonstore Retailers (mapped from non-existent 456)
             }
 
             category_code = category_code_map.get(series_id)
@@ -229,9 +229,12 @@ class MRTSFetcher:
                 elif "4400" in category_code:  # Total retail
                     base_sales = 450000 + (year - 2015) * 10000
                     seasonal_factor = 1.4 if month in [11, 12] else 1.0
-                elif "456" in category_code:  # E-commerce
+                elif "444" in category_code:  # E-commerce (was 456)
                     base_sales = 65000 + (year - 2015) * 8000
                     seasonal_factor = 1.6 if month in [11, 12] else 1.0
+                elif "446" in category_code:  # Miscellaneous (was 455)
+                    base_sales = 25000 + (year - 2015) * 1000
+                    seasonal_factor = 1.2 if month in [11, 12] else 1.0
                 else:  # Other retail categories
                     base_sales = 15000 + (year - 2015) * 500
                     seasonal_factor = 1.3 if month in [11, 12] else 1.0
@@ -826,8 +829,8 @@ class MRTSFetcher:
         """
         print("Fetching MRTS Electronics & Appliance Store data...")
 
-        # Fetch electronics data for last 10 years
-        start_year = datetime.now().year - 10
+        # Fetch electronics data for last 15 years
+        start_year = datetime.now().year - 15
 
         # Fetch target electronics series
         electronics_data = self.fetch_series(self.target_series, start_year)
@@ -861,7 +864,7 @@ class MRTSFetcher:
         print("Fetching all MRTS retail categories...")
 
         if not start_year:
-            start_year = datetime.now().year - 5
+            start_year = datetime.now().year - 15
 
         # Fetch all retail categories
         all_data = self.fetch_all_categories(start_year)
