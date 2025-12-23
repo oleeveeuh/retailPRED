@@ -575,7 +575,7 @@ class CategoryDatasetBuilder:
         print(" Saving category datasets...")
 
         # Create processed data directory
-        processed_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'processed')
+        processed_dir = os.path.join(os.path.dirname(__file__), '..', 'data_processed')
         os.makedirs(processed_dir, exist_ok=True)
 
         saved_paths = []

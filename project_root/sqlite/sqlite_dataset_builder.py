@@ -112,14 +112,14 @@ class SQLiteDatasetBuilder:
             start_date: Start date for data fetching (YYYY-MM-DD)
             end_date: End date for data fetching (YYYY-MM-DD)
         """
-        self.logger.info("🚀 Starting SQLite-based category dataset building...")
+        self.logger.info(" Starting SQLite-based category dataset building...")
 
         # Check if we need to rebuild or can use cached data
         if not self.force_rebuild and self.loader.is_data_fresh(max_age_days=1):
-            self.logger.info("✅ Using cached data (fresh from recent update)")
+            self.logger.info(" Using cached data (fresh from recent update)")
             return
 
-        self.logger.info("🔄 Building fresh datasets...")
+        self.logger.info(" Building fresh datasets...")
 
         # Update categories in database
         self._update_categories_metadata()
@@ -136,11 +136,11 @@ class SQLiteDatasetBuilder:
         # Update cache status
         self.loader.update_cache_status('time_series_data', True)
 
-        self.logger.info("✅ All category datasets built successfully!")
+        self.logger.info(" All category datasets built successfully!")
 
     def _update_categories_metadata(self):
         """Update categories metadata in database"""
-        self.logger.info("📝 Updating categories metadata...")
+        self.logger.info(" Updating categories metadata...")
 
         for category_id, category_info in self.mrts_categories.items():
             self.loader.add_category(
@@ -150,11 +150,11 @@ class SQLiteDatasetBuilder:
                 mrts_series_id=category_info['series_id']
             )
 
-        self.logger.info(f"✅ Updated {len(self.mrts_categories)} categories")
+        self.logger.info(f" Updated {len(self.mrts_categories)} categories")
 
     def _update_exogenous_data(self, start_date: str = None, end_date: str = None):
         """Update exogenous features (shared across all categories)"""
-        self.logger.info("📊 Updating exogenous features...")
+        self.logger.info(" Updating exogenous features...")
 
         try:
             # FRED data
@@ -164,12 +164,12 @@ class SQLiteDatasetBuilder:
             self._update_yahoo_finance_data(start_date, end_date)
 
         except Exception as e:
-            self.logger.error(f"❌ Failed to update exogenous data: {e}")
+            self.logger.error(f" Failed to update exogenous data: {e}")
             raise
 
     def _update_fred_data(self, start_date: str = None, end_date: str = None):
         """Update FRED macroeconomic data"""
-        self.logger.info("🏦 Fetching FRED data...")
+        self.logger.info(" Fetching FRED data...")
 
         # FRED series IDs (consistent with original)
         fred_series = {
@@ -203,14 +203,14 @@ class SQLiteDatasetBuilder:
                         df, first_category_id, data_type, 'FRED'
                     )
 
-                    self.logger.info(f"  ✅ {data_type}: {len(df)} records from {fetch_start}")
+                    self.logger.info(f"   {data_type}: {len(df)} records from {fetch_start}")
 
             except Exception as e:
-                self.logger.warning(f"⚠️  Failed to fetch {data_type}: {e}")
+                self.logger.warning(f"  Failed to fetch {data_type}: {e}")
 
     def _update_yahoo_finance_data(self, start_date: str = None, end_date: str = None):
         """Update Yahoo Finance data"""
-        self.logger.info("📈 Fetching Yahoo Finance data...")
+        self.logger.info(" Fetching Yahoo Finance data...")
 
         yahoo_tickers = {
             'sp500': '^GSPC',  # S&P 500
@@ -238,14 +238,14 @@ class SQLiteDatasetBuilder:
                         df, first_category_id, data_type, 'YAHOO'
                     )
 
-                    self.logger.info(f"  ✅ {data_type}: {len(df)} records from {fetch_start}")
+                    self.logger.info(f"   {data_type}: {len(df)} records from {fetch_start}")
 
             except Exception as e:
-                self.logger.warning(f"⚠️  Failed to fetch {data_type}: {e}")
+                self.logger.warning(f"  Failed to fetch {data_type}: {e}")
 
     def _update_retail_sales_data(self, start_date: str = None, end_date: str = None):
         """Update MRTS retail sales data for all categories"""
-        self.logger.info("🏪 Fetching MRTS retail sales data...")
+        self.logger.info(" Fetching MRTS retail sales data...")
 
         for category_id, category_info in self.mrts_categories.items():
             try:
@@ -267,14 +267,14 @@ class SQLiteDatasetBuilder:
                         df, category_id, 'retail_sales', 'MRTS'
                     )
 
-                    self.logger.info(f"  ✅ {category_info['name']}: {len(df)} records from {fetch_start}")
+                    self.logger.info(f"   {category_info['name']}: {len(df)} records from {fetch_start}")
 
             except Exception as e:
-                self.logger.warning(f"⚠️  Failed to fetch {category_info['name']}: {e}")
+                self.logger.warning(f"  Failed to fetch {category_info['name']}: {e}")
 
     def _update_derived_features(self):
         """Update derived features for all categories"""
-        self.logger.info("🔧 Computing derived features...")
+        self.logger.info(" Computing derived features...")
 
         for category_id in self.mrts_categories.keys():
             try:
@@ -282,7 +282,7 @@ class SQLiteDatasetBuilder:
                 df = self.loader.get_category_data(category_id, data_types=['retail_sales'])
 
                 if df.empty:
-                    self.logger.warning(f"⚠️  No retail sales data for {category_id}")
+                    self.logger.warning(f"  No retail sales data for {category_id}")
                     continue
 
                 # Compute derived features
@@ -291,10 +291,10 @@ class SQLiteDatasetBuilder:
                 if not features_df.empty:
                     self.loader.add_derived_features(features_df, category_id)
 
-                self.logger.info(f"  ✅ {category_id}: {len(features_df)} features")
+                self.logger.info(f"   {category_id}: {len(features_df)} features")
 
             except Exception as e:
-                self.logger.warning(f"⚠️  Failed to compute features for {category_id}: {e}")
+                self.logger.warning(f"  Failed to compute features for {category_id}: {e}")
 
     def _compute_derived_features(self, df: pd.DataFrame, category_id: str) -> pd.DataFrame:
         """Compute derived features for a category"""

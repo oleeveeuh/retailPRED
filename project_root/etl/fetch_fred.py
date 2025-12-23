@@ -55,7 +55,7 @@ class FREDFetcher:
         else:
             print("No .env file found, relying on existing environment variables")
 
-        # TimeCopilot-Econ-Large required series with descriptions
+        # Required economic series with descriptions
         self.required_series = {
             'CPIAUCSL': {
                 'name': 'Consumer Price Index for All Urban Consumers',
@@ -267,7 +267,7 @@ class FREDFetcher:
 
     def add_economic_features(self, data: pd.DataFrame) -> pd.DataFrame:
         """
-        Add economic features required for TimeCopilot-Econ-Large.
+        Add economic features required for forecasting models.
 
         Args:
             data: DataFrame with basic FRED data
@@ -399,7 +399,7 @@ class FREDFetcher:
 
     def create_wide_format_dataset(self, data: pd.DataFrame) -> pd.DataFrame:
         """
-        Convert long format data to wide format for TimeCopilot-Econ-Large.
+        Convert long format data to wide format for modeling.
 
         Args:
             data: Long format DataFrame
@@ -485,15 +485,15 @@ class FREDFetcher:
 
     def fetch_and_save_economic_data(self) -> str:
         """
-        Fetch all required economic data for TimeCopilot-Econ-Large and save to CSV.
+        Fetch all required economic data and save to CSV.
 
         Returns:
             Path to saved CSV file
         """
-        print("Fetching FRED economic data for TimeCopilot-Econ-Large...")
+        print("Fetching FRED economic data...")
 
-        # Fetch required TimeCopilot-Econ-Large series
-        print("\n=== Fetching Required TimeCopilot-Econ-Large Series ===")
+        # Fetch required economic series
+        print("\n=== Fetching Required Economic Series ===")
         required_data = self.fetch_multiple_series(
             series_ids=list(self.required_series.keys()),
             start_date=(datetime.now() - timedelta(days=10*365)).strftime('%Y-%m-%d')  # 10 years for better modeling
@@ -634,7 +634,7 @@ def main():
         # Initialize fetcher
         fetcher = FREDFetcher()
 
-        # Fetch data for TimeCopilot-Econ-Large
+        # Fetch data for economic modeling
         output_path = fetcher.fetch_and_save_economic_data()
 
         if output_path:
@@ -659,16 +659,16 @@ def main():
             print(f"   Economic series: {', '.join(quality_report['series'])}")
             print(f"   Duplicates: {quality_report['duplicates']}")
 
-            # Check for missing values in critical TimeCopilot-Econ-Large features
+            # Check for missing values in critical economic features
             critical_features = ['cpi', 'interest_rates', 'unemployment', 'consumer_sentiment',
                                'money_supply', 'industrial_production', 'consumer_spending']
             available_features = quality_report.get('feature_names', [])
             missing_features = [f for f in critical_features if f not in available_features]
 
             if missing_features:
-                print(f"\n  Missing TimeCopilot-Econ-Large features: {missing_features}")
+                print(f"\n  Missing economic features: {missing_features}")
             else:
-                print(f"\n All TimeCopilot-Econ-Large required features present")
+                print(f"\n All required economic features present")
 
             # Print series statistics
             print(f"\n Economic Series Summary:")

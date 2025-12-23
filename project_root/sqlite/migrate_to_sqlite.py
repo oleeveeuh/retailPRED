@@ -117,10 +117,10 @@ class SQLiteMigrator:
             # Step 4: Verify migration
             self.verify_migration()
 
-            logger.info("✅ Migration completed successfully!")
+            logger.info(" Migration completed successfully!")
 
         except Exception as e:
-            logger.error(f"❌ Migration failed: {e}")
+            logger.error(f" Migration failed: {e}")
             raise
 
     def migrate_categories(self):
@@ -137,7 +137,7 @@ class SQLiteMigrator:
                 mrts_series_id=category_info.get('series_id', '')
             )
 
-        logger.info(f"✅ Migrated {len(categories)} categories")
+        logger.info(f" Migrated {len(categories)} categories")
 
     def migrate_parquet_files(self):
         """Migrate all parquet files from data/processed directory"""
@@ -216,22 +216,22 @@ class SQLiteMigrator:
                             )
                             total_records += len(feature_df)
                         else:
-                            logger.warning(f"  ⚠️  Skipping {col} - all values are null")
+                            logger.warning(f"    Skipping {col} - all values are null")
 
                 # Store derived features separately (for future use)
                 derived_feature_columns = [col for col in df.columns if col not in
                                         ['unique_id', 'ds', 'y'] + basic_features]
 
                 if derived_feature_columns:
-                    logger.info(f"  📊 Skipping {len(derived_feature_columns)} derived features (will recompute)")
+                    logger.info(f"   Skipping {len(derived_feature_columns)} derived features (will recompute)")
 
-                logger.info(f"✅ Migrated {category_name}: {len(df)} records ({len(basic_features)} features)")
+                logger.info(f" Migrated {category_name}: {len(df)} records ({len(basic_features)} features)")
 
             except Exception as e:
-                logger.error(f"❌ Failed to migrate {parquet_file}: {e}")
+                logger.error(f" Failed to migrate {parquet_file}: {e}")
                 continue
 
-        logger.info(f"✅ Total records migrated: {total_records}")
+        logger.info(f" Total records migrated: {total_records}")
 
     def _find_category_id_by_name(self, category_name: str) -> str:
         """Find category ID by matching category name"""
@@ -292,7 +292,7 @@ class SQLiteMigrator:
         # Update cache status
         self.loader.update_cache_status('time_series_data', True)
 
-        logger.info("✅ Migration metadata updated")
+        logger.info(" Migration metadata updated")
 
     def verify_migration(self):
         """Verify migration integrity"""
@@ -301,7 +301,7 @@ class SQLiteMigrator:
         # Get database statistics
         stats = self.loader.get_database_stats()
 
-        logger.info("📊 Database Statistics:")
+        logger.info(" Database Statistics:")
         for key, value in stats.items():
             logger.info(f"  {key}: {value}")
 
@@ -316,28 +316,28 @@ class SQLiteMigrator:
         # Verify date range makes sense
         if 'date_range' in stats and stats['date_range'][0]:
             start_date, end_date = stats['date_range']
-            logger.info(f"📅 Data range: {start_date} to {end_date}")
+            logger.info(f" Data range: {start_date} to {end_date}")
 
             # Basic sanity check
             try:
                 start_dt = datetime.strptime(start_date, '%Y-%m-%d')
                 end_dt = datetime.strptime(end_date, '%Y-%m-%d')
                 if start_dt.year < 1990 or end_dt.year < 1990:
-                    logger.warning("⚠️  Date range seems unusual")
+                    logger.warning("  Date range seems unusual")
             except:
-                logger.warning("⚠️  Could not parse date range")
+                logger.warning("  Could not parse date range")
 
-        logger.info("✅ Migration verification completed")
+        logger.info(" Migration verification completed")
 
     def create_backup(self):
         """Create backup of migrated database"""
         backup_path = self.loader.backup_database()
-        logger.info(f"📦 Database backup created: {backup_path}")
+        logger.info(f" Database backup created: {backup_path}")
         return backup_path
 
 def main():
     """Main migration function"""
-    logger.info("🚀 Starting SQLite Migration for RetailPRED")
+    logger.info(" Starting SQLite Migration for RetailPRED")
 
     # Create migrator
     migrator = SQLiteMigrator()
@@ -352,15 +352,15 @@ def main():
         # Display final statistics
         stats = migrator.loader.get_database_stats()
 
-        logger.info("🎉 Migration completed successfully!")
-        logger.info(f"📁 Database location: {migrator.db_path}")
-        logger.info(f"📦 Backup location: {backup_path}")
-        logger.info(f"📊 Database size: {stats.get('file_size_mb', 0):.2f} MB")
-        logger.info(f"📈 Total records: {stats.get('time_series_data_rows', 0):,}")
-        logger.info(f"🏪 Categories: {stats.get('categories_rows', 0):,}")
+        logger.info(" Migration completed successfully!")
+        logger.info(f" Database location: {migrator.db_path}")
+        logger.info(f" Backup location: {backup_path}")
+        logger.info(f" Database size: {stats.get('file_size_mb', 0):.2f} MB")
+        logger.info(f" Total records: {stats.get('time_series_data_rows', 0):,}")
+        logger.info(f" Categories: {stats.get('categories_rows', 0):,}")
 
     except Exception as e:
-        logger.error(f"❌ Migration failed: {e}")
+        logger.error(f" Migration failed: {e}")
         raise
 
     finally:
