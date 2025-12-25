@@ -32,6 +32,11 @@ This exploratory study implements and compares **7 forecasting models** across *
 | 6 | TimesNet | 4-7% | 90-95s | Multi-frequency patterns | Very High |
 | 7 | RandomForest | 6-10% | 3-5s | Noisy data | Medium |
 
+<img src="training_outputs/visualizations/Automobile_Dealers/Automobile_Dealers_all_models_comparison.png" width="600" >
+<img src="training_outputs/visualizations/Clothing_Accessories/Clothing_Accessories_all_models_comparison.png" width="600" style="margin-right:10px"/>
+<img src="training_outputs/visualizations/Total_Retail_Sales/Total_Retail_Sales_all_models_comparison.png" width="600"/>
+
+
 **Critical Insights:**
 
 1. **Simplicity Often Wins**: SeasonalNaive, a model that simply repeats last year's values, achieves competitive performance (1-3% MAPE) for categories with stable seasonal patterns
