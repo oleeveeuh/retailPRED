@@ -21,16 +21,16 @@ This exploratory study implements and compares **7 forecasting models** across *
 ### Key Findings
 
 **Model Performance Rankings:**
+| Rank | Model | Avg MAPE | Avg MASE | Training Time | Categories Won | Complexity |
+|------|-------|----------|----------|---------------|----------------|------------|
+| 1 | **LGBM** | **4.98%** | 1.240 | 3-5s | 4/11 | Medium |
+| 2 | AutoETS | 6.84% | 1.885 | 0.3s | 3/11 | Low |
+| 3 | SeasonalNaive | 6.94% | 1.964 | <0.01s | 1/11 | Minimal |
+| 4 | TimesNet | 7.89% | 1.793 | 90-95s | 1/11 | Very High |
+| 5 | PatchTST | 8.14% | 1.964 | 8-10s | 1/11 | High |
+| 6 | AutoARIMA | 10.66% | 2.469 | 1-2s | 1/11 | Medium |
 
-| Rank | Model | Avg. MAPE | Training Time | Best For | Complexity |
-|------|-------|-----------|---------------|----------|------------|
-| 1 | AutoETS | 2-4% | 0.3-0.5s | Stable seasonal patterns | Low |
-| 2 | SeasonalNaive | 1-3% | <0.01s | Strong seasonality | Minimal |
-| 3 | AutoARIMA | 2-5% | 1-2s | Trend + seasonality | Low-Medium |
-| 4 | LGBM | 4-7% | 3-5s | Complex multi-factor patterns | Medium |
-| 5 | PatchTST | 5-8% | 8-10s | Long-range dependencies | High |
-| 6 | TimesNet | 4-7% | 90-95s | Multi-frequency patterns | Very High |
-| 7 | RandomForest | 6-10% | 3-5s | Noisy data | Medium |
+**Key Finding:** Medium-complexity gradient boosting (LGBM) with 244 engineered features outperformed both simple baselines and state-of-the-art transformers.
 
 <img src="training_outputs/visualizations/Automobile_Dealers/Automobile_Dealers_all_models_comparison.png" width="600" >
 <img src="training_outputs/visualizations/Clothing_Accessories/Clothing_Accessories_all_models_comparison.png" width="600" style="margin-right:10px"/>
