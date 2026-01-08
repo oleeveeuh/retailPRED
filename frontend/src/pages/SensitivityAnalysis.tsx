@@ -3,15 +3,13 @@
  * Interactive analysis of retail sales sensitivity to economic indicators
  */
 
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { scenariosApi } from '../api/unifiedApi';
 import {
   Sliders,
-  TrendingUp,
-  TrendingDown,
-  Info,
   AlertCircle,
   Activity,
   BarChart3,
@@ -26,7 +24,6 @@ import {
   ResponsiveContainer,
   BarChart as RechartsBarChart,
   Bar,
-  Cell,
 } from 'recharts';
 
 const KEY_INDICATORS = [
@@ -65,7 +62,7 @@ interface TornadoItem {
 
 export const SensitivityAnalysis: FC = () => {
   const [category, setCategory] = useState('total_sales');
-  const [selectedIndicator, setSelectedIndicator] = useState(KEY_INDICATORS[0]);
+  const [selectedIndicator] = useState(KEY_INDICATORS[0]);
   const [indicatorValues, setIndicatorValues] = useState<Record<string, number>>({
     UNRATE: 3.7,
     FEDFUNDS: 5.25,
@@ -309,7 +306,7 @@ export const SensitivityAnalysis: FC = () => {
                     tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
                   />
                   <Tooltip
-                    formatter={(value: number) => `$${value.toFixed(2)}`}
+                    formatter={(value: number | undefined) => `$${(value || 0).toFixed(2)}`}
                     labelFormatter={(value) => `${selectedIndicator.name}: ${value}${selectedIndicator.unit}`}
                   />
                   <Line
@@ -357,7 +354,7 @@ export const SensitivityAnalysis: FC = () => {
                   />
                   <YAxis type="category" dataKey="indicator" width={120} />
                   <Tooltip
-                    formatter={(value: number) => `$${value.toLocaleString()}`}
+                    formatter={(value: number | undefined) => `$${(value || 0).toLocaleString()}`}
                   />
                   <Bar dataKey="high" fill="#10b981" name="High Scenario" />
                   <Bar dataKey="low" fill="#ef4444" name="Low Scenario" />

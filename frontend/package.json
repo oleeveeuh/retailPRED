@@ -9,7 +9,7 @@
     "dev:backend": "cd ../backend && python main.py",
     "dev:all": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\" -n \"FRONTEND,BACKEND\" -c \"bgBlue.bold,bgGreen.bold\"",
     "build": "tsc -b && vite build",
-    "build:prod": "vite build",
+    "build:only": "vite build",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
