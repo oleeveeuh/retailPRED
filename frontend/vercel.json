@@ -72,17 +72,5 @@
         }
       ]
     }
-  ],
-  "protection": {
-    "exceptions": [
-      {
-        "pattern": "/demo-data/(.*)",
-        "method": ["GET", "HEAD", "OPTIONS"]
-      },
-      {
-        "pattern": "/manifest.json",
-        "method": ["GET", "HEAD", "OPTIONS"]
-      }
-    ]
-  }
+  ]
 }
