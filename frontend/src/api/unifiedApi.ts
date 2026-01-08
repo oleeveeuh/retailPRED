@@ -221,6 +221,7 @@ const demoDataApi = {
 const demoTrainingMetricsApi = {
   /**
    * Get training metrics for models (demo mode)
+   * Using actual training results from robust_training_summary.json
    */
   getModels: async (): Promise<TrainingMetricsResponse> => {
     const summary = await demoDataService.getSummary();
@@ -228,30 +229,114 @@ const demoTrainingMetricsApi = {
     // Get all model types from summary
     const modelTypes = summary.models_available?.models || [];
 
+    // Real training metrics from actual results (MAPE ascending, best first)
+    const modelMetrics: Record<string, any> = {
+      LGBM: {
+        RMSE: { mean: 171 },
+        MAE: { mean: 106 },
+        R2: 0.9857,
+        MAPE: { mean: 1.42 },
+        SMAPE: { mean: 1.45 },
+        MASE: { mean: 0.207 },
+        training_time: 3.1,
+        rank: 1
+      },
+      RandomForest: {
+        RMSE: { mean: 247 },
+        MAE: { mean: 165 },
+        R2: 0.9792,
+        MAPE: { mean: 2.08 },
+        SMAPE: { mean: 2.13 },
+        MASE: { mean: 0.285 },
+        training_time: 0.9,
+        rank: 2
+      },
+      AutoETS: {
+        RMSE: { mean: 992 },
+        MAE: { mean: 667 },
+        R2: 0.9040,
+        MAPE: { mean: 9.60 },
+        SMAPE: { mean: 9.90 },
+        MASE: { mean: 0.991 },
+        training_time: 26.6,
+        rank: 3
+      },
+      SeasonalNaive: {
+        RMSE: { mean: 1252 },
+        MAE: { mean: 929 },
+        R2: 0.8728,
+        MAPE: { mean: 12.72 },
+        SMAPE: { mean: 13.77 },
+        MASE: { mean: 1.372 },
+        training_time: 0.06,
+        rank: 4
+      },
+      AutoARIMA: {
+        RMSE: { mean: 1143 },
+        MAE: { mean: 830 },
+        R2: 0.8872,
+        MAPE: { mean: 12.69 },
+        SMAPE: { mean: 13.91 },
+        MASE: { mean: 1.303 },
+        training_time: 228.3,
+        rank: 5
+      },
+      PatchTST: {
+        RMSE: { mean: 2577 },
+        MAE: { mean: 2342 },
+        R2: 0.5956,
+        MAPE: { mean: 22.21 },
+        SMAPE: { mean: 20.23 },
+        MASE: { mean: 2.383 },
+        training_time: 14.1,
+        rank: 6
+      },
+      TimesNet: {
+        RMSE: { mean: 2620 },
+        MAE: { mean: 2404 },
+        R2: 0.5838,
+        MAPE: { mean: 22.47 },
+        SMAPE: { mean: 20.48 },
+        MASE: { mean: 2.416 },
+        training_time: 144.0,
+        rank: 7
+      }
+    };
+
     // Transform demo data to match training metrics format
     return {
-      models: modelTypes.map((modelName, index) => ({
-        id: index + 1,
-        model_name: modelName,
-        model_type: modelName, // Add model_type field for ModelsPage
-        category: 'Total Retail Sales',
-        training_date: '2025-01-01',
-        metrics: {
-          RMSE: { mean: 1000 + Math.random() * 500 },
-          MAE: { mean: 800 + Math.random() * 400 },
-          R2: 0.92 + Math.random() * 0.07,
-          MAPE: { mean: 3 + Math.random() * 5 },
-          SMAPE: { mean: 2 + Math.random() * 4 },
-          mean: 50000,
-          std: 5000,
-          training_time: 10 + Math.random() * 20,
-        },
-        hyperparameters: {
-          learning_rate: 0.01,
-          n_estimators: 100,
-        },
-        is_active: true,
-      })),
+      models: modelTypes.map((modelName, index) => {
+        const metrics = modelMetrics[modelName] || {
+          RMSE: { mean: 1000 },
+          MAE: { mean: 800 },
+          R2: 0.90,
+          MAPE: { mean: 5.0 },
+          SMAPE: { mean: 5.0 },
+          MASE: { mean: 1.0 },
+          training_time: 10,
+          rank: index + 1
+        };
+
+        return {
+          id: index + 1,
+          model_name: modelName,
+          model_type: modelName,
+          category: 'Total Retail Sales',
+          training_date: '2026-01-04',
+          metrics: {
+            ...metrics,
+            mean: 50000,
+            std: 5000,
+          },
+          hyperparameters: {
+            learning_rate: 0.01,
+            n_estimators: 100,
+            cv_samples: 12,
+            successful_categories: 4,
+          },
+          is_active: true,
+        };
+      }).sort((a, b) => (a.metrics as any).rank - (b.metrics as any).rank),
       total_count: modelTypes.length,
       active_count: modelTypes.length,
     };
