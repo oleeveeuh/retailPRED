@@ -5,7 +5,7 @@
 
 import { FC, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { predictionsApi, modelsApi } from '../api/unifiedApi';
+import { predictionsApi, trainingMetricsApi } from '../api/unifiedApi';
 import ForecastChart from './ForecastChart';
 import FeatureImportanceChart from './FeatureImportanceChart';
 import ModelInfoCard from './ModelInfoCard';
@@ -22,14 +22,7 @@ export const Dashboard: FC = () => {
   // Fetch models with actual training metrics
   const { data: modelsData, isLoading: modelsLoading, error: modelsError } = useQuery({
     queryKey: ['training-models'],
-    queryFn: () => fetch('http://localhost:8000/api/training-metrics/models')
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then(data => data),
+    queryFn: () => trainingMetricsApi.getModels(),
     retry: 2,
   });
 

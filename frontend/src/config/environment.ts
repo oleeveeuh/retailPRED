@@ -13,8 +13,9 @@ export const config = {
 
   /**
    * Backend API URL (only used when isDemoMode is false)
+   * Note: Empty string is valid (no backend), only fallback to localhost if undefined
    */
-  apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  apiUrl: import.meta.env.VITE_API_URL !== undefined ? import.meta.env.VITE_API_URL : 'http://localhost:8000',
 
   /**
    * Enable debug logging

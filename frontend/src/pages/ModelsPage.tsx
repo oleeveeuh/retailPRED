@@ -48,7 +48,7 @@ import {
   Legend,
   Cell,
 } from 'recharts';
-import { modelsApi } from '../api/unifiedApi';
+import { modelsApi, trainingMetricsApi } from '../api/unifiedApi';
 
 // Types
 interface Model {
@@ -78,11 +78,7 @@ interface Model {
 // Load real training data from training metrics API
 const loadRealTrainingData = async (): Promise<Model[]> => {
   try {
-    const response = await fetch('http://localhost:8000/api/training-metrics/models');
-    if (!response.ok) {
-      throw new Error(`Failed to load training metrics: ${response.status}`);
-    }
-    const trainingData = await response.json();
+    const trainingData = await trainingMetricsApi.getModels();
 
     const models: Model[] = [];
 
