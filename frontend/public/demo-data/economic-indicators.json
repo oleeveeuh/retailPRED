@@ -1,0 +1,4510 @@
+{
+  "data": [
+    {
+      "date": "2024-08-25",
+      "cpi": 299.46,
+      "interest_rates": 5.65,
+      "unemployment": 3.43,
+      "consumer_sentiment": 65.03,
+      "money_supply": 19926.36,
+      "industrial_production": 103.8
+    },
+    {
+      "date": "2024-08-26",
+      "cpi": 299.75,
+      "interest_rates": 5.42,
+      "unemployment": 3.71,
+      "consumer_sentiment": 72.15,
+      "money_supply": 20027.8,
+      "industrial_production": 105.62
+    },
+    {
+      "date": "2024-08-27",
+      "cpi": 300.25,
+      "interest_rates": 5.25,
+      "unemployment": 3.48,
+      "consumer_sentiment": 66.95,
+      "money_supply": 20094.33,
+      "industrial_production": 106.13
+    },
+    {
+      "date": "2024-08-28",
+      "cpi": 302.12,
+      "interest_rates": 4.78,
+      "unemployment": 3.85,
+      "consumer_sentiment": 72.52,
+      "money_supply": 20117.63,
+      "industrial_production": 105.22
+    },
+    {
+      "date": "2024-08-29",
+      "cpi": 298.53,
+      "interest_rates": 5.33,
+      "unemployment": 3.53,
+      "consumer_sentiment": 70.99,
+      "money_supply": 20046.72,
+      "industrial_production": 104.72
+    },
+    {
+      "date": "2024-08-30",
+      "cpi": 301.31,
+      "interest_rates": 5.55,
+      "unemployment": 3.57,
+      "consumer_sentiment": 66.37,
+      "money_supply": 20079.94,
+      "industrial_production": 106.6
+    },
+    {
+      "date": "2024-08-31",
+      "cpi": 298.78,
+      "interest_rates": 4.87,
+      "unemployment": 3.45,
+      "consumer_sentiment": 70.1,
+      "money_supply": 20140.85,
+      "industrial_production": 104.63
+    },
+    {
+      "date": "2024-09-01",
+      "cpi": 302.19,
+      "interest_rates": 5.43,
+      "unemployment": 3.44,
+      "consumer_sentiment": 71.65,
+      "money_supply": 20069.92,
+      "industrial_production": 106.75
+    },
+    {
+      "date": "2024-09-02",
+      "cpi": 299.5,
+      "interest_rates": 5.11,
+      "unemployment": 3.57,
+      "consumer_sentiment": 71.13,
+      "money_supply": 20037.67,
+      "industrial_production": 104.63
+    },
+    {
+      "date": "2024-09-03",
+      "cpi": 300.8,
+      "interest_rates": 5.29,
+      "unemployment": 3.91,
+      "consumer_sentiment": 71.24,
+      "money_supply": 20077.56,
+      "industrial_production": 104.02
+    },
+    {
+      "date": "2024-09-04",
+      "cpi": 301.2,
+      "interest_rates": 4.9,
+      "unemployment": 3.58,
+      "consumer_sentiment": 71.21,
+      "money_supply": 20168.1,
+      "industrial_production": 105.3
+    },
+    {
+      "date": "2024-09-05",
+      "cpi": 302.88,
+      "interest_rates": 5.62,
+      "unemployment": 4.0,
+      "consumer_sentiment": 67.79,
+      "money_supply": 20096.58,
+      "industrial_production": 105.38
+    },
+    {
+      "date": "2024-09-06",
+      "cpi": 302.04,
+      "interest_rates": 5.63,
+      "unemployment": 3.57,
+      "consumer_sentiment": 74.71,
+      "money_supply": 20127.6,
+      "industrial_production": 104.52
+    },
+    {
+      "date": "2024-09-07",
+      "cpi": 301.14,
+      "interest_rates": 5.71,
+      "unemployment": 3.98,
+      "consumer_sentiment": 67.18,
+      "money_supply": 20036.12,
+      "industrial_production": 106.34
+    },
+    {
+      "date": "2024-09-08",
+      "cpi": 300.66,
+      "interest_rates": 5.6,
+      "unemployment": 3.65,
+      "consumer_sentiment": 68.19,
+      "money_supply": 20126.09,
+      "industrial_production": 104.0
+    },
+    {
+      "date": "2024-09-09",
+      "cpi": 303.19,
+      "interest_rates": 5.53,
+      "unemployment": 3.86,
+      "consumer_sentiment": 67.09,
+      "money_supply": 20213.07,
+      "industrial_production": 103.04
+    },
+    {
+      "date": "2024-09-10",
+      "cpi": 300.66,
+      "interest_rates": 5.44,
+      "unemployment": 3.85,
+      "consumer_sentiment": 67.86,
+      "money_supply": 20095.35,
+      "industrial_production": 103.18
+    },
+    {
+      "date": "2024-09-11",
+      "cpi": 302.3,
+      "interest_rates": 4.91,
+      "unemployment": 3.76,
+      "consumer_sentiment": 69.44,
+      "money_supply": 20127.28,
+      "industrial_production": 106.48
+    },
+    {
+      "date": "2024-09-12",
+      "cpi": 300.72,
+      "interest_rates": 5.38,
+      "unemployment": 3.78,
+      "consumer_sentiment": 73.4,
+      "money_supply": 20188.8,
+      "industrial_production": 105.63
+    },
+    {
+      "date": "2024-09-13",
+      "cpi": 303.58,
+      "interest_rates": 4.94,
+      "unemployment": 3.81,
+      "consumer_sentiment": 70.04,
+      "money_supply": 20246.25,
+      "industrial_production": 105.37
+    },
+    {
+      "date": "2024-09-14",
+      "cpi": 301.07,
+      "interest_rates": 4.81,
+      "unemployment": 3.86,
+      "consumer_sentiment": 74.02,
+      "money_supply": 20291.89,
+      "industrial_production": 105.92
+    },
+    {
+      "date": "2024-09-15",
+      "cpi": 300.22,
+      "interest_rates": 5.48,
+      "unemployment": 3.42,
+      "consumer_sentiment": 66.26,
+      "money_supply": 20262.32,
+      "industrial_production": 105.41
+    },
+    {
+      "date": "2024-09-16",
+      "cpi": 300.83,
+      "interest_rates": 5.71,
+      "unemployment": 3.63,
+      "consumer_sentiment": 65.45,
+      "money_supply": 20303.12,
+      "industrial_production": 104.22
+    },
+    {
+      "date": "2024-09-17",
+      "cpi": 301.36,
+      "interest_rates": 5.49,
+      "unemployment": 3.53,
+      "consumer_sentiment": 74.93,
+      "money_supply": 20272.52,
+      "industrial_production": 104.29
+    },
+    {
+      "date": "2024-09-18",
+      "cpi": 302.92,
+      "interest_rates": 5.01,
+      "unemployment": 3.68,
+      "consumer_sentiment": 70.75,
+      "money_supply": 20205.66,
+      "industrial_production": 106.03
+    },
+    {
+      "date": "2024-09-19",
+      "cpi": 301.61,
+      "interest_rates": 5.37,
+      "unemployment": 3.41,
+      "consumer_sentiment": 70.83,
+      "money_supply": 20317.85,
+      "industrial_production": 105.32
+    },
+    {
+      "date": "2024-09-20",
+      "cpi": 301.18,
+      "interest_rates": 4.75,
+      "unemployment": 3.57,
+      "consumer_sentiment": 68.8,
+      "money_supply": 20322.68,
+      "industrial_production": 103.11
+    },
+    {
+      "date": "2024-09-21",
+      "cpi": 301.74,
+      "interest_rates": 4.81,
+      "unemployment": 3.72,
+      "consumer_sentiment": 65.45,
+      "money_supply": 20199.74,
+      "industrial_production": 106.52
+    },
+    {
+      "date": "2024-09-22",
+      "cpi": 301.38,
+      "interest_rates": 5.11,
+      "unemployment": 3.52,
+      "consumer_sentiment": 65.59,
+      "money_supply": 20193.71,
+      "industrial_production": 103.49
+    },
+    {
+      "date": "2024-09-23",
+      "cpi": 302.56,
+      "interest_rates": 5.33,
+      "unemployment": 3.74,
+      "consumer_sentiment": 65.51,
+      "money_supply": 20325.18,
+      "industrial_production": 106.73
+    },
+    {
+      "date": "2024-09-24",
+      "cpi": 303.38,
+      "interest_rates": 5.6,
+      "unemployment": 3.59,
+      "consumer_sentiment": 71.11,
+      "money_supply": 20215.61,
+      "industrial_production": 104.24
+    },
+    {
+      "date": "2024-09-25",
+      "cpi": 302.78,
+      "interest_rates": 5.33,
+      "unemployment": 3.79,
+      "consumer_sentiment": 71.86,
+      "money_supply": 20394.93,
+      "industrial_production": 105.32
+    },
+    {
+      "date": "2024-09-26",
+      "cpi": 303.75,
+      "interest_rates": 5.34,
+      "unemployment": 3.85,
+      "consumer_sentiment": 65.99,
+      "money_supply": 20238.82,
+      "industrial_production": 103.05
+    },
+    {
+      "date": "2024-09-27",
+      "cpi": 302.0,
+      "interest_rates": 5.35,
+      "unemployment": 3.9,
+      "consumer_sentiment": 70.6,
+      "money_supply": 20294.44,
+      "industrial_production": 105.12
+    },
+    {
+      "date": "2024-09-28",
+      "cpi": 302.42,
+      "interest_rates": 5.73,
+      "unemployment": 3.96,
+      "consumer_sentiment": 68.6,
+      "money_supply": 20270.49,
+      "industrial_production": 103.17
+    },
+    {
+      "date": "2024-09-29",
+      "cpi": 301.97,
+      "interest_rates": 5.58,
+      "unemployment": 3.67,
+      "consumer_sentiment": 67.79,
+      "money_supply": 20341.16,
+      "industrial_production": 105.38
+    },
+    {
+      "date": "2024-09-30",
+      "cpi": 303.61,
+      "interest_rates": 5.64,
+      "unemployment": 3.61,
+      "consumer_sentiment": 73.83,
+      "money_supply": 20453.39,
+      "industrial_production": 104.54
+    },
+    {
+      "date": "2024-10-01",
+      "cpi": 304.86,
+      "interest_rates": 5.54,
+      "unemployment": 3.95,
+      "consumer_sentiment": 70.69,
+      "money_supply": 20463.52,
+      "industrial_production": 106.48
+    },
+    {
+      "date": "2024-10-02",
+      "cpi": 302.64,
+      "interest_rates": 5.29,
+      "unemployment": 3.56,
+      "consumer_sentiment": 70.02,
+      "money_supply": 20422.27,
+      "industrial_production": 105.65
+    },
+    {
+      "date": "2024-10-03",
+      "cpi": 305.5,
+      "interest_rates": 5.4,
+      "unemployment": 3.65,
+      "consumer_sentiment": 74.94,
+      "money_supply": 20356.64,
+      "industrial_production": 106.29
+    },
+    {
+      "date": "2024-10-04",
+      "cpi": 302.59,
+      "interest_rates": 5.28,
+      "unemployment": 3.49,
+      "consumer_sentiment": 71.41,
+      "money_supply": 20366.34,
+      "industrial_production": 103.63
+    },
+    {
+      "date": "2024-10-05",
+      "cpi": 304.45,
+      "interest_rates": 5.61,
+      "unemployment": 3.79,
+      "consumer_sentiment": 66.14,
+      "money_supply": 20463.85,
+      "industrial_production": 106.59
+    },
+    {
+      "date": "2024-10-06",
+      "cpi": 303.62,
+      "interest_rates": 4.79,
+      "unemployment": 3.86,
+      "consumer_sentiment": 71.02,
+      "money_supply": 20405.62,
+      "industrial_production": 106.19
+    },
+    {
+      "date": "2024-10-07",
+      "cpi": 303.61,
+      "interest_rates": 5.05,
+      "unemployment": 3.85,
+      "consumer_sentiment": 69.45,
+      "money_supply": 20504.35,
+      "industrial_production": 104.05
+    },
+    {
+      "date": "2024-10-08",
+      "cpi": 305.47,
+      "interest_rates": 4.85,
+      "unemployment": 3.9,
+      "consumer_sentiment": 66.24,
+      "money_supply": 20348.94,
+      "industrial_production": 104.87
+    },
+    {
+      "date": "2024-10-09",
+      "cpi": 303.14,
+      "interest_rates": 5.37,
+      "unemployment": 3.52,
+      "consumer_sentiment": 67.9,
+      "money_supply": 20359.38,
+      "industrial_production": 105.65
+    },
+    {
+      "date": "2024-10-10",
+      "cpi": 306.32,
+      "interest_rates": 4.85,
+      "unemployment": 3.83,
+      "consumer_sentiment": 73.83,
+      "money_supply": 20444.5,
+      "industrial_production": 104.22
+    },
+    {
+      "date": "2024-10-11",
+      "cpi": 304.61,
+      "interest_rates": 5.56,
+      "unemployment": 3.97,
+      "consumer_sentiment": 72.31,
+      "money_supply": 20533.57,
+      "industrial_production": 103.65
+    },
+    {
+      "date": "2024-10-12",
+      "cpi": 305.01,
+      "interest_rates": 5.58,
+      "unemployment": 3.57,
+      "consumer_sentiment": 67.74,
+      "money_supply": 20385.01,
+      "industrial_production": 105.71
+    },
+    {
+      "date": "2024-10-13",
+      "cpi": 304.13,
+      "interest_rates": 5.19,
+      "unemployment": 3.83,
+      "consumer_sentiment": 66.68,
+      "money_supply": 20505.83,
+      "industrial_production": 103.81
+    },
+    {
+      "date": "2024-10-14",
+      "cpi": 303.96,
+      "interest_rates": 5.34,
+      "unemployment": 3.49,
+      "consumer_sentiment": 69.79,
+      "money_supply": 20457.08,
+      "industrial_production": 106.45
+    },
+    {
+      "date": "2024-10-15",
+      "cpi": 306.35,
+      "interest_rates": 5.53,
+      "unemployment": 3.85,
+      "consumer_sentiment": 66.08,
+      "money_supply": 20568.1,
+      "industrial_production": 106.55
+    },
+    {
+      "date": "2024-10-16",
+      "cpi": 306.51,
+      "interest_rates": 4.84,
+      "unemployment": 3.79,
+      "consumer_sentiment": 72.05,
+      "money_supply": 20488.02,
+      "industrial_production": 105.31
+    },
+    {
+      "date": "2024-10-17",
+      "cpi": 306.6,
+      "interest_rates": 5.38,
+      "unemployment": 3.61,
+      "consumer_sentiment": 71.4,
+      "money_supply": 20480.95,
+      "industrial_production": 104.36
+    },
+    {
+      "date": "2024-10-18",
+      "cpi": 306.2,
+      "interest_rates": 5.55,
+      "unemployment": 3.46,
+      "consumer_sentiment": 65.84,
+      "money_supply": 20501.06,
+      "industrial_production": 103.79
+    },
+    {
+      "date": "2024-10-19",
+      "cpi": 306.53,
+      "interest_rates": 4.79,
+      "unemployment": 3.69,
+      "consumer_sentiment": 72.83,
+      "money_supply": 20487.53,
+      "industrial_production": 106.22
+    },
+    {
+      "date": "2024-10-20",
+      "cpi": 305.58,
+      "interest_rates": 5.45,
+      "unemployment": 3.55,
+      "consumer_sentiment": 71.47,
+      "money_supply": 20467.0,
+      "industrial_production": 103.71
+    },
+    {
+      "date": "2024-10-21",
+      "cpi": 304.66,
+      "interest_rates": 5.68,
+      "unemployment": 3.75,
+      "consumer_sentiment": 71.99,
+      "money_supply": 20563.47,
+      "industrial_production": 106.57
+    },
+    {
+      "date": "2024-10-22",
+      "cpi": 303.95,
+      "interest_rates": 4.78,
+      "unemployment": 3.91,
+      "consumer_sentiment": 70.32,
+      "money_supply": 20669.48,
+      "industrial_production": 105.18
+    },
+    {
+      "date": "2024-10-23",
+      "cpi": 305.48,
+      "interest_rates": 5.4,
+      "unemployment": 3.47,
+      "consumer_sentiment": 74.11,
+      "money_supply": 20495.83,
+      "industrial_production": 103.54
+    },
+    {
+      "date": "2024-10-24",
+      "cpi": 306.02,
+      "interest_rates": 5.29,
+      "unemployment": 3.6,
+      "consumer_sentiment": 66.39,
+      "money_supply": 20515.85,
+      "industrial_production": 106.89
+    },
+    {
+      "date": "2024-10-25",
+      "cpi": 306.3,
+      "interest_rates": 5.44,
+      "unemployment": 3.56,
+      "consumer_sentiment": 70.67,
+      "money_supply": 20568.94,
+      "industrial_production": 105.52
+    },
+    {
+      "date": "2024-10-26",
+      "cpi": 306.99,
+      "interest_rates": 4.99,
+      "unemployment": 3.79,
+      "consumer_sentiment": 71.63,
+      "money_supply": 20711.99,
+      "industrial_production": 106.47
+    },
+    {
+      "date": "2024-10-27",
+      "cpi": 304.93,
+      "interest_rates": 5.52,
+      "unemployment": 3.88,
+      "consumer_sentiment": 66.66,
+      "money_supply": 20665.95,
+      "industrial_production": 105.6
+    },
+    {
+      "date": "2024-10-28",
+      "cpi": 305.03,
+      "interest_rates": 4.87,
+      "unemployment": 3.75,
+      "consumer_sentiment": 69.33,
+      "money_supply": 20555.51,
+      "industrial_production": 105.07
+    },
+    {
+      "date": "2024-10-29",
+      "cpi": 308.22,
+      "interest_rates": 5.52,
+      "unemployment": 3.51,
+      "consumer_sentiment": 69.98,
+      "money_supply": 20686.37,
+      "industrial_production": 106.96
+    },
+    {
+      "date": "2024-10-30",
+      "cpi": 305.75,
+      "interest_rates": 4.78,
+      "unemployment": 3.68,
+      "consumer_sentiment": 71.78,
+      "money_supply": 20641.63,
+      "industrial_production": 104.78
+    },
+    {
+      "date": "2024-10-31",
+      "cpi": 305.47,
+      "interest_rates": 4.84,
+      "unemployment": 3.78,
+      "consumer_sentiment": 70.28,
+      "money_supply": 20686.33,
+      "industrial_production": 103.25
+    },
+    {
+      "date": "2024-11-01",
+      "cpi": 307.76,
+      "interest_rates": 5.06,
+      "unemployment": 3.74,
+      "consumer_sentiment": 68.27,
+      "money_supply": 20648.24,
+      "industrial_production": 104.7
+    },
+    {
+      "date": "2024-11-02",
+      "cpi": 305.27,
+      "interest_rates": 5.58,
+      "unemployment": 3.97,
+      "consumer_sentiment": 72.85,
+      "money_supply": 20643.49,
+      "industrial_production": 104.3
+    },
+    {
+      "date": "2024-11-03",
+      "cpi": 307.3,
+      "interest_rates": 4.91,
+      "unemployment": 3.61,
+      "consumer_sentiment": 68.79,
+      "money_supply": 20671.31,
+      "industrial_production": 106.7
+    },
+    {
+      "date": "2024-11-04",
+      "cpi": 305.5,
+      "interest_rates": 5.38,
+      "unemployment": 3.97,
+      "consumer_sentiment": 67.23,
+      "money_supply": 20734.52,
+      "industrial_production": 105.55
+    },
+    {
+      "date": "2024-11-05",
+      "cpi": 306.06,
+      "interest_rates": 4.77,
+      "unemployment": 3.74,
+      "consumer_sentiment": 72.61,
+      "money_supply": 20772.21,
+      "industrial_production": 106.24
+    },
+    {
+      "date": "2024-11-06",
+      "cpi": 308.23,
+      "interest_rates": 5.21,
+      "unemployment": 3.97,
+      "consumer_sentiment": 69.35,
+      "money_supply": 20643.61,
+      "industrial_production": 103.92
+    },
+    {
+      "date": "2024-11-07",
+      "cpi": 307.07,
+      "interest_rates": 5.29,
+      "unemployment": 3.53,
+      "consumer_sentiment": 73.88,
+      "money_supply": 20713.62,
+      "industrial_production": 106.22
+    },
+    {
+      "date": "2024-11-08",
+      "cpi": 308.23,
+      "interest_rates": 5.12,
+      "unemployment": 3.41,
+      "consumer_sentiment": 72.17,
+      "money_supply": 20764.15,
+      "industrial_production": 104.21
+    },
+    {
+      "date": "2024-11-09",
+      "cpi": 305.87,
+      "interest_rates": 5.33,
+      "unemployment": 3.65,
+      "consumer_sentiment": 70.94,
+      "money_supply": 20756.7,
+      "industrial_production": 104.65
+    },
+    {
+      "date": "2024-11-10",
+      "cpi": 306.3,
+      "interest_rates": 5.59,
+      "unemployment": 3.91,
+      "consumer_sentiment": 74.52,
+      "money_supply": 20682.14,
+      "industrial_production": 105.22
+    },
+    {
+      "date": "2024-11-11",
+      "cpi": 308.14,
+      "interest_rates": 5.44,
+      "unemployment": 3.9,
+      "consumer_sentiment": 69.17,
+      "money_supply": 20748.01,
+      "industrial_production": 106.95
+    },
+    {
+      "date": "2024-11-12",
+      "cpi": 306.59,
+      "interest_rates": 4.94,
+      "unemployment": 3.53,
+      "consumer_sentiment": 73.24,
+      "money_supply": 20842.54,
+      "industrial_production": 104.54
+    },
+    {
+      "date": "2024-11-13",
+      "cpi": 306.9,
+      "interest_rates": 5.33,
+      "unemployment": 3.7,
+      "consumer_sentiment": 71.76,
+      "money_supply": 20872.25,
+      "industrial_production": 106.1
+    },
+    {
+      "date": "2024-11-14",
+      "cpi": 307.77,
+      "interest_rates": 5.21,
+      "unemployment": 3.41,
+      "consumer_sentiment": 71.02,
+      "money_supply": 20875.08,
+      "industrial_production": 105.47
+    },
+    {
+      "date": "2024-11-15",
+      "cpi": 306.35,
+      "interest_rates": 5.51,
+      "unemployment": 3.71,
+      "consumer_sentiment": 67.16,
+      "money_supply": 20792.64,
+      "industrial_production": 104.83
+    },
+    {
+      "date": "2024-11-16",
+      "cpi": 308.83,
+      "interest_rates": 5.34,
+      "unemployment": 3.62,
+      "consumer_sentiment": 71.94,
+      "money_supply": 20818.64,
+      "industrial_production": 106.03
+    },
+    {
+      "date": "2024-11-17",
+      "cpi": 307.93,
+      "interest_rates": 5.52,
+      "unemployment": 3.41,
+      "consumer_sentiment": 73.67,
+      "money_supply": 20933.54,
+      "industrial_production": 104.53
+    },
+    {
+      "date": "2024-11-18",
+      "cpi": 306.59,
+      "interest_rates": 5.21,
+      "unemployment": 3.48,
+      "consumer_sentiment": 66.41,
+      "money_supply": 20898.96,
+      "industrial_production": 104.85
+    },
+    {
+      "date": "2024-11-19",
+      "cpi": 308.99,
+      "interest_rates": 5.52,
+      "unemployment": 3.41,
+      "consumer_sentiment": 65.85,
+      "money_supply": 20918.21,
+      "industrial_production": 103.88
+    },
+    {
+      "date": "2024-11-20",
+      "cpi": 308.91,
+      "interest_rates": 4.89,
+      "unemployment": 3.51,
+      "consumer_sentiment": 70.13,
+      "money_supply": 20836.51,
+      "industrial_production": 103.05
+    },
+    {
+      "date": "2024-11-21",
+      "cpi": 310.53,
+      "interest_rates": 5.03,
+      "unemployment": 3.46,
+      "consumer_sentiment": 69.05,
+      "money_supply": 20948.77,
+      "industrial_production": 104.96
+    },
+    {
+      "date": "2024-11-22",
+      "cpi": 307.74,
+      "interest_rates": 5.22,
+      "unemployment": 3.74,
+      "consumer_sentiment": 73.95,
+      "money_supply": 20828.2,
+      "industrial_production": 105.7
+    },
+    {
+      "date": "2024-11-23",
+      "cpi": 307.22,
+      "interest_rates": 5.59,
+      "unemployment": 3.86,
+      "consumer_sentiment": 71.2,
+      "money_supply": 20833.19,
+      "industrial_production": 105.88
+    },
+    {
+      "date": "2024-11-24",
+      "cpi": 309.83,
+      "interest_rates": 5.4,
+      "unemployment": 3.57,
+      "consumer_sentiment": 70.88,
+      "money_supply": 20843.08,
+      "industrial_production": 104.64
+    },
+    {
+      "date": "2024-11-25",
+      "cpi": 309.29,
+      "interest_rates": 4.77,
+      "unemployment": 3.41,
+      "consumer_sentiment": 72.18,
+      "money_supply": 20856.95,
+      "industrial_production": 106.5
+    },
+    {
+      "date": "2024-11-26",
+      "cpi": 309.45,
+      "interest_rates": 5.48,
+      "unemployment": 3.64,
+      "consumer_sentiment": 73.62,
+      "money_supply": 20947.18,
+      "industrial_production": 105.32
+    },
+    {
+      "date": "2024-11-27",
+      "cpi": 309.66,
+      "interest_rates": 4.92,
+      "unemployment": 3.88,
+      "consumer_sentiment": 69.29,
+      "money_supply": 20943.07,
+      "industrial_production": 105.28
+    },
+    {
+      "date": "2024-11-28",
+      "cpi": 307.64,
+      "interest_rates": 5.22,
+      "unemployment": 3.41,
+      "consumer_sentiment": 65.88,
+      "money_supply": 20958.4,
+      "industrial_production": 106.9
+    },
+    {
+      "date": "2024-11-29",
+      "cpi": 308.46,
+      "interest_rates": 5.56,
+      "unemployment": 3.83,
+      "consumer_sentiment": 74.17,
+      "money_supply": 20885.0,
+      "industrial_production": 105.03
+    },
+    {
+      "date": "2024-11-30",
+      "cpi": 310.71,
+      "interest_rates": 4.86,
+      "unemployment": 3.58,
+      "consumer_sentiment": 69.93,
+      "money_supply": 20990.5,
+      "industrial_production": 105.8
+    },
+    {
+      "date": "2024-12-01",
+      "cpi": 308.64,
+      "interest_rates": 5.39,
+      "unemployment": 3.76,
+      "consumer_sentiment": 74.21,
+      "money_supply": 20883.3,
+      "industrial_production": 103.38
+    },
+    {
+      "date": "2024-12-02",
+      "cpi": 311.41,
+      "interest_rates": 4.94,
+      "unemployment": 3.93,
+      "consumer_sentiment": 74.18,
+      "money_supply": 21085.0,
+      "industrial_production": 105.68
+    },
+    {
+      "date": "2024-12-03",
+      "cpi": 310.68,
+      "interest_rates": 4.85,
+      "unemployment": 3.83,
+      "consumer_sentiment": 71.58,
+      "money_supply": 21042.56,
+      "industrial_production": 104.35
+    },
+    {
+      "date": "2024-12-04",
+      "cpi": 311.15,
+      "interest_rates": 5.31,
+      "unemployment": 3.72,
+      "consumer_sentiment": 71.55,
+      "money_supply": 21083.17,
+      "industrial_production": 106.05
+    },
+    {
+      "date": "2024-12-05",
+      "cpi": 310.16,
+      "interest_rates": 5.68,
+      "unemployment": 3.89,
+      "consumer_sentiment": 67.3,
+      "money_supply": 21112.53,
+      "industrial_production": 106.01
+    },
+    {
+      "date": "2024-12-06",
+      "cpi": 309.58,
+      "interest_rates": 5.08,
+      "unemployment": 3.79,
+      "consumer_sentiment": 65.82,
+      "money_supply": 21113.13,
+      "industrial_production": 106.1
+    },
+    {
+      "date": "2024-12-07",
+      "cpi": 310.21,
+      "interest_rates": 5.46,
+      "unemployment": 3.4,
+      "consumer_sentiment": 72.32,
+      "money_supply": 20968.84,
+      "industrial_production": 105.05
+    },
+    {
+      "date": "2024-12-08",
+      "cpi": 311.62,
+      "interest_rates": 5.34,
+      "unemployment": 3.65,
+      "consumer_sentiment": 74.14,
+      "money_supply": 21004.16,
+      "industrial_production": 106.3
+    },
+    {
+      "date": "2024-12-09",
+      "cpi": 311.0,
+      "interest_rates": 5.38,
+      "unemployment": 3.83,
+      "consumer_sentiment": 74.35,
+      "money_supply": 21115.92,
+      "industrial_production": 103.83
+    },
+    {
+      "date": "2024-12-10",
+      "cpi": 309.34,
+      "interest_rates": 5.39,
+      "unemployment": 3.68,
+      "consumer_sentiment": 71.1,
+      "money_supply": 20992.0,
+      "industrial_production": 106.39
+    },
+    {
+      "date": "2024-12-11",
+      "cpi": 309.9,
+      "interest_rates": 5.53,
+      "unemployment": 3.71,
+      "consumer_sentiment": 66.24,
+      "money_supply": 21059.59,
+      "industrial_production": 106.74
+    },
+    {
+      "date": "2024-12-12",
+      "cpi": 311.27,
+      "interest_rates": 5.45,
+      "unemployment": 3.69,
+      "consumer_sentiment": 74.23,
+      "money_supply": 21128.2,
+      "industrial_production": 104.96
+    },
+    {
+      "date": "2024-12-13",
+      "cpi": 310.3,
+      "interest_rates": 5.25,
+      "unemployment": 3.68,
+      "consumer_sentiment": 71.27,
+      "money_supply": 21062.34,
+      "industrial_production": 103.7
+    },
+    {
+      "date": "2024-12-14",
+      "cpi": 313.05,
+      "interest_rates": 4.91,
+      "unemployment": 3.7,
+      "consumer_sentiment": 69.4,
+      "money_supply": 21178.06,
+      "industrial_production": 106.77
+    },
+    {
+      "date": "2024-12-15",
+      "cpi": 310.77,
+      "interest_rates": 4.91,
+      "unemployment": 3.6,
+      "consumer_sentiment": 67.36,
+      "money_supply": 21081.89,
+      "industrial_production": 105.31
+    },
+    {
+      "date": "2024-12-16",
+      "cpi": 313.01,
+      "interest_rates": 4.86,
+      "unemployment": 3.83,
+      "consumer_sentiment": 72.94,
+      "money_supply": 21220.15,
+      "industrial_production": 105.05
+    },
+    {
+      "date": "2024-12-17",
+      "cpi": 310.03,
+      "interest_rates": 5.65,
+      "unemployment": 3.76,
+      "consumer_sentiment": 65.5,
+      "money_supply": 21048.55,
+      "industrial_production": 106.96
+    },
+    {
+      "date": "2024-12-18",
+      "cpi": 313.22,
+      "interest_rates": 5.33,
+      "unemployment": 3.52,
+      "consumer_sentiment": 74.94,
+      "money_supply": 21054.37,
+      "industrial_production": 105.13
+    },
+    {
+      "date": "2024-12-19",
+      "cpi": 311.95,
+      "interest_rates": 4.9,
+      "unemployment": 3.42,
+      "consumer_sentiment": 72.08,
+      "money_supply": 21222.12,
+      "industrial_production": 104.53
+    },
+    {
+      "date": "2024-12-20",
+      "cpi": 310.68,
+      "interest_rates": 5.36,
+      "unemployment": 3.93,
+      "consumer_sentiment": 67.13,
+      "money_supply": 21189.61,
+      "industrial_production": 104.27
+    },
+    {
+      "date": "2024-12-21",
+      "cpi": 311.83,
+      "interest_rates": 5.56,
+      "unemployment": 3.94,
+      "consumer_sentiment": 65.63,
+      "money_supply": 21094.84,
+      "industrial_production": 105.76
+    },
+    {
+      "date": "2024-12-22",
+      "cpi": 310.47,
+      "interest_rates": 5.32,
+      "unemployment": 3.77,
+      "consumer_sentiment": 68.94,
+      "money_supply": 21206.66,
+      "industrial_production": 105.61
+    },
+    {
+      "date": "2024-12-23",
+      "cpi": 311.63,
+      "interest_rates": 5.02,
+      "unemployment": 3.68,
+      "consumer_sentiment": 71.53,
+      "money_supply": 21135.65,
+      "industrial_production": 106.18
+    },
+    {
+      "date": "2024-12-24",
+      "cpi": 312.83,
+      "interest_rates": 5.45,
+      "unemployment": 3.75,
+      "consumer_sentiment": 72.45,
+      "money_supply": 21213.24,
+      "industrial_production": 103.79
+    },
+    {
+      "date": "2024-12-25",
+      "cpi": 311.26,
+      "interest_rates": 5.25,
+      "unemployment": 3.7,
+      "consumer_sentiment": 67.57,
+      "money_supply": 21208.21,
+      "industrial_production": 106.32
+    },
+    {
+      "date": "2024-12-26",
+      "cpi": 313.16,
+      "interest_rates": 5.41,
+      "unemployment": 3.52,
+      "consumer_sentiment": 67.33,
+      "money_supply": 21191.51,
+      "industrial_production": 106.59
+    },
+    {
+      "date": "2024-12-27",
+      "cpi": 312.8,
+      "interest_rates": 5.41,
+      "unemployment": 3.45,
+      "consumer_sentiment": 69.68,
+      "money_supply": 21266.67,
+      "industrial_production": 106.98
+    },
+    {
+      "date": "2024-12-28",
+      "cpi": 313.96,
+      "interest_rates": 4.8,
+      "unemployment": 3.82,
+      "consumer_sentiment": 67.36,
+      "money_supply": 21225.87,
+      "industrial_production": 103.17
+    },
+    {
+      "date": "2024-12-29",
+      "cpi": 313.54,
+      "interest_rates": 5.71,
+      "unemployment": 3.81,
+      "consumer_sentiment": 74.02,
+      "money_supply": 21252.05,
+      "industrial_production": 106.76
+    },
+    {
+      "date": "2024-12-30",
+      "cpi": 311.4,
+      "interest_rates": 5.46,
+      "unemployment": 3.79,
+      "consumer_sentiment": 71.12,
+      "money_supply": 21243.11,
+      "industrial_production": 105.53
+    },
+    {
+      "date": "2024-12-31",
+      "cpi": 311.22,
+      "interest_rates": 5.58,
+      "unemployment": 3.86,
+      "consumer_sentiment": 66.06,
+      "money_supply": 21214.19,
+      "industrial_production": 104.52
+    },
+    {
+      "date": "2025-01-01",
+      "cpi": 314.68,
+      "interest_rates": 5.26,
+      "unemployment": 3.73,
+      "consumer_sentiment": 69.89,
+      "money_supply": 21290.83,
+      "industrial_production": 105.38
+    },
+    {
+      "date": "2025-01-02",
+      "cpi": 312.61,
+      "interest_rates": 4.93,
+      "unemployment": 3.9,
+      "consumer_sentiment": 73.44,
+      "money_supply": 21287.0,
+      "industrial_production": 106.0
+    },
+    {
+      "date": "2025-01-03",
+      "cpi": 312.78,
+      "interest_rates": 5.75,
+      "unemployment": 3.41,
+      "consumer_sentiment": 68.75,
+      "money_supply": 21349.58,
+      "industrial_production": 105.55
+    },
+    {
+      "date": "2025-01-04",
+      "cpi": 314.96,
+      "interest_rates": 5.05,
+      "unemployment": 3.86,
+      "consumer_sentiment": 70.06,
+      "money_supply": 21363.0,
+      "industrial_production": 105.18
+    },
+    {
+      "date": "2025-01-05",
+      "cpi": 314.33,
+      "interest_rates": 5.04,
+      "unemployment": 3.79,
+      "consumer_sentiment": 65.96,
+      "money_supply": 21257.64,
+      "industrial_production": 106.53
+    },
+    {
+      "date": "2025-01-06",
+      "cpi": 313.7,
+      "interest_rates": 5.06,
+      "unemployment": 3.61,
+      "consumer_sentiment": 65.69,
+      "money_supply": 21243.34,
+      "industrial_production": 103.17
+    },
+    {
+      "date": "2025-01-07",
+      "cpi": 315.25,
+      "interest_rates": 5.57,
+      "unemployment": 3.72,
+      "consumer_sentiment": 70.14,
+      "money_supply": 21431.65,
+      "industrial_production": 106.29
+    },
+    {
+      "date": "2025-01-08",
+      "cpi": 314.6,
+      "interest_rates": 5.18,
+      "unemployment": 3.48,
+      "consumer_sentiment": 70.47,
+      "money_supply": 21291.89,
+      "industrial_production": 103.88
+    },
+    {
+      "date": "2025-01-09",
+      "cpi": 314.16,
+      "interest_rates": 5.49,
+      "unemployment": 3.58,
+      "consumer_sentiment": 73.71,
+      "money_supply": 21314.37,
+      "industrial_production": 104.57
+    },
+    {
+      "date": "2025-01-10",
+      "cpi": 314.93,
+      "interest_rates": 5.74,
+      "unemployment": 3.69,
+      "consumer_sentiment": 69.09,
+      "money_supply": 21285.66,
+      "industrial_production": 106.61
+    },
+    {
+      "date": "2025-01-11",
+      "cpi": 313.24,
+      "interest_rates": 4.94,
+      "unemployment": 3.92,
+      "consumer_sentiment": 67.2,
+      "money_supply": 21459.37,
+      "industrial_production": 103.76
+    },
+    {
+      "date": "2025-01-12",
+      "cpi": 312.36,
+      "interest_rates": 5.47,
+      "unemployment": 3.6,
+      "consumer_sentiment": 68.68,
+      "money_supply": 21351.47,
+      "industrial_production": 103.44
+    },
+    {
+      "date": "2025-01-13",
+      "cpi": 315.71,
+      "interest_rates": 5.56,
+      "unemployment": 4.0,
+      "consumer_sentiment": 73.17,
+      "money_supply": 21459.65,
+      "industrial_production": 105.9
+    },
+    {
+      "date": "2025-01-14",
+      "cpi": 313.03,
+      "interest_rates": 5.48,
+      "unemployment": 3.82,
+      "consumer_sentiment": 67.3,
+      "money_supply": 21363.89,
+      "industrial_production": 105.84
+    },
+    {
+      "date": "2025-01-15",
+      "cpi": 315.55,
+      "interest_rates": 4.77,
+      "unemployment": 3.59,
+      "consumer_sentiment": 67.71,
+      "money_supply": 21372.4,
+      "industrial_production": 103.89
+    },
+    {
+      "date": "2025-01-16",
+      "cpi": 313.08,
+      "interest_rates": 5.51,
+      "unemployment": 3.47,
+      "consumer_sentiment": 73.85,
+      "money_supply": 21378.48,
+      "industrial_production": 104.03
+    },
+    {
+      "date": "2025-01-17",
+      "cpi": 314.69,
+      "interest_rates": 5.23,
+      "unemployment": 3.94,
+      "consumer_sentiment": 72.23,
+      "money_supply": 21490.71,
+      "industrial_production": 104.68
+    },
+    {
+      "date": "2025-01-18",
+      "cpi": 313.62,
+      "interest_rates": 5.48,
+      "unemployment": 3.48,
+      "consumer_sentiment": 70.31,
+      "money_supply": 21490.4,
+      "industrial_production": 106.13
+    },
+    {
+      "date": "2025-01-19",
+      "cpi": 314.37,
+      "interest_rates": 4.87,
+      "unemployment": 3.72,
+      "consumer_sentiment": 70.81,
+      "money_supply": 21450.19,
+      "industrial_production": 105.43
+    },
+    {
+      "date": "2025-01-20",
+      "cpi": 316.18,
+      "interest_rates": 5.04,
+      "unemployment": 3.61,
+      "consumer_sentiment": 65.16,
+      "money_supply": 21457.44,
+      "industrial_production": 105.06
+    },
+    {
+      "date": "2025-01-21",
+      "cpi": 313.37,
+      "interest_rates": 5.15,
+      "unemployment": 3.94,
+      "consumer_sentiment": 72.09,
+      "money_supply": 21572.06,
+      "industrial_production": 103.96
+    },
+    {
+      "date": "2025-01-22",
+      "cpi": 315.27,
+      "interest_rates": 5.35,
+      "unemployment": 3.8,
+      "consumer_sentiment": 68.58,
+      "money_supply": 21572.66,
+      "industrial_production": 107.0
+    },
+    {
+      "date": "2025-01-23",
+      "cpi": 316.47,
+      "interest_rates": 4.86,
+      "unemployment": 3.43,
+      "consumer_sentiment": 72.37,
+      "money_supply": 21566.78,
+      "industrial_production": 106.04
+    },
+    {
+      "date": "2025-01-24",
+      "cpi": 313.89,
+      "interest_rates": 4.88,
+      "unemployment": 3.45,
+      "consumer_sentiment": 70.38,
+      "money_supply": 21574.96,
+      "industrial_production": 103.82
+    },
+    {
+      "date": "2025-01-25",
+      "cpi": 315.39,
+      "interest_rates": 5.69,
+      "unemployment": 3.95,
+      "consumer_sentiment": 71.27,
+      "money_supply": 21520.51,
+      "industrial_production": 105.81
+    },
+    {
+      "date": "2025-01-26",
+      "cpi": 315.04,
+      "interest_rates": 5.67,
+      "unemployment": 3.83,
+      "consumer_sentiment": 65.21,
+      "money_supply": 21599.91,
+      "industrial_production": 105.02
+    },
+    {
+      "date": "2025-01-27",
+      "cpi": 317.26,
+      "interest_rates": 5.19,
+      "unemployment": 3.49,
+      "consumer_sentiment": 74.9,
+      "money_supply": 21492.47,
+      "industrial_production": 106.24
+    },
+    {
+      "date": "2025-01-28",
+      "cpi": 313.86,
+      "interest_rates": 5.17,
+      "unemployment": 3.41,
+      "consumer_sentiment": 67.76,
+      "money_supply": 21598.46,
+      "industrial_production": 105.02
+    },
+    {
+      "date": "2025-01-29",
+      "cpi": 316.75,
+      "interest_rates": 5.43,
+      "unemployment": 3.96,
+      "consumer_sentiment": 73.86,
+      "money_supply": 21575.71,
+      "industrial_production": 104.38
+    },
+    {
+      "date": "2025-01-30",
+      "cpi": 315.35,
+      "interest_rates": 4.99,
+      "unemployment": 3.61,
+      "consumer_sentiment": 71.32,
+      "money_supply": 21596.16,
+      "industrial_production": 105.15
+    },
+    {
+      "date": "2025-01-31",
+      "cpi": 316.36,
+      "interest_rates": 4.76,
+      "unemployment": 3.8,
+      "consumer_sentiment": 71.72,
+      "money_supply": 21588.15,
+      "industrial_production": 105.99
+    },
+    {
+      "date": "2025-02-01",
+      "cpi": 316.82,
+      "interest_rates": 5.63,
+      "unemployment": 3.99,
+      "consumer_sentiment": 65.36,
+      "money_supply": 21568.89,
+      "industrial_production": 103.32
+    },
+    {
+      "date": "2025-02-02",
+      "cpi": 314.17,
+      "interest_rates": 4.85,
+      "unemployment": 3.97,
+      "consumer_sentiment": 67.56,
+      "money_supply": 21703.92,
+      "industrial_production": 106.58
+    },
+    {
+      "date": "2025-02-03",
+      "cpi": 316.14,
+      "interest_rates": 5.38,
+      "unemployment": 3.94,
+      "consumer_sentiment": 72.06,
+      "money_supply": 21704.91,
+      "industrial_production": 103.69
+    },
+    {
+      "date": "2025-02-04",
+      "cpi": 318.21,
+      "interest_rates": 5.44,
+      "unemployment": 3.66,
+      "consumer_sentiment": 74.68,
+      "money_supply": 21618.83,
+      "industrial_production": 105.5
+    },
+    {
+      "date": "2025-02-05",
+      "cpi": 317.86,
+      "interest_rates": 5.38,
+      "unemployment": 3.58,
+      "consumer_sentiment": 67.27,
+      "money_supply": 21550.23,
+      "industrial_production": 104.37
+    },
+    {
+      "date": "2025-02-06",
+      "cpi": 316.65,
+      "interest_rates": 5.04,
+      "unemployment": 3.78,
+      "consumer_sentiment": 74.41,
+      "money_supply": 21647.28,
+      "industrial_production": 106.47
+    },
+    {
+      "date": "2025-02-07",
+      "cpi": 316.69,
+      "interest_rates": 5.59,
+      "unemployment": 3.91,
+      "consumer_sentiment": 70.72,
+      "money_supply": 21739.69,
+      "industrial_production": 105.53
+    },
+    {
+      "date": "2025-02-08",
+      "cpi": 316.5,
+      "interest_rates": 4.99,
+      "unemployment": 3.88,
+      "consumer_sentiment": 69.14,
+      "money_supply": 21598.54,
+      "industrial_production": 103.47
+    },
+    {
+      "date": "2025-02-09",
+      "cpi": 318.09,
+      "interest_rates": 5.11,
+      "unemployment": 3.63,
+      "consumer_sentiment": 66.67,
+      "money_supply": 21634.22,
+      "industrial_production": 104.62
+    },
+    {
+      "date": "2025-02-10",
+      "cpi": 318.07,
+      "interest_rates": 4.76,
+      "unemployment": 3.9,
+      "consumer_sentiment": 74.91,
+      "money_supply": 21602.68,
+      "industrial_production": 104.64
+    },
+    {
+      "date": "2025-02-11",
+      "cpi": 316.14,
+      "interest_rates": 4.99,
+      "unemployment": 3.84,
+      "consumer_sentiment": 69.16,
+      "money_supply": 21776.93,
+      "industrial_production": 106.51
+    },
+    {
+      "date": "2025-02-12",
+      "cpi": 315.29,
+      "interest_rates": 5.72,
+      "unemployment": 3.83,
+      "consumer_sentiment": 68.98,
+      "money_supply": 21655.89,
+      "industrial_production": 103.09
+    },
+    {
+      "date": "2025-02-13",
+      "cpi": 318.74,
+      "interest_rates": 4.98,
+      "unemployment": 3.44,
+      "consumer_sentiment": 72.75,
+      "money_supply": 21793.98,
+      "industrial_production": 104.22
+    },
+    {
+      "date": "2025-02-14",
+      "cpi": 316.59,
+      "interest_rates": 4.78,
+      "unemployment": 3.47,
+      "consumer_sentiment": 67.49,
+      "money_supply": 21793.11,
+      "industrial_production": 103.34
+    },
+    {
+      "date": "2025-02-15",
+      "cpi": 315.7,
+      "interest_rates": 5.27,
+      "unemployment": 3.94,
+      "consumer_sentiment": 65.57,
+      "money_supply": 21815.78,
+      "industrial_production": 105.01
+    },
+    {
+      "date": "2025-02-16",
+      "cpi": 317.73,
+      "interest_rates": 4.98,
+      "unemployment": 3.64,
+      "consumer_sentiment": 71.43,
+      "money_supply": 21674.52,
+      "industrial_production": 105.96
+    },
+    {
+      "date": "2025-02-17",
+      "cpi": 318.23,
+      "interest_rates": 5.55,
+      "unemployment": 3.51,
+      "consumer_sentiment": 72.0,
+      "money_supply": 21735.94,
+      "industrial_production": 103.83
+    },
+    {
+      "date": "2025-02-18",
+      "cpi": 319.33,
+      "interest_rates": 5.0,
+      "unemployment": 3.48,
+      "consumer_sentiment": 67.08,
+      "money_supply": 21758.1,
+      "industrial_production": 103.26
+    },
+    {
+      "date": "2025-02-19",
+      "cpi": 319.02,
+      "interest_rates": 5.01,
+      "unemployment": 3.83,
+      "consumer_sentiment": 67.87,
+      "money_supply": 21855.69,
+      "industrial_production": 103.32
+    },
+    {
+      "date": "2025-02-20",
+      "cpi": 319.72,
+      "interest_rates": 5.47,
+      "unemployment": 3.89,
+      "consumer_sentiment": 68.58,
+      "money_supply": 21848.8,
+      "industrial_production": 106.66
+    },
+    {
+      "date": "2025-02-21",
+      "cpi": 316.6,
+      "interest_rates": 5.05,
+      "unemployment": 3.99,
+      "consumer_sentiment": 73.84,
+      "money_supply": 21784.44,
+      "industrial_production": 103.43
+    },
+    {
+      "date": "2025-02-22",
+      "cpi": 317.68,
+      "interest_rates": 4.85,
+      "unemployment": 3.56,
+      "consumer_sentiment": 74.58,
+      "money_supply": 21832.66,
+      "industrial_production": 106.73
+    },
+    {
+      "date": "2025-02-23",
+      "cpi": 316.93,
+      "interest_rates": 5.6,
+      "unemployment": 3.96,
+      "consumer_sentiment": 65.52,
+      "money_supply": 21899.75,
+      "industrial_production": 104.43
+    },
+    {
+      "date": "2025-02-24",
+      "cpi": 320.06,
+      "interest_rates": 5.2,
+      "unemployment": 3.83,
+      "consumer_sentiment": 74.6,
+      "money_supply": 21752.77,
+      "industrial_production": 106.19
+    },
+    {
+      "date": "2025-02-25",
+      "cpi": 319.68,
+      "interest_rates": 4.98,
+      "unemployment": 3.41,
+      "consumer_sentiment": 65.52,
+      "money_supply": 21818.73,
+      "industrial_production": 106.46
+    },
+    {
+      "date": "2025-02-26",
+      "cpi": 320.28,
+      "interest_rates": 4.89,
+      "unemployment": 3.54,
+      "consumer_sentiment": 65.73,
+      "money_supply": 21900.45,
+      "industrial_production": 103.98
+    },
+    {
+      "date": "2025-02-27",
+      "cpi": 320.27,
+      "interest_rates": 4.78,
+      "unemployment": 3.87,
+      "consumer_sentiment": 74.1,
+      "money_supply": 21760.49,
+      "industrial_production": 103.38
+    },
+    {
+      "date": "2025-02-28",
+      "cpi": 318.03,
+      "interest_rates": 4.85,
+      "unemployment": 3.51,
+      "consumer_sentiment": 70.97,
+      "money_supply": 21818.83,
+      "industrial_production": 103.77
+    },
+    {
+      "date": "2025-03-01",
+      "cpi": 320.64,
+      "interest_rates": 5.01,
+      "unemployment": 3.65,
+      "consumer_sentiment": 67.49,
+      "money_supply": 21847.93,
+      "industrial_production": 106.38
+    },
+    {
+      "date": "2025-03-02",
+      "cpi": 317.25,
+      "interest_rates": 5.33,
+      "unemployment": 3.95,
+      "consumer_sentiment": 69.61,
+      "money_supply": 21849.02,
+      "industrial_production": 103.15
+    },
+    {
+      "date": "2025-03-03",
+      "cpi": 318.56,
+      "interest_rates": 5.67,
+      "unemployment": 3.47,
+      "consumer_sentiment": 74.19,
+      "money_supply": 21972.45,
+      "industrial_production": 106.96
+    },
+    {
+      "date": "2025-03-04",
+      "cpi": 320.67,
+      "interest_rates": 5.24,
+      "unemployment": 3.57,
+      "consumer_sentiment": 68.29,
+      "money_supply": 21826.34,
+      "industrial_production": 105.02
+    },
+    {
+      "date": "2025-03-05",
+      "cpi": 320.67,
+      "interest_rates": 5.45,
+      "unemployment": 3.88,
+      "consumer_sentiment": 73.65,
+      "money_supply": 22017.69,
+      "industrial_production": 106.38
+    },
+    {
+      "date": "2025-03-06",
+      "cpi": 319.64,
+      "interest_rates": 5.52,
+      "unemployment": 3.69,
+      "consumer_sentiment": 66.63,
+      "money_supply": 21842.5,
+      "industrial_production": 105.7
+    },
+    {
+      "date": "2025-03-07",
+      "cpi": 320.38,
+      "interest_rates": 5.38,
+      "unemployment": 3.61,
+      "consumer_sentiment": 72.61,
+      "money_supply": 21867.05,
+      "industrial_production": 105.39
+    },
+    {
+      "date": "2025-03-08",
+      "cpi": 317.7,
+      "interest_rates": 4.81,
+      "unemployment": 3.97,
+      "consumer_sentiment": 71.5,
+      "money_supply": 22024.82,
+      "industrial_production": 104.01
+    },
+    {
+      "date": "2025-03-09",
+      "cpi": 319.9,
+      "interest_rates": 5.54,
+      "unemployment": 3.67,
+      "consumer_sentiment": 74.41,
+      "money_supply": 21872.22,
+      "industrial_production": 104.48
+    },
+    {
+      "date": "2025-03-10",
+      "cpi": 321.25,
+      "interest_rates": 5.16,
+      "unemployment": 3.92,
+      "consumer_sentiment": 66.28,
+      "money_supply": 21903.06,
+      "industrial_production": 104.79
+    },
+    {
+      "date": "2025-03-11",
+      "cpi": 319.58,
+      "interest_rates": 5.04,
+      "unemployment": 3.63,
+      "consumer_sentiment": 72.01,
+      "money_supply": 21974.08,
+      "industrial_production": 106.67
+    },
+    {
+      "date": "2025-03-12",
+      "cpi": 318.43,
+      "interest_rates": 5.55,
+      "unemployment": 3.82,
+      "consumer_sentiment": 67.2,
+      "money_supply": 22038.0,
+      "industrial_production": 103.02
+    },
+    {
+      "date": "2025-03-13",
+      "cpi": 318.39,
+      "interest_rates": 5.66,
+      "unemployment": 3.68,
+      "consumer_sentiment": 67.13,
+      "money_supply": 21995.9,
+      "industrial_production": 104.44
+    },
+    {
+      "date": "2025-03-14",
+      "cpi": 320.48,
+      "interest_rates": 5.04,
+      "unemployment": 3.47,
+      "consumer_sentiment": 70.8,
+      "money_supply": 21933.57,
+      "industrial_production": 104.4
+    },
+    {
+      "date": "2025-03-15",
+      "cpi": 320.78,
+      "interest_rates": 5.23,
+      "unemployment": 3.91,
+      "consumer_sentiment": 69.51,
+      "money_supply": 21948.83,
+      "industrial_production": 105.72
+    },
+    {
+      "date": "2025-03-16",
+      "cpi": 321.65,
+      "interest_rates": 5.44,
+      "unemployment": 3.61,
+      "consumer_sentiment": 71.71,
+      "money_supply": 22125.9,
+      "industrial_production": 103.67
+    },
+    {
+      "date": "2025-03-17",
+      "cpi": 319.2,
+      "interest_rates": 5.3,
+      "unemployment": 3.76,
+      "consumer_sentiment": 70.51,
+      "money_supply": 22134.92,
+      "industrial_production": 106.01
+    },
+    {
+      "date": "2025-03-18",
+      "cpi": 320.01,
+      "interest_rates": 4.93,
+      "unemployment": 3.41,
+      "consumer_sentiment": 66.54,
+      "money_supply": 22087.06,
+      "industrial_production": 105.3
+    },
+    {
+      "date": "2025-03-19",
+      "cpi": 320.84,
+      "interest_rates": 5.58,
+      "unemployment": 3.44,
+      "consumer_sentiment": 73.19,
+      "money_supply": 22000.75,
+      "industrial_production": 103.53
+    },
+    {
+      "date": "2025-03-20",
+      "cpi": 319.61,
+      "interest_rates": 5.3,
+      "unemployment": 3.68,
+      "consumer_sentiment": 67.12,
+      "money_supply": 22057.43,
+      "industrial_production": 105.56
+    },
+    {
+      "date": "2025-03-21",
+      "cpi": 322.22,
+      "interest_rates": 5.07,
+      "unemployment": 3.72,
+      "consumer_sentiment": 69.22,
+      "money_supply": 22156.94,
+      "industrial_production": 106.85
+    },
+    {
+      "date": "2025-03-22",
+      "cpi": 322.28,
+      "interest_rates": 5.45,
+      "unemployment": 3.41,
+      "consumer_sentiment": 73.53,
+      "money_supply": 22010.94,
+      "industrial_production": 104.53
+    },
+    {
+      "date": "2025-03-23",
+      "cpi": 320.92,
+      "interest_rates": 5.67,
+      "unemployment": 3.87,
+      "consumer_sentiment": 72.95,
+      "money_supply": 22150.96,
+      "industrial_production": 106.35
+    },
+    {
+      "date": "2025-03-24",
+      "cpi": 320.06,
+      "interest_rates": 5.56,
+      "unemployment": 3.86,
+      "consumer_sentiment": 68.8,
+      "money_supply": 22142.94,
+      "industrial_production": 106.94
+    },
+    {
+      "date": "2025-03-25",
+      "cpi": 321.58,
+      "interest_rates": 5.0,
+      "unemployment": 3.61,
+      "consumer_sentiment": 73.24,
+      "money_supply": 22072.78,
+      "industrial_production": 106.16
+    },
+    {
+      "date": "2025-03-26",
+      "cpi": 322.79,
+      "interest_rates": 5.19,
+      "unemployment": 3.74,
+      "consumer_sentiment": 74.35,
+      "money_supply": 22181.26,
+      "industrial_production": 106.72
+    },
+    {
+      "date": "2025-03-27",
+      "cpi": 322.75,
+      "interest_rates": 5.3,
+      "unemployment": 3.63,
+      "consumer_sentiment": 74.51,
+      "money_supply": 22157.28,
+      "industrial_production": 106.35
+    },
+    {
+      "date": "2025-03-28",
+      "cpi": 322.4,
+      "interest_rates": 4.91,
+      "unemployment": 3.75,
+      "consumer_sentiment": 66.27,
+      "money_supply": 22057.92,
+      "industrial_production": 104.25
+    },
+    {
+      "date": "2025-03-29",
+      "cpi": 323.34,
+      "interest_rates": 5.41,
+      "unemployment": 3.41,
+      "consumer_sentiment": 69.11,
+      "money_supply": 22080.46,
+      "industrial_production": 104.26
+    },
+    {
+      "date": "2025-03-30",
+      "cpi": 321.49,
+      "interest_rates": 5.6,
+      "unemployment": 3.56,
+      "consumer_sentiment": 71.95,
+      "money_supply": 22243.76,
+      "industrial_production": 105.58
+    },
+    {
+      "date": "2025-03-31",
+      "cpi": 323.5,
+      "interest_rates": 5.3,
+      "unemployment": 3.69,
+      "consumer_sentiment": 69.62,
+      "money_supply": 22200.76,
+      "industrial_production": 104.64
+    },
+    {
+      "date": "2025-04-01",
+      "cpi": 321.24,
+      "interest_rates": 5.26,
+      "unemployment": 3.78,
+      "consumer_sentiment": 70.64,
+      "money_supply": 22219.29,
+      "industrial_production": 106.14
+    },
+    {
+      "date": "2025-04-02",
+      "cpi": 323.16,
+      "interest_rates": 5.62,
+      "unemployment": 3.93,
+      "consumer_sentiment": 67.89,
+      "money_supply": 22298.59,
+      "industrial_production": 105.47
+    },
+    {
+      "date": "2025-04-03",
+      "cpi": 322.52,
+      "interest_rates": 4.88,
+      "unemployment": 3.52,
+      "consumer_sentiment": 71.12,
+      "money_supply": 22140.39,
+      "industrial_production": 103.69
+    },
+    {
+      "date": "2025-04-04",
+      "cpi": 322.21,
+      "interest_rates": 5.07,
+      "unemployment": 3.57,
+      "consumer_sentiment": 66.85,
+      "money_supply": 22242.2,
+      "industrial_production": 103.7
+    },
+    {
+      "date": "2025-04-05",
+      "cpi": 321.88,
+      "interest_rates": 4.95,
+      "unemployment": 3.87,
+      "consumer_sentiment": 74.57,
+      "money_supply": 22177.1,
+      "industrial_production": 104.72
+    },
+    {
+      "date": "2025-04-06",
+      "cpi": 323.22,
+      "interest_rates": 5.2,
+      "unemployment": 3.69,
+      "consumer_sentiment": 66.58,
+      "money_supply": 22269.95,
+      "industrial_production": 104.51
+    },
+    {
+      "date": "2025-04-07",
+      "cpi": 323.43,
+      "interest_rates": 5.15,
+      "unemployment": 3.42,
+      "consumer_sentiment": 72.83,
+      "money_supply": 22247.91,
+      "industrial_production": 104.43
+    },
+    {
+      "date": "2025-04-08",
+      "cpi": 322.27,
+      "interest_rates": 5.23,
+      "unemployment": 3.63,
+      "consumer_sentiment": 67.82,
+      "money_supply": 22299.56,
+      "industrial_production": 105.62
+    },
+    {
+      "date": "2025-04-09",
+      "cpi": 323.99,
+      "interest_rates": 5.04,
+      "unemployment": 3.49,
+      "consumer_sentiment": 69.24,
+      "money_supply": 22185.54,
+      "industrial_production": 105.02
+    },
+    {
+      "date": "2025-04-10",
+      "cpi": 323.56,
+      "interest_rates": 5.11,
+      "unemployment": 3.57,
+      "consumer_sentiment": 67.74,
+      "money_supply": 22334.25,
+      "industrial_production": 104.01
+    },
+    {
+      "date": "2025-04-11",
+      "cpi": 323.19,
+      "interest_rates": 4.78,
+      "unemployment": 3.85,
+      "consumer_sentiment": 74.73,
+      "money_supply": 22323.46,
+      "industrial_production": 103.73
+    },
+    {
+      "date": "2025-04-12",
+      "cpi": 323.35,
+      "interest_rates": 5.17,
+      "unemployment": 3.83,
+      "consumer_sentiment": 68.01,
+      "money_supply": 22291.04,
+      "industrial_production": 105.18
+    },
+    {
+      "date": "2025-04-13",
+      "cpi": 323.33,
+      "interest_rates": 5.51,
+      "unemployment": 3.64,
+      "consumer_sentiment": 71.19,
+      "money_supply": 22335.72,
+      "industrial_production": 106.1
+    },
+    {
+      "date": "2025-04-14",
+      "cpi": 324.24,
+      "interest_rates": 5.71,
+      "unemployment": 3.94,
+      "consumer_sentiment": 69.67,
+      "money_supply": 22350.56,
+      "industrial_production": 106.84
+    },
+    {
+      "date": "2025-04-15",
+      "cpi": 321.93,
+      "interest_rates": 5.34,
+      "unemployment": 3.59,
+      "consumer_sentiment": 70.58,
+      "money_supply": 22353.5,
+      "industrial_production": 104.0
+    },
+    {
+      "date": "2025-04-16",
+      "cpi": 323.57,
+      "interest_rates": 5.46,
+      "unemployment": 3.81,
+      "consumer_sentiment": 67.19,
+      "money_supply": 22265.72,
+      "industrial_production": 106.4
+    },
+    {
+      "date": "2025-04-17",
+      "cpi": 325.3,
+      "interest_rates": 4.76,
+      "unemployment": 3.44,
+      "consumer_sentiment": 71.59,
+      "money_supply": 22435.78,
+      "industrial_production": 106.04
+    },
+    {
+      "date": "2025-04-18",
+      "cpi": 323.49,
+      "interest_rates": 5.45,
+      "unemployment": 3.95,
+      "consumer_sentiment": 73.52,
+      "money_supply": 22320.74,
+      "industrial_production": 105.81
+    },
+    {
+      "date": "2025-04-19",
+      "cpi": 321.86,
+      "interest_rates": 5.28,
+      "unemployment": 3.49,
+      "consumer_sentiment": 73.8,
+      "money_supply": 22416.84,
+      "industrial_production": 106.54
+    },
+    {
+      "date": "2025-04-20",
+      "cpi": 324.29,
+      "interest_rates": 5.58,
+      "unemployment": 3.65,
+      "consumer_sentiment": 66.1,
+      "money_supply": 22292.54,
+      "industrial_production": 105.37
+    },
+    {
+      "date": "2025-04-21",
+      "cpi": 323.5,
+      "interest_rates": 5.64,
+      "unemployment": 3.7,
+      "consumer_sentiment": 68.25,
+      "money_supply": 22334.45,
+      "industrial_production": 104.84
+    },
+    {
+      "date": "2025-04-22",
+      "cpi": 323.38,
+      "interest_rates": 5.37,
+      "unemployment": 3.5,
+      "consumer_sentiment": 71.89,
+      "money_supply": 22460.92,
+      "industrial_production": 106.42
+    },
+    {
+      "date": "2025-04-23",
+      "cpi": 323.53,
+      "interest_rates": 4.9,
+      "unemployment": 3.96,
+      "consumer_sentiment": 69.12,
+      "money_supply": 22320.12,
+      "industrial_production": 106.61
+    },
+    {
+      "date": "2025-04-24",
+      "cpi": 322.75,
+      "interest_rates": 5.68,
+      "unemployment": 3.87,
+      "consumer_sentiment": 74.69,
+      "money_supply": 22350.02,
+      "industrial_production": 106.94
+    },
+    {
+      "date": "2025-04-25",
+      "cpi": 322.71,
+      "interest_rates": 4.93,
+      "unemployment": 3.8,
+      "consumer_sentiment": 67.12,
+      "money_supply": 22414.95,
+      "industrial_production": 106.46
+    },
+    {
+      "date": "2025-04-26",
+      "cpi": 325.65,
+      "interest_rates": 4.99,
+      "unemployment": 3.89,
+      "consumer_sentiment": 68.68,
+      "money_supply": 22522.6,
+      "industrial_production": 105.34
+    },
+    {
+      "date": "2025-04-27",
+      "cpi": 325.2,
+      "interest_rates": 5.45,
+      "unemployment": 3.68,
+      "consumer_sentiment": 71.09,
+      "money_supply": 22438.73,
+      "industrial_production": 104.05
+    },
+    {
+      "date": "2025-04-28",
+      "cpi": 326.14,
+      "interest_rates": 4.81,
+      "unemployment": 3.63,
+      "consumer_sentiment": 68.3,
+      "money_supply": 22390.35,
+      "industrial_production": 104.9
+    },
+    {
+      "date": "2025-04-29",
+      "cpi": 324.73,
+      "interest_rates": 5.56,
+      "unemployment": 3.95,
+      "consumer_sentiment": 71.54,
+      "money_supply": 22436.03,
+      "industrial_production": 106.67
+    },
+    {
+      "date": "2025-04-30",
+      "cpi": 325.03,
+      "interest_rates": 5.25,
+      "unemployment": 3.65,
+      "consumer_sentiment": 67.05,
+      "money_supply": 22504.18,
+      "industrial_production": 105.87
+    },
+    {
+      "date": "2025-05-01",
+      "cpi": 326.19,
+      "interest_rates": 4.92,
+      "unemployment": 3.62,
+      "consumer_sentiment": 68.99,
+      "money_supply": 22460.24,
+      "industrial_production": 105.22
+    },
+    {
+      "date": "2025-05-02",
+      "cpi": 326.85,
+      "interest_rates": 5.18,
+      "unemployment": 3.78,
+      "consumer_sentiment": 74.11,
+      "money_supply": 22597.14,
+      "industrial_production": 105.2
+    },
+    {
+      "date": "2025-05-03",
+      "cpi": 325.96,
+      "interest_rates": 5.18,
+      "unemployment": 3.96,
+      "consumer_sentiment": 73.23,
+      "money_supply": 22580.05,
+      "industrial_production": 103.77
+    },
+    {
+      "date": "2025-05-04",
+      "cpi": 324.01,
+      "interest_rates": 4.83,
+      "unemployment": 3.56,
+      "consumer_sentiment": 71.1,
+      "money_supply": 22428.73,
+      "industrial_production": 104.47
+    },
+    {
+      "date": "2025-05-05",
+      "cpi": 324.54,
+      "interest_rates": 5.73,
+      "unemployment": 3.94,
+      "consumer_sentiment": 74.33,
+      "money_supply": 22444.87,
+      "industrial_production": 106.2
+    },
+    {
+      "date": "2025-05-06",
+      "cpi": 324.74,
+      "interest_rates": 4.88,
+      "unemployment": 3.59,
+      "consumer_sentiment": 66.68,
+      "money_supply": 22554.18,
+      "industrial_production": 105.58
+    },
+    {
+      "date": "2025-05-07",
+      "cpi": 326.31,
+      "interest_rates": 5.7,
+      "unemployment": 3.66,
+      "consumer_sentiment": 67.55,
+      "money_supply": 22564.86,
+      "industrial_production": 106.1
+    },
+    {
+      "date": "2025-05-08",
+      "cpi": 326.7,
+      "interest_rates": 5.0,
+      "unemployment": 3.62,
+      "consumer_sentiment": 66.21,
+      "money_supply": 22583.87,
+      "industrial_production": 103.7
+    },
+    {
+      "date": "2025-05-09",
+      "cpi": 325.4,
+      "interest_rates": 5.18,
+      "unemployment": 3.56,
+      "consumer_sentiment": 72.62,
+      "money_supply": 22641.48,
+      "industrial_production": 105.26
+    },
+    {
+      "date": "2025-05-10",
+      "cpi": 325.09,
+      "interest_rates": 4.8,
+      "unemployment": 3.83,
+      "consumer_sentiment": 69.28,
+      "money_supply": 22609.79,
+      "industrial_production": 103.11
+    },
+    {
+      "date": "2025-05-11",
+      "cpi": 325.1,
+      "interest_rates": 4.91,
+      "unemployment": 3.84,
+      "consumer_sentiment": 74.3,
+      "money_supply": 22685.03,
+      "industrial_production": 106.93
+    },
+    {
+      "date": "2025-05-12",
+      "cpi": 324.35,
+      "interest_rates": 5.63,
+      "unemployment": 3.53,
+      "consumer_sentiment": 74.78,
+      "money_supply": 22532.54,
+      "industrial_production": 105.19
+    },
+    {
+      "date": "2025-05-13",
+      "cpi": 326.27,
+      "interest_rates": 5.53,
+      "unemployment": 3.9,
+      "consumer_sentiment": 73.58,
+      "money_supply": 22681.14,
+      "industrial_production": 105.45
+    },
+    {
+      "date": "2025-05-14",
+      "cpi": 325.25,
+      "interest_rates": 5.12,
+      "unemployment": 3.45,
+      "consumer_sentiment": 72.86,
+      "money_supply": 22620.51,
+      "industrial_production": 106.61
+    },
+    {
+      "date": "2025-05-15",
+      "cpi": 324.65,
+      "interest_rates": 5.14,
+      "unemployment": 3.8,
+      "consumer_sentiment": 67.7,
+      "money_supply": 22656.16,
+      "industrial_production": 106.48
+    },
+    {
+      "date": "2025-05-16",
+      "cpi": 325.17,
+      "interest_rates": 5.45,
+      "unemployment": 3.85,
+      "consumer_sentiment": 68.72,
+      "money_supply": 22606.72,
+      "industrial_production": 104.69
+    },
+    {
+      "date": "2025-05-17",
+      "cpi": 324.92,
+      "interest_rates": 4.84,
+      "unemployment": 3.87,
+      "consumer_sentiment": 73.81,
+      "money_supply": 22575.99,
+      "industrial_production": 105.84
+    },
+    {
+      "date": "2025-05-18",
+      "cpi": 327.47,
+      "interest_rates": 5.75,
+      "unemployment": 3.99,
+      "consumer_sentiment": 73.25,
+      "money_supply": 22581.26,
+      "industrial_production": 104.61
+    },
+    {
+      "date": "2025-05-19",
+      "cpi": 326.35,
+      "interest_rates": 5.25,
+      "unemployment": 3.56,
+      "consumer_sentiment": 71.29,
+      "money_supply": 22604.54,
+      "industrial_production": 105.09
+    },
+    {
+      "date": "2025-05-20",
+      "cpi": 325.13,
+      "interest_rates": 5.33,
+      "unemployment": 3.49,
+      "consumer_sentiment": 73.79,
+      "money_supply": 22710.69,
+      "industrial_production": 105.15
+    },
+    {
+      "date": "2025-05-21",
+      "cpi": 327.97,
+      "interest_rates": 4.88,
+      "unemployment": 3.88,
+      "consumer_sentiment": 65.29,
+      "money_supply": 22675.51,
+      "industrial_production": 106.89
+    },
+    {
+      "date": "2025-05-22",
+      "cpi": 328.52,
+      "interest_rates": 5.1,
+      "unemployment": 3.77,
+      "consumer_sentiment": 65.91,
+      "money_supply": 22758.42,
+      "industrial_production": 106.99
+    },
+    {
+      "date": "2025-05-23",
+      "cpi": 327.41,
+      "interest_rates": 5.01,
+      "unemployment": 3.83,
+      "consumer_sentiment": 68.01,
+      "money_supply": 22669.54,
+      "industrial_production": 103.12
+    },
+    {
+      "date": "2025-05-24",
+      "cpi": 328.27,
+      "interest_rates": 5.22,
+      "unemployment": 3.53,
+      "consumer_sentiment": 70.74,
+      "money_supply": 22626.72,
+      "industrial_production": 104.12
+    },
+    {
+      "date": "2025-05-25",
+      "cpi": 325.47,
+      "interest_rates": 5.4,
+      "unemployment": 3.76,
+      "consumer_sentiment": 69.39,
+      "money_supply": 22637.97,
+      "industrial_production": 106.5
+    },
+    {
+      "date": "2025-05-26",
+      "cpi": 327.63,
+      "interest_rates": 5.4,
+      "unemployment": 3.94,
+      "consumer_sentiment": 65.23,
+      "money_supply": 22703.96,
+      "industrial_production": 105.18
+    },
+    {
+      "date": "2025-05-27",
+      "cpi": 325.72,
+      "interest_rates": 4.99,
+      "unemployment": 3.52,
+      "consumer_sentiment": 68.23,
+      "money_supply": 22724.64,
+      "industrial_production": 104.7
+    },
+    {
+      "date": "2025-05-28",
+      "cpi": 326.63,
+      "interest_rates": 5.4,
+      "unemployment": 3.91,
+      "consumer_sentiment": 70.67,
+      "money_supply": 22746.36,
+      "industrial_production": 106.11
+    },
+    {
+      "date": "2025-05-29",
+      "cpi": 329.08,
+      "interest_rates": 4.9,
+      "unemployment": 3.96,
+      "consumer_sentiment": 73.0,
+      "money_supply": 22671.87,
+      "industrial_production": 103.73
+    },
+    {
+      "date": "2025-05-30",
+      "cpi": 325.93,
+      "interest_rates": 5.09,
+      "unemployment": 3.89,
+      "consumer_sentiment": 69.89,
+      "money_supply": 22765.21,
+      "industrial_production": 103.43
+    },
+    {
+      "date": "2025-05-31",
+      "cpi": 326.59,
+      "interest_rates": 5.52,
+      "unemployment": 3.95,
+      "consumer_sentiment": 74.5,
+      "money_supply": 22769.07,
+      "industrial_production": 103.06
+    },
+    {
+      "date": "2025-06-01",
+      "cpi": 327.17,
+      "interest_rates": 5.51,
+      "unemployment": 3.61,
+      "consumer_sentiment": 73.84,
+      "money_supply": 22845.96,
+      "industrial_production": 106.58
+    },
+    {
+      "date": "2025-06-02",
+      "cpi": 328.39,
+      "interest_rates": 4.88,
+      "unemployment": 3.94,
+      "consumer_sentiment": 70.49,
+      "money_supply": 22786.0,
+      "industrial_production": 106.03
+    },
+    {
+      "date": "2025-06-03",
+      "cpi": 328.99,
+      "interest_rates": 5.58,
+      "unemployment": 3.76,
+      "consumer_sentiment": 72.17,
+      "money_supply": 22777.78,
+      "industrial_production": 104.07
+    },
+    {
+      "date": "2025-06-04",
+      "cpi": 326.6,
+      "interest_rates": 4.89,
+      "unemployment": 3.48,
+      "consumer_sentiment": 70.27,
+      "money_supply": 22848.18,
+      "industrial_production": 105.58
+    },
+    {
+      "date": "2025-06-05",
+      "cpi": 327.14,
+      "interest_rates": 4.91,
+      "unemployment": 3.6,
+      "consumer_sentiment": 73.59,
+      "money_supply": 22895.03,
+      "industrial_production": 104.82
+    },
+    {
+      "date": "2025-06-06",
+      "cpi": 329.06,
+      "interest_rates": 4.79,
+      "unemployment": 3.75,
+      "consumer_sentiment": 72.05,
+      "money_supply": 22779.15,
+      "industrial_production": 105.8
+    },
+    {
+      "date": "2025-06-07",
+      "cpi": 328.14,
+      "interest_rates": 4.94,
+      "unemployment": 3.52,
+      "consumer_sentiment": 70.03,
+      "money_supply": 22829.43,
+      "industrial_production": 104.75
+    },
+    {
+      "date": "2025-06-08",
+      "cpi": 327.23,
+      "interest_rates": 4.9,
+      "unemployment": 3.41,
+      "consumer_sentiment": 71.46,
+      "money_supply": 22915.39,
+      "industrial_production": 104.38
+    },
+    {
+      "date": "2025-06-09",
+      "cpi": 329.06,
+      "interest_rates": 5.0,
+      "unemployment": 3.98,
+      "consumer_sentiment": 74.85,
+      "money_supply": 22837.05,
+      "industrial_production": 103.33
+    },
+    {
+      "date": "2025-06-10",
+      "cpi": 327.55,
+      "interest_rates": 4.84,
+      "unemployment": 3.6,
+      "consumer_sentiment": 67.7,
+      "money_supply": 22811.89,
+      "industrial_production": 105.47
+    },
+    {
+      "date": "2025-06-11",
+      "cpi": 328.76,
+      "interest_rates": 5.6,
+      "unemployment": 3.89,
+      "consumer_sentiment": 69.04,
+      "money_supply": 22950.73,
+      "industrial_production": 103.41
+    },
+    {
+      "date": "2025-06-12",
+      "cpi": 330.27,
+      "interest_rates": 5.13,
+      "unemployment": 3.42,
+      "consumer_sentiment": 69.63,
+      "money_supply": 22997.17,
+      "industrial_production": 106.17
+    },
+    {
+      "date": "2025-06-13",
+      "cpi": 327.4,
+      "interest_rates": 4.83,
+      "unemployment": 3.51,
+      "consumer_sentiment": 68.65,
+      "money_supply": 23008.62,
+      "industrial_production": 105.27
+    },
+    {
+      "date": "2025-06-14",
+      "cpi": 329.55,
+      "interest_rates": 5.02,
+      "unemployment": 3.56,
+      "consumer_sentiment": 71.66,
+      "money_supply": 22969.79,
+      "industrial_production": 105.52
+    },
+    {
+      "date": "2025-06-15",
+      "cpi": 329.19,
+      "interest_rates": 5.6,
+      "unemployment": 3.76,
+      "consumer_sentiment": 70.45,
+      "money_supply": 22929.96,
+      "industrial_production": 103.98
+    },
+    {
+      "date": "2025-06-16",
+      "cpi": 328.7,
+      "interest_rates": 5.18,
+      "unemployment": 3.5,
+      "consumer_sentiment": 65.05,
+      "money_supply": 22986.67,
+      "industrial_production": 106.2
+    },
+    {
+      "date": "2025-06-17",
+      "cpi": 329.18,
+      "interest_rates": 5.47,
+      "unemployment": 3.81,
+      "consumer_sentiment": 72.53,
+      "money_supply": 22907.14,
+      "industrial_production": 106.71
+    },
+    {
+      "date": "2025-06-18",
+      "cpi": 331.57,
+      "interest_rates": 5.12,
+      "unemployment": 3.74,
+      "consumer_sentiment": 73.45,
+      "money_supply": 22956.4,
+      "industrial_production": 106.65
+    },
+    {
+      "date": "2025-06-19",
+      "cpi": 330.3,
+      "interest_rates": 5.51,
+      "unemployment": 3.65,
+      "consumer_sentiment": 72.93,
+      "money_supply": 22884.17,
+      "industrial_production": 106.91
+    },
+    {
+      "date": "2025-06-20",
+      "cpi": 329.61,
+      "interest_rates": 4.93,
+      "unemployment": 3.82,
+      "consumer_sentiment": 67.55,
+      "money_supply": 23084.74,
+      "industrial_production": 103.44
+    },
+    {
+      "date": "2025-06-21",
+      "cpi": 328.9,
+      "interest_rates": 5.74,
+      "unemployment": 4.0,
+      "consumer_sentiment": 73.76,
+      "money_supply": 22918.38,
+      "industrial_production": 104.55
+    },
+    {
+      "date": "2025-06-22",
+      "cpi": 329.72,
+      "interest_rates": 4.92,
+      "unemployment": 3.7,
+      "consumer_sentiment": 70.28,
+      "money_supply": 23029.77,
+      "industrial_production": 103.0
+    },
+    {
+      "date": "2025-06-23",
+      "cpi": 330.69,
+      "interest_rates": 4.95,
+      "unemployment": 3.94,
+      "consumer_sentiment": 65.85,
+      "money_supply": 23028.08,
+      "industrial_production": 104.84
+    },
+    {
+      "date": "2025-06-24",
+      "cpi": 330.56,
+      "interest_rates": 4.75,
+      "unemployment": 3.86,
+      "consumer_sentiment": 68.74,
+      "money_supply": 23031.44,
+      "industrial_production": 105.8
+    },
+    {
+      "date": "2025-06-25",
+      "cpi": 332.34,
+      "interest_rates": 5.29,
+      "unemployment": 3.87,
+      "consumer_sentiment": 69.95,
+      "money_supply": 22997.74,
+      "industrial_production": 104.93
+    },
+    {
+      "date": "2025-06-26",
+      "cpi": 328.63,
+      "interest_rates": 4.9,
+      "unemployment": 3.43,
+      "consumer_sentiment": 72.68,
+      "money_supply": 22952.16,
+      "industrial_production": 104.52
+    },
+    {
+      "date": "2025-06-27",
+      "cpi": 329.71,
+      "interest_rates": 5.52,
+      "unemployment": 3.65,
+      "consumer_sentiment": 68.48,
+      "money_supply": 23073.19,
+      "industrial_production": 104.53
+    },
+    {
+      "date": "2025-06-28",
+      "cpi": 330.14,
+      "interest_rates": 5.43,
+      "unemployment": 3.74,
+      "consumer_sentiment": 70.68,
+      "money_supply": 23019.25,
+      "industrial_production": 104.24
+    },
+    {
+      "date": "2025-06-29",
+      "cpi": 329.62,
+      "interest_rates": 5.3,
+      "unemployment": 3.62,
+      "consumer_sentiment": 70.45,
+      "money_supply": 23092.6,
+      "industrial_production": 103.9
+    },
+    {
+      "date": "2025-06-30",
+      "cpi": 329.81,
+      "interest_rates": 4.89,
+      "unemployment": 3.48,
+      "consumer_sentiment": 69.68,
+      "money_supply": 23040.5,
+      "industrial_production": 104.0
+    },
+    {
+      "date": "2025-07-01",
+      "cpi": 331.75,
+      "interest_rates": 4.79,
+      "unemployment": 3.67,
+      "consumer_sentiment": 69.87,
+      "money_supply": 23128.15,
+      "industrial_production": 105.46
+    },
+    {
+      "date": "2025-07-02",
+      "cpi": 329.79,
+      "interest_rates": 5.59,
+      "unemployment": 3.96,
+      "consumer_sentiment": 69.83,
+      "money_supply": 23195.65,
+      "industrial_production": 106.6
+    },
+    {
+      "date": "2025-07-03",
+      "cpi": 331.36,
+      "interest_rates": 5.21,
+      "unemployment": 3.89,
+      "consumer_sentiment": 70.86,
+      "money_supply": 23127.43,
+      "industrial_production": 106.05
+    },
+    {
+      "date": "2025-07-04",
+      "cpi": 330.88,
+      "interest_rates": 5.67,
+      "unemployment": 3.57,
+      "consumer_sentiment": 74.14,
+      "money_supply": 23175.55,
+      "industrial_production": 104.98
+    },
+    {
+      "date": "2025-07-05",
+      "cpi": 329.61,
+      "interest_rates": 4.86,
+      "unemployment": 3.61,
+      "consumer_sentiment": 73.88,
+      "money_supply": 23236.78,
+      "industrial_production": 104.12
+    },
+    {
+      "date": "2025-07-06",
+      "cpi": 331.91,
+      "interest_rates": 4.92,
+      "unemployment": 3.45,
+      "consumer_sentiment": 68.81,
+      "money_supply": 23197.6,
+      "industrial_production": 104.72
+    },
+    {
+      "date": "2025-07-07",
+      "cpi": 332.85,
+      "interest_rates": 5.03,
+      "unemployment": 3.58,
+      "consumer_sentiment": 73.6,
+      "money_supply": 23187.5,
+      "industrial_production": 106.0
+    },
+    {
+      "date": "2025-07-08",
+      "cpi": 333.45,
+      "interest_rates": 5.02,
+      "unemployment": 3.87,
+      "consumer_sentiment": 65.27,
+      "money_supply": 23075.13,
+      "industrial_production": 105.88
+    },
+    {
+      "date": "2025-07-09",
+      "cpi": 333.34,
+      "interest_rates": 4.97,
+      "unemployment": 3.45,
+      "consumer_sentiment": 67.68,
+      "money_supply": 23166.57,
+      "industrial_production": 104.03
+    },
+    {
+      "date": "2025-07-10",
+      "cpi": 332.97,
+      "interest_rates": 4.92,
+      "unemployment": 3.69,
+      "consumer_sentiment": 71.62,
+      "money_supply": 23124.97,
+      "industrial_production": 103.78
+    },
+    {
+      "date": "2025-07-11",
+      "cpi": 330.34,
+      "interest_rates": 5.27,
+      "unemployment": 3.54,
+      "consumer_sentiment": 68.81,
+      "money_supply": 23243.42,
+      "industrial_production": 106.22
+    },
+    {
+      "date": "2025-07-12",
+      "cpi": 331.49,
+      "interest_rates": 5.53,
+      "unemployment": 3.53,
+      "consumer_sentiment": 72.23,
+      "money_supply": 23159.68,
+      "industrial_production": 106.44
+    },
+    {
+      "date": "2025-07-13",
+      "cpi": 333.99,
+      "interest_rates": 4.84,
+      "unemployment": 3.95,
+      "consumer_sentiment": 66.32,
+      "money_supply": 23222.11,
+      "industrial_production": 103.52
+    },
+    {
+      "date": "2025-07-14",
+      "cpi": 331.08,
+      "interest_rates": 5.5,
+      "unemployment": 3.71,
+      "consumer_sentiment": 74.37,
+      "money_supply": 23160.22,
+      "industrial_production": 104.04
+    },
+    {
+      "date": "2025-07-15",
+      "cpi": 334.38,
+      "interest_rates": 4.99,
+      "unemployment": 3.99,
+      "consumer_sentiment": 65.53,
+      "money_supply": 23333.39,
+      "industrial_production": 103.65
+    },
+    {
+      "date": "2025-07-16",
+      "cpi": 333.17,
+      "interest_rates": 4.84,
+      "unemployment": 3.86,
+      "consumer_sentiment": 65.08,
+      "money_supply": 23261.68,
+      "industrial_production": 103.08
+    },
+    {
+      "date": "2025-07-17",
+      "cpi": 333.95,
+      "interest_rates": 5.19,
+      "unemployment": 3.95,
+      "consumer_sentiment": 74.67,
+      "money_supply": 23239.02,
+      "industrial_production": 103.09
+    },
+    {
+      "date": "2025-07-18",
+      "cpi": 333.96,
+      "interest_rates": 5.4,
+      "unemployment": 3.65,
+      "consumer_sentiment": 65.18,
+      "money_supply": 23352.46,
+      "industrial_production": 105.57
+    },
+    {
+      "date": "2025-07-19",
+      "cpi": 331.96,
+      "interest_rates": 5.08,
+      "unemployment": 3.87,
+      "consumer_sentiment": 67.77,
+      "money_supply": 23307.3,
+      "industrial_production": 104.64
+    },
+    {
+      "date": "2025-07-20",
+      "cpi": 333.15,
+      "interest_rates": 4.97,
+      "unemployment": 3.67,
+      "consumer_sentiment": 69.39,
+      "money_supply": 23283.92,
+      "industrial_production": 106.86
+    },
+    {
+      "date": "2025-07-21",
+      "cpi": 332.69,
+      "interest_rates": 4.85,
+      "unemployment": 3.62,
+      "consumer_sentiment": 74.41,
+      "money_supply": 23231.94,
+      "industrial_production": 103.29
+    },
+    {
+      "date": "2025-07-22",
+      "cpi": 333.29,
+      "interest_rates": 5.14,
+      "unemployment": 3.44,
+      "consumer_sentiment": 71.72,
+      "money_supply": 23309.33,
+      "industrial_production": 104.05
+    },
+    {
+      "date": "2025-07-23",
+      "cpi": 331.38,
+      "interest_rates": 4.79,
+      "unemployment": 3.65,
+      "consumer_sentiment": 71.27,
+      "money_supply": 23276.37,
+      "industrial_production": 103.28
+    },
+    {
+      "date": "2025-07-24",
+      "cpi": 334.54,
+      "interest_rates": 5.57,
+      "unemployment": 3.89,
+      "consumer_sentiment": 66.64,
+      "money_supply": 23312.8,
+      "industrial_production": 104.08
+    },
+    {
+      "date": "2025-07-25",
+      "cpi": 334.2,
+      "interest_rates": 5.09,
+      "unemployment": 3.72,
+      "consumer_sentiment": 74.7,
+      "money_supply": 23392.88,
+      "industrial_production": 103.06
+    },
+    {
+      "date": "2025-07-26",
+      "cpi": 332.19,
+      "interest_rates": 5.03,
+      "unemployment": 3.62,
+      "consumer_sentiment": 71.34,
+      "money_supply": 23442.84,
+      "industrial_production": 103.17
+    },
+    {
+      "date": "2025-07-27",
+      "cpi": 334.93,
+      "interest_rates": 4.82,
+      "unemployment": 3.78,
+      "consumer_sentiment": 70.9,
+      "money_supply": 23345.83,
+      "industrial_production": 105.76
+    },
+    {
+      "date": "2025-07-28",
+      "cpi": 331.73,
+      "interest_rates": 4.89,
+      "unemployment": 3.48,
+      "consumer_sentiment": 69.06,
+      "money_supply": 23406.23,
+      "industrial_production": 105.9
+    },
+    {
+      "date": "2025-07-29",
+      "cpi": 335.02,
+      "interest_rates": 5.4,
+      "unemployment": 3.98,
+      "consumer_sentiment": 74.59,
+      "money_supply": 23338.03,
+      "industrial_production": 105.4
+    },
+    {
+      "date": "2025-07-30",
+      "cpi": 332.08,
+      "interest_rates": 4.86,
+      "unemployment": 3.84,
+      "consumer_sentiment": 69.99,
+      "money_supply": 23355.25,
+      "industrial_production": 104.46
+    },
+    {
+      "date": "2025-07-31",
+      "cpi": 335.8,
+      "interest_rates": 5.53,
+      "unemployment": 3.53,
+      "consumer_sentiment": 71.97,
+      "money_supply": 23422.61,
+      "industrial_production": 104.87
+    },
+    {
+      "date": "2025-08-01",
+      "cpi": 333.94,
+      "interest_rates": 5.19,
+      "unemployment": 3.78,
+      "consumer_sentiment": 70.08,
+      "money_supply": 23315.03,
+      "industrial_production": 105.68
+    },
+    {
+      "date": "2025-08-02",
+      "cpi": 333.05,
+      "interest_rates": 5.5,
+      "unemployment": 3.55,
+      "consumer_sentiment": 66.18,
+      "money_supply": 23497.44,
+      "industrial_production": 104.06
+    },
+    {
+      "date": "2025-08-03",
+      "cpi": 335.39,
+      "interest_rates": 5.7,
+      "unemployment": 3.94,
+      "consumer_sentiment": 69.44,
+      "money_supply": 23478.91,
+      "industrial_production": 104.09
+    },
+    {
+      "date": "2025-08-04",
+      "cpi": 334.66,
+      "interest_rates": 5.7,
+      "unemployment": 3.96,
+      "consumer_sentiment": 68.15,
+      "money_supply": 23447.78,
+      "industrial_production": 106.0
+    },
+    {
+      "date": "2025-08-05",
+      "cpi": 335.9,
+      "interest_rates": 5.54,
+      "unemployment": 3.93,
+      "consumer_sentiment": 67.23,
+      "money_supply": 23430.25,
+      "industrial_production": 104.05
+    },
+    {
+      "date": "2025-08-06",
+      "cpi": 333.52,
+      "interest_rates": 4.93,
+      "unemployment": 3.58,
+      "consumer_sentiment": 74.77,
+      "money_supply": 23442.41,
+      "industrial_production": 104.59
+    },
+    {
+      "date": "2025-08-07",
+      "cpi": 333.62,
+      "interest_rates": 5.38,
+      "unemployment": 3.61,
+      "consumer_sentiment": 69.06,
+      "money_supply": 23391.45,
+      "industrial_production": 106.71
+    },
+    {
+      "date": "2025-08-08",
+      "cpi": 333.87,
+      "interest_rates": 5.52,
+      "unemployment": 3.97,
+      "consumer_sentiment": 69.9,
+      "money_supply": 23524.99,
+      "industrial_production": 103.81
+    },
+    {
+      "date": "2025-08-09",
+      "cpi": 336.25,
+      "interest_rates": 5.16,
+      "unemployment": 3.46,
+      "consumer_sentiment": 74.43,
+      "money_supply": 23493.64,
+      "industrial_production": 106.27
+    },
+    {
+      "date": "2025-08-10",
+      "cpi": 333.93,
+      "interest_rates": 5.63,
+      "unemployment": 3.66,
+      "consumer_sentiment": 70.81,
+      "money_supply": 23429.34,
+      "industrial_production": 105.89
+    },
+    {
+      "date": "2025-08-11",
+      "cpi": 335.18,
+      "interest_rates": 5.64,
+      "unemployment": 3.95,
+      "consumer_sentiment": 69.77,
+      "money_supply": 23550.49,
+      "industrial_production": 104.09
+    },
+    {
+      "date": "2025-08-12",
+      "cpi": 333.78,
+      "interest_rates": 5.08,
+      "unemployment": 3.93,
+      "consumer_sentiment": 70.81,
+      "money_supply": 23565.08,
+      "industrial_production": 104.71
+    },
+    {
+      "date": "2025-08-13",
+      "cpi": 334.32,
+      "interest_rates": 5.74,
+      "unemployment": 3.53,
+      "consumer_sentiment": 74.08,
+      "money_supply": 23495.41,
+      "industrial_production": 103.2
+    },
+    {
+      "date": "2025-08-14",
+      "cpi": 335.16,
+      "interest_rates": 5.39,
+      "unemployment": 3.43,
+      "consumer_sentiment": 72.85,
+      "money_supply": 23509.68,
+      "industrial_production": 104.02
+    },
+    {
+      "date": "2025-08-15",
+      "cpi": 334.58,
+      "interest_rates": 5.72,
+      "unemployment": 3.62,
+      "consumer_sentiment": 70.55,
+      "money_supply": 23637.75,
+      "industrial_production": 104.11
+    },
+    {
+      "date": "2025-08-16",
+      "cpi": 336.7,
+      "interest_rates": 5.61,
+      "unemployment": 3.56,
+      "consumer_sentiment": 74.71,
+      "money_supply": 23602.47,
+      "industrial_production": 106.38
+    },
+    {
+      "date": "2025-08-17",
+      "cpi": 336.87,
+      "interest_rates": 5.73,
+      "unemployment": 3.92,
+      "consumer_sentiment": 68.36,
+      "money_supply": 23530.32,
+      "industrial_production": 105.22
+    },
+    {
+      "date": "2025-08-18",
+      "cpi": 334.16,
+      "interest_rates": 4.94,
+      "unemployment": 3.81,
+      "consumer_sentiment": 70.51,
+      "money_supply": 23635.05,
+      "industrial_production": 105.87
+    },
+    {
+      "date": "2025-08-19",
+      "cpi": 337.74,
+      "interest_rates": 4.95,
+      "unemployment": 3.8,
+      "consumer_sentiment": 74.52,
+      "money_supply": 23661.45,
+      "industrial_production": 103.94
+    },
+    {
+      "date": "2025-08-20",
+      "cpi": 334.91,
+      "interest_rates": 5.56,
+      "unemployment": 3.79,
+      "consumer_sentiment": 70.9,
+      "money_supply": 23517.11,
+      "industrial_production": 106.14
+    },
+    {
+      "date": "2025-08-21",
+      "cpi": 335.75,
+      "interest_rates": 4.97,
+      "unemployment": 3.76,
+      "consumer_sentiment": 70.19,
+      "money_supply": 23594.6,
+      "industrial_production": 103.66
+    },
+    {
+      "date": "2025-08-22",
+      "cpi": 335.87,
+      "interest_rates": 4.92,
+      "unemployment": 3.69,
+      "consumer_sentiment": 67.26,
+      "money_supply": 23629.39,
+      "industrial_production": 103.42
+    },
+    {
+      "date": "2025-08-23",
+      "cpi": 338.02,
+      "interest_rates": 5.75,
+      "unemployment": 3.72,
+      "consumer_sentiment": 66.71,
+      "money_supply": 23688.42,
+      "industrial_production": 105.88
+    },
+    {
+      "date": "2025-08-24",
+      "cpi": 334.85,
+      "interest_rates": 4.81,
+      "unemployment": 3.4,
+      "consumer_sentiment": 65.92,
+      "money_supply": 23692.67,
+      "industrial_production": 106.2
+    },
+    {
+      "date": "2025-08-25",
+      "cpi": 337.64,
+      "interest_rates": 5.02,
+      "unemployment": 3.65,
+      "consumer_sentiment": 73.32,
+      "money_supply": 23639.15,
+      "industrial_production": 103.24
+    },
+    {
+      "date": "2025-08-26",
+      "cpi": 337.01,
+      "interest_rates": 5.48,
+      "unemployment": 3.76,
+      "consumer_sentiment": 71.37,
+      "money_supply": 23667.66,
+      "industrial_production": 106.42
+    },
+    {
+      "date": "2025-08-27",
+      "cpi": 338.17,
+      "interest_rates": 5.03,
+      "unemployment": 3.99,
+      "consumer_sentiment": 74.35,
+      "money_supply": 23756.75,
+      "industrial_production": 103.01
+    },
+    {
+      "date": "2025-08-28",
+      "cpi": 335.62,
+      "interest_rates": 5.15,
+      "unemployment": 3.55,
+      "consumer_sentiment": 68.7,
+      "money_supply": 23669.49,
+      "industrial_production": 104.58
+    },
+    {
+      "date": "2025-08-29",
+      "cpi": 336.31,
+      "interest_rates": 5.45,
+      "unemployment": 3.41,
+      "consumer_sentiment": 69.65,
+      "money_supply": 23593.57,
+      "industrial_production": 106.3
+    },
+    {
+      "date": "2025-08-30",
+      "cpi": 337.38,
+      "interest_rates": 5.04,
+      "unemployment": 3.55,
+      "consumer_sentiment": 68.13,
+      "money_supply": 23737.83,
+      "industrial_production": 106.01
+    },
+    {
+      "date": "2025-08-31",
+      "cpi": 338.89,
+      "interest_rates": 5.67,
+      "unemployment": 3.81,
+      "consumer_sentiment": 66.25,
+      "money_supply": 23793.53,
+      "industrial_production": 104.5
+    },
+    {
+      "date": "2025-09-01",
+      "cpi": 336.52,
+      "interest_rates": 4.9,
+      "unemployment": 3.59,
+      "consumer_sentiment": 71.57,
+      "money_supply": 23716.22,
+      "industrial_production": 106.09
+    },
+    {
+      "date": "2025-09-02",
+      "cpi": 335.46,
+      "interest_rates": 4.84,
+      "unemployment": 3.61,
+      "consumer_sentiment": 73.55,
+      "money_supply": 23657.78,
+      "industrial_production": 103.4
+    },
+    {
+      "date": "2025-09-03",
+      "cpi": 336.13,
+      "interest_rates": 5.34,
+      "unemployment": 3.63,
+      "consumer_sentiment": 70.65,
+      "money_supply": 23748.2,
+      "industrial_production": 103.04
+    },
+    {
+      "date": "2025-09-04",
+      "cpi": 337.46,
+      "interest_rates": 5.53,
+      "unemployment": 3.79,
+      "consumer_sentiment": 66.61,
+      "money_supply": 23674.59,
+      "industrial_production": 103.77
+    },
+    {
+      "date": "2025-09-05",
+      "cpi": 337.97,
+      "interest_rates": 5.46,
+      "unemployment": 3.52,
+      "consumer_sentiment": 69.85,
+      "money_supply": 23703.27,
+      "industrial_production": 106.67
+    },
+    {
+      "date": "2025-09-06",
+      "cpi": 339.59,
+      "interest_rates": 4.8,
+      "unemployment": 4.0,
+      "consumer_sentiment": 74.08,
+      "money_supply": 23749.8,
+      "industrial_production": 104.86
+    },
+    {
+      "date": "2025-09-07",
+      "cpi": 338.1,
+      "interest_rates": 5.25,
+      "unemployment": 3.71,
+      "consumer_sentiment": 71.36,
+      "money_supply": 23701.95,
+      "industrial_production": 104.42
+    },
+    {
+      "date": "2025-09-08",
+      "cpi": 338.84,
+      "interest_rates": 5.27,
+      "unemployment": 3.84,
+      "consumer_sentiment": 72.79,
+      "money_supply": 23795.24,
+      "industrial_production": 105.99
+    },
+    {
+      "date": "2025-09-09",
+      "cpi": 337.65,
+      "interest_rates": 5.45,
+      "unemployment": 3.6,
+      "consumer_sentiment": 74.37,
+      "money_supply": 23852.94,
+      "industrial_production": 105.29
+    },
+    {
+      "date": "2025-09-10",
+      "cpi": 338.44,
+      "interest_rates": 5.52,
+      "unemployment": 3.73,
+      "consumer_sentiment": 74.59,
+      "money_supply": 23826.26,
+      "industrial_production": 106.71
+    },
+    {
+      "date": "2025-09-11",
+      "cpi": 338.95,
+      "interest_rates": 4.86,
+      "unemployment": 3.75,
+      "consumer_sentiment": 71.74,
+      "money_supply": 23745.21,
+      "industrial_production": 104.3
+    },
+    {
+      "date": "2025-09-12",
+      "cpi": 337.43,
+      "interest_rates": 5.35,
+      "unemployment": 3.78,
+      "consumer_sentiment": 70.71,
+      "money_supply": 23806.63,
+      "industrial_production": 103.41
+    },
+    {
+      "date": "2025-09-13",
+      "cpi": 339.39,
+      "interest_rates": 5.17,
+      "unemployment": 3.4,
+      "consumer_sentiment": 68.16,
+      "money_supply": 23747.97,
+      "industrial_production": 104.71
+    },
+    {
+      "date": "2025-09-14",
+      "cpi": 339.01,
+      "interest_rates": 5.72,
+      "unemployment": 3.78,
+      "consumer_sentiment": 71.93,
+      "money_supply": 23824.21,
+      "industrial_production": 106.38
+    },
+    {
+      "date": "2025-09-15",
+      "cpi": 340.44,
+      "interest_rates": 4.98,
+      "unemployment": 3.92,
+      "consumer_sentiment": 74.22,
+      "money_supply": 23864.88,
+      "industrial_production": 103.41
+    },
+    {
+      "date": "2025-09-16",
+      "cpi": 336.99,
+      "interest_rates": 5.57,
+      "unemployment": 3.59,
+      "consumer_sentiment": 72.43,
+      "money_supply": 23895.82,
+      "industrial_production": 105.07
+    },
+    {
+      "date": "2025-09-17",
+      "cpi": 337.29,
+      "interest_rates": 5.54,
+      "unemployment": 3.73,
+      "consumer_sentiment": 69.55,
+      "money_supply": 23798.42,
+      "industrial_production": 105.75
+    },
+    {
+      "date": "2025-09-18",
+      "cpi": 340.32,
+      "interest_rates": 4.9,
+      "unemployment": 3.88,
+      "consumer_sentiment": 67.29,
+      "money_supply": 23909.89,
+      "industrial_production": 106.82
+    },
+    {
+      "date": "2025-09-19",
+      "cpi": 340.85,
+      "interest_rates": 5.11,
+      "unemployment": 3.43,
+      "consumer_sentiment": 69.08,
+      "money_supply": 23918.27,
+      "industrial_production": 106.2
+    },
+    {
+      "date": "2025-09-20",
+      "cpi": 338.81,
+      "interest_rates": 5.45,
+      "unemployment": 3.98,
+      "consumer_sentiment": 66.31,
+      "money_supply": 23968.66,
+      "industrial_production": 103.6
+    },
+    {
+      "date": "2025-09-21",
+      "cpi": 340.51,
+      "interest_rates": 4.98,
+      "unemployment": 3.68,
+      "consumer_sentiment": 68.0,
+      "money_supply": 23895.47,
+      "industrial_production": 106.69
+    },
+    {
+      "date": "2025-09-22",
+      "cpi": 340.01,
+      "interest_rates": 5.64,
+      "unemployment": 3.51,
+      "consumer_sentiment": 71.18,
+      "money_supply": 23866.18,
+      "industrial_production": 105.45
+    },
+    {
+      "date": "2025-09-23",
+      "cpi": 338.7,
+      "interest_rates": 4.82,
+      "unemployment": 3.68,
+      "consumer_sentiment": 74.21,
+      "money_supply": 23863.65,
+      "industrial_production": 105.41
+    },
+    {
+      "date": "2025-09-24",
+      "cpi": 338.35,
+      "interest_rates": 5.63,
+      "unemployment": 3.44,
+      "consumer_sentiment": 73.86,
+      "money_supply": 23928.89,
+      "industrial_production": 103.13
+    },
+    {
+      "date": "2025-09-25",
+      "cpi": 340.09,
+      "interest_rates": 5.5,
+      "unemployment": 3.46,
+      "consumer_sentiment": 71.22,
+      "money_supply": 23925.98,
+      "industrial_production": 105.55
+    },
+    {
+      "date": "2025-09-26",
+      "cpi": 337.81,
+      "interest_rates": 5.26,
+      "unemployment": 3.46,
+      "consumer_sentiment": 74.67,
+      "money_supply": 23911.39,
+      "industrial_production": 103.46
+    },
+    {
+      "date": "2025-09-27",
+      "cpi": 340.91,
+      "interest_rates": 5.49,
+      "unemployment": 3.86,
+      "consumer_sentiment": 70.13,
+      "money_supply": 24040.15,
+      "industrial_production": 106.09
+    },
+    {
+      "date": "2025-09-28",
+      "cpi": 339.0,
+      "interest_rates": 5.28,
+      "unemployment": 3.84,
+      "consumer_sentiment": 65.33,
+      "money_supply": 23982.61,
+      "industrial_production": 106.51
+    },
+    {
+      "date": "2025-09-29",
+      "cpi": 339.75,
+      "interest_rates": 4.97,
+      "unemployment": 3.52,
+      "consumer_sentiment": 72.04,
+      "money_supply": 24028.16,
+      "industrial_production": 106.78
+    },
+    {
+      "date": "2025-09-30",
+      "cpi": 339.33,
+      "interest_rates": 5.22,
+      "unemployment": 3.61,
+      "consumer_sentiment": 69.62,
+      "money_supply": 24106.31,
+      "industrial_production": 105.29
+    },
+    {
+      "date": "2025-10-01",
+      "cpi": 339.14,
+      "interest_rates": 5.04,
+      "unemployment": 3.88,
+      "consumer_sentiment": 66.14,
+      "money_supply": 23925.34,
+      "industrial_production": 103.86
+    },
+    {
+      "date": "2025-10-02",
+      "cpi": 339.25,
+      "interest_rates": 5.21,
+      "unemployment": 3.59,
+      "consumer_sentiment": 68.39,
+      "money_supply": 24111.54,
+      "industrial_production": 103.36
+    },
+    {
+      "date": "2025-10-03",
+      "cpi": 338.69,
+      "interest_rates": 4.97,
+      "unemployment": 3.98,
+      "consumer_sentiment": 69.81,
+      "money_supply": 24099.08,
+      "industrial_production": 104.1
+    },
+    {
+      "date": "2025-10-04",
+      "cpi": 340.34,
+      "interest_rates": 4.91,
+      "unemployment": 3.46,
+      "consumer_sentiment": 73.8,
+      "money_supply": 23967.18,
+      "industrial_production": 105.47
+    },
+    {
+      "date": "2025-10-05",
+      "cpi": 339.35,
+      "interest_rates": 5.09,
+      "unemployment": 3.62,
+      "consumer_sentiment": 74.1,
+      "money_supply": 24082.78,
+      "industrial_production": 105.01
+    },
+    {
+      "date": "2025-10-06",
+      "cpi": 338.98,
+      "interest_rates": 5.02,
+      "unemployment": 3.51,
+      "consumer_sentiment": 71.82,
+      "money_supply": 24077.41,
+      "industrial_production": 106.24
+    },
+    {
+      "date": "2025-10-07",
+      "cpi": 341.07,
+      "interest_rates": 4.89,
+      "unemployment": 3.47,
+      "consumer_sentiment": 71.88,
+      "money_supply": 24123.7,
+      "industrial_production": 106.75
+    },
+    {
+      "date": "2025-10-08",
+      "cpi": 342.88,
+      "interest_rates": 5.64,
+      "unemployment": 3.84,
+      "consumer_sentiment": 70.18,
+      "money_supply": 24111.88,
+      "industrial_production": 104.2
+    },
+    {
+      "date": "2025-10-09",
+      "cpi": 340.14,
+      "interest_rates": 5.59,
+      "unemployment": 3.99,
+      "consumer_sentiment": 74.71,
+      "money_supply": 24145.51,
+      "industrial_production": 106.4
+    },
+    {
+      "date": "2025-10-10",
+      "cpi": 342.09,
+      "interest_rates": 5.74,
+      "unemployment": 3.54,
+      "consumer_sentiment": 74.82,
+      "money_supply": 24016.7,
+      "industrial_production": 103.37
+    },
+    {
+      "date": "2025-10-11",
+      "cpi": 339.39,
+      "interest_rates": 5.07,
+      "unemployment": 3.47,
+      "consumer_sentiment": 72.38,
+      "money_supply": 24101.52,
+      "industrial_production": 106.46
+    },
+    {
+      "date": "2025-10-12",
+      "cpi": 340.86,
+      "interest_rates": 5.44,
+      "unemployment": 3.56,
+      "consumer_sentiment": 68.76,
+      "money_supply": 24170.71,
+      "industrial_production": 104.12
+    },
+    {
+      "date": "2025-10-13",
+      "cpi": 340.27,
+      "interest_rates": 5.13,
+      "unemployment": 3.76,
+      "consumer_sentiment": 70.5,
+      "money_supply": 24235.66,
+      "industrial_production": 103.81
+    },
+    {
+      "date": "2025-10-14",
+      "cpi": 341.12,
+      "interest_rates": 5.32,
+      "unemployment": 3.91,
+      "consumer_sentiment": 67.73,
+      "money_supply": 24236.26,
+      "industrial_production": 105.55
+    },
+    {
+      "date": "2025-10-15",
+      "cpi": 342.06,
+      "interest_rates": 4.76,
+      "unemployment": 3.42,
+      "consumer_sentiment": 70.55,
+      "money_supply": 24142.0,
+      "industrial_production": 103.02
+    },
+    {
+      "date": "2025-10-16",
+      "cpi": 340.04,
+      "interest_rates": 5.53,
+      "unemployment": 3.78,
+      "consumer_sentiment": 69.74,
+      "money_supply": 24239.42,
+      "industrial_production": 103.45
+    },
+    {
+      "date": "2025-10-17",
+      "cpi": 341.59,
+      "interest_rates": 5.53,
+      "unemployment": 3.82,
+      "consumer_sentiment": 66.75,
+      "money_supply": 24193.46,
+      "industrial_production": 104.59
+    },
+    {
+      "date": "2025-10-18",
+      "cpi": 340.07,
+      "interest_rates": 5.54,
+      "unemployment": 3.64,
+      "consumer_sentiment": 69.06,
+      "money_supply": 24242.36,
+      "industrial_production": 103.93
+    },
+    {
+      "date": "2025-10-19",
+      "cpi": 343.2,
+      "interest_rates": 5.27,
+      "unemployment": 3.62,
+      "consumer_sentiment": 71.6,
+      "money_supply": 24237.52,
+      "industrial_production": 105.61
+    },
+    {
+      "date": "2025-10-20",
+      "cpi": 342.86,
+      "interest_rates": 5.24,
+      "unemployment": 3.83,
+      "consumer_sentiment": 70.19,
+      "money_supply": 24201.85,
+      "industrial_production": 104.41
+    },
+    {
+      "date": "2025-10-21",
+      "cpi": 340.25,
+      "interest_rates": 5.53,
+      "unemployment": 3.74,
+      "consumer_sentiment": 70.16,
+      "money_supply": 24194.64,
+      "industrial_production": 106.91
+    },
+    {
+      "date": "2025-10-22",
+      "cpi": 343.8,
+      "interest_rates": 4.83,
+      "unemployment": 3.57,
+      "consumer_sentiment": 67.27,
+      "money_supply": 24139.07,
+      "industrial_production": 106.62
+    },
+    {
+      "date": "2025-10-23",
+      "cpi": 341.99,
+      "interest_rates": 4.79,
+      "unemployment": 3.94,
+      "consumer_sentiment": 67.1,
+      "money_supply": 24252.45,
+      "industrial_production": 103.27
+    },
+    {
+      "date": "2025-10-24",
+      "cpi": 342.07,
+      "interest_rates": 5.75,
+      "unemployment": 3.55,
+      "consumer_sentiment": 71.64,
+      "money_supply": 24207.41,
+      "industrial_production": 106.48
+    },
+    {
+      "date": "2025-10-25",
+      "cpi": 343.55,
+      "interest_rates": 5.03,
+      "unemployment": 3.91,
+      "consumer_sentiment": 68.71,
+      "money_supply": 24300.47,
+      "industrial_production": 103.7
+    },
+    {
+      "date": "2025-10-26",
+      "cpi": 343.96,
+      "interest_rates": 4.83,
+      "unemployment": 3.49,
+      "consumer_sentiment": 71.91,
+      "money_supply": 24343.36,
+      "industrial_production": 106.99
+    },
+    {
+      "date": "2025-10-27",
+      "cpi": 343.11,
+      "interest_rates": 5.08,
+      "unemployment": 3.92,
+      "consumer_sentiment": 67.53,
+      "money_supply": 24276.67,
+      "industrial_production": 105.88
+    },
+    {
+      "date": "2025-10-28",
+      "cpi": 342.54,
+      "interest_rates": 5.24,
+      "unemployment": 3.68,
+      "consumer_sentiment": 72.04,
+      "money_supply": 24332.51,
+      "industrial_production": 104.23
+    },
+    {
+      "date": "2025-10-29",
+      "cpi": 344.44,
+      "interest_rates": 5.01,
+      "unemployment": 3.41,
+      "consumer_sentiment": 69.55,
+      "money_supply": 24274.88,
+      "industrial_production": 104.45
+    },
+    {
+      "date": "2025-10-30",
+      "cpi": 341.75,
+      "interest_rates": 5.44,
+      "unemployment": 3.85,
+      "consumer_sentiment": 66.21,
+      "money_supply": 24274.42,
+      "industrial_production": 104.65
+    },
+    {
+      "date": "2025-10-31",
+      "cpi": 343.78,
+      "interest_rates": 4.92,
+      "unemployment": 3.51,
+      "consumer_sentiment": 68.27,
+      "money_supply": 24265.39,
+      "industrial_production": 104.56
+    },
+    {
+      "date": "2025-11-01",
+      "cpi": 344.77,
+      "interest_rates": 5.72,
+      "unemployment": 3.42,
+      "consumer_sentiment": 67.87,
+      "money_supply": 24401.47,
+      "industrial_production": 103.51
+    },
+    {
+      "date": "2025-11-02",
+      "cpi": 343.33,
+      "interest_rates": 5.41,
+      "unemployment": 3.86,
+      "consumer_sentiment": 73.28,
+      "money_supply": 24304.51,
+      "industrial_production": 104.75
+    },
+    {
+      "date": "2025-11-03",
+      "cpi": 343.44,
+      "interest_rates": 5.54,
+      "unemployment": 3.44,
+      "consumer_sentiment": 74.64,
+      "money_supply": 24296.43,
+      "industrial_production": 104.86
+    },
+    {
+      "date": "2025-11-04",
+      "cpi": 342.96,
+      "interest_rates": 5.55,
+      "unemployment": 3.92,
+      "consumer_sentiment": 72.93,
+      "money_supply": 24267.46,
+      "industrial_production": 106.67
+    },
+    {
+      "date": "2025-11-05",
+      "cpi": 343.94,
+      "interest_rates": 4.77,
+      "unemployment": 3.51,
+      "consumer_sentiment": 74.98,
+      "money_supply": 24329.18,
+      "industrial_production": 103.56
+    },
+    {
+      "date": "2025-11-06",
+      "cpi": 343.17,
+      "interest_rates": 5.04,
+      "unemployment": 3.62,
+      "consumer_sentiment": 73.76,
+      "money_supply": 24331.02,
+      "industrial_production": 106.64
+    },
+    {
+      "date": "2025-11-07",
+      "cpi": 344.63,
+      "interest_rates": 5.72,
+      "unemployment": 3.6,
+      "consumer_sentiment": 74.86,
+      "money_supply": 24367.45,
+      "industrial_production": 106.89
+    },
+    {
+      "date": "2025-11-08",
+      "cpi": 345.46,
+      "interest_rates": 4.81,
+      "unemployment": 3.59,
+      "consumer_sentiment": 68.88,
+      "money_supply": 24326.99,
+      "industrial_production": 105.43
+    },
+    {
+      "date": "2025-11-09",
+      "cpi": 343.46,
+      "interest_rates": 4.84,
+      "unemployment": 3.96,
+      "consumer_sentiment": 72.12,
+      "money_supply": 24390.69,
+      "industrial_production": 105.57
+    },
+    {
+      "date": "2025-11-10",
+      "cpi": 343.42,
+      "interest_rates": 5.46,
+      "unemployment": 3.99,
+      "consumer_sentiment": 70.61,
+      "money_supply": 24498.63,
+      "industrial_production": 104.29
+    },
+    {
+      "date": "2025-11-11",
+      "cpi": 344.18,
+      "interest_rates": 5.42,
+      "unemployment": 3.84,
+      "consumer_sentiment": 68.23,
+      "money_supply": 24338.23,
+      "industrial_production": 106.96
+    },
+    {
+      "date": "2025-11-12",
+      "cpi": 345.51,
+      "interest_rates": 5.54,
+      "unemployment": 3.89,
+      "consumer_sentiment": 66.21,
+      "money_supply": 24431.43,
+      "industrial_production": 105.12
+    },
+    {
+      "date": "2025-11-13",
+      "cpi": 344.51,
+      "interest_rates": 5.17,
+      "unemployment": 3.6,
+      "consumer_sentiment": 69.29,
+      "money_supply": 24404.52,
+      "industrial_production": 103.02
+    },
+    {
+      "date": "2025-11-14",
+      "cpi": 343.91,
+      "interest_rates": 5.13,
+      "unemployment": 3.49,
+      "consumer_sentiment": 66.55,
+      "money_supply": 24518.32,
+      "industrial_production": 106.69
+    },
+    {
+      "date": "2025-11-15",
+      "cpi": 344.11,
+      "interest_rates": 4.89,
+      "unemployment": 3.79,
+      "consumer_sentiment": 68.97,
+      "money_supply": 24488.99,
+      "industrial_production": 105.48
+    },
+    {
+      "date": "2025-11-16",
+      "cpi": 344.48,
+      "interest_rates": 5.37,
+      "unemployment": 3.95,
+      "consumer_sentiment": 68.24,
+      "money_supply": 24431.62,
+      "industrial_production": 106.71
+    },
+    {
+      "date": "2025-11-17",
+      "cpi": 343.49,
+      "interest_rates": 4.98,
+      "unemployment": 3.61,
+      "consumer_sentiment": 73.28,
+      "money_supply": 24501.68,
+      "industrial_production": 104.43
+    },
+    {
+      "date": "2025-11-18",
+      "cpi": 346.23,
+      "interest_rates": 5.37,
+      "unemployment": 3.96,
+      "consumer_sentiment": 69.23,
+      "money_supply": 24515.25,
+      "industrial_production": 106.47
+    },
+    {
+      "date": "2025-11-19",
+      "cpi": 346.76,
+      "interest_rates": 4.91,
+      "unemployment": 3.79,
+      "consumer_sentiment": 73.75,
+      "money_supply": 24420.83,
+      "industrial_production": 104.7
+    },
+    {
+      "date": "2025-11-20",
+      "cpi": 344.63,
+      "interest_rates": 5.46,
+      "unemployment": 3.76,
+      "consumer_sentiment": 65.42,
+      "money_supply": 24450.82,
+      "industrial_production": 105.96
+    },
+    {
+      "date": "2025-11-21",
+      "cpi": 343.93,
+      "interest_rates": 4.78,
+      "unemployment": 3.88,
+      "consumer_sentiment": 67.35,
+      "money_supply": 24468.85,
+      "industrial_production": 104.07
+    },
+    {
+      "date": "2025-11-22",
+      "cpi": 343.71,
+      "interest_rates": 5.01,
+      "unemployment": 3.89,
+      "consumer_sentiment": 72.76,
+      "money_supply": 24488.03,
+      "industrial_production": 104.11
+    },
+    {
+      "date": "2025-11-23",
+      "cpi": 346.38,
+      "interest_rates": 4.96,
+      "unemployment": 3.9,
+      "consumer_sentiment": 74.73,
+      "money_supply": 24455.93,
+      "industrial_production": 103.02
+    },
+    {
+      "date": "2025-11-24",
+      "cpi": 344.8,
+      "interest_rates": 5.0,
+      "unemployment": 3.43,
+      "consumer_sentiment": 71.74,
+      "money_supply": 24627.97,
+      "industrial_production": 104.87
+    },
+    {
+      "date": "2025-11-25",
+      "cpi": 347.56,
+      "interest_rates": 5.3,
+      "unemployment": 3.6,
+      "consumer_sentiment": 67.16,
+      "money_supply": 24489.0,
+      "industrial_production": 106.89
+    },
+    {
+      "date": "2025-11-26",
+      "cpi": 344.91,
+      "interest_rates": 5.5,
+      "unemployment": 3.43,
+      "consumer_sentiment": 67.04,
+      "money_supply": 24650.75,
+      "industrial_production": 103.92
+    },
+    {
+      "date": "2025-11-27",
+      "cpi": 347.44,
+      "interest_rates": 4.9,
+      "unemployment": 3.41,
+      "consumer_sentiment": 67.02,
+      "money_supply": 24538.27,
+      "industrial_production": 105.46
+    },
+    {
+      "date": "2025-11-28",
+      "cpi": 345.91,
+      "interest_rates": 5.75,
+      "unemployment": 3.6,
+      "consumer_sentiment": 70.28,
+      "money_supply": 24563.68,
+      "industrial_production": 106.78
+    },
+    {
+      "date": "2025-11-29",
+      "cpi": 347.92,
+      "interest_rates": 4.88,
+      "unemployment": 3.66,
+      "consumer_sentiment": 69.53,
+      "money_supply": 24572.82,
+      "industrial_production": 104.15
+    },
+    {
+      "date": "2025-11-30",
+      "cpi": 346.89,
+      "interest_rates": 5.06,
+      "unemployment": 3.44,
+      "consumer_sentiment": 66.0,
+      "money_supply": 24719.53,
+      "industrial_production": 106.54
+    },
+    {
+      "date": "2025-12-01",
+      "cpi": 347.87,
+      "interest_rates": 5.74,
+      "unemployment": 3.96,
+      "consumer_sentiment": 66.42,
+      "money_supply": 24689.44,
+      "industrial_production": 105.08
+    },
+    {
+      "date": "2025-12-02",
+      "cpi": 345.58,
+      "interest_rates": 4.94,
+      "unemployment": 3.86,
+      "consumer_sentiment": 73.21,
+      "money_supply": 24554.44,
+      "industrial_production": 104.93
+    },
+    {
+      "date": "2025-12-03",
+      "cpi": 346.35,
+      "interest_rates": 5.71,
+      "unemployment": 3.89,
+      "consumer_sentiment": 65.61,
+      "money_supply": 24574.7,
+      "industrial_production": 105.39
+    },
+    {
+      "date": "2025-12-04",
+      "cpi": 344.9,
+      "interest_rates": 5.18,
+      "unemployment": 3.77,
+      "consumer_sentiment": 73.55,
+      "money_supply": 24588.43,
+      "industrial_production": 106.96
+    },
+    {
+      "date": "2025-12-05",
+      "cpi": 347.27,
+      "interest_rates": 5.51,
+      "unemployment": 3.6,
+      "consumer_sentiment": 67.09,
+      "money_supply": 24704.24,
+      "industrial_production": 104.09
+    },
+    {
+      "date": "2025-12-06",
+      "cpi": 347.05,
+      "interest_rates": 4.93,
+      "unemployment": 3.93,
+      "consumer_sentiment": 66.25,
+      "money_supply": 24595.43,
+      "industrial_production": 103.68
+    },
+    {
+      "date": "2025-12-07",
+      "cpi": 346.41,
+      "interest_rates": 4.83,
+      "unemployment": 3.59,
+      "consumer_sentiment": 74.46,
+      "money_supply": 24672.67,
+      "industrial_production": 105.04
+    },
+    {
+      "date": "2025-12-08",
+      "cpi": 346.62,
+      "interest_rates": 5.13,
+      "unemployment": 3.74,
+      "consumer_sentiment": 69.53,
+      "money_supply": 24758.45,
+      "industrial_production": 104.57
+    },
+    {
+      "date": "2025-12-09",
+      "cpi": 347.4,
+      "interest_rates": 5.25,
+      "unemployment": 3.77,
+      "consumer_sentiment": 70.8,
+      "money_supply": 24713.28,
+      "industrial_production": 105.21
+    },
+    {
+      "date": "2025-12-10",
+      "cpi": 345.85,
+      "interest_rates": 4.92,
+      "unemployment": 3.54,
+      "consumer_sentiment": 68.32,
+      "money_supply": 24725.42,
+      "industrial_production": 105.14
+    },
+    {
+      "date": "2025-12-11",
+      "cpi": 346.74,
+      "interest_rates": 5.69,
+      "unemployment": 3.95,
+      "consumer_sentiment": 74.67,
+      "money_supply": 24755.86,
+      "industrial_production": 106.94
+    },
+    {
+      "date": "2025-12-12",
+      "cpi": 348.24,
+      "interest_rates": 5.26,
+      "unemployment": 3.94,
+      "consumer_sentiment": 66.53,
+      "money_supply": 24681.27,
+      "industrial_production": 105.97
+    },
+    {
+      "date": "2025-12-13",
+      "cpi": 346.28,
+      "interest_rates": 4.91,
+      "unemployment": 3.54,
+      "consumer_sentiment": 69.81,
+      "money_supply": 24659.95,
+      "industrial_production": 103.44
+    },
+    {
+      "date": "2025-12-14",
+      "cpi": 348.24,
+      "interest_rates": 5.33,
+      "unemployment": 3.47,
+      "consumer_sentiment": 69.04,
+      "money_supply": 24729.45,
+      "industrial_production": 105.33
+    },
+    {
+      "date": "2025-12-15",
+      "cpi": 346.6,
+      "interest_rates": 5.09,
+      "unemployment": 3.41,
+      "consumer_sentiment": 65.45,
+      "money_supply": 24725.46,
+      "industrial_production": 105.28
+    },
+    {
+      "date": "2025-12-16",
+      "cpi": 347.21,
+      "interest_rates": 5.54,
+      "unemployment": 3.77,
+      "consumer_sentiment": 67.5,
+      "money_supply": 24739.0,
+      "industrial_production": 106.36
+    },
+    {
+      "date": "2025-12-17",
+      "cpi": 346.5,
+      "interest_rates": 5.6,
+      "unemployment": 3.78,
+      "consumer_sentiment": 73.29,
+      "money_supply": 24717.87,
+      "industrial_production": 105.86
+    },
+    {
+      "date": "2025-12-18",
+      "cpi": 348.83,
+      "interest_rates": 5.3,
+      "unemployment": 3.8,
+      "consumer_sentiment": 72.18,
+      "money_supply": 24854.9,
+      "industrial_production": 106.87
+    },
+    {
+      "date": "2025-12-19",
+      "cpi": 349.96,
+      "interest_rates": 5.44,
+      "unemployment": 3.51,
+      "consumer_sentiment": 65.81,
+      "money_supply": 24755.66,
+      "industrial_production": 103.63
+    },
+    {
+      "date": "2025-12-20",
+      "cpi": 348.82,
+      "interest_rates": 5.24,
+      "unemployment": 3.67,
+      "consumer_sentiment": 65.1,
+      "money_supply": 24891.77,
+      "industrial_production": 104.45
+    },
+    {
+      "date": "2025-12-21",
+      "cpi": 347.74,
+      "interest_rates": 5.06,
+      "unemployment": 3.9,
+      "consumer_sentiment": 71.55,
+      "money_supply": 24854.49,
+      "industrial_production": 104.52
+    },
+    {
+      "date": "2025-12-22",
+      "cpi": 347.15,
+      "interest_rates": 5.48,
+      "unemployment": 3.97,
+      "consumer_sentiment": 71.68,
+      "money_supply": 24834.81,
+      "industrial_production": 104.55
+    },
+    {
+      "date": "2025-12-23",
+      "cpi": 349.49,
+      "interest_rates": 4.8,
+      "unemployment": 3.47,
+      "consumer_sentiment": 65.02,
+      "money_supply": 24838.63,
+      "industrial_production": 104.18
+    },
+    {
+      "date": "2025-12-24",
+      "cpi": 348.06,
+      "interest_rates": 5.3,
+      "unemployment": 3.72,
+      "consumer_sentiment": 73.06,
+      "money_supply": 24902.29,
+      "industrial_production": 105.91
+    },
+    {
+      "date": "2025-12-25",
+      "cpi": 349.28,
+      "interest_rates": 4.84,
+      "unemployment": 3.81,
+      "consumer_sentiment": 69.83,
+      "money_supply": 24886.92,
+      "industrial_production": 105.36
+    },
+    {
+      "date": "2025-12-26",
+      "cpi": 348.16,
+      "interest_rates": 5.59,
+      "unemployment": 3.83,
+      "consumer_sentiment": 65.35,
+      "money_supply": 24896.38,
+      "industrial_production": 106.96
+    },
+    {
+      "date": "2025-12-27",
+      "cpi": 350.48,
+      "interest_rates": 4.91,
+      "unemployment": 3.89,
+      "consumer_sentiment": 66.22,
+      "money_supply": 24891.69,
+      "industrial_production": 103.91
+    },
+    {
+      "date": "2025-12-28",
+      "cpi": 348.14,
+      "interest_rates": 5.51,
+      "unemployment": 3.61,
+      "consumer_sentiment": 72.49,
+      "money_supply": 24925.48,
+      "industrial_production": 106.31
+    },
+    {
+      "date": "2025-12-29",
+      "cpi": 348.47,
+      "interest_rates": 4.99,
+      "unemployment": 3.73,
+      "consumer_sentiment": 65.82,
+      "money_supply": 24881.73,
+      "industrial_production": 103.37
+    },
+    {
+      "date": "2025-12-30",
+      "cpi": 350.22,
+      "interest_rates": 5.09,
+      "unemployment": 3.96,
+      "consumer_sentiment": 66.81,
+      "money_supply": 24888.63,
+      "industrial_production": 103.96
+    },
+    {
+      "date": "2025-12-31",
+      "cpi": 348.78,
+      "interest_rates": 5.25,
+      "unemployment": 3.83,
+      "consumer_sentiment": 68.73,
+      "money_supply": 24888.22,
+      "industrial_production": 103.65
+    },
+    {
+      "date": "2026-01-01",
+      "cpi": 350.42,
+      "interest_rates": 5.73,
+      "unemployment": 3.87,
+      "consumer_sentiment": 72.03,
+      "money_supply": 24918.14,
+      "industrial_production": 103.1
+    },
+    {
+      "date": "2026-01-02",
+      "cpi": 351.2,
+      "interest_rates": 5.41,
+      "unemployment": 3.59,
+      "consumer_sentiment": 73.37,
+      "money_supply": 24981.09,
+      "industrial_production": 103.88
+    },
+    {
+      "date": "2026-01-03",
+      "cpi": 350.39,
+      "interest_rates": 5.01,
+      "unemployment": 3.71,
+      "consumer_sentiment": 67.94,
+      "money_supply": 24876.82,
+      "industrial_production": 106.09
+    },
+    {
+      "date": "2026-01-04",
+      "cpi": 349.02,
+      "interest_rates": 4.78,
+      "unemployment": 3.59,
+      "consumer_sentiment": 69.61,
+      "money_supply": 24905.52,
+      "industrial_production": 104.08
+    },
+    {
+      "date": "2026-01-05",
+      "cpi": 350.79,
+      "interest_rates": 4.91,
+      "unemployment": 3.75,
+      "consumer_sentiment": 69.32,
+      "money_supply": 24996.34,
+      "industrial_production": 104.53
+    },
+    {
+      "date": "2026-01-06",
+      "cpi": 349.76,
+      "interest_rates": 5.03,
+      "unemployment": 3.58,
+      "consumer_sentiment": 65.74,
+      "money_supply": 24943.99,
+      "industrial_production": 106.0
+    }
+  ],
+  "metadata": {
+    "export_timestamp": "2026-01-07T17:51:01.278937",
+    "row_count": 500,
+    "source": "synthetic_demo_data",
+    "note": "Generated sample data for demo purposes"
+  }
+}

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background gradient circle -->
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9333ea;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Circle background -->
+  <circle cx="50" cy="50" r="48" fill="url(#grad)"/>
+
+  <!-- Chart line icon -->
+  <g fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Y axis -->
+    <line x1="25" y1="30" x2="25" y2="70" />
+    <!-- X axis -->
+    <line x1="25" y1="70" x2="75" y2="70" />
+    <!-- Trend line -->
+    <polyline points="25,55 40,50 55,40 70,30 75,25" />
+    <!-- Data points -->
+    <circle cx="25" cy="55" r="3" fill="white" stroke="none"/>
+    <circle cx="40" cy="50" r="3" fill="white" stroke="none"/>
+    <circle cx="55" cy="40" r="3" fill="white" stroke="none"/>
+    <circle cx="70" cy="30" r="3" fill="white" stroke="none"/>
+    <circle cx="75" cy="25" r="3" fill="white" stroke="none"/>
+  </g>
+</svg>
