@@ -361,7 +361,7 @@ const demoScenariosApi = {
   /**
    * Analyze scenario (demo mode)
    */
-  analyzeScenario: async (request: ScenarioAnalysisRequest): Promise<ScenarioAnalysisResponse> => {
+  analyzeScenario: async (request: ScenarioAnalysisRequest): Promise<any> => {
     // Generate demo scenario predictions
     const basePrediction = 600000;
     const scenarioMultiplier =
@@ -371,8 +371,70 @@ const demoScenariosApi = {
     const prediction = basePrediction * scenarioMultiplier;
     const confidence = basePrediction * 0.05;
 
+    // Generate impact summary for different economic indicators
+    const impact_summary = [
+      {
+        indicator: 'UNRATE',
+        category: 'Labor Market',
+        source: 'BLS',
+        base_value: 4.2,
+        scenario_value: request.scenario_type === 'optimistic' ? 3.8 : request.scenario_type === 'pessimistic' ? 5.5 : 4.2,
+        change: request.scenario_type === 'optimistic' ? -0.4 : request.scenario_type === 'pessimistic' ? 1.3 : 0,
+        change_pct: request.scenario_type === 'optimistic' ? -9.5 : request.scenario_type === 'pessimistic' ? 31.0 : 0,
+      },
+      {
+        indicator: 'FEDFUNDS',
+        category: 'Monetary Policy',
+        source: 'FRED',
+        base_value: 4.25,
+        scenario_value: request.scenario_type === 'optimistic' ? 3.5 : request.scenario_type === 'pessimistic' ? 5.5 : 4.25,
+        change: request.scenario_type === 'optimistic' ? -0.75 : request.scenario_type === 'pessimistic' ? 1.25 : 0,
+        change_pct: request.scenario_type === 'optimistic' ? -17.6 : request.scenario_type === 'pessimistic' ? 29.4 : 0,
+      },
+      {
+        indicator: 'CPI',
+        category: 'Consumer',
+        source: 'BLS',
+        base_value: 2.8,
+        scenario_value: request.scenario_type === 'optimistic' ? 2.2 : request.scenario_type === 'pessimistic' ? 4.0 : 2.8,
+        change: request.scenario_type === 'optimistic' ? -0.6 : request.scenario_type === 'pessimistic' ? 1.2 : 0,
+        change_pct: request.scenario_type === 'optimistic' ? -21.4 : request.scenario_type === 'pessimistic' ? 42.9 : 0,
+      },
+      {
+        indicator: 'PAYEMS',
+        category: 'Labor Market',
+        source: 'BLS',
+        base_value: 200000,
+        scenario_value: request.scenario_type === 'optimistic' ? 250000 : request.scenario_type === 'pessimistic' ? 150000 : 200000,
+        change: request.scenario_type === 'optimistic' ? 50000 : request.scenario_type === 'pessimistic' ? -50000 : 0,
+        change_pct: request.scenario_type === 'optimistic' ? 25.0 : request.scenario_type === 'pessimistic' ? -25.0 : 0,
+      },
+      {
+        indicator: 'GDP',
+        category: 'Production',
+        source: 'BEA',
+        base_value: 2.5,
+        scenario_value: request.scenario_type === 'optimistic' ? 3.5 : request.scenario_type === 'pessimistic' ? -0.5 : 2.5,
+        change: request.scenario_type === 'optimistic' ? 1.0 : request.scenario_type === 'pessimistic' ? -3.0 : 0,
+        change_pct: request.scenario_type === 'optimistic' ? 40.0 : request.scenario_type === 'pessimistic' ? -120.0 : 0,
+      },
+      {
+        indicator: 'Consumer Confidence',
+        category: 'Consumer',
+        source: 'Conference Board',
+        base_value: 100,
+        scenario_value: request.scenario_type === 'optimistic' ? 115 : request.scenario_type === 'pessimistic' ? 75 : 100,
+        change: request.scenario_type === 'optimistic' ? 15 : request.scenario_type === 'pessimistic' ? -25 : 0,
+        change_pct: request.scenario_type === 'optimistic' ? 15.0 : request.scenario_type === 'pessimistic' ? -25.0 : 0,
+      },
+    ];
+
     return {
       scenario_type: request.scenario_type,
+      scenario_name: request.scenario_type === 'optimistic' ? 'Optimistic' :
+                     request.scenario_type === 'pessimistic' ? 'Pessimistic' : 'Baseline',
+      description: request.scenario_type === 'optimistic' ? 'Strong economic growth scenario' :
+                   request.scenario_type === 'pessimistic' ? 'Economic downturn scenario' : 'Baseline economic conditions',
       category: request.category,
       prediction: Math.round(prediction),
       confidence_interval: [
@@ -380,6 +442,7 @@ const demoScenariosApi = {
         Math.round(prediction + confidence),
       ],
       change_from_baseline: scenarioMultiplier !== 1.0 ? Math.round((scenarioMultiplier - 1.0) * 100) : undefined,
+      impact_summary,
       assumptions: {
         gdp_growth: request.scenario_type === 'optimistic' ? 2.5 : request.scenario_type === 'pessimistic' ? 1.0 : 2.0,
         unemployment_rate: request.scenario_type === 'optimistic' ? 4.0 : request.scenario_type === 'pessimistic' ? 5.5 : 4.5,
