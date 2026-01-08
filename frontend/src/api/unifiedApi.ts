@@ -222,12 +222,18 @@ const demoTrainingMetricsApi = {
   getModels: async (): Promise<TrainingMetricsResponse> => {
     const summary = await demoDataService.getSummary();
 
+    // Get all model types from summary
+    const modelTypes = [
+      ...summary.models_available?.with_shap || [],
+      ...summary.models_available?.without_shap || []
+    ];
+
     // Transform demo data to match training metrics format
     return {
-      models: summary.models_available.models.map((modelName, index) => ({
+      models: modelTypes.map((modelName, index) => ({
         id: index + 1,
         model_name: modelName,
-        category: summary.models_available.categories?.[index] || 'Unknown',
+        category: 'Total Retail Sales',
         training_date: '2025-01-01',
         metrics: {
           RMSE: 1000 + Math.random() * 500,
@@ -243,8 +249,8 @@ const demoTrainingMetricsApi = {
         },
         is_active: true,
       })),
-      total_count: summary.models_available.total_count,
-      active_count: summary.models_available.total_count,
+      total_count: modelTypes.length,
+      active_count: modelTypes.length,
     };
   },
 };

@@ -1,0 +1,69 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "model_name": "Total_Retail_Sales_LGBM",
+      "prediction_date": "2024-12-01",
+      "predicted_value": 650000,
+      "actual_value": 645000,
+      "confidence_interval_lower": 640000,
+      "confidence_interval_upper": 660000,
+      "shap_values": null,
+      "features": null,
+      "created_at": "2024-12-01T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "model_name": "Total_Retail_Sales_LGBM",
+      "prediction_date": "2024-12-02",
+      "predicted_value": 652000,
+      "actual_value": null,
+      "confidence_interval_lower": 642000,
+      "confidence_interval_upper": 662000,
+      "shap_values": null,
+      "features": null,
+      "created_at": "2024-12-02T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "model_name": "Total_Retail_Sales_PatchTST",
+      "prediction_date": "2024-12-01",
+      "predicted_value": 648000,
+      "actual_value": 645000,
+      "confidence_interval_lower": 638000,
+      "confidence_interval_upper": 658000,
+      "shap_values": null,
+      "features": null,
+      "created_at": "2024-12-01T10:00:00Z"
+    },
+    {
+      "id": 4,
+      "model_name": "Total_Retail_Sales_AutoARIMA",
+      "prediction_date": "2024-12-01",
+      "predicted_value": 646000,
+      "actual_value": 645000,
+      "confidence_interval_lower": 636000,
+      "confidence_interval_upper": 656000,
+      "shap_values": null,
+      "features": null,
+      "created_at": "2024-12-01T10:00:00Z"
+    },
+    {
+      "id": 5,
+      "model_name": "Total_Retail_Sales_AutoETS",
+      "prediction_date": "2024-12-01",
+      "predicted_value": 647000,
+      "actual_value": 645000,
+      "confidence_interval_lower": 637000,
+      "confidence_interval_upper": 657000,
+      "shap_values": null,
+      "features": null,
+      "created_at": "2024-12-01T10:00:00Z"
+    }
+  ],
+  "metadata": {
+    "export_timestamp": "2025-01-07T23:00:00Z",
+    "row_count": 5,
+    "total_predictions_in_db": 14250
+  }
+}
