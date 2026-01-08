@@ -31,13 +31,15 @@
     "indicators_sample": 500
   },
   "models_available": {
-    "total_count": 5,
+    "total_count": 7,
     "models": [
       "LGBM",
       "RandomForest",
       "AutoARIMA",
       "AutoETS",
-      "SeasonalNaive"
+      "SeasonalNaive",
+      "TimesNet",
+      "PatchTST"
     ]
   }
 }
