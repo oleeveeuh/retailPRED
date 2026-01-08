@@ -126,13 +126,13 @@ const demoModelsApi = {
       models: summary.models_available.models.map((name, index) => ({
         id: index + 1,
         model_name: name,
-        model_type: name.split('_').pop() as any,
+        model_type: name as any, // Use the name directly since models don't have underscores
         training_date: '2025-01-01',
         metrics: {
-          rmse: 1000,
-          mae: 800,
-          r2: 0.94,
-          mape: 4.5,
+          rmse: 1000 + Math.random() * 500,
+          mae: 800 + Math.random() * 400,
+          r2: 0.92 + Math.random() * 0.07,
+          mape: 3 + Math.random() * 5,
           training_samples: 1000,
         },
         file_path: '/models/' + name,
