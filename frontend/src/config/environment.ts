@@ -2,6 +2,7 @@
  * Environment Configuration
  *
  * Centralized configuration for demo mode and API settings
+ * Updated: 2026-01-08
  */
 
 export const config = {
