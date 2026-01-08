@@ -1,10 +1,12 @@
 #!/bin/bash
 # Vercel Build Script
 # Forces demo mode by creating .env.production file
+# Build date: 2026-01-08
 
 echo "📍 Current directory: $(pwd)"
 echo "📁 Files in current directory:"
 ls -la | grep -E "\.env|package"
+echo "📅 Build timestamp: $(date)"
 
 # Force demo mode regardless of Vercel env vars
 cat > .env.production << 'EOF'
