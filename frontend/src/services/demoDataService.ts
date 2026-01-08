@@ -150,6 +150,9 @@ class DemoDataService {
       actual_value: p.actual_value ?? undefined,
       confidence_interval_lower: p.confidence_interval_lower ?? undefined,
       confidence_interval_upper: p.confidence_interval_upper ?? undefined,
+      error_absolute: p.error_absolute,
+      error_percentage: p.error_percentage,
+      confidence_score: p.confidence_score,
       is_validated: p.actual_value !== null,
       created_at: p.created_at,
     }));
