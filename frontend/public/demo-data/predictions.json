@@ -5,7 +5,7 @@
       "model_name": "electronics_and_appliances_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 62068.77,
-      "actual_value": null,
+      "actual_value": 60076.81,
       "confidence_interval_lower": 60827.4,
       "confidence_interval_upper": 63310.15,
       "shap_values": {
@@ -255,14 +255,15 @@
         "trend_strength": -192.89984097737258
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.968
     },
     {
       "id": 40088,
       "model_name": "sporting_goods_hobby_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 928.5,
-      "actual_value": null,
+      "actual_value": 895.06,
       "confidence_interval_lower": 909.93,
       "confidence_interval_upper": 947.07,
       "shap_values": {
@@ -407,14 +408,15 @@
         "trend_strength": -2.0449044916565957
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.964
     },
     {
       "id": 40087,
       "model_name": "clothing_accessories_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 7052.04,
-      "actual_value": null,
+      "actual_value": 7250.57,
       "confidence_interval_lower": 6911.0,
       "confidence_interval_upper": 7193.08,
       "shap_values": {
@@ -665,14 +667,15 @@
         "trend_strength": -12.165482205503617
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.972
     },
     {
       "id": 40086,
       "model_name": "furniture_home_furnishings_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 849.93,
-      "actual_value": null,
+      "actual_value": 881.66,
       "confidence_interval_lower": 832.93,
       "confidence_interval_upper": 866.93,
       "shap_values": {
@@ -820,14 +823,15 @@
         "trend_strength": -0.8343077895693187
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.963
     },
     {
       "id": 40085,
       "model_name": "general_merchandise_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 5660.2,
-      "actual_value": null,
+      "actual_value": 5434.16,
       "confidence_interval_lower": 5547.0,
       "confidence_interval_upper": 5773.41,
       "shap_values": {
@@ -972,14 +976,15 @@
         "trend_strength": -3.1463831481404254
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.96
     },
     {
       "id": 40084,
       "model_name": "health_personal_care_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 5475.14,
-      "actual_value": null,
+      "actual_value": 5652.41,
       "confidence_interval_lower": 5365.64,
       "confidence_interval_upper": 5584.64,
       "shap_values": {
@@ -1229,14 +1234,15 @@
         "trend_strength": -8.966040860551823
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.968
     },
     {
       "id": 40083,
       "model_name": "food_beverage_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 7704.89,
-      "actual_value": null,
+      "actual_value": 7969.24,
       "confidence_interval_lower": 7550.8,
       "confidence_interval_upper": 7858.99,
       "shap_values": {
@@ -1486,14 +1492,15 @@
         "trend_strength": -8.12072876643015
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.966
     },
     {
       "id": 40082,
       "model_name": "gasoline_stations_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 2573.64,
-      "actual_value": null,
+      "actual_value": 2515.44,
       "confidence_interval_lower": 2522.17,
       "confidence_interval_upper": 2625.12,
       "shap_values": {
@@ -1741,14 +1748,15 @@
         "trend_strength": -2.355658102107542
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.977
     },
     {
       "id": 40081,
       "model_name": "automobile_dealers_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 12747.26,
-      "actual_value": null,
+      "actual_value": 13104.78,
       "confidence_interval_lower": 12492.32,
       "confidence_interval_upper": 13002.21,
       "shap_values": {
@@ -1998,14 +2006,15 @@
         "trend_strength": -13.005935275186271
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.972
     },
     {
       "id": 40080,
       "model_name": "building_materials_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 710.49,
-      "actual_value": null,
+      "actual_value": 681.3,
       "confidence_interval_lower": 696.28,
       "confidence_interval_upper": 724.7,
       "shap_values": {
@@ -2153,14 +2162,15 @@
         "trend_strength": -0.9733140842209257
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.959
     },
     {
       "id": 40079,
       "model_name": "total_sales_RandomForest_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 44170.17,
-      "actual_value": null,
+      "actual_value": 42945.92,
       "confidence_interval_lower": 43286.77,
       "confidence_interval_upper": 45053.57,
       "shap_values": {
@@ -2408,14 +2418,15 @@
         "trend_strength": -52.20409448816681
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.972
     },
     {
       "id": 39506,
       "model_name": "electronics_and_appliances_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 66428.45,
-      "actual_value": null,
+      "actual_value": 65594.51,
       "confidence_interval_lower": 65963.45,
       "confidence_interval_upper": 66893.45,
       "shap_values": {
@@ -2665,14 +2676,15 @@
         "trend_strength": 1.1802733994381065
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.987
     },
     {
       "id": 39505,
       "model_name": "sporting_goods_hobby_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 720.26,
-      "actual_value": null,
+      "actual_value": 712.91,
       "confidence_interval_lower": 715.22,
       "confidence_interval_upper": 725.31,
       "shap_values": {
@@ -2817,14 +2829,15 @@
         "trend_strength": -0.029344455372829436
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.99
     },
     {
       "id": 39504,
       "model_name": "clothing_accessories_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 7215.06,
-      "actual_value": null,
+      "actual_value": 7386.84,
       "confidence_interval_lower": 7164.55,
       "confidence_interval_upper": 7265.56,
       "shap_values": {
@@ -3075,14 +3088,15 @@
         "trend_strength": -4.368219318255579
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.976
     },
     {
       "id": 39503,
       "model_name": "furniture_home_furnishings_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 546.15,
-      "actual_value": null,
+      "actual_value": 532.61,
       "confidence_interval_lower": 542.33,
       "confidence_interval_upper": 549.98,
       "shap_values": {
@@ -3230,14 +3244,15 @@
         "trend_strength": -0.00232654163573482
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.975
     },
     {
       "id": 39502,
       "model_name": "general_merchandise_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 3594.84,
-      "actual_value": null,
+      "actual_value": 3625.13,
       "confidence_interval_lower": 3569.68,
       "confidence_interval_upper": 3620.0,
       "shap_values": {
@@ -3382,14 +3397,15 @@
         "trend_strength": -2.280524339001888
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.99
     },
     {
       "id": 39501,
       "model_name": "health_personal_care_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 5748.68,
-      "actual_value": null,
+      "actual_value": 5868.02,
       "confidence_interval_lower": 5708.44,
       "confidence_interval_upper": 5788.92,
       "shap_values": {
@@ -3639,14 +3655,15 @@
         "trend_strength": -5.320438854908381
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.979
     },
     {
       "id": 39500,
       "model_name": "food_beverage_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 7935.45,
-      "actual_value": null,
+      "actual_value": 7873.54,
       "confidence_interval_lower": 7879.9,
       "confidence_interval_upper": 7991.0,
       "shap_values": {
@@ -3896,14 +3913,15 @@
         "trend_strength": -3.3483995268071167
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.99
     },
     {
       "id": 39499,
       "model_name": "gasoline_stations_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 2511.6,
-      "actual_value": null,
+      "actual_value": 2464.34,
       "confidence_interval_lower": 2494.02,
       "confidence_interval_upper": 2529.18,
       "shap_values": {
@@ -4151,14 +4169,15 @@
         "trend_strength": -0.1791168009531788
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.981
     },
     {
       "id": 39498,
       "model_name": "automobile_dealers_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 13158.76,
-      "actual_value": null,
+      "actual_value": 13309.84,
       "confidence_interval_lower": 13066.65,
       "confidence_interval_upper": 13250.87,
       "shap_values": {
@@ -4408,14 +4427,15 @@
         "trend_strength": 0.3248087438809022
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.989
     },
     {
       "id": 39497,
       "model_name": "building_materials_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 539.13,
-      "actual_value": null,
+      "actual_value": 528.46,
       "confidence_interval_lower": 535.35,
       "confidence_interval_upper": 542.9,
       "shap_values": {
@@ -4563,14 +4583,15 @@
         "trend_strength": -0.11226486053524483
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.98
     },
     {
       "id": 39496,
       "model_name": "total_sales_LGBM_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 44302.12,
-      "actual_value": null,
+      "actual_value": 43590.5,
       "confidence_interval_lower": 43992.01,
       "confidence_interval_upper": 44612.24,
       "shap_values": {
@@ -4818,410 +4839,444 @@
         "trend_strength": -1.703703363344094
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.984
     },
     {
       "id": 37749,
       "model_name": "electronics_and_appliances_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 94348.09,
-      "actual_value": null,
+      "actual_value": 110012.06,
       "confidence_interval_lower": 88225.26,
       "confidence_interval_upper": 100895.85,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.834
     },
     {
       "id": 37748,
       "model_name": "sporting_goods_hobby_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 1954.48,
-      "actual_value": null,
+      "actual_value": 1567.18,
       "confidence_interval_lower": 1827.64,
       "confidence_interval_upper": 2090.12,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.802
     },
     {
       "id": 37747,
       "model_name": "clothing_accessories_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 9937.64,
-      "actual_value": null,
+      "actual_value": 8524.04,
       "confidence_interval_lower": 9292.73,
       "confidence_interval_upper": 10627.32,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.858
     },
     {
       "id": 37746,
       "model_name": "furniture_home_furnishings_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 1492.68,
-      "actual_value": null,
+      "actual_value": 1665.82,
       "confidence_interval_lower": 1395.81,
       "confidence_interval_upper": 1596.27,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.884
     },
     {
       "id": 37745,
       "model_name": "general_merchandise_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 16649.94,
-      "actual_value": null,
+      "actual_value": 14667.86,
       "confidence_interval_lower": 15569.43,
       "confidence_interval_upper": 17805.45,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.881
     },
     {
       "id": 37744,
       "model_name": "health_personal_care_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 6824.63,
-      "actual_value": null,
+      "actual_value": 5859.18,
       "confidence_interval_lower": 6381.73,
       "confidence_interval_upper": 7298.26,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.859
     },
     {
       "id": 37743,
       "model_name": "food_beverage_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 10982.31,
-      "actual_value": null,
+      "actual_value": 10254.97,
       "confidence_interval_lower": 10269.6,
       "confidence_interval_upper": 11744.49,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.934
     },
     {
       "id": 37742,
       "model_name": "gasoline_stations_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 3495.98,
-      "actual_value": null,
+      "actual_value": 3833.22,
       "confidence_interval_lower": 3269.1,
       "confidence_interval_upper": 3738.6,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.904
     },
     {
       "id": 37741,
       "model_name": "automobile_dealers_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 18230.99,
-      "actual_value": null,
+      "actual_value": 21462.41,
       "confidence_interval_lower": 17047.87,
       "confidence_interval_upper": 19496.22,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.823
     },
     {
       "id": 37740,
       "model_name": "building_materials_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 998.04,
-      "actual_value": null,
+      "actual_value": 851.81,
       "confidence_interval_lower": 933.27,
       "confidence_interval_upper": 1067.3,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.853
     },
     {
       "id": 37739,
       "model_name": "total_sales_SeasonalNaive_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 63527.21,
-      "actual_value": null,
+      "actual_value": 58196.52,
       "confidence_interval_lower": 59404.53,
       "confidence_interval_upper": 67935.99,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.916
     },
     {
       "id": 37166,
       "model_name": "electronics_and_appliances_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 94348.09,
-      "actual_value": null,
+      "actual_value": 108260.84,
       "confidence_interval_lower": 88307.84,
       "confidence_interval_upper": 100801.5,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.853
     },
     {
       "id": 37165,
       "model_name": "sporting_goods_hobby_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 1954.48,
-      "actual_value": null,
+      "actual_value": 1819.82,
       "confidence_interval_lower": 1829.35,
       "confidence_interval_upper": 2088.16,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.931
     },
     {
       "id": 37164,
       "model_name": "clothing_accessories_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 9937.64,
-      "actual_value": null,
+      "actual_value": 8076.35,
       "confidence_interval_lower": 9301.43,
       "confidence_interval_upper": 10617.38,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.813
     },
     {
       "id": 37163,
       "model_name": "furniture_home_furnishings_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 1492.68,
-      "actual_value": null,
+      "actual_value": 1420.05,
       "confidence_interval_lower": 1397.12,
       "confidence_interval_upper": 1594.78,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.951
     },
     {
       "id": 37162,
       "model_name": "general_merchandise_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 16649.94,
-      "actual_value": null,
+      "actual_value": 19068.4,
       "confidence_interval_lower": 15584.0,
       "confidence_interval_upper": 17788.8,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.855
     },
     {
       "id": 37161,
       "model_name": "health_personal_care_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 6824.63,
-      "actual_value": null,
+      "actual_value": 7490.57,
       "confidence_interval_lower": 6387.71,
       "confidence_interval_upper": 7291.43,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.902
     },
     {
       "id": 37160,
       "model_name": "food_beverage_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 10982.31,
-      "actual_value": null,
+      "actual_value": 9944.9,
       "confidence_interval_lower": 10279.22,
       "confidence_interval_upper": 11733.5,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.906
     },
     {
       "id": 37159,
       "model_name": "gasoline_stations_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 3495.98,
-      "actual_value": null,
+      "actual_value": 4137.89,
       "confidence_interval_lower": 3272.16,
       "confidence_interval_upper": 3735.1,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.816
     },
     {
       "id": 37158,
       "model_name": "automobile_dealers_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 18230.99,
-      "actual_value": null,
+      "actual_value": 15842.38,
       "confidence_interval_lower": 17063.83,
       "confidence_interval_upper": 19477.99,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.869
     },
     {
       "id": 37157,
       "model_name": "building_materials_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 998.04,
-      "actual_value": null,
+      "actual_value": 864.57,
       "confidence_interval_lower": 934.15,
       "confidence_interval_upper": 1066.31,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.866
     },
     {
       "id": 37156,
       "model_name": "total_sales_AutoETS_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 63527.21,
-      "actual_value": null,
+      "actual_value": 73562.57,
       "confidence_interval_lower": 59460.13,
       "confidence_interval_upper": 67872.47,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.842
     },
     {
       "id": 36583,
       "model_name": "electronics_and_appliances_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 94348.09,
-      "actual_value": null,
+      "actual_value": 106246.9,
       "confidence_interval_lower": 85259.44,
       "confidence_interval_upper": 104405.6,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.874
     },
     {
       "id": 36582,
       "model_name": "sporting_goods_hobby_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 1954.48,
-      "actual_value": null,
+      "actual_value": 2090.59,
       "confidence_interval_lower": 1766.2,
       "confidence_interval_upper": 2162.82,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.93
     },
     {
       "id": 36581,
       "model_name": "clothing_accessories_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 9937.64,
-      "actual_value": null,
+      "actual_value": 11258.43,
       "confidence_interval_lower": 8980.34,
       "confidence_interval_upper": 10997.0,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.867
     },
     {
       "id": 36580,
       "model_name": "furniture_home_furnishings_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 1492.68,
-      "actual_value": null,
+      "actual_value": 1146.41,
       "confidence_interval_lower": 1348.89,
       "confidence_interval_upper": 1651.8,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.768
     },
     {
       "id": 36579,
       "model_name": "general_merchandise_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 16649.94,
-      "actual_value": null,
+      "actual_value": 20439.53,
       "confidence_interval_lower": 15046.04,
       "confidence_interval_upper": 18424.83,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.772
     },
     {
       "id": 36578,
       "model_name": "health_personal_care_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 6824.63,
-      "actual_value": null,
+      "actual_value": 8141.19,
       "confidence_interval_lower": 6167.2,
       "confidence_interval_upper": 7552.13,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.807
     },
     {
       "id": 36577,
       "model_name": "food_beverage_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 10982.31,
-      "actual_value": null,
+      "actual_value": 12192.35,
       "confidence_interval_lower": 9924.38,
       "confidence_interval_upper": 12153.03,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.89
     },
     {
       "id": 36576,
       "model_name": "gasoline_stations_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 3495.98,
-      "actual_value": null,
+      "actual_value": 3935.15,
       "confidence_interval_lower": 3159.21,
       "confidence_interval_upper": 3868.65,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.874
     },
     {
       "id": 36575,
       "model_name": "automobile_dealers_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 18230.99,
-      "actual_value": null,
+      "actual_value": 14759.12,
       "confidence_interval_lower": 16474.78,
       "confidence_interval_upper": 20174.41,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.81
     },
     {
       "id": 36574,
       "model_name": "building_materials_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 998.04,
-      "actual_value": null,
+      "actual_value": 1061.98,
       "confidence_interval_lower": 901.9,
       "confidence_interval_upper": 1104.43,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.936
     },
     {
       "id": 36573,
       "model_name": "total_sales_AutoARIMA_model",
       "prediction_date": "2026-12-31",
       "predicted_value": 63527.21,
-      "actual_value": null,
+      "actual_value": 55095.09,
       "confidence_interval_lower": 57407.56,
       "confidence_interval_upper": 70299.21,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.867
     },
     {
       "id": 40078,
       "model_name": "electronics_and_appliances_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 61910.31,
-      "actual_value": null,
+      "actual_value": 60825.14,
       "confidence_interval_lower": 60672.1,
       "confidence_interval_upper": 63148.51,
       "shap_values": {
@@ -5471,14 +5526,15 @@
         "trend_strength": -193.06399414108412
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.982
     },
     {
       "id": 40077,
       "model_name": "sporting_goods_hobby_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 928.5,
-      "actual_value": null,
+      "actual_value": 912.88,
       "confidence_interval_lower": 909.93,
       "confidence_interval_upper": 947.07,
       "shap_values": {
@@ -5623,14 +5679,15 @@
         "trend_strength": -2.044547880869086
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.983
     },
     {
       "id": 40076,
       "model_name": "clothing_accessories_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 7011.9,
-      "actual_value": null,
+      "actual_value": 7143.87,
       "confidence_interval_lower": 6871.66,
       "confidence_interval_upper": 7152.14,
       "shap_values": {
@@ -5881,14 +5938,15 @@
         "trend_strength": -12.165482205503617
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.981
     },
     {
       "id": 40075,
       "model_name": "furniture_home_furnishings_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 849.93,
-      "actual_value": null,
+      "actual_value": 823.26,
       "confidence_interval_lower": 832.93,
       "confidence_interval_upper": 866.93,
       "shap_values": {
@@ -6036,14 +6094,15 @@
         "trend_strength": -0.8343395305733832
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.969
     },
     {
       "id": 40074,
       "model_name": "general_merchandise_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 5660.2,
-      "actual_value": null,
+      "actual_value": 5453.61,
       "confidence_interval_lower": 5547.0,
       "confidence_interval_upper": 5773.41,
       "shap_values": {
@@ -6188,14 +6247,15 @@
         "trend_strength": -3.1417084504501065
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.964
     },
     {
       "id": 40073,
       "model_name": "health_personal_care_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 5439.71,
-      "actual_value": null,
+      "actual_value": 5561.69,
       "confidence_interval_lower": 5330.92,
       "confidence_interval_upper": 5548.51,
       "shap_values": {
@@ -6445,14 +6505,15 @@
         "trend_strength": -10.703839952961063
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.978
     },
     {
       "id": 40072,
       "model_name": "food_beverage_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 7658.76,
-      "actual_value": null,
+      "actual_value": 7381.2,
       "confidence_interval_lower": 7505.59,
       "confidence_interval_upper": 7811.94,
       "shap_values": {
@@ -6702,14 +6763,15 @@
         "trend_strength": -8.109947259643786
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.964
     },
     {
       "id": 40071,
       "model_name": "gasoline_stations_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 2550.33,
-      "actual_value": null,
+      "actual_value": 2491.03,
       "confidence_interval_lower": 2499.32,
       "confidence_interval_upper": 2601.33,
       "shap_values": {
@@ -6957,14 +7019,15 @@
         "trend_strength": -2.355658102107542
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.977
     },
     {
       "id": 40070,
       "model_name": "automobile_dealers_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 12620.55,
-      "actual_value": null,
+      "actual_value": 12998.9,
       "confidence_interval_lower": 12368.14,
       "confidence_interval_upper": 12872.96,
       "shap_values": {
@@ -7214,14 +7277,15 @@
         "trend_strength": -13.038793071214975
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.97
     },
     {
       "id": 40069,
       "model_name": "building_materials_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 710.49,
-      "actual_value": null,
+      "actual_value": 687.39,
       "confidence_interval_lower": 696.28,
       "confidence_interval_upper": 724.7,
       "shap_values": {
@@ -7369,14 +7433,15 @@
         "trend_strength": -0.9735679743765365
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.967
     },
     {
       "id": 40068,
       "model_name": "total_sales_RandomForest_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 44056.79,
-      "actual_value": null,
+      "actual_value": 43426.84,
       "confidence_interval_lower": 43175.66,
       "confidence_interval_upper": 44937.93,
       "shap_values": {
@@ -7624,14 +7689,15 @@
         "trend_strength": -52.1633720803478
       },
       "features": null,
-      "created_at": "2026-01-07 21:46:20"
+      "created_at": "2026-01-07 21:46:20",
+      "confidence_score": 0.986
     },
     {
       "id": 39495,
       "model_name": "electronics_and_appliances_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 65042.82,
-      "actual_value": null,
+      "actual_value": 66694.86,
       "confidence_interval_lower": 64587.52,
       "confidence_interval_upper": 65498.12,
       "shap_values": {
@@ -7881,14 +7947,15 @@
         "trend_strength": 1.1802733994381065
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.975
     },
     {
       "id": 39494,
       "model_name": "sporting_goods_hobby_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 720.26,
-      "actual_value": null,
+      "actual_value": 734.22,
       "confidence_interval_lower": 715.22,
       "confidence_interval_upper": 725.31,
       "shap_values": {
@@ -8033,14 +8100,15 @@
         "trend_strength": -0.029214649785024426
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.981
     },
     {
       "id": 39493,
       "model_name": "clothing_accessories_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 6972.36,
-      "actual_value": null,
+      "actual_value": 6868.14,
       "confidence_interval_lower": 6923.55,
       "confidence_interval_upper": 7021.16,
       "shap_values": {
@@ -8291,14 +8359,15 @@
         "trend_strength": -4.368219318255579
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.985
     },
     {
       "id": 39492,
       "model_name": "furniture_home_furnishings_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 546.3,
-      "actual_value": null,
+      "actual_value": 558.73,
       "confidence_interval_lower": 542.47,
       "confidence_interval_upper": 550.12,
       "shap_values": {
@@ -8446,14 +8515,15 @@
         "trend_strength": -0.0021713693241458758
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.977
     },
     {
       "id": 39491,
       "model_name": "general_merchandise_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 3594.84,
-      "actual_value": null,
+      "actual_value": 3534.46,
       "confidence_interval_lower": 3569.68,
       "confidence_interval_upper": 3620.0,
       "shap_values": {
@@ -8598,14 +8668,15 @@
         "trend_strength": -2.2803654672766918
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.983
     },
     {
       "id": 39490,
       "model_name": "health_personal_care_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 5628.05,
-      "actual_value": null,
+      "actual_value": 5554.71,
       "confidence_interval_lower": 5588.65,
       "confidence_interval_upper": 5667.45,
       "shap_values": {
@@ -8855,14 +8926,15 @@
         "trend_strength": -5.320438854908381
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.987
     },
     {
       "id": 39489,
       "model_name": "food_beverage_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 7664.28,
-      "actual_value": null,
+      "actual_value": 7488.45,
       "confidence_interval_lower": 7610.63,
       "confidence_interval_upper": 7717.93,
       "shap_values": {
@@ -9112,14 +9184,15 @@
         "trend_strength": -3.3483995268071167
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.977
     },
     {
       "id": 39488,
       "model_name": "gasoline_stations_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 2435.07,
-      "actual_value": null,
+      "actual_value": 2389.61,
       "confidence_interval_lower": 2418.02,
       "confidence_interval_upper": 2452.11,
       "shap_values": {
@@ -9367,14 +9440,15 @@
         "trend_strength": -0.1791168009531788
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.981
     },
     {
       "id": 39487,
       "model_name": "automobile_dealers_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 12784.03,
-      "actual_value": null,
+      "actual_value": 12672.41,
       "confidence_interval_lower": 12694.54,
       "confidence_interval_upper": 12873.52,
       "shap_values": {
@@ -9624,14 +9698,15 @@
         "trend_strength": 2.806525863804239
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.99
     },
     {
       "id": 39486,
       "model_name": "building_materials_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 539.13,
-      "actual_value": null,
+      "actual_value": 525.95,
       "confidence_interval_lower": 535.35,
       "confidence_interval_upper": 542.9,
       "shap_values": {
@@ -9779,14 +9854,15 @@
         "trend_strength": -0.11211309299858693
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.976
     },
     {
       "id": 39485,
       "model_name": "total_sales_LGBM_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 43142.48,
-      "actual_value": null,
+      "actual_value": 42103.5,
       "confidence_interval_lower": 42840.48,
       "confidence_interval_upper": 43444.48,
       "shap_values": {
@@ -10034,283 +10110,307 @@
         "trend_strength": -1.703703363344094
       },
       "features": null,
-      "created_at": "2026-01-07 21:45:30"
+      "created_at": "2026-01-07 21:45:30",
+      "confidence_score": 0.976
     },
     {
       "id": 37738,
       "model_name": "electronics_and_appliances_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 94348.09,
-      "actual_value": null,
+      "actual_value": 112747.99,
       "confidence_interval_lower": 88225.26,
       "confidence_interval_upper": 100895.85,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.805
     },
     {
       "id": 37737,
       "model_name": "sporting_goods_hobby_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 1954.48,
-      "actual_value": null,
+      "actual_value": 2360.63,
       "confidence_interval_lower": 1827.64,
       "confidence_interval_upper": 2090.12,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.792
     },
     {
       "id": 37736,
       "model_name": "clothing_accessories_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 9937.64,
-      "actual_value": null,
+      "actual_value": 7797.57,
       "confidence_interval_lower": 9292.73,
       "confidence_interval_upper": 10627.32,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.785
     },
     {
       "id": 37735,
       "model_name": "furniture_home_furnishings_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 1492.68,
-      "actual_value": null,
+      "actual_value": 1212.07,
       "confidence_interval_lower": 1395.81,
       "confidence_interval_upper": 1596.27,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.812
     },
     {
       "id": 37734,
       "model_name": "general_merchandise_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 16649.94,
-      "actual_value": null,
+      "actual_value": 14156.48,
       "confidence_interval_lower": 15569.43,
       "confidence_interval_upper": 17805.45,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.85
     },
     {
       "id": 37733,
       "model_name": "health_personal_care_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 6824.63,
-      "actual_value": null,
+      "actual_value": 8116.97,
       "confidence_interval_lower": 6381.73,
       "confidence_interval_upper": 7298.26,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.811
     },
     {
       "id": 37732,
       "model_name": "food_beverage_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 10982.31,
-      "actual_value": null,
+      "actual_value": 11979.57,
       "confidence_interval_lower": 10269.6,
       "confidence_interval_upper": 11744.49,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.909
     },
     {
       "id": 37731,
       "model_name": "gasoline_stations_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 3495.98,
-      "actual_value": null,
+      "actual_value": 3090.06,
       "confidence_interval_lower": 3269.1,
       "confidence_interval_upper": 3738.6,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.884
     },
     {
       "id": 37730,
       "model_name": "automobile_dealers_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 18230.99,
-      "actual_value": null,
+      "actual_value": 16039.07,
       "confidence_interval_lower": 17047.87,
       "confidence_interval_upper": 19496.22,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.88
     },
     {
       "id": 37729,
       "model_name": "building_materials_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 998.04,
-      "actual_value": null,
+      "actual_value": 1190.1,
       "confidence_interval_lower": 933.27,
       "confidence_interval_upper": 1067.3,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.808
     },
     {
       "id": 37728,
       "model_name": "total_sales_SeasonalNaive_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 63527.21,
-      "actual_value": null,
+      "actual_value": 51628.73,
       "confidence_interval_lower": 59404.53,
       "confidence_interval_upper": 67935.99,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:50:04"
+      "created_at": "2026-01-07 20:50:04",
+      "confidence_score": 0.813
     },
     {
       "id": 37155,
       "model_name": "electronics_and_appliances_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 94348.09,
-      "actual_value": null,
+      "actual_value": 112244.33,
       "confidence_interval_lower": 88307.84,
       "confidence_interval_upper": 100801.5,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.81
     },
     {
       "id": 37154,
       "model_name": "sporting_goods_hobby_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 1954.48,
-      "actual_value": null,
+      "actual_value": 2299.95,
       "confidence_interval_lower": 1829.35,
       "confidence_interval_upper": 2088.16,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.823
     },
     {
       "id": 37153,
       "model_name": "clothing_accessories_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 9937.64,
-      "actual_value": null,
+      "actual_value": 10946.57,
       "confidence_interval_lower": 9301.43,
       "confidence_interval_upper": 10617.38,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.898
     },
     {
       "id": 37152,
       "model_name": "furniture_home_furnishings_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 1492.68,
-      "actual_value": null,
+      "actual_value": 1233.47,
       "confidence_interval_lower": 1397.12,
       "confidence_interval_upper": 1594.78,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.826
     },
     {
       "id": 37151,
       "model_name": "general_merchandise_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 16649.94,
-      "actual_value": null,
+      "actual_value": 15540.97,
       "confidence_interval_lower": 15584.0,
       "confidence_interval_upper": 17788.8,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.933
     },
     {
       "id": 37150,
       "model_name": "health_personal_care_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 6824.63,
-      "actual_value": null,
+      "actual_value": 7911.73,
       "confidence_interval_lower": 6387.71,
       "confidence_interval_upper": 7291.43,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.841
     },
     {
       "id": 37149,
       "model_name": "food_beverage_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 10982.31,
-      "actual_value": null,
+      "actual_value": 10244.91,
       "confidence_interval_lower": 10279.22,
       "confidence_interval_upper": 11733.5,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.933
     },
     {
       "id": 37148,
       "model_name": "gasoline_stations_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 3495.98,
-      "actual_value": null,
+      "actual_value": 3720.48,
       "confidence_interval_lower": 3272.16,
       "confidence_interval_upper": 3735.1,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.936
     },
     {
       "id": 37147,
       "model_name": "automobile_dealers_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 18230.99,
-      "actual_value": null,
+      "actual_value": 14970.79,
       "confidence_interval_lower": 17063.83,
       "confidence_interval_upper": 19477.99,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.821
     },
     {
       "id": 37146,
       "model_name": "building_materials_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 998.04,
-      "actual_value": null,
+      "actual_value": 889.13,
       "confidence_interval_lower": 934.15,
       "confidence_interval_upper": 1066.31,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.891
     },
     {
       "id": 37145,
       "model_name": "total_sales_AutoETS_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 63527.21,
-      "actual_value": null,
+      "actual_value": 59906.06,
       "confidence_interval_lower": 59460.13,
       "confidence_interval_upper": 67872.47,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:35"
+      "created_at": "2026-01-07 20:49:35",
+      "confidence_score": 0.943
     },
     {
       "id": 36572,
       "model_name": "electronics_and_appliances_AutoARIMA_model",
       "prediction_date": "2026-12-24",
       "predicted_value": 94348.09,
-      "actual_value": null,
+      "actual_value": 112095.1,
       "confidence_interval_lower": 85259.44,
       "confidence_interval_upper": 104405.6,
       "shap_values": null,
       "features": null,
-      "created_at": "2026-01-07 20:49:04"
+      "created_at": "2026-01-07 20:49:04",
+      "confidence_score": 0.812
     }
   ],
   "metadata": {
