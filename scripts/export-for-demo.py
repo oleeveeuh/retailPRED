@@ -68,7 +68,7 @@ def inspect_database_schema(conn: sqlite3.Connection) -> None:
 
 
 def export_predictions(conn: sqlite3.Connection) -> Dict[str, Any]:
-    """Export most recent 100 predictions"""
+    """Export ALL predictions with actual values for validation"""
     logger.info("Exporting predictions...")
 
     cursor = conn.cursor()
@@ -82,7 +82,7 @@ def export_predictions(conn: sqlite3.Connection) -> Dict[str, Any]:
         logger.warning("  ⚠ prediction_log table not found")
         return {"data": [], "metadata": {"error": "Table not found"}}
 
-    # Get most recent 100 predictions
+    # Get ALL predictions (not just 100) for full validation display
     cursor.execute("""
         SELECT
             id,
@@ -94,10 +94,12 @@ def export_predictions(conn: sqlite3.Connection) -> Dict[str, Any]:
             confidence_interval_upper,
             shap_values,
             features,
-            created_at
+            created_at,
+            error_percentage,
+            error_absolute,
+            confidence_score
         FROM prediction_log
         ORDER BY prediction_date DESC, created_at DESC
-        LIMIT 100
     """)
 
     rows = cursor.fetchall()
@@ -145,7 +147,7 @@ def export_predictions(conn: sqlite3.Connection) -> Dict[str, Any]:
             "end": max_date
         },
         "models": models,
-        "note": "Most recent 100 predictions"
+        "note": f"All {len(predictions)} predictions from database"
     }
 
     logger.info(f"  ✓ Exported {len(predictions)} predictions")
