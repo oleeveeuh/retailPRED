@@ -22,7 +22,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { predictionsApi } from '../api/unifiedApi';
+import { predictionsApi, trainingMetricsApi } from '../api/unifiedApi';
 import { TableauEmbed } from '../components/TableauEmbed';
 
 type TabType = 'tableau' | 'export' | 'guide';
@@ -80,9 +80,7 @@ export const BusinessDashboard: FC = () => {
   const { data: modelsData } = useQuery({
     queryKey: ['models-list'],
     queryFn: async () => {
-      const response = await fetch('http://localhost:8000/api/training-metrics/models');
-      if (!response.ok) return null;
-      return response.json();
+      return await trainingMetricsApi.getModels();
     },
   });
 
@@ -133,7 +131,10 @@ export const BusinessDashboard: FC = () => {
   const handleExportCSV = async () => {
     setExportLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/export/predictions-csv');
+      const apiBaseUrl = import.meta.env.VITE_API_URL !== undefined
+        ? import.meta.env.VITE_API_URL
+        : 'http://localhost:8000';
+      const response = await fetch(`${apiBaseUrl}/api/export/predictions-csv`);
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);

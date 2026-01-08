@@ -6,6 +6,7 @@
 import { FC, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
+import { scenariosApi, economicIndicatorsApi, predictionsApi } from '../api/unifiedApi';
 import {
   TrendingUp,
   TrendingDown,
@@ -88,9 +89,7 @@ export const EconomicScenarioAnalysis: FC = () => {
   const { data: currentIndicators, isLoading: loadingIndicators } = useQuery({
     queryKey: ['current-indicators'],
     queryFn: async () => {
-      const response = await fetch('http://localhost:8000/api/economic-indicators/current');
-      if (!response.ok) throw new Error('Failed to fetch indicators');
-      return response.json();
+      return await economicIndicatorsApi.getCurrent();
     },
   });
 
@@ -98,11 +97,12 @@ export const EconomicScenarioAnalysis: FC = () => {
   const { data: scenarioResults, isLoading: loadingScenarios } = useQuery({
     queryKey: ['scenario-results', category, selectedScenario],
     queryFn: async () => {
-      const response = await fetch(
-        `http://localhost:8000/api/scenarios/analyze?category=${category}&scenario=${selectedScenario}`
-      );
-      if (!response.ok) throw new Error('Failed to analyze scenario');
-      return response.json();
+      const scenarioType = selectedScenario === 'baseline' ? 'baseline' :
+                         selectedScenario === 'optimistic' ? 'optimistic' : 'pessimistic';
+      return await scenariosApi.analyzeScenario({
+        scenario_type: scenarioType,
+        category
+      });
     },
     enabled: !!category && !!selectedScenario,
   });
@@ -111,11 +111,7 @@ export const EconomicScenarioAnalysis: FC = () => {
   const { data: similarPeriods } = useQuery({
     queryKey: ['similar-periods', category],
     queryFn: async () => {
-      const response = await fetch(
-        `http://localhost:8000/api/scenarios/similar-periods?category=${category}&n=5`
-      );
-      if (!response.ok) throw new Error('Failed to fetch similar periods');
-      return response.json();
+      return await scenariosApi.getSimilarPeriods(category, 5);
     },
   });
 
@@ -123,15 +119,11 @@ export const EconomicScenarioAnalysis: FC = () => {
   const { data: currentRegime } = useQuery({
     queryKey: ['current-regime', category],
     queryFn: async () => {
-      const response = await fetch(
-        `http://localhost:8000/api/scenarios/regime?category=${category}`
-      );
-      if (!response.ok) throw new Error('Failed to detect regime');
-      return response.json();
+      return await scenariosApi.getRegime(category);
     },
   });
 
-  // Fetch model comparisons
+  // Fetch model comparisons - using predict API with model names
   const { data: modelPredictions } = useQuery({
     queryKey: ['model-predictions', category, selectedScenario],
     queryFn: async () => {
@@ -139,11 +131,11 @@ export const EconomicScenarioAnalysis: FC = () => {
       const predictions = await Promise.all(
         models.map(async (model) => {
           try {
-            const response = await fetch(
-              `http://localhost:8000/api/predict?category=${category}&model_name=${model}&weeks_ahead=4`
-            );
-            if (!response.ok) return null;
-            const data = await response.json();
+            const data = await predictionsApi.predict({
+              category,
+              model_name: model,
+              weeks_ahead: 4
+            });
             return {
               name: model,
               value: data.forecasts[0]?.predicted_value || 0,

@@ -5,6 +5,7 @@
 
 import { FC } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { scenariosApi } from '../api/unifiedApi';
 import {
   LineChart,
   Line,
@@ -23,25 +24,20 @@ interface ForecastChartProps {
 
 export const ForecastChart: FC<ForecastChartProps> = ({ height = 400 }) => {
   // Fetch historical sales data (through Dec 2025)
-  const { data: historicalData, isLoading } = useQuery({
+  const { data: historicalSalesResponse, isLoading } = useQuery({
     queryKey: ['historical-sales', 'total_sales'],
-    queryFn: () => fetch('http://localhost:8000/api/historical-sales?category=total_sales&days_back=365')
-      .then(res => res.json())
-      .then(data => data.data || []),
+    queryFn: () => scenariosApi.getHistoricalSales('total_sales', 365),
   });
+
+  const historicalData = historicalSalesResponse?.data || [];
 
   // Fetch baseline scenario for 2026 forecasts
   const { data: scenarioData } = useQuery({
     queryKey: ['baseline-scenario-2026'],
-    queryFn: () => fetch('http://localhost:8000/api/scenarios/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        scenario_type: 'baseline',
-        category: 'total_sales'
-      })
-    }).then(res => res.json())
-      .then(data => data),
+    queryFn: () => scenariosApi.analyzeScenario({
+      scenario_type: 'baseline',
+      category: 'total_sales'
+    }),
     enabled: historicalData && historicalData.length > 0,
   });
 

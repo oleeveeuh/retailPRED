@@ -6,6 +6,7 @@
 import { FC, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
+import { scenariosApi } from '../api/unifiedApi';
 import {
   Sliders,
   TrendingUp,
@@ -80,22 +81,13 @@ export const SensitivityAnalysis: FC = () => {
       const indicator = KEY_INDICATORS.find(i => i.name === selectedIndicator.name);
       if (!indicator) return null;
 
-      const response = await fetch(
-        `http://localhost:8000/api/scenarios/sensitivity`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            category,
-            feature_name: selectedIndicator.name,
-            min_value: indicator.min,
-            max_value: indicator.max,
-            num_steps: 10,
-            base_features: indicatorValues,
-          }),
-        }
-      );
-      if (!response.ok) throw new Error('Failed to fetch sensitivity data');
-      return response.json() as SensitivityData;
+      return await scenariosApi.analyzeSensitivity({
+        category,
+        feature_name: selectedIndicator.name,
+        min_value: indicator.min,
+        max_value: indicator.max,
+        num_steps: 10,
+      }) as SensitivityData;
     },
   });
 
@@ -106,29 +98,20 @@ export const SensitivityAnalysis: FC = () => {
       const tornadoItems: TornadoItem[] = [];
 
       for (const indicator of KEY_INDICATORS) {
-        const response = await fetch(
-          `http://localhost:8000/api/scenarios/sensitivity`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              category,
-              feature_name: indicator.name,
-              min_value: indicator.min,
-              max_value: indicator.max,
-              num_steps: 2, // Just min/max for tornado
-              base_features: indicatorValues,
-            }),
-          }
-        );
-        if (response.ok) {
-          const data = await response.json() as SensitivityData;
-          tornadoItems.push({
-            indicator: indicator.display,
-            low: data.min_prediction,
-            high: data.max_prediction,
-            range: data.prediction_range,
-          });
-        }
+        const data = await scenariosApi.analyzeSensitivity({
+          category,
+          feature_name: indicator.name,
+          min_value: indicator.min,
+          max_value: indicator.max,
+          num_steps: 2, // Just min/max for tornado
+        });
+
+        tornadoItems.push({
+          indicator: indicator.display,
+          low: data.min_prediction,
+          high: data.max_prediction,
+          range: data.prediction_range,
+        });
       }
 
       return tornadoItems.sort((a, b) => b.range - a.range);

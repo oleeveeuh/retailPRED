@@ -5,6 +5,7 @@
 
 import { FC } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { scenariosApi } from '../api/unifiedApi';
 import {
   BarChart,
   Bar,
@@ -44,29 +45,21 @@ export const FeatureImportanceChart: FC<FeatureImportanceChartProps> = ({ height
       const results = await Promise.all(
         indicators.map(async (indicator) => {
           try {
-            const response = await fetch('http://localhost:8000/api/scenarios/sensitivity', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                category: 'total_sales',
-                feature_name: indicator.name,
-                min_value: indicator.min,
-                max_value: indicator.max,
-                num_steps: 2, // Just need range for importance
-              })
+            const data = await scenariosApi.analyzeSensitivity({
+              category: 'total_sales',
+              feature_name: indicator.name,
+              min_value: indicator.min,
+              max_value: indicator.max,
+              num_steps: 2, // Just need range for importance
             });
 
-            if (response.ok) {
-              const data = await response.json();
-              return {
-                feature: indicator.display,
-                importance: Math.abs(data.prediction_range) / 1000, // Normalize to thousands
-                range: data.prediction_range,
-                color: indicator.color,
-                elasticity: data.elasticity,
-              };
-            }
-            return null;
+            return {
+              feature: indicator.display,
+              importance: Math.abs(data.prediction_range) / 1000, // Normalize to thousands
+              range: data.prediction_range,
+              color: indicator.color,
+              elasticity: data.elasticity,
+            };
           } catch (error) {
             console.error(`Error fetching sensitivity for ${indicator.name}:`, error);
             return null;

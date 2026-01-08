@@ -6,6 +6,7 @@
 import { FC } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
+import { economicIndicatorsApi } from '../api/unifiedApi';
 import {
   Activity,
   TrendingUp,
@@ -46,13 +47,11 @@ const STATUS_CONFIG = {
 
 export const MacroIndicatorDashboard: FC = () => {
   // Fetch current indicators
-  const { data: indicatorsData, isLoading } = useQuery({
+  const { data: indicatorsResponse, isLoading } = useQuery({
     queryKey: ['current-indicators-detailed'],
     queryFn: async () => {
-      const response = await fetch('http://localhost:8000/api/economic-indicators/current');
-      if (!response.ok) throw new Error('Failed to fetch indicators');
-      const data = await response.json();
-      return data.indicators || [];
+      const data = await economicIndicatorsApi.getCurrent();
+      return data;
     },
   });
 
@@ -100,7 +99,7 @@ export const MacroIndicatorDashboard: FC = () => {
   }
 
   // Group indicators by category
-  const indicatorsByCategory = indicatorsData?.reduce((acc: Record<string, Indicator[]>, ind: any) => {
+  const indicatorsByCategory = indicatorsResponse?.indicators?.reduce((acc: Record<string, Indicator[]>, ind: any) => {
     const category = ind.category || 'Other';
     if (!acc[category]) acc[category] = [];
     acc[category].push({
@@ -137,19 +136,19 @@ export const MacroIndicatorDashboard: FC = () => {
           <div className="text-center">
             <div className="text-sm text-slate-600 dark:text-slate-400 mb-2">Healthy Indicators</div>
             <div className="text-3xl font-bold text-green-600">
-              {indicatorsData?.filter((i: any) => calculateStatus(i.name, i.value) === 'healthy').length || 0}
+              {indicatorsResponse?.indicators?.filter((i: any) => calculateStatus(i.name, i.value) === 'healthy').length || 0}
             </div>
           </div>
           <div className="text-center">
             <div className="text-sm text-slate-600 dark:text-slate-400 mb-2">Warning Indicators</div>
             <div className="text-3xl font-bold text-yellow-600">
-              {indicatorsData?.filter((i: any) => calculateStatus(i.name, i.value) === 'warning').length || 0}
+              {indicatorsResponse?.indicators?.filter((i: any) => calculateStatus(i.name, i.value) === 'warning').length || 0}
             </div>
           </div>
           <div className="text-center">
             <div className="text-sm text-slate-600 dark:text-slate-400 mb-2">Alert Indicators</div>
             <div className="text-3xl font-bold text-red-600">
-              {indicatorsData?.filter((i: any) => calculateStatus(i.name, i.value) === 'alert').length || 0}
+              {indicatorsResponse?.indicators?.filter((i: any) => calculateStatus(i.name, i.value) === 'alert').length || 0}
             </div>
           </div>
         </div>

@@ -5,7 +5,11 @@
 
 import axios, { AxiosError } from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Use environment variable if set, otherwise default to localhost
+// Empty string is valid (no backend), only use localhost if undefined
+const API_BASE_URL = import.meta.env.VITE_API_URL !== undefined
+  ? import.meta.env.VITE_API_URL
+  : 'http://localhost:8000';
 
 // Create axios instance
 // Note: Don't add /api prefix here - backend routers already include it in their prefix
@@ -385,6 +389,188 @@ export const categoriesApi = {
 };
 
 /**
+ * TRAINING METRICS
+ */
+export interface TrainingMetricsModel {
+  id: number;
+  model_name: string;
+  category: string;
+  training_date: string;
+  metrics: {
+    RMSE?: number;
+    MAE?: number;
+    R2?: number;
+    MAPE?: number;
+    mean?: number;
+    std?: number;
+  };
+  hyperparameters?: Record<string, any>;
+  is_active: boolean;
+}
+
+export interface TrainingMetricsResponse {
+  models: TrainingMetricsModel[];
+  total_count: number;
+  active_count: number;
+}
+
+export const trainingMetricsApi = {
+  /**
+   * Get all training metrics for models
+   */
+  getModels: async (): Promise<TrainingMetricsResponse> => {
+    const response = await apiClient.get<TrainingMetricsResponse>('/training-metrics/models');
+    return response.data;
+  },
+};
+
+/**
+ * ECONOMIC INDICATORS
+ */
+export interface EconomicIndicator {
+  name: string;
+  display: string;
+  value: number;
+  previousValue: number;
+  unit: string;
+  category: string;
+  source: string;
+  lead_lag: 'leading' | 'coincident' | 'lagging';
+  status: 'healthy' | 'warning' | 'alert';
+  date: string;
+}
+
+export interface EconomicIndicatorsResponse {
+  indicators: EconomicIndicator[];
+  last_updated: string;
+  total_count: number;
+}
+
+export const economicIndicatorsApi = {
+  /**
+   * Get current economic indicators
+   */
+  getCurrent: async (): Promise<EconomicIndicatorsResponse> => {
+    const response = await apiClient.get<EconomicIndicatorsResponse>('/economic-indicators/current');
+    return response.data;
+  },
+};
+
+/**
+ * HISTORICAL SALES & SCENARIOS
+ */
+export interface HistoricalSalesPoint {
+  date: string;
+  value: number;
+}
+
+export interface HistoricalSalesResponse {
+  data: HistoricalSalesPoint[];
+  category: string;
+  days_back: number;
+}
+
+export interface ScenarioAnalysisRequest {
+  scenario_type: 'baseline' | 'optimistic' | 'pessimistic';
+  category: string;
+  custom_params?: Record<string, number>;
+}
+
+export interface ScenarioAnalysisResponse {
+  scenario_type: string;
+  category: string;
+  prediction: number;
+  confidence_interval: [number, number];
+  change_from_baseline?: number;
+  assumptions: Record<string, number>;
+}
+
+export interface SensitivityAnalysisRequest {
+  category: string;
+  feature_name: string;
+  min_value: number;
+  max_value: number;
+  num_steps?: number;
+}
+
+export interface SensitivityAnalysisResponse {
+  feature_name: string;
+  predictions: number[];
+  values: number[];
+  prediction_range: number;
+  min_prediction: number;
+  max_prediction: number;
+  elasticity?: number;
+}
+
+export const scenariosApi = {
+  /**
+   * Get historical sales data
+   */
+  getHistoricalSales: async (category: string, days_back: number = 365): Promise<HistoricalSalesResponse> => {
+    const response = await apiClient.get<HistoricalSalesResponse>('/historical-sales', {
+      params: { category, days_back }
+    });
+    return response.data;
+  },
+
+  /**
+   * Analyze a scenario
+   */
+  analyzeScenario: async (request: ScenarioAnalysisRequest): Promise<ScenarioAnalysisResponse> => {
+    const response = await apiClient.post<ScenarioAnalysisResponse>('/scenarios/analyze', request);
+    return response.data;
+  },
+
+  /**
+   * Perform sensitivity analysis
+   */
+  analyzeSensitivity: async (request: SensitivityAnalysisRequest): Promise<SensitivityAnalysisResponse> => {
+    const response = await apiClient.post<SensitivityAnalysisResponse>('/scenarios/sensitivity', request);
+    return response.data;
+  },
+
+  /**
+   * Get similar historical periods
+   */
+  getSimilarPeriods: async (category: string, n: number = 5): Promise<any> => {
+    const response = await apiClient.get<any>('/scenarios/similar-periods', {
+      params: { category, n }
+    });
+    return response.data;
+  },
+
+  /**
+   * Get regime analysis
+   */
+  getRegime: async (category: string): Promise<any> => {
+    const response = await apiClient.get<any>('/scenarios/regime', {
+      params: { category }
+    });
+    return response.data;
+  },
+};
+
+/**
+ * EXPORT
+ */
+export interface ExportCSVResponse {
+  status: string;
+  file_path: string;
+  records: number;
+}
+
+export const exportApi = {
+  /**
+   * Export predictions to CSV
+   */
+  exportPredictionsCSV: async (): Promise<ExportCSVResponse> => {
+    const response = await apiClient.get<ExportCSVResponse>('/export/predictions-csv');
+    return response.data;
+  },
+};
+
+/**
  * SYSTEM
  */
 export const systemApi = {
@@ -406,6 +592,10 @@ export const api = {
   ...dataApi,
   ...modelsApi,
   ...categoriesApi,
+  ...trainingMetricsApi,
+  ...economicIndicatorsApi,
+  ...scenariosApi,
+  ...exportApi,
   ...systemApi,
 };
 

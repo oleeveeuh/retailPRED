@@ -16,6 +16,10 @@ import {
   dataApi as realDataApi,
   modelsApi as realModelsApi,
   categoriesApi as realCategoriesApi,
+  trainingMetricsApi as realTrainingMetricsApi,
+  economicIndicatorsApi as realEconomicIndicatorsApi,
+  scenariosApi as realScenariosApi,
+  exportApi as realExportApi,
   systemApi as realSystemApi,
   Granularity,
   ModelType,
@@ -27,6 +31,14 @@ import type {
   ModelsListResponse,
   CategoriesListResponse,
   HealthResponse,
+  TrainingMetricsResponse,
+  EconomicIndicatorsResponse,
+  HistoricalSalesResponse,
+  ScenarioAnalysisRequest,
+  ScenarioAnalysisResponse,
+  SensitivityAnalysisRequest,
+  SensitivityAnalysisResponse,
+  ExportCSVResponse,
 } from './client';
 
 // ============================================================================
@@ -200,6 +212,268 @@ const demoDataApi = {
 };
 
 // ============================================================================
+// TRAINING METRICS API
+// ============================================================================
+
+const demoTrainingMetricsApi = {
+  /**
+   * Get training metrics for models (demo mode)
+   */
+  getModels: async (): Promise<TrainingMetricsResponse> => {
+    const summary = await demoDataService.getSummary();
+
+    // Transform demo data to match training metrics format
+    return {
+      models: summary.models_available.models.map((modelName, index) => ({
+        id: index + 1,
+        model_name: modelName,
+        category: summary.models_available.categories?.[index] || 'Unknown',
+        training_date: '2025-01-01',
+        metrics: {
+          RMSE: 1000 + Math.random() * 500,
+          MAE: 800 + Math.random() * 400,
+          R2: 0.92 + Math.random() * 0.07,
+          MAPE: 3 + Math.random() * 5,
+          mean: 50000,
+          std: 5000,
+        },
+        hyperparameters: {
+          learning_rate: 0.01,
+          n_estimators: 100,
+        },
+        is_active: true,
+      })),
+      total_count: summary.models_available.total_count,
+      active_count: summary.models_available.total_count,
+    };
+  },
+};
+
+// ============================================================================
+// ECONOMIC INDICATORS API
+// ============================================================================
+
+const demoEconomicIndicatorsApi = {
+  /**
+   * Get current economic indicators (demo mode)
+   */
+  getCurrent: async (): Promise<EconomicIndicatorsResponse> => {
+    // Return demo data for economic indicators
+    return {
+      indicators: [
+        {
+          name: 'UNRATE',
+          display: 'Unemployment Rate',
+          value: 4.2,
+          previousValue: 4.1,
+          unit: '%',
+          category: 'Labor Market',
+          source: 'BLS',
+          lead_lag: 'lagging',
+          status: 'healthy',
+          date: '2025-01-01',
+        },
+        {
+          name: 'CPI',
+          display: 'Consumer Price Index',
+          value: 2.8,
+          previousValue: 3.1,
+          unit: '% YoY',
+          category: 'Consumer',
+          source: 'BLS',
+          lead_lag: 'lagging',
+          status: 'healthy',
+          date: '2025-01-01',
+        },
+        {
+          name: 'FEDFUNDS',
+          display: 'Federal Funds Rate',
+          value: 4.25,
+          previousValue: 4.50,
+          unit: '%',
+          category: 'Monetary Policy',
+          source: 'FRED',
+          lead_lag: 'leading',
+          status: 'healthy',
+          date: '2025-01-01',
+        },
+        {
+          name: 'PAYEMS',
+          display: 'Nonfarm Payrolls',
+          value: 200000,
+          previousValue: 175000,
+          unit: 'thousands',
+          category: 'Labor Market',
+          source: 'BLS',
+          lead_lag: 'coincident',
+          status: 'healthy',
+          date: '2025-01-01',
+        },
+      ],
+      last_updated: new Date().toISOString(),
+      total_count: 4,
+    };
+  },
+};
+
+// ============================================================================
+// SCENARIOS API
+// ============================================================================
+
+const demoScenariosApi = {
+  /**
+   * Get historical sales (demo mode)
+   */
+  getHistoricalSales: async (category: string, days_back: number = 365): Promise<HistoricalSalesResponse> => {
+    // Generate demo historical sales data
+    const data = [];
+    const today = new Date();
+
+    for (let i = days_back; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+
+      // Generate realistic retail sales data with trend and seasonality
+      const baseValue = 500000;
+      const trend = (days_back - i) * 100; // Slight upward trend
+      const seasonality = Math.sin(i / 30) * 50000; // Monthly seasonality
+      const noise = Math.random() * 20000 - 10000;
+
+      data.push({
+        date: date.toISOString().split('T')[0],
+        value: Math.round(baseValue + trend + seasonality + noise),
+      });
+    }
+
+    return {
+      data,
+      category,
+      days_back,
+    };
+  },
+
+  /**
+   * Analyze scenario (demo mode)
+   */
+  analyzeScenario: async (request: ScenarioAnalysisRequest): Promise<ScenarioAnalysisResponse> => {
+    // Generate demo scenario predictions
+    const basePrediction = 600000;
+    const scenarioMultiplier =
+      request.scenario_type === 'optimistic' ? 1.1 :
+      request.scenario_type === 'pessimistic' ? 0.9 : 1.0;
+
+    const prediction = basePrediction * scenarioMultiplier;
+    const confidence = basePrediction * 0.05;
+
+    return {
+      scenario_type: request.scenario_type,
+      category: request.category,
+      prediction: Math.round(prediction),
+      confidence_interval: [
+        Math.round(prediction - confidence),
+        Math.round(prediction + confidence),
+      ],
+      change_from_baseline: scenarioMultiplier !== 1.0 ? Math.round((scenarioMultiplier - 1.0) * 100) : undefined,
+      assumptions: {
+        gdp_growth: request.scenario_type === 'optimistic' ? 2.5 : request.scenario_type === 'pessimistic' ? 1.0 : 2.0,
+        unemployment_rate: request.scenario_type === 'optimistic' ? 4.0 : request.scenario_type === 'pessimistic' ? 5.5 : 4.5,
+        inflation_rate: 2.5,
+      },
+    };
+  },
+
+  /**
+   * Perform sensitivity analysis (demo mode)
+   */
+  analyzeSensitivity: async (request: SensitivityAnalysisRequest): Promise<SensitivityAnalysisResponse> => {
+    // Generate demo sensitivity data
+    const numPoints = request.num_steps || 10;
+    const values = [];
+    const predictions = [];
+
+    for (let i = 0; i <= numPoints; i++) {
+      const value = request.min_value + (request.max_value - request.min_value) * (i / numPoints);
+      values.push(value);
+
+      // Simulate sensitivity: unemployment/gdp affect sales negatively/positively
+      let impact = 1.0;
+      if (request.feature_name === 'UNRATE') {
+        impact = 1.0 - (value - 4.5) * 0.05; // Higher unemployment = lower sales
+      } else if (request.feature_name === 'GDP') {
+        impact = 1.0 + (value - 2.0) * 0.1; // Higher GDP = higher sales
+      } else if (request.feature_name === 'FEDFUNDS') {
+        impact = 1.0 - (value - 2.0) * 0.02; // Higher rates = lower sales
+      } else if (request.feature_name === 'CPI') {
+        impact = 1.0 - (value - 2.5) * 0.03; // Higher inflation = lower sales
+      } else if (request.feature_name === 'PAYEMS') {
+        impact = 1.0 + (value - 200) * 0.0001; // More jobs = higher sales
+      }
+
+      predictions.push(Math.round(600000 * impact));
+    }
+
+    const predictionRange = Math.max(...predictions) - Math.min(...predictions);
+
+    return {
+      feature_name: request.feature_name,
+      predictions,
+      values,
+      prediction_range: predictionRange,
+      min_prediction: Math.min(...predictions),
+      max_prediction: Math.max(...predictions),
+      elasticity: -0.5, // Demo value
+    };
+  },
+
+  /**
+   * Get similar periods (demo mode)
+   */
+  getSimilarPeriods: async (category: string, n: number = 5): Promise<any> => {
+    // Return demo similar periods
+    return {
+      periods: [
+        { start_date: '2020-03-01', end_date: '2020-12-31', similarity: 0.92, description: 'COVID-19 pandemic' },
+        { start_date: '2008-09-01', end_date: '2009-06-30', similarity: 0.87, description: 'Financial crisis' },
+        { start_date: '2001-03-01', end_date: '2001-11-30', similarity: 0.78, description: 'Dot-com bubble' },
+        { start_date: '2019-01-01', end_date: '2019-12-31', similarity: 0.75, description: 'Pre-pandemic stability' },
+        { start_date: '2022-01-01', end_date: '2022-12-31', similarity: 0.71, description: 'Post-pandemic recovery' },
+      ].slice(0, n),
+      total_count: n,
+    };
+  },
+
+  /**
+   * Get regime analysis (demo mode)
+   */
+  getRegime: async (category: string): Promise<any> => {
+    // Return demo regime analysis
+    return {
+      regime: 'expansion',
+      confidence: 0.85,
+      characteristics: {
+        growth_rate: 2.5,
+        volatility: 0.15,
+        trend: 'positive',
+      },
+      description: 'Current economic expansion phase with moderate growth',
+    };
+  },
+};
+
+// ============================================================================
+// EXPORT API
+// ============================================================================
+
+const demoExportApi = {
+  /**
+   * Export predictions to CSV (demo mode - not supported)
+   */
+  exportPredictionsCSV: async (): Promise<ExportCSVResponse> => {
+    throw new Error('CSV export is not available in demo mode');
+  },
+};
+
+// ============================================================================
 // UNIFIED API EXPORT
 // ============================================================================
 
@@ -213,6 +487,10 @@ export const api = config.isDemoMode
       ...demoDataApi,
       ...demoModelsApi,
       ...demoCategoriesApi,
+      ...demoTrainingMetricsApi,
+      ...demoEconomicIndicatorsApi,
+      ...demoScenariosApi,
+      ...demoExportApi,
       ...demoSystemApi,
     }
   : {
@@ -221,6 +499,10 @@ export const api = config.isDemoMode
       ...realDataApi,
       ...realModelsApi,
       ...realCategoriesApi,
+      ...realTrainingMetricsApi,
+      ...realEconomicIndicatorsApi,
+      ...realScenariosApi,
+      ...realExportApi,
       ...realSystemApi,
     };
 
@@ -229,6 +511,10 @@ export const predictionsApi = config.isDemoMode ? demoPredictionsApi : realPredi
 export const dataApi = config.isDemoMode ? demoDataApi : realDataApi;
 export const modelsApi = config.isDemoMode ? demoModelsApi : realModelsApi;
 export const categoriesApi = config.isDemoMode ? demoCategoriesApi : realCategoriesApi;
+export const trainingMetricsApi = config.isDemoMode ? demoTrainingMetricsApi : realTrainingMetricsApi;
+export const economicIndicatorsApi = config.isDemoMode ? demoEconomicIndicatorsApi : realEconomicIndicatorsApi;
+export const scenariosApi = config.isDemoMode ? demoScenariosApi : realScenariosApi;
+export const exportApi = config.isDemoMode ? demoExportApi : realExportApi;
 export const systemApi = config.isDemoMode ? demoSystemApi : realSystemApi;
 
 // ============================================================================
@@ -259,6 +545,16 @@ export type {
   CategoryPredictionRequest,
   CategoryPredictionResponse,
   HealthResponse,
+  TrainingMetricsResponse,
+  TrainingMetricsModel,
+  EconomicIndicatorsResponse,
+  EconomicIndicator,
+  HistoricalSalesResponse,
+  ScenarioAnalysisRequest,
+  ScenarioAnalysisResponse,
+  SensitivityAnalysisRequest,
+  SensitivityAnalysisResponse,
+  ExportCSVResponse,
 } from './client';
 
 // ============================================================================
