@@ -47,7 +47,7 @@ import {
   CheckCircle2,
   Activity,
 } from 'lucide-react';
-import { predictionsApi, categoriesApi, Granularity } from '../api/unifiedApi';
+import { predictionsApi, categoriesApi, scenariosApi, Granularity } from '../api/unifiedApi';
 import { triggerConfetti } from '../components/PremiumAnimations';
 import { SkeletonCard } from '../components/PremiumAnimations';
 
@@ -104,16 +104,7 @@ export const PredictionsPage: FC = () => {
       if (!selectedCategory) return;
 
       try {
-        const response = await fetch(
-          `/api/historical-sales?category=${encodeURIComponent(selectedCategory)}&days_back=90`
-        );
-
-        if (!response.ok) {
-          console.error('Failed to fetch historical data:', response.statusText);
-          return;
-        }
-
-        const result = await response.json();
+        const result = await scenariosApi.getHistoricalSales(selectedCategory, 90);
 
         // Transform data to match expected format
         const formattedData = result.data.map((item: any) => ({
