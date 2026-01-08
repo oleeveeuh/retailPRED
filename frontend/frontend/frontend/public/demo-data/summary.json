@@ -1,0 +1,54 @@
+{
+  "export_timestamp": "2025-01-07T23:00:00Z",
+  "database_path": "/data/retailpred.db",
+  "predictions": {
+    "total_count": 14250,
+    "by_year": {
+      "2023": 4750,
+      "2024": 5250,
+      "2025": 4250
+    },
+    "by_model_type": {
+      "AutoARIMA": 2850,
+      "AutoETS": 2850,
+      "LGBM": 2850,
+      "PatchTST": 2850,
+      "SeasonalNaive": 2850
+    },
+    "shap_coverage": 0.95
+  },
+  "models_available": {
+    "total_count": 11,
+    "models": [
+      "Total_Retail_Sales_AutoARIMA",
+      "Total_Retail_Sales_AutoETS",
+      "Total_Retail_Sales_LGBM",
+      "Total_Retail_Sales_PatchTST",
+      "Total_Retail_Sales_SeasonalNaive",
+      "Total_Retail_Sales_TimesNet",
+      "Automobile_Dealers_LGBM",
+      "Building_Materials_Garden_LGBM",
+      "Clothing_Accessories_LGBM",
+      "General_Merchandise_LGBM",
+      "Food_Beverage_Stores_LGBM"
+    ],
+    "categories": [
+      "Total Retail Sales",
+      "Total Retail Sales",
+      "Total Retail Sales",
+      "Total Retail Sales",
+      "Total Retail Sales",
+      "Total Retail Sales",
+      "Automobile Dealers",
+      "Building Materials & Garden",
+      "Clothing & Accessories",
+      "General Merchandise",
+      "Food & Beverage Stores"
+    ]
+  },
+  "demo_data": {
+    "predictions_included": 500,
+    "economic_indicators_included": 12,
+    "note": "Demo dataset with sampled predictions for showcase"
+  }
+}
