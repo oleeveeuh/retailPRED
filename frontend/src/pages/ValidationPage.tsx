@@ -113,7 +113,7 @@ export const ValidationPage: FC = () => {
 
       const data = await predictionsApi.getHistory({
         start_date: startDate,
-        limit: 1000, // Increase limit to get more predictions
+        limit: 15000, // Get all predictions including validated ones from 2025
       });
       return data;
     },
