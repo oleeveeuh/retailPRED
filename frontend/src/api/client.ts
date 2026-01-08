@@ -24,6 +24,15 @@ export const apiClient = axios.create({
 // Request interceptor
 apiClient.interceptors.request.use(
   (config) => {
+    // In demo mode with empty API URL, prevent actual API calls
+    const isDemoMode = import.meta.env.VITE_DEMO_MODE === 'true';
+    const apiBaseUrl = import.meta.env.VITE_API_URL;
+
+    if (isDemoMode && apiBaseUrl === '') {
+      // Reject the request immediately in demo mode
+      return Promise.reject(new Error('Demo mode active - API calls disabled'));
+    }
+
     return config;
   },
   (error) => {
