@@ -6,6 +6,10 @@
   "trailingSlash": false,
   "rewrites": [
     {
+      "source": "/demo-data/(.*)",
+      "destination": "/demo-data/$1"
+    },
+    {
       "source": "/manifest.json",
       "destination": "/manifest.json"
     },
@@ -15,6 +19,19 @@
     }
   ],
   "headers": [
+    {
+      "source": "/demo-data/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
     {
       "source": "/assets/(.*)",
       "headers": [
@@ -55,5 +72,17 @@
         }
       ]
     }
-  ]
+  ],
+  "protection": {
+    "exceptions": [
+      {
+        "pattern": "/demo-data/(.*)",
+        "method": ["GET", "HEAD", "OPTIONS"]
+      },
+      {
+        "pattern": "/manifest.json",
+        "method": ["GET", "HEAD", "OPTIONS"]
+      }
+    ]
+  }
 }
