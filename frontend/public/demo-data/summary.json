@@ -20,7 +20,16 @@
       "with_shap": 2187,
       "total": 7873,
       "percentage": 27.78
-    }
+    },
+    "models_available": [
+      "LGBM",
+      "RandomForest",
+      "AutoARIMA",
+      "AutoETS",
+      "SeasonalNaive",
+      "TimesNet",
+      "PatchTST"
+    ]
   },
   "economic_indicators": {
     "count": 500,
@@ -31,14 +40,15 @@
     "indicators_sample": 500
   },
   "models_available": {
-    "with_shap": [
+    "total_count": 7,
+    "models": [
       "LGBM",
-      "RandomForest"
-    ],
-    "without_shap": [
+      "RandomForest",
       "AutoARIMA",
       "AutoETS",
-      "SeasonalNaive"
+      "SeasonalNaive",
+      "TimesNet",
+      "PatchTST"
     ]
   }
 }
