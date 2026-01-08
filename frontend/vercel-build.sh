@@ -1,15 +1,26 @@
 #!/bin/bash
 # Vercel Build Script
-# Creates .env file with environment variables for Vite build
+# Forces demo mode by creating .env.production file
 
-cat > .env.production << EOF
-VITE_DEMO_MODE=${VITE_DEMO_MODE:-true}
-VITE_API_URL=${VITE_API_URL:-}
-VITE_TABLEAU_EMBED_URL=${VITE_TABLEAU_EMBED_URL:-}
+# Force demo mode regardless of Vercel env vars
+cat > .env.production << 'EOF'
+VITE_DEMO_MODE=true
+VITE_API_URL=
+VITE_TABLEAU_EMBED_URL=
 EOF
 
-echo "Environment variables set for build:"
+echo "✅ Forcing DEMO MODE for production build"
+echo "Environment file contents:"
 cat .env.production
+echo ""
+
+# Verify the file was created
+if [ -f .env.production ]; then
+  echo "✅ .env.production file created successfully"
+else
+  echo "❌ ERROR: .env.production file not created!"
+  exit 1
+fi
 
 npm run build:prod
 
