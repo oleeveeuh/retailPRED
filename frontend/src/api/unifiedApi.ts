@@ -233,15 +233,18 @@ const demoTrainingMetricsApi = {
       models: modelTypes.map((modelName, index) => ({
         id: index + 1,
         model_name: modelName,
+        model_type: modelName, // Add model_type field for ModelsPage
         category: 'Total Retail Sales',
         training_date: '2025-01-01',
         metrics: {
-          RMSE: 1000 + Math.random() * 500,
-          MAE: 800 + Math.random() * 400,
+          RMSE: { mean: 1000 + Math.random() * 500 },
+          MAE: { mean: 800 + Math.random() * 400 },
           R2: 0.92 + Math.random() * 0.07,
-          MAPE: 3 + Math.random() * 5,
+          MAPE: { mean: 3 + Math.random() * 5 },
+          SMAPE: { mean: 2 + Math.random() * 4 },
           mean: 50000,
           std: 5000,
+          training_time: 10 + Math.random() * 20,
         },
         hyperparameters: {
           learning_rate: 0.01,
@@ -502,15 +505,81 @@ const demoScenariosApi = {
    * Get similar periods (demo mode)
    */
   getSimilarPeriods: async (category: string, n: number = 5): Promise<any> => {
-    // Return demo similar periods
+    // Return demo similar periods with indicators
+    const demoPeriods = [
+      {
+        date: '2020-03-01',
+        start_date: '2020-03-01',
+        end_date: '2020-12-31',
+        similarity_score: 0.92,
+        description: 'COVID-19 pandemic',
+        indicators: {
+          UNRATE: 8.4,
+          GDP: -2.8,
+          CPI: 258.8,
+          FEDFUNDS: 0.09
+        },
+        retail_sales: 485000
+      },
+      {
+        date: '2008-09-01',
+        start_date: '2008-09-01',
+        end_date: '2009-06-30',
+        similarity_score: 0.87,
+        description: 'Financial crisis',
+        indicators: {
+          UNRATE: 7.3,
+          GDP: -2.6,
+          CPI: 218.8,
+          FEDFUNDS: 1.92
+        },
+        retail_sales: 422000
+      },
+      {
+        date: '2001-03-01',
+        start_date: '2001-03-01',
+        end_date: '2001-11-30',
+        similarity_score: 0.78,
+        description: 'Dot-com bubble',
+        indicators: {
+          UNRATE: 4.7,
+          GDP: 1.0,
+          CPI: 176.5,
+          FEDFUNDS: 3.88
+        },
+        retail_sales: 389000
+      },
+      {
+        date: '2019-01-01',
+        start_date: '2019-01-01',
+        end_date: '2019-12-31',
+        similarity_score: 0.75,
+        description: 'Pre-pandemic stability',
+        indicators: {
+          UNRATE: 3.7,
+          GDP: 2.3,
+          CPI: 255.2,
+          FEDFUNDS: 2.16
+        },
+        retail_sales: 521000
+      },
+      {
+        date: '2022-01-01',
+        start_date: '2022-01-01',
+        end_date: '2022-12-31',
+        similarity_score: 0.71,
+        description: 'Post-pandemic recovery',
+        indicators: {
+          UNRATE: 3.6,
+          GDP: 2.1,
+          CPI: 292.0,
+          FEDFUNDS: 4.10
+        },
+        retail_sales: 612000
+      },
+    ];
     return {
-      periods: [
-        { start_date: '2020-03-01', end_date: '2020-12-31', similarity: 0.92, description: 'COVID-19 pandemic' },
-        { start_date: '2008-09-01', end_date: '2009-06-30', similarity: 0.87, description: 'Financial crisis' },
-        { start_date: '2001-03-01', end_date: '2001-11-30', similarity: 0.78, description: 'Dot-com bubble' },
-        { start_date: '2019-01-01', end_date: '2019-12-31', similarity: 0.75, description: 'Pre-pandemic stability' },
-        { start_date: '2022-01-01', end_date: '2022-12-31', similarity: 0.71, description: 'Post-pandemic recovery' },
-      ].slice(0, n),
+      periods: demoPeriods.slice(0, n),
       total_count: n,
     };
   },
