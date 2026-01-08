@@ -1,5 +1,5 @@
 {
-  "export_timestamp": "2026-01-07T17:51:01.378785",
+  "export_timestamp": "2026-01-08T07:25:38.916098",
   "database_path": "/Users/olivialiau/retailPRED/data/retailpred.db",
   "predictions": {
     "total_count": 7873,
@@ -27,19 +27,18 @@
     "source": "synthetic_demo_data"
   },
   "demo_data": {
-    "predictions_sample": 100,
+    "predictions_sample": 7873,
     "indicators_sample": 500
   },
   "models_available": {
-    "total_count": 7,
-    "models": [
+    "with_shap": [
       "LGBM",
-      "RandomForest",
+      "RandomForest"
+    ],
+    "without_shap": [
       "AutoARIMA",
       "AutoETS",
-      "SeasonalNaive",
-      "TimesNet",
-      "PatchTST"
+      "SeasonalNaive"
     ]
   }
 }
