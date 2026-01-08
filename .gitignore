@@ -68,7 +68,7 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
+# package-lock.json REMOVED - Vercel needs this for consistent builds
 yarn.lock
 
 # Frontend build
