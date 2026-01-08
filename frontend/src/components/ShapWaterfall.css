@@ -1,0 +1,159 @@
+/* SHAP Waterfall Chart Animations */
+
+@keyframes pulse {
+  0%, 100% {
+    stroke-opacity: 1;
+  }
+  50% {
+    stroke-opacity: 0.5;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Chart bar animations */
+.shap-bar {
+  animation: slideIn 0.4s ease-out forwards;
+}
+
+.shap-bar:nth-child(1) { animation-delay: 0.05s; }
+.shap-bar:nth-child(2) { animation-delay: 0.1s; }
+.shap-bar:nth-child(3) { animation-delay: 0.15s; }
+.shap-bar:nth-child(4) { animation-delay: 0.2s; }
+.shap-bar:nth-child(5) { animation-delay: 0.25s; }
+.shap-bar:nth-child(6) { animation-delay: 0.3s; }
+.shap-bar:nth-child(7) { animation-delay: 0.35s; }
+.shap-bar:nth-child(8) { animation-delay: 0.4s; }
+.shap-bar:nth-child(9) { animation-delay: 0.45s; }
+.shap-bar:nth-child(10) { animation-delay: 0.5s; }
+
+/* Highlighted feature pulse */
+.feature-highlight {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Modal animations */
+.modal-enter {
+  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-content-enter {
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tooltip styling */
+.shap-tooltip {
+  backdrop-filter: blur(12px);
+  animation: fadeInUp 0.2s ease-out;
+}
+
+/* Force plot bar animations */
+.force-bar {
+  animation: shimmer 2s linear infinite;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 1000px 100%;
+}
+
+/* Smooth transitions for all interactive elements */
+.shap-interactive {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shap-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Connection line animations */
+.connection-line {
+  animation: drawLine 0.6s ease-out forwards;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .shap-bar {
+    animation-duration: 0.3s;
+  }
+
+  .modal-content-enter {
+    animation-duration: 0.3s;
+  }
+
+  /* Reduce animation complexity on mobile */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Print styles for exporting */
+@media print {
+  .shap-waterfall-container {
+    break-inside: avoid;
+  }
+
+  .shap-chart {
+    page-break-inside: avoid;
+  }
+}

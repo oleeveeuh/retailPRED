@@ -1,0 +1,61 @@
+# Vercel Deployment Ignore File
+# Exclude directories and files from Vercel deployment
+
+# Backend directory (not deploying backend via Vercel)
+backend/
+
+# Scripts directory
+scripts/
+
+# Environment files with secrets
+.env.local
+.env.*.local
+
+# Development files
+project_root/
+data/
+training_outputs/
+*.db
+*.db-journal
+
+# Documentation (not needed for deployment)
+*.md
+docs/
+.infrastructure/
+
+# Git and CI/CD
+.git/
+.github/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python files (backend only)
+*.py
+*.pyc
+__pycache__/
+*.egg-info/
+
+# Node modules (installed during build)
+node_modules/
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+__tests__/
+
+# Build artifacts (will be built by Vercel)
+dist/
+build/
+*.log

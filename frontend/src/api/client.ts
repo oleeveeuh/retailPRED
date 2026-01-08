@@ -1,0 +1,412 @@
+/**
+ * RetailPRED API Client
+ * Typed Axios client for all backend endpoints
+ */
+
+import axios, { AxiosError } from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+// Create axios instance
+// Note: Don't add /api prefix here - backend routers already include it in their prefix
+export const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  timeout: 120000, // Increased to 120 seconds for long-running predictions
+});
+
+// Request interceptor
+apiClient.interceptors.request.use(
+  (config) => {
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor
+apiClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error: AxiosError) => {
+    console.error('API Error:', error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+// Model Types
+export enum ModelType {
+  RANDOM_FOREST = 'RandomForest',
+  XGBOOST = 'XGBoost',
+  LIGHTGBM = 'LightGBM',
+  PATCHTST = 'PatchTST',
+  TIMEGPT = 'TimeGPT',
+}
+
+export enum Granularity {
+  DAILY = 'daily',
+  WEEKLY = 'weekly',
+  MONTHLY = 'monthly',
+}
+
+// Prediction Types
+export interface SHAPValue {
+  feature: string;
+  value: number;
+  importance: number;
+}
+
+export interface ForecastPoint {
+  date: string;
+  predicted_value: number;
+  confidence_lower?: number;
+  confidence_upper?: number;
+}
+
+export interface PredictionRequest {
+  category?: string;
+  store_id?: number;
+  product_id?: number;
+  weeks_ahead: number;
+  model_name?: string;
+  granularity?: Granularity;
+}
+
+export interface PredictionResponse {
+  prediction_id: number;
+  model_name: string;
+  model_type: string;
+  store_id?: number;
+  product_id?: number;
+  forecasts: ForecastPoint[];
+  shap_values: SHAPValue[];
+  features_used: Record<string, any>;
+  created_at: string;
+  metadata?: Record<string, any>;
+}
+
+// Data Refresh Types
+export interface DataRefreshResponse {
+  status: string;
+  message: string;
+  records_updated: number;
+  new_categories?: number;
+  last_fetch_time: string;
+  sources_updated: string[];
+}
+
+// Model Types
+export interface ModelMetrics {
+  rmse: number;
+  mae: number;
+  r2: number;
+  mape?: number;
+  training_samples: number;
+}
+
+export interface ModelInfo {
+  id: number;
+  model_name: string;
+  model_type: ModelType;
+  training_date: string;
+  metrics: ModelMetrics;
+  hyperparameters?: Record<string, any>;
+  file_path: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ModelsListResponse {
+  models: ModelInfo[];
+  total_count: number;
+  active_count: number;
+}
+
+// Prediction History Types
+export interface PredictionHistoryItem {
+  id: number;
+  model_name: string;
+  store_id?: number;
+  product_id?: number;
+  prediction_date: string;
+  predicted_value: number;
+  actual_value?: number;
+  confidence_interval_lower?: number;
+  confidence_interval_upper?: number;
+  is_validated: boolean;
+  error_percentage?: number;
+  created_at: string;
+}
+
+export interface PredictionHistoryResponse {
+  predictions: PredictionHistoryItem[];
+  total_count: number;
+  filters_applied: Record<string, any>;
+  accuracy_summary?: {
+    avg_error_percentage: number;
+    min_error_percentage: number;
+    max_error_percentage: number;
+    total_validated: number;
+  };
+}
+
+// Validation Types
+export interface ValidationRequest {
+  prediction_id: number;
+  actual_value: number;
+  notes?: string;
+}
+
+export interface ValidationResponse {
+  prediction_id: number;
+  previous_predicted_value: number;
+  new_actual_value: number;
+  error_absolute: number;
+  error_percentage: number;
+  is_validated: boolean;
+  message: string;
+}
+
+// SHAP Explanation Types
+export interface SHAPExplanationResponse {
+  prediction_id: number;
+  model_name: string;
+  prediction_date: string;
+  predicted_value: number;
+  base_value: number;
+  feature_contributions: SHAPValue[];
+  total_shap_value: number;
+  summary: string;
+}
+
+// Training Types
+export interface TrainingRequest {
+  model_types?: ModelType[];
+  force_retrain?: boolean;
+  test_size?: number;
+  hyperparameters?: Record<string, Record<string, any>>;
+}
+
+export interface TrainingResponse {
+  status: string;
+  models_trained: string[];
+  training_time_seconds: number;
+  metrics: Record<string, ModelMetrics>;
+  message: string;
+}
+
+// Health Check
+export interface HealthResponse {
+  status: string;
+  timestamp: string;
+  service: string;
+}
+
+// Category Types
+export interface RetailCategory {
+  key: string;
+  display_name: string;
+}
+
+export interface CategoriesListResponse {
+  categories: RetailCategory[];
+  total_count: number;
+}
+
+export interface CategoryPredictionRequest {
+  category: string;
+  model_type: string;
+  features: Record<string, any>;
+}
+
+export interface CategoryPredictionResponse {
+  category: string;
+  category_display_name: string;
+  model_name: string;
+  model_type: string;
+  predicted_value: number;
+  shap_values: SHAPValue[];
+  features_used: Record<string, any>;
+  metadata: Record<string, any>;
+}
+
+// ============================================================================
+// API FUNCTIONS
+// ============================================================================
+
+/**
+ * PREDICTIONS
+ */
+export const predictionsApi = {
+  /**
+   * Make a sales forecast prediction
+   */
+  predict: async (params: PredictionRequest): Promise<PredictionResponse> => {
+    const response = await apiClient.get<PredictionResponse>('/predict', {
+      params,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get prediction history
+   */
+  getHistory: async (filters: {
+    model_name?: string;
+    store_id?: number;
+    product_id?: number;
+    start_date?: string;
+    end_date?: string;
+    include_validated_only?: boolean;
+    limit?: number;
+  }): Promise<PredictionHistoryResponse> => {
+    const response = await apiClient.get<PredictionHistoryResponse>(
+      '/predictions/history',
+      { params: filters }
+    );
+    return response.data;
+  },
+
+  /**
+   * Validate a prediction with actual value
+   */
+  validate: async (data: ValidationRequest): Promise<ValidationResponse> => {
+    const response = await apiClient.post<ValidationResponse>(
+      '/predictions/validate',
+      data
+    );
+    return response.data;
+  },
+
+  /**
+   * Auto-validate predictions by fetching actual values from database
+   */
+  autoValidate: async (params: { category_id?: string; days_back?: number }): Promise<ValidationResponse[]> => {
+    const response = await apiClient.post<ValidationResponse[]>(
+      '/predictions/auto-validate',
+      null,
+      { params }
+    );
+    return response.data;
+  },
+
+  /**
+   * Get SHAP explanation for a prediction
+   */
+  getSHAPExplanation: async (
+    predictionId: number,
+    topN?: number
+  ): Promise<SHAPExplanationResponse> => {
+    const response = await apiClient.get<SHAPExplanationResponse>(
+      '/shap-explain',
+      {
+        params: { prediction_id: predictionId, top_n: topN },
+      }
+    );
+    return response.data;
+  },
+};
+
+/**
+ * DATA MANAGEMENT
+ */
+export const dataApi = {
+  /**
+   * Refresh data from external sources
+   */
+  refresh: async (): Promise<DataRefreshResponse> => {
+    const response = await apiClient.post<DataRefreshResponse>('/refresh-data');
+    return response.data;
+  },
+};
+
+/**
+ * MODELS
+ */
+export const modelsApi = {
+  /**
+   * Get all models
+   */
+  getAll: async (params?: {
+    active_only?: boolean;
+    model_type?: ModelType;
+  }): Promise<ModelsListResponse> => {
+    const response = await apiClient.get<ModelsListResponse>('/models', {
+      params,
+    });
+    return response.data;
+  },
+
+  /**
+   * Train new models
+   */
+  train: async (data: TrainingRequest): Promise<TrainingResponse> => {
+    const response = await apiClient.post<TrainingResponse>('/train', data);
+    return response.data;
+  },
+};
+
+/**
+ * CATEGORIES
+ */
+export const categoriesApi = {
+  /**
+   * Get all available retail categories
+   */
+  list: async (): Promise<CategoriesListResponse> => {
+    const response = await apiClient.get<CategoriesListResponse>('/categories/list');
+    return response.data;
+  },
+
+  /**
+   * Make a prediction for a specific category
+   */
+  predict: async (data: CategoryPredictionRequest): Promise<CategoryPredictionResponse> => {
+    const response = await apiClient.post<CategoryPredictionResponse>('/categories/predict', data);
+    return response.data;
+  },
+
+  /**
+   * Get available models for a category
+   */
+  getModels: async (category: string): Promise<{category: string; category_display_name: string; available_models: string[]; total_count: number}> => {
+    const response = await apiClient.get(`/categories/${category}/models`);
+    return response.data;
+  },
+};
+
+/**
+ * SYSTEM
+ */
+export const systemApi = {
+  /**
+   * Health check
+   */
+  healthCheck: async (): Promise<HealthResponse> => {
+    const response = await apiClient.get<HealthResponse>('/health');
+    return response.data;
+  },
+};
+
+// ============================================================================
+// CONVENIENCE EXPORTS
+// ============================================================================
+
+export const api = {
+  ...predictionsApi,
+  ...dataApi,
+  ...modelsApi,
+  ...categoriesApi,
+  ...systemApi,
+};
+
+export default apiClient;

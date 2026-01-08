@@ -1,0 +1,64 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: retailpred-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount SQLite database file - path must match code's relative path calculation
+      # Code does: Path(__file__).parent.parent.parent / "data" / "retailpred.db"
+      # which resolves to /data/retailpred.db from /app/api/
+      - ./data:/data
+      # Mount models directory (optional - for development)
+      - ./backend/ml/models:/app/ml/models
+      # Mount trained models for multi-resolution inference
+      - ./project_root/models_multi_resolution:/project_root/models_multi_resolution
+      # Mount new training outputs
+      - ./training_outputs:/training_outputs
+    environment:
+      - DATABASE_PATH=/app/data/retailpred.db
+      - MODEL_PATH=/app/ml/models
+      - LOG_LEVEL=INFO
+    networks:
+      - retailpred-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:8000
+    container_name: retailpred-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+    networks:
+      - retailpred-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+networks:
+  retailpred-network:
+    driver: bridge
+
+volumes:
+  retailpred-db:
+    driver: local
