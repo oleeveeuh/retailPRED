@@ -391,15 +391,15 @@ const demoScenariosApi = {
   /**
    * Perform sensitivity analysis (demo mode)
    */
-  analyzeSensitivity: async (request: SensitivityAnalysisRequest): Promise<SensitivityAnalysisResponse> => {
+  analyzeSensitivity: async (request: SensitivityAnalysisRequest): Promise<any> => {
     // Generate demo sensitivity data
     const numPoints = request.num_steps || 10;
-    const values = [];
+    const values_tested = [];
     const predictions = [];
 
     for (let i = 0; i <= numPoints; i++) {
       const value = request.min_value + (request.max_value - request.min_value) * (i / numPoints);
-      values.push(value);
+      values_tested.push(value);
 
       // Simulate sensitivity: unemployment/gdp affect sales negatively/positively
       let impact = 1.0;
@@ -419,14 +419,18 @@ const demoScenariosApi = {
     }
 
     const predictionRange = Math.max(...predictions) - Math.min(...predictions);
+    const predictionMean = predictions.reduce((sum, val) => sum + val, 0) / predictions.length;
+    const baselineValue = (request.min_value + request.max_value) / 2;
 
     return {
       feature_name: request.feature_name,
       predictions,
-      values,
+      values: values_tested,
       prediction_range: predictionRange,
       min_prediction: Math.min(...predictions),
       max_prediction: Math.max(...predictions),
+      prediction_mean: predictionMean,
+      baseline_value: baselineValue,
       elasticity: -0.5, // Demo value
     };
   },

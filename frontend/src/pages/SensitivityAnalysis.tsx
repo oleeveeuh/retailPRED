@@ -46,7 +46,7 @@ const STRESS_SCENARIOS = [
 
 interface SensitivityData {
   feature_name: string;
-  values_tested: number[];
+  values: number[];
   predictions: number[];
   min_prediction: number;
   max_prediction: number;
@@ -119,7 +119,7 @@ export const SensitivityAnalysis: FC = () => {
   });
 
   // Prepare chart data
-  const chartData = sensitivityData?.values_tested.map((value, idx) => ({
+  const chartData = sensitivityData?.values.map((value, idx) => ({
     value: value.toFixed(2),
     prediction: sensitivityData.predictions[idx],
   })) || [];
