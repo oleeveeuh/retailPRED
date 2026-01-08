@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build:prod",
+  "buildCommand": "VITE_DEMO_MODE=true VITE_API_URL= VITE_TABLEAU_EMBED_URL=https://public.tableau.com/views/Book1_17676501972860/Sheet1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link npm run build:prod",
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
