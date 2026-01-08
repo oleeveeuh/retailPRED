@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
   server: {
     port: 5173,
@@ -21,4 +21,8 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-})
+  // Force demo mode in production builds
+  define: {
+    __DEMO_MODE__: mode === 'production' ? 'true' : 'false',
+  },
+}))

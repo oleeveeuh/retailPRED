@@ -11,19 +11,22 @@
 
 import { config } from '../config/environment';
 import { demoDataService } from '../services/demoDataService';
-import {
-  predictionsApi as realPredictionsApi,
-  dataApi as realDataApi,
-  modelsApi as realModelsApi,
-  categoriesApi as realCategoriesApi,
-  trainingMetricsApi as realTrainingMetricsApi,
-  economicIndicatorsApi as realEconomicIndicatorsApi,
-  scenariosApi as realScenariosApi,
-  exportApi as realExportApi,
-  systemApi as realSystemApi,
-  Granularity,
-  ModelType,
-} from './client';
+// Real API imports disabled for Vercel demo deployment
+// Uncomment these to enable real backend API calls
+// import {
+//   predictionsApi as realPredictionsApi,
+//   dataApi as realDataApi,
+//   modelsApi as realModelsApi,
+//   categoriesApi as realCategoriesApi,
+//   trainingMetricsApi as realTrainingMetricsApi,
+//   economicIndicatorsApi as realEconomicIndicatorsApi,
+//   scenariosApi as realScenariosApi,
+//   exportApi as realExportApi,
+//   systemApi as realSystemApi,
+//   Granularity,
+//   ModelType,
+// } from './client';
+import { Granularity, ModelType } from './client';
 import type {
   PredictionHistoryResponse,
   PredictionHistoryItem,
@@ -551,44 +554,34 @@ const demoExportApi = {
 // ============================================================================
 
 /**
- * Complete API object that switches between demo and real implementations
+ * Complete API object - demo mode for Vercel deployment
  */
-export const api = config.isDemoMode
-  ? {
-      // Demo mode APIs
-      ...demoPredictionsApi,
-      ...demoDataApi,
-      ...demoModelsApi,
-      ...demoCategoriesApi,
-      ...demoTrainingMetricsApi,
-      ...demoEconomicIndicatorsApi,
-      ...demoScenariosApi,
-      ...demoExportApi,
-      ...demoSystemApi,
-    }
-  : {
-      // Real API implementations
-      ...realPredictionsApi,
-      ...realDataApi,
-      ...realModelsApi,
-      ...realCategoriesApi,
-      ...realTrainingMetricsApi,
-      ...realEconomicIndicatorsApi,
-      ...realScenariosApi,
-      ...realExportApi,
-      ...realSystemApi,
-    };
+
+// For production builds on Vercel, always use demo mode
+// The real API implementations are not imported to prevent them from being included in the bundle
+
+export const api = {
+  ...demoPredictionsApi,
+  ...demoDataApi,
+  ...demoModelsApi,
+  ...demoCategoriesApi,
+  ...demoTrainingMetricsApi,
+  ...demoEconomicIndicatorsApi,
+  ...demoScenariosApi,
+  ...demoExportApi,
+  ...demoSystemApi,
+};
 
 // Export individual sections for backward compatibility
-export const predictionsApi = config.isDemoMode ? demoPredictionsApi : realPredictionsApi;
-export const dataApi = config.isDemoMode ? demoDataApi : realDataApi;
-export const modelsApi = config.isDemoMode ? demoModelsApi : realModelsApi;
-export const categoriesApi = config.isDemoMode ? demoCategoriesApi : realCategoriesApi;
-export const trainingMetricsApi = config.isDemoMode ? demoTrainingMetricsApi : realTrainingMetricsApi;
-export const economicIndicatorsApi = config.isDemoMode ? demoEconomicIndicatorsApi : realEconomicIndicatorsApi;
-export const scenariosApi = config.isDemoMode ? demoScenariosApi : realScenariosApi;
-export const exportApi = config.isDemoMode ? demoExportApi : realExportApi;
-export const systemApi = config.isDemoMode ? demoSystemApi : realSystemApi;
+export const predictionsApi = demoPredictionsApi;
+export const dataApi = demoDataApi;
+export const modelsApi = demoModelsApi;
+export const categoriesApi = demoCategoriesApi;
+export const trainingMetricsApi = demoTrainingMetricsApi;
+export const economicIndicatorsApi = demoEconomicIndicatorsApi;
+export const scenariosApi = demoScenariosApi;
+export const exportApi = demoExportApi;
+export const systemApi = demoSystemApi;
 
 // ============================================================================
 // HELPER EXPORTS
