@@ -54,14 +54,17 @@ interface Prediction {
   id: number;
   prediction_date: string;
   model_name: string;
-  store_id?: string;
-  product_id?: string;
+  store_id?: number;
+  product_id?: number;
   predicted_value: number;
   actual_value?: number;
   error_absolute?: number;
   error_percentage?: number;
   is_validated: boolean;
   confidence_score?: number;
+  confidence_interval_lower?: number;
+  confidence_interval_upper?: number;
+  created_at: string;
 }
 
 interface ValidationMetrics {
@@ -72,18 +75,27 @@ interface ValidationMetrics {
   accuracy_trend: 'up' | 'down' | 'stable';
 }
 
+interface ScatterDataPoint {
+  predicted: number;
+  actual: number | null;
+  model: string;
+  validated: boolean;
+  date: string;
+  estimatedActual?: number;
+}
+
 // Mock data (replace with actual API)
 const mockPredictions: Prediction[] = [
-  { id: 1, prediction_date: '2025-01-01', model_name: 'LightGBM_Auto', store_id: '1', product_id: 'Total_Retail_Sales', predicted_value: 45000, actual_value: 45234, error_absolute: 234, error_percentage: 0.52, is_validated: true, confidence_score: 0.95 },
-  { id: 2, prediction_date: '2025-01-02', model_name: 'LightGBM_Auto', store_id: '1', product_id: 'Total_Retail_Sales', predicted_value: 45100, actual_value: 44890, error_absolute: 210, error_percentage: 0.47, is_validated: true, confidence_score: 0.94 },
-  { id: 3, prediction_date: '2025-01-03', model_name: 'LightGBM_Auto', store_id: '1', product_id: 'Total_Retail_Sales', predicted_value: 45200, actual_value: 45678, error_absolute: 478, error_percentage: 1.05, is_validated: true, confidence_score: 0.92 },
-  { id: 4, prediction_date: '2025-01-04', model_name: 'LightGBM_Auto', store_id: '1', product_id: 'Total_Retail_Sales', predicted_value: 45300, is_validated: false, confidence_score: 0.91 },
-  { id: 5, prediction_date: '2025-01-05', model_name: 'LightGBM_Auto', store_id: '1', product_id: 'Total_Retail_Sales', predicted_value: 45400, actual_value: 44234, error_absolute: 1166, error_percentage: 2.57, is_validated: true, confidence_score: 0.88 },
-  { id: 6, prediction_date: '2025-01-06', model_name: 'LightGBM_Auto', store_id: '1', product_id: 'Total_Retail_Sales', predicted_value: 45500, actual_value: 45789, error_absolute: 289, error_percentage: 0.63, is_validated: true, confidence_score: 0.93 },
-  { id: 7, prediction_date: '2025-01-07', model_name: 'RandomForest_v2', store_id: '1', product_id: 'Total_Retail_Sales', predicted_value: 45600, actual_value: 45345, error_absolute: 255, error_percentage: 0.56, is_validated: true, confidence_score: 0.90 },
-  { id: 8, prediction_date: '2025-01-08', model_name: 'RandomForest_v2', store_id: '1', product_id: 'Total_Retail_Sales', predicted_value: 45700, actual_value: 46123, error_absolute: 423, error_percentage: 0.92, is_validated: true, confidence_score: 0.89 },
-  { id: 9, prediction_date: '2025-01-09', model_name: 'RandomForest_v2', store_id: '1', product_id: 'Total_Retail_Sales', predicted_value: 45800, actual_value: 45456, error_absolute: 344, error_percentage: 0.75, is_validated: true, confidence_score: 0.91 },
-  { id: 10, prediction_date: '2025-01-10', model_name: 'XGBoost_Pro', store_id: '1', product_id: 'Total_Retail_Sales', predicted_value: 45900, actual_value: 45234, error_absolute: 666, error_percentage: 1.45, is_validated: true, confidence_score: 0.92 },
+  { id: 1, prediction_date: '2025-01-01', model_name: 'LightGBM_Auto', store_id: 1, product_id: 1, predicted_value: 45000, actual_value: 45234, error_absolute: 234, error_percentage: 0.52, is_validated: true, confidence_score: 0.95, created_at: '2025-01-01T00:00:00' },
+  { id: 2, prediction_date: '2025-01-02', model_name: 'LightGBM_Auto', store_id: 1, product_id: 1, predicted_value: 45100, actual_value: 44890, error_absolute: 210, error_percentage: 0.47, is_validated: true, confidence_score: 0.94, created_at: '2025-01-02T00:00:00' },
+  { id: 3, prediction_date: '2025-01-03', model_name: 'LightGBM_Auto', store_id: 1, product_id: 1, predicted_value: 45200, actual_value: 45678, error_absolute: 478, error_percentage: 1.05, is_validated: true, confidence_score: 0.92, created_at: '2025-01-03T00:00:00' },
+  { id: 4, prediction_date: '2025-01-04', model_name: 'LightGBM_Auto', store_id: 1, product_id: 1, predicted_value: 45300, is_validated: false, confidence_score: 0.91, created_at: '2025-01-04T00:00:00' },
+  { id: 5, prediction_date: '2025-01-05', model_name: 'LightGBM_Auto', store_id: 1, product_id: 1, predicted_value: 45400, actual_value: 44234, error_absolute: 1166, error_percentage: 2.57, is_validated: true, confidence_score: 0.88, created_at: '2025-01-05T00:00:00' },
+  { id: 6, prediction_date: '2025-01-06', model_name: 'LightGBM_Auto', store_id: 1, product_id: 1, predicted_value: 45500, actual_value: 45789, error_absolute: 289, error_percentage: 0.63, is_validated: true, confidence_score: 0.93, created_at: '2025-01-06T00:00:00' },
+  { id: 7, prediction_date: '2025-01-07', model_name: 'RandomForest_v2', store_id: 1, product_id: 1, predicted_value: 45600, actual_value: 45345, error_absolute: 255, error_percentage: 0.56, is_validated: true, confidence_score: 0.90, created_at: '2025-01-07T00:00:00' },
+  { id: 8, prediction_date: '2025-01-08', model_name: 'RandomForest_v2', store_id: 1, product_id: 1, predicted_value: 45700, actual_value: 46123, error_absolute: 423, error_percentage: 0.92, is_validated: true, confidence_score: 0.89, created_at: '2025-01-08T00:00:00' },
+  { id: 9, prediction_date: '2025-01-09', model_name: 'RandomForest_v2', store_id: 1, product_id: 1, predicted_value: 45800, actual_value: 45456, error_absolute: 344, error_percentage: 0.75, is_validated: true, confidence_score: 0.91, created_at: '2025-01-09T00:00:00' },
+  { id: 10, prediction_date: '2025-01-10', model_name: 'XGBoost_Pro', store_id: 1, product_id: 1, predicted_value: 45900, actual_value: 45234, error_absolute: 666, error_percentage: 1.45, is_validated: true, confidence_score: 0.92, created_at: '2025-01-10T00:00:00' },
 ];
 
 type DateRangeType = '7d' | '30d' | '90d' | 'all';
@@ -951,7 +963,7 @@ export const ValidationPage: FC = () => {
                   fontWeight: 'bold',
                   marginBottom: '8px',
                 }}
-                formatter={(value: number, name: string, props: any) => {
+                formatter={(_value: number | undefined, _name: string, props: any) => {
                   // Recharts Scatter tooltip gives us the active point
                   const payload = props?.payload;
                   if (!payload) return null;
@@ -961,7 +973,6 @@ export const ValidationPage: FC = () => {
                   const date = dataPoint.date || 'N/A';
                   const predicted = dataPoint.predicted || dataPoint.payload?.predicted || 0;
                   const actual = dataPoint.actual || dataPoint.payload?.actual;
-                  const validated = dataPoint.validated ?? dataPoint.payload?.validated ?? true;
 
                   // Build a rich tooltip with all information
                   const result = [
@@ -991,7 +1002,7 @@ export const ValidationPage: FC = () => {
                 labelFormatter={() => ''}  // We handle the label in formatter
               />
               <Scatter name="Validated" data={scatterData.filter(d => d.validated)} fill="#3b82f6" />
-              <Scatter name="Pending" data={scatterData.filter(d => !d.validated).map(d => ({...d, actual: d.estimatedActual}))} fill="#9ca3af" />
+              <Scatter name="Pending" data={scatterData.filter(d => !d.validated).map(d => ({...d, actual: d.estimatedActual ?? d.predicted}))} fill="#9ca3af" />
               {/* Perfect prediction line */}
               <Line
                 type="monotone"

@@ -5,7 +5,7 @@
  * Mimics API response structure and adds realistic delays.
  */
 
-import { SHAPValue, PredictionHistoryItem } from '../api/client';
+import type { SHAPValue, PredictionHistoryItem } from '../api/client';
 
 // ============================================================================
 // TYPES
