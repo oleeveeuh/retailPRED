@@ -226,10 +226,7 @@ const demoTrainingMetricsApi = {
     const summary = await demoDataService.getSummary();
 
     // Get all model types from summary
-    const modelTypes = [
-      ...summary.models_available?.with_shap || [],
-      ...summary.models_available?.without_shap || []
-    ];
+    const modelTypes = summary.models_available?.models || [];
 
     // Transform demo data to match training metrics format
     return {

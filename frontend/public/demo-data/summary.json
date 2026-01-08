@@ -31,11 +31,10 @@
     "indicators_sample": 500
   },
   "models_available": {
-    "with_shap": [
+    "total_count": 5,
+    "models": [
       "LGBM",
-      "RandomForest"
-    ],
-    "without_shap": [
+      "RandomForest",
       "AutoARIMA",
       "AutoETS",
       "SeasonalNaive"
