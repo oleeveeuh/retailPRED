@@ -27,7 +27,7 @@ else
 fi
 
 echo "🔨 Starting build..."
-npm run build:prod
+npm run build:only
 
 echo ""
 echo "🔍 Checking for localhost in built files..."
