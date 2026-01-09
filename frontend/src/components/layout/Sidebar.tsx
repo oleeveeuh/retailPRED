@@ -117,7 +117,8 @@ export const Sidebar: FC = () => {
           stiffness: 200,
         }}
         className={`
-          fixed lg:relative left-0 top-0 h-screen z-50
+          fixed lg:relative left-0 top-0 h-full z-50
+          flex flex-col
           bg-gradient-to-b from-slate-900 to-slate-800
           backdrop-blur-xl backdrop-saturate-150
           border-r border-slate-700/50
@@ -246,24 +247,6 @@ export const Sidebar: FC = () => {
             );
           })}
         </nav>
-
-        {/* Bottom Section */}
-        <div className="border-t border-slate-700/50 p-4 space-y-2">
-          {/* Version Info */}
-          <AnimatePresence mode="wait">
-            {!isCollapsed && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="text-center pt-4 border-t border-slate-700/50"
-              >
-                <p className="text-xs text-slate-500">© 2025 RetailPRED</p>
-                <p className="text-xs text-slate-600 mt-1">v3.0.0</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
 
         {/* Mobile Close Button */}
         <motion.button

@@ -858,6 +858,165 @@ const demoScenariosApi = {
       description: 'Current economic expansion phase with moderate growth',
     };
   },
+
+  /**
+   * Analyze scenario for a specific model (demo mode)
+   */
+  analyzeModelScenario: async (request: {
+    scenario_type: string;
+    category: string;
+    model_name: string;
+  }): Promise<any> => {
+    // Generate different base predictions for each model to make them distinct
+    const modelBasePredictions: Record<string, number> = {
+      LGBM: 600000,
+      RandomForest: 595000,
+      PatchTST: 605000,
+      TimesNet: 598000,
+    };
+
+    const basePrediction = modelBasePredictions[request.model_name] || 600000;
+
+    // Define scenario configurations
+    const scenarioConfigs: Record<string, {
+      multiplier: number;
+      name: string;
+      description: string;
+      unrate: number;
+      fedfunds: number;
+      cpi: number;
+      payems: number;
+      gdp: number;
+      consumer_confidence: number;
+    }> = {
+      baseline: {
+        multiplier: 1.01,
+        name: 'Baseline',
+        description: 'Continue current economic conditions with modest growth',
+        unrate: 4.2,
+        fedfunds: 4.25,
+        cpi: 2.8,
+        payems: 200000,
+        gdp: 2.5,
+        consumer_confidence: 100,
+      },
+      recession: {
+        multiplier: 0.92,
+        name: 'Recession',
+        description: 'Economic downturn with elevated unemployment and negative GDP growth',
+        unrate: 6.5,
+        fedfunds: 3.5,
+        cpi: 2.0,
+        payems: 180000,
+        gdp: -1.5,
+        consumer_confidence: 75,
+      },
+      rate_hike: {
+        multiplier: 0.97,
+        name: 'Rate Hike Cycle',
+        description: 'Tightening monetary policy with higher interest rates',
+        unrate: 4.7,
+        fedfunds: 6.25,
+        cpi: 2.3,
+        payems: 195000,
+        gdp: 2.0,
+        consumer_confidence: 90,
+      },
+      inflation_surge: {
+        multiplier: 0.98,
+        name: 'Inflation Surge',
+        description: 'High inflation environment with elevated consumer prices',
+        unrate: 4.5,
+        fedfunds: 5.75,
+        cpi: 4.8,
+        payems: 190000,
+        gdp: 2.2,
+        consumer_confidence: 85,
+      },
+      recovery: {
+        multiplier: 1.06,
+        name: 'Economic Recovery',
+        description: 'Strong growth with falling unemployment and rising confidence',
+        unrate: 3.8,
+        fedfunds: 3.5,
+        cpi: 2.5,
+        payems: 205000,
+        gdp: 3.2,
+        consumer_confidence: 110,
+      },
+    };
+
+    // Get scenario config, default to baseline if not found
+    const config = scenarioConfigs[request.scenario_type] || scenarioConfigs.baseline;
+
+    const prediction = basePrediction * config.multiplier;
+    const confidence = basePrediction * 0.05;
+
+    // Generate impact summary for different economic indicators
+    const impact_summary = [
+      {
+        indicator: 'UNRATE',
+        category: 'Labor Market',
+        source: 'BLS',
+        base_value: 4.2,
+        scenario_value: config.unrate,
+        change: config.unrate - 4.2,
+        change_pct: ((config.unrate - 4.2) / 4.2) * 100,
+      },
+      {
+        indicator: 'FEDFUNDS',
+        category: 'Monetary Policy',
+        source: 'FRED',
+        base_value: 4.25,
+        scenario_value: config.fedfunds,
+        change: config.fedfunds - 4.25,
+        change_pct: ((config.fedfunds - 4.25) / 4.25) * 100,
+      },
+      {
+        indicator: 'CPI',
+        category: 'Consumer',
+        source: 'BLS',
+        base_value: 2.8,
+        scenario_value: config.cpi,
+        change: config.cpi - 2.8,
+        change_pct: ((config.cpi - 2.8) / 2.8) * 100,
+      },
+      {
+        indicator: 'PAYEMS',
+        category: 'Labor Market',
+        source: 'BLS',
+        base_value: 200000,
+        scenario_value: config.payems,
+        change: config.payems - 200000,
+        change_pct: ((config.payems - 200000) / 200000) * 100,
+      },
+      {
+        indicator: 'GDP',
+        category: 'Production',
+        source: 'BEA',
+        base_value: 2.5,
+        scenario_value: config.gdp,
+        change: config.gdp - 2.5,
+        change_pct: ((config.gdp - 2.5) / 2.5) * 100,
+      },
+    ];
+
+    return {
+      scenario_type: request.scenario_type,
+      scenario_name: config.name,
+      description: config.description,
+      category: request.category,
+      model_name: request.model_name,
+      prediction: Math.round(prediction),
+      base_prediction: Math.round(basePrediction),
+      confidence_interval: [
+        Math.round(prediction - confidence),
+        Math.round(prediction + confidence),
+      ],
+      change_from_baseline: config.multiplier !== 1.0 ? Math.round((config.multiplier - 1.0) * 100) : 0,
+      impact_summary,
+    };
+  },
 };
 
 // ============================================================================

@@ -1,6 +1,7 @@
 /**
  * Dashboard Component
  * Overview page with key metrics and visualizations
+ * Includes economic context for anomaly interpretation
  */
 
 import { FC, useState } from 'react';
@@ -9,9 +10,15 @@ import { predictionsApi, trainingMetricsApi } from '../api/unifiedApi';
 import ForecastChart from './ForecastChart';
 import FeatureImportanceChart from './FeatureImportanceChart';
 import ModelInfoCard from './ModelInfoCard';
+import { EconomicRegimeIndicator } from './EconomicRegimeIndicator';
+import { EconomicContextInfo } from './EconomicContextInfo';
+import { useCurrentRegime } from '@/hooks/useEconomicRegime';
 
 export const Dashboard: FC = () => {
   const [selectedModel, setSelectedModel] = useState<string>('all');
+
+  // Get current economic regime
+  const { regime: economicRegime, loading: regimeLoading } = useCurrentRegime();
 
   // Fetch predictions for metrics (fetch with high limit to get accurate total)
   const { data: historyData, isLoading: predictionsLoading } = useQuery({
@@ -94,6 +101,17 @@ export const Dashboard: FC = () => {
           <p className="text-sm opacity-75 mt-2">Last 30 days</p>
         </div>
       </div>
+
+      {/* Economic Regime Indicator */}
+      {!regimeLoading && economicRegime && (
+        <EconomicRegimeIndicator
+          regime={economicRegime}
+          showExplanation={true}
+        />
+      )}
+
+      {/* Economic Context Info */}
+      <EconomicContextInfo />
 
       {/* Forecast Chart */}
       <ForecastChart />

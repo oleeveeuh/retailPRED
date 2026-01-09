@@ -187,7 +187,127 @@ class DemoDataService {
   async getSummary(): Promise<DemoSummary> {
     await this.delay();
 
-    return await this.loadJSON<DemoSummary>('summary.json');
+    const raw = await this.loadJSON<any>('summary.json');
+
+    // Transform models_available to match expected format
+    const withShap = raw.models_available?.with_shap || [];
+    const withoutShap = raw.models_available?.without_shap || [];
+    const allModels = [...withShap, ...withoutShap];
+
+    // Add deep learning models if not present
+    const deepLearningModels = ['PatchTST', 'TimesNet'];
+    deepLearningModels.forEach(model => {
+      if (!allModels.includes(model)) {
+        allModels.push(model);
+      }
+    });
+
+    return {
+      ...raw,
+      models_available: {
+        total_count: allModels.length,
+        models: allModels,
+      },
+    };
+  }
+
+  /**
+   * Get economic context for a specific date
+   */
+  async getEconomicContext(date?: string | null): Promise<any> {
+    await this.delay();
+
+    const data = await this.loadJSON<{ events: any[]; metadata: any }>('economic-context.json');
+
+    if (!date) {
+      // Return current/latest event
+      return data.events[data.events.length - 1];
+    }
+
+    // Find closest date
+    const targetDate = new Date(date);
+    const closest = data.events.reduce((prev, curr) => {
+      const prevDiff = Math.abs(new Date(curr.date).getTime() - targetDate.getTime());
+      const currDiff = Math.abs(new Date(prev.date).getTime() - targetDate.getTime());
+      return currDiff < prevDiff ? curr : prev;
+    });
+
+    return closest;
+  }
+
+  /**
+   * Get historical anomalies
+   */
+  async getHistoricalAnomalies(startDate?: string, endDate?: string): Promise<{ anomalies: any[] }> {
+    await this.delay();
+
+    const data = await this.loadJSON<{ events: any[]; metadata: any }>('economic-context.json');
+
+    let anomalies = data.events.filter(e => e.anomalies && e.anomalies.length > 0);
+
+    // Filter by date range if provided
+    if (startDate) {
+      anomalies = anomalies.filter(e => e.date >= startDate);
+    }
+    if (endDate) {
+      anomalies = anomalies.filter(e => e.date <= endDate);
+    }
+
+    return { anomalies };
+  }
+
+  /**
+   * Get economic regime for a specific date
+   */
+  async getEconomicRegime(date?: string | null): Promise<any> {
+    await this.delay();
+
+    const context = await this.getEconomicContext(date);
+
+    return {
+      regime: context.regime,
+      confidence: context.confidence,
+      trends: context.trends,
+      explanation: context.explanation
+    };
+  }
+
+  /**
+   * Get current economic regime (most recent)
+   */
+  async getCurrentRegime(): Promise<any> {
+    await this.delay();
+
+    const data = await this.loadJSON<{ events: any[]; metadata: any }>('economic-context.json');
+    const latest = data.events[data.events.length - 1];
+
+    return {
+      regime: latest.regime,
+      confidence: latest.confidence,
+      trends: latest.trends,
+      explanation: latest.explanation
+    };
+  }
+
+  /**
+   * Get regime history
+   */
+  async getRegimeHistory(startDate?: string, endDate?: string): Promise<any[]> {
+    await this.delay();
+
+    const data = await this.loadJSON<{ events: any[]; metadata: any }>('economic-context.json');
+
+    let regimes = data.events;
+
+    // Filter by date range if provided
+    if (startDate) {
+      regimes = regimes.filter(e => e.date >= startDate);
+    }
+    if (endDate) {
+      regimes = regimes.filter(e => e.date <= endDate);
+    }
+
+    return regimes;
   }
 
   /**

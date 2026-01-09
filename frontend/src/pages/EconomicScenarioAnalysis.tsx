@@ -121,7 +121,7 @@ export const EconomicScenarioAnalysis: FC = () => {
     },
   });
 
-  // Fetch model comparisons - using predict API with model names
+  // Fetch model comparisons - using scenario API with model names
   const { data: modelPredictions } = useQuery({
     queryKey: ['model-predictions', category, selectedScenario],
     queryFn: async () => {
@@ -129,14 +129,14 @@ export const EconomicScenarioAnalysis: FC = () => {
       const predictions = await Promise.all(
         models.map(async (model) => {
           try {
-            const data = await predictionsApi.predict({
+            const data = await scenariosApi.analyzeModelScenario({
               category,
               model_name: model,
-              weeks_ahead: 4
+              scenario_type: selectedScenario
             });
             return {
               name: model,
-              value: data.forecasts[0]?.predicted_value || 0,
+              value: data.prediction || 0,
               color: model === 'LGBM' ? 'bg-blue-500' :
                      model === 'RandomForest' ? 'bg-green-500' :
                      model === 'PatchTST' ? 'bg-purple-500' :

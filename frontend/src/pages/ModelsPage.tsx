@@ -570,10 +570,10 @@ export const ModelsPage: FC = () => {
                               </div>
                               <div>
                                 <p className="font-semibold text-slate-900 dark:text-slate-100">
-                                  {model.model_name}
+                                  {model?.model_name || 'Unknown Model'}
                                 </p>
                                 <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">
-                                  {model.model_type}
+                                  {model?.model_type || 'unknown'}
                                 </p>
                               </div>
                               {model.id === bestModel?.id && (
@@ -584,27 +584,27 @@ export const ModelsPage: FC = () => {
                             </div>
                           </td>
                           <td className="px-6 py-4">
-                            <span className={`px-3 py-1 rounded-lg font-semibold ${getPerformanceColor(model.metrics.rmse, 'error')}`}>
-                              {model.metrics.rmse.toFixed(3)}
+                            <span className={`px-3 py-1 rounded-lg font-semibold ${getPerformanceColor(model.metrics?.rmse || 0, 'error')}`}>
+                              {(model.metrics?.rmse || 0).toFixed(3)}
                             </span>
                           </td>
                           <td className="px-6 py-4">
-                            <span className={`px-3 py-1 rounded-lg font-semibold ${getPerformanceColor(model.metrics.mae, 'error')}`}>
-                              {model.metrics.mae.toFixed(3)}
+                            <span className={`px-3 py-1 rounded-lg font-semibold ${getPerformanceColor(model.metrics?.mae || 0, 'error')}`}>
+                              {(model.metrics?.mae || 0).toFixed(3)}
                             </span>
                           </td>
                           <td className="px-6 py-4">
-                            <span className={`px-3 py-1 rounded-lg font-semibold ${getPerformanceColor(model.metrics.mape, 'mape')}`}>
-                              {model.metrics.mape.toFixed(2)}%
+                            <span className={`px-3 py-1 rounded-lg font-semibold ${getPerformanceColor(model.metrics?.mape || 0, 'mape')}`}>
+                              {(model.metrics?.mape || 0).toFixed(2)}%
                             </span>
                           </td>
                           <td className="px-6 py-4">
-                            <span className={`px-3 py-1 rounded-lg font-semibold ${getPerformanceColor(model.metrics.r2, 'accuracy')}`}>
-                              {(model.metrics.r2 * 100).toFixed(2)}%
+                            <span className={`px-3 py-1 rounded-lg font-semibold ${getPerformanceColor(model.metrics?.r2 || 0, 'accuracy')}`}>
+                              {((model.metrics?.r2 || 0) * 100).toFixed(2)}%
                             </span>
                           </td>
                           <td className="px-6 py-4 text-slate-900 dark:text-slate-100 font-semibold">
-                            {model.training_time_seconds.toFixed(1)}s
+                            {(model.training_time_seconds || 0).toFixed(1)}s
                           </td>
                           <td className="px-6 py-4 text-slate-900 dark:text-slate-100 font-semibold">
                             {model.inference_time_ms}ms
@@ -652,7 +652,7 @@ export const ModelsPage: FC = () => {
                                     Accuracy Over Training Epochs (Simulated Learning Curve)
                                   </h4>
                                   <ResponsiveContainer width="100%" height={150}>
-                                    <LineChart data={generateSparklineData(model.model_name, model.metrics.r2)}>
+                                    <LineChart data={generateSparklineData(model?.model_name || 'Unknown', model?.metrics?.r2 || 0)}>
                                       <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                                       <XAxis
                                         dataKey="epoch"
@@ -674,11 +674,11 @@ export const ModelsPage: FC = () => {
                                       <Legend />
                                       <Line
                                         type="monotone"
-                                        dataKey={model.model_name.toLowerCase().replace(' ', '')}
+                                        dataKey={model?.model_name?.toLowerCase().replace(' ', '') || 'unknown'}
                                         stroke="#3b82f6"
                                         strokeWidth={2}
                                         dot={{ fill: '#3b82f6', r: 4 }}
-                                        name={model.model_name}
+                                        name={model?.model_name || 'Unknown'}
                                       />
                                     </LineChart>
                                   </ResponsiveContainer>
@@ -747,7 +747,7 @@ export const ModelsPage: FC = () => {
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                     }`}
                   >
-                    {model.model_name}
+                    {model?.model_name || 'Unknown Model'}
                   </motion.button>
                 ))}
               </div>
@@ -775,7 +775,7 @@ export const ModelsPage: FC = () => {
                         {comparisonModels.map((model, i) => (
                           <Radar
                             key={model.id}
-                            name={model.model_name}
+                            name={model?.model_name || 'Unknown Model'}
                             dataKey={`model${i + 1}`}
                             stroke={COLORS[i]}
                             fill={COLORS[i]}
@@ -795,10 +795,10 @@ export const ModelsPage: FC = () => {
                     </h3>
                     <ResponsiveContainer width="100%" height={300}>
                       <BarChart data={comparisonModels.map(m => ({
-                        name: m.model_name,
-                        RMSE: m.metrics.rmse,
-                        MAE: m.metrics.mae,
-                        MAPE: m.metrics.mape,
+                        name: m?.model_name || 'Unknown',
+                        RMSE: m?.metrics?.rmse || 0,
+                        MAE: m?.metrics?.mae || 0,
+                        MAPE: m?.metrics?.mape || 0,
                       }))}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                         <XAxis dataKey="name" stroke="#64748b" />
@@ -830,7 +830,9 @@ export const ModelsPage: FC = () => {
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">
-                        Winner: {comparisonModels.sort((a, b) => b.metrics.r2 - a.metrics.r2)[0].model_name}
+                        Winner: {comparisonModels.length > 0
+                          ? [...comparisonModels].sort((a, b) => b.metrics.r2 - a.metrics.r2)[0]?.model_name || 'N/A'
+                          : 'N/A'}
                       </p>
                       <p className="text-xs text-amber-700 dark:text-amber-400">
                         Best overall performance across all metrics
@@ -862,10 +864,10 @@ export const ModelsPage: FC = () => {
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                        {model.model_name}
+                        {model?.model_name || 'Unknown Model'}
                       </h3>
                       <p className="text-sm text-slate-600 dark:text-slate-400 capitalize">
-                        {model.model_type} architecture
+                        {model?.model_type || 'unknown'} architecture
                       </p>
                     </div>
                     {model.is_active && (
@@ -883,14 +885,23 @@ export const ModelsPage: FC = () => {
                           <GitBranch className="w-4 h-4" />
                           <span>Gradient Boosted Trees</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                          <Sliders className="w-4 h-4" />
-                          <span>{model.hyperparameters.n_estimators} estimators</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                          <Network className="w-4 h-4" />
-                          <span>Max depth: {model.hyperparameters.max_depth}</span>
-                        </div>
+                        {model.hyperparameters.n_estimators ? (
+                          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <Sliders className="w-4 h-4" />
+                            <span>{model.hyperparameters.n_estimators} estimators</span>
+                          </div>
+                        ) : model.hyperparameters.successful_categories ? (
+                          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <CheckCircle2 className="w-4 h-4" />
+                            <span>{model.hyperparameters.successful_categories} categories trained</span>
+                          </div>
+                        ) : null}
+                        {model.hyperparameters.max_depth && (
+                          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <Network className="w-4 h-4" />
+                            <span>Max depth: {model.hyperparameters.max_depth}</span>
+                          </div>
+                        )}
                       </div>
                     ) : model.model_type === 'random_forest' ? (
                       <div className="space-y-2">
@@ -898,10 +909,17 @@ export const ModelsPage: FC = () => {
                           <Network className="w-4 h-4" />
                           <span>Random Forest Ensemble</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                          <GitBranch className="w-4 h-4" />
-                          <span>{model.hyperparameters.n_estimators} trees</span>
-                        </div>
+                        {model.hyperparameters.n_estimators ? (
+                          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <GitBranch className="w-4 h-4" />
+                            <span>{model.hyperparameters.n_estimators} trees</span>
+                          </div>
+                        ) : model.hyperparameters.training_samples ? (
+                          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <Database className="w-4 h-4" />
+                            <span>{model.hyperparameters.training_samples} training samples</span>
+                          </div>
+                        ) : null}
                       </div>
                     ) : (
                       <div className="space-y-2">
