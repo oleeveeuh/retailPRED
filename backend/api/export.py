@@ -98,36 +98,42 @@ async def export_predictions_csv(
         # Calculate MASE scaling factor (naive forecast errors)
         # MASE = MAE / Naive_MAE
         # where naive forecast uses the previous period's actual value
-        mase_query = """
-            SELECT
-                model_name,
-                AVG(ABS(actual_value - predicted_value)) as model_mae
-            FROM prediction_log
-            WHERE actual_value IS NOT NULL
-            GROUP BY model_name
-        """
-        cursor.execute(mase_query)
-        model_maes = {row['model_name']: row['model_mae'] for row in cursor.fetchall()}
+        try:
+            mase_query = """
+                SELECT
+                    model_name,
+                    AVG(ABS(actual_value - predicted_value)) as model_mae
+                FROM prediction_log
+                WHERE actual_value IS NOT NULL
+                GROUP BY model_name
+            """
+            cursor.execute(mase_query)
+            model_maes = {row['model_name']: row['model_mae'] for row in cursor.fetchall()}
+        except Exception:
+            model_maes = {}
 
-        # Calculate naive MAE (using seasonal naive: same month from previous year)
-        naive_query = """
-            SELECT
-                AVG(ABS(t1.value - (
-                    SELECT t2.value
-                    FROM time_series_data t2
-                    JOIN categories c ON t2.category_id = c.id
-                    WHERE c.name = 'total_sales'
-                    AND t2.date = date(t1.date, '-1 year')
-                    LIMIT 1
-                ))) as naive_mae
-            FROM time_series_data t1
-            JOIN categories c ON t1.category_id = c.id
-            WHERE c.name = 'total_sales'
-            AND t1.date >= date('now', '-2 years')
-        """
-        cursor.execute(naive_query)
-        naive_result = cursor.fetchone()
-        naive_mae = naive_result['naive_mae'] if naive_result and naive_result['naive_mae'] else 100000
+        try:
+            # Calculate naive MAE (using seasonal naive: same month from previous year)
+            naive_query = """
+                SELECT
+                    AVG(ABS(t1.value - (
+                        SELECT t2.value
+                        FROM time_series_data t2
+                        JOIN categories c ON t2.category_id = c.id
+                        WHERE c.name = 'total_sales'
+                        AND t2.date = date(t1.date, '-1 year')
+                        LIMIT 1
+                    ))) as naive_mae
+                FROM time_series_data t1
+                JOIN categories c ON t1.category_id = c.id
+                WHERE c.name = 'total_sales'
+                AND t1.date >= date('now', '-2 years')
+            """
+            cursor.execute(naive_query)
+            naive_result = cursor.fetchone()
+            naive_mae = naive_result['naive_mae'] if naive_result and naive_result['naive_mae'] else 100000
+        except Exception:
+            naive_mae = 100000
 
         # Write header
         writer.writerow([
