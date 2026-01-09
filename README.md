@@ -1,187 +1,223 @@
-# RetailPRED
+# RetailPRED: Macroeconomic Retail Sales Forecasting System
 
-Macroeconomic Retail Sales Forecasting with Multi-Model Ensemble & SHAP Explainability
+An end-to-end machine learning system for forecasting retail sales across multiple categories using advanced time series models, macroeconomic indicators, and SHAP-based explainability.
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://retailpred.vercel.app)
-[![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-green)](https://fastapi.tiangolo.com)
-[![React](https://img.shields.io/badge/React-19%2B-blue)](https://react.dev)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/demo-live_online-brightgreen)](https://retailpred.vercel.app)
+[![Python](https://img.shields.io/badge/Python-3.9+-blue)](https://python.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue)](https://typescriptlang.org)
+[![React](https://img.shields.io/badge/React-19+-blue)](https://react.dev)
 
-> Full-Stack retail forecasting platform using FRED, MRTS, and Yahoo Finance data with ML explainability
-
-**[🌐 Live Demo](https://retailpred.vercel.app)** | **[📖 Documentation](docs/)** | **[🎥 Video Demo](#)**
+**Live Demo:** https://retailpred.vercel.app
 
 ---
 
-## ✨ Demo Deployment
+## Project Overview
 
-The live demo uses real predictions from production models (7,873 forecasts), served as static JSON files. This demonstrates:
+This project was developed to explore the application of modern machine learning techniques to retail sales forecasting. It combines data from multiple sources (Federal Reserve Economic Data, U.S. Census Bureau, and Yahoo Finance) to generate accurate forecasts across 11 retail categories using seven different forecasting algorithms.
 
-- **Multi-Model Forecasting**: LightGBM, RandomForest, AutoARIMA, AutoETS, SeasonalNaive, PatchTST, TimesNet
-- **SHAP Explainability**: Feature importance analysis for model decisions
-- **Economic Scenario Modeling**: What-if analysis with macroeconomic indicators
-- **Historical Validation**: Track prediction accuracy over time
-- **11 Retail Categories**: Comprehensive coverage from Automobile Dealers to Nonstore Retailers
+## System Overview
 
-**Data Sources**: Federal Reserve Economic Data (FRED), Monthly Retail Trade Survey (MRTS), Yahoo Finance
-**Last Model Update**: January 2025
-**Total Predictions**: 7,873 forecasts across all categories and models
+RetailPRED is an end-to-end retail forecasting platform that combines multi-resolution time series modeling with interactive visualizations and model explainability. The system processes data from Federal Reserve Economic Data (FRED), Monthly Retail Trade Survey (MRTS), and Yahoo Finance to generate accurate forecasts across 11 retail categories.
+
+### Key Capabilities
+
+- **Multi-Model Architecture**: Seven forecasting algorithms (LightGBM, Random Forest, AutoARIMA, AutoETS, Seasonal Naive, PatchTST, TimesNet) with automatic model selection
+- **Feature Engineering**: 242 engineered features including lag features, rolling statistics, rate-of-change indicators, and economic variables
+- **Model Explainability**: SHAP (SHapley Additive exPlanations) values for tree-based models to interpret feature contributions
+- **Economic Scenario Modeling**: What-if analysis with macroeconomic indicators (unemployment, CPI, interest rates, GDP)
+- **Historical Validation**: Track prediction accuracy over time with comprehensive metrics
+- **Interactive Dashboard**: Real-time visualization of forecasts, confidence intervals, and model performance
+
+### Performance Metrics
+
+**Best Performing Models** (across 4 categories):
+
+| Model | Avg MAPE | Avg MASE | Best For |
+|-------|----------|----------|----------|
+| **LightGBM** | 1.42% | 0.207 | Most categories (3/4) |
+| **Random Forest** | 2.08% | 0.285 | Complex interactions |
+| **AutoETS** | 9.60% | 0.991 | Exponential smoothing |
+| **AutoARIMA** | 12.69% | 1.303 | Autoregressive patterns |
+
+**Category Champions** (lowest MAPE):
+- Building Materials & Garden: **0.16%** (LightGBM)
+- Furniture & Home Furnishings: **0.30%** (LightGBM)
+- General Merchandise: **2.09%** (LightGBM)
+- Sporting Goods & Hobby: **3.13%** (LightGBM)
 
 ---
 
 ## Table of Contents
 
-- [System Overview](#system-overview)
-- [Data Pipeline](#data-pipeline)
-- [Feature Engineering](#feature-engineering)
-- [Model Training](#model-training)
-- [Model Architecture](#model-architecture)
-- [Training Workflow](#training-workflow)
-- [Inference Pipeline](#inference-pipeline)
-- [Performance Metrics](#performance-metrics)
-- [Project Structure](#project-structure)
-- [Quick Start](#quick-start)
-- [API Reference](#api-reference)
-- [Development](#development)
-- [Deployment](#deployment)
+1. [Technical Architecture](#technical-architecture)
+2. [Data Pipeline](#data-pipeline)
+3. [Feature Engineering](#feature-engineering)
+4. [Model Training](#model-training)
+5. [Model Details](#model-details)
+6. [Inference Pipeline](#inference-pipeline)
+7. [Project Structure](#project-structure)
+8. [Quick Start](#quick-start)
+9. [API Reference](#api-reference)
+10. [Deployment](#deployment)
 
 ---
 
-## System Overview
+## Technical Architecture
 
-RetailPRED is an end-to-end retail sales forecasting system that combines multi-resolution time series models with interactive visualizations and model explainability. The system achieves 95% error reduction compared to traditional monthly models through sophisticated feature engineering and multi-scale temporal modeling.
+### System Components
 
-### Key Metrics
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Data Ingestion Layer                      │
+│  FRED API │ MRTS Census │ Yahoo Finance (stock data)        │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  ETL Processing Layer                        │
+│  Data normalization │ Multi-resolution resampling           │
+│  Feature engineering │ Quality validation                   │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────┐
+│                 Model Training Layer                         │
+│  7 algorithms │ Cross-validation │ Model selection          │
+│  SHAP computation │ Performance evaluation                  │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   Inference Layer                            │
+│  Real-time forecasting │ Confidence intervals               │
+│  Feature importance │ Scenario analysis                     │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   Presentation Layer                         │
+│  React frontend │ Interactive visualizations                │
+│  Model explanations │ Validation tracking                   │
+└─────────────────────────────────────────────────────────────┘
+```
 
-- **95% Better Accuracy**: 0.56% MAPE vs 10.66% MAPE (monthly models)
-- **11 Retail Categories**: Comprehensive coverage of retail sectors
-- **22 Trained Models**: LightGBM and Random Forest for each category
-- **242 Multi-Resolution Features**: Including economic indicators, stock data, and temporal patterns
-- **16 Years of Data**: 5,814 daily observations (2010-2025)
+### Technology Stack
 
-### Performance Achievement
+**Backend (Python):**
+- FastAPI: High-performance async API framework
+- LightGBM & scikit-learn: Machine learning models
+- Statsmodels: Statistical time series models (ARIMA, ETS)
+- SHAP: Model explainability
+- SQLite: Prediction logging and validation
+- Pandas/NumPy: Data processing
 
-When forecasting retail sales for 2025 (unseen holdout data), the multi-resolution LightGBM models achieved:
+**Frontend (TypeScript):**
+- React 19: UI framework
+- TanStack Query: Data fetching and caching
+- Recharts: Data visualization
+- TailwindCSS: Styling
+- Framer Motion: Animations
+- Vite: Build tool
 
-- **Average MAPE**: 0.56% (predictions off by 0.56% on average)
-- **Best Category**: Building Materials at 0.17% MAPE
-- **Worst Category**: General Merchandise at 1.18% MAPE
-
-This translates to a forecast error of approximately ±$5,600 on a $1M monthly forecast, compared to ±$106,600 with traditional monthly models (19x improvement).
+**Deployment:**
+- Vercel: Frontend hosting (demo mode)
+- Docker: Full-stack containerization
 
 ---
 
 ## Data Pipeline
 
-### Data Sources
+### 1. Data Sources
 
-The system integrates data from three primary sources:
+#### Monthly Retail Trade Survey (MRTS)
+- **Provider:** U.S. Census Bureau
+- **Frequency:** Monthly
+- **Coverage:** 11 retail categories
+- **Data Lag:** 1-2 months
 
-#### 1. MRTS (Monthly Retail Trade Survey)
+**Categories Tracked:**
+1. Total Retail Sales (4400A)
+2. Automobile Dealers (441)
+3. Building Materials & Garden (444)
+4. Clothing & Accessories (452)
+5. Electronics & Appliances (44X72)
+6. Food & Beverage Stores (445)
+7. Furniture & Home Furnishings (442)
+8. Gasoline Stations (448)
+9. General Merchandise (454)
+10. Health & Personal Care (447)
+11. Sporting Goods & Hobby (453)
 
-**Provider**: U.S. Census Bureau
-**Frequency**: Monthly
-**Coverage**: 11 retail categories
-**Data Lag**: 1-2 months
+#### Federal Reserve Economic Data (FRED)
+- **Provider:** Federal Reserve Bank of St. Louis
+- **Frequency:** Monthly
+- **Indicators:** 9 macroeconomic variables
 
-**Categories Tracked**:
-- Total Retail Sales (4400A)
-- Automobile Dealers (441)
-- Building Materials & Garden (444)
-- Clothing & Accessories (452)
-- Electronics & Appliances (44X72)
-- Food & Beverage Stores (445)
-- Furniture & Home Furnishings (442)
-- Gasoline Stations (448)
-- General Merchandise (454)
-- Health & Personal Care (447)
-- Sporting Goods & Hobby (453)
+**Key Indicators:**
+- **CPI:** Consumer Price Index (inflation measure)
+- **FEDFUNDS:** Federal Funds Rate (interest rate)
+- **UNRATE:** Unemployment Rate
+- **UMCSENT:** Consumer Sentiment Index
+- **INDPRO:** Industrial Production Index
+- **PCE:** Personal Consumption Expenditures
+- **M2SL:** Money Supply M2
+- **PAYEMS:** Nonfarm Payrolls
+- **GDP:** Gross Domestic Product
 
-#### 2. FRED Economic Data
+#### Yahoo Finance Stock Data
+- **Provider:** Yahoo Finance
+- **Frequency:** Daily (aggregated to monthly)
+- **Stocks Tracked:** AAPL, WMT, AMZN, COST
 
-**Provider**: Federal Reserve Economic Data (St. Louis Fed)
-**Frequency**: Monthly
-**Indicators**: 9 macroeconomic variables
-
-**Key Indicators**:
-- CPI (Consumer Price Index)
-- FEDFUNDS (Federal Funds Rate)
-- UNRATE (Unemployment Rate)
-- UMCSENT (Consumer Sentiment)
-- INDPRO (Industrial Production Index)
-- PCE (Personal Consumption Expenditures)
-- M2SL (Money Supply M2)
-- PAYEMS (Nonfarm Payrolls)
-- GDP (Gross Domestic Product)
-
-#### 3. Yahoo Finance Stock Data
-
-**Provider**: Yahoo Finance
-**Frequency**: Daily (aggregated to monthly)
-**Stocks Tracked**: 4 major retail companies
-- AAPL (Apple Inc.)
-- WMT (Walmart Inc.)
-- AMZN (Amazon.com Inc.)
-- COST (Costco Wholesale Inc.)
-
-**Metrics per Stock**:
+**Metrics per Stock:**
 - Monthly return
 - Monthly volatility
 - Average trading volume
 
-### Data Pipeline Architecture
+### 2. Data Processing Pipeline
 
-The data pipeline follows a six-stage process:
-
-```
-SOURCE DATA → NORMALIZATION → MULTI-RESOLUTION → FEATURE ENGINEERING → MODEL TRAINING → PREDICTION
-```
+**Location:** `project_root/etl/`
 
 #### Stage 1: Data Collection
+```bash
+# Fetch MRTS retail sales data
+python project_root/etl/fetch_mrts.py
 
-**Location**: `project_root/etl/`
-**Scripts**:
-- `fetch_fred.py` - Downloads FRED economic indicators
-- `fetch_mrts.py` - Downloads MRTS retail sales data
-- `fetch_yahoo.py` - Downloads Yahoo Finance stock data
+# Fetch FRED economic indicators
+python project_root/etl/fetch_fred.py
 
-**Output**: Raw CSV files in `project_root/data_raw/`
+# Fetch Yahoo Finance stock data
+python project_root/etl/fetch_yahoo.py
+```
+
+**Output:** Raw CSV files in `project_root/data_raw/`
 
 #### Stage 2: Data Normalization
+**Script:** `build_dataset.py`
 
-**Location**: `project_root/etl/build_dataset.py`
-**Purpose**: Align all data sources to common temporal granularity
-
-**Process**:
+**Process:**
 1. Date alignment to month-end
-2. Daily to monthly aggregation (Yahoo Finance)
+2. Daily to monthly aggregation (Yahoo Finance data)
 3. Outer join on date column
 4. Forward fill missing values
 5. Combine FRED, MRTS, and Yahoo Finance data
 
-**Output**: `project_root/data_processed/combined_dataset.csv`
-
-**Schema**:
-- 12 base columns (date + 11 retail categories)
-- 9 economic indicators (FRED)
-- 12 stock metrics (4 stocks × 3 metrics)
-- Total: ~33 features (pre-engineering)
+**Output:** `project_root/data_processed/combined_dataset.csv`
 
 #### Stage 3: Multi-Resolution Resampling
+**Script:** `build_multi_resolution_dataset.py`
 
-**Location**: `project_root/etl/build_multi_resolution_dataset.py`
-**Purpose**: Create data at multiple temporal granularities
+**Purpose:** Create data at multiple temporal granularities for feature engineering
 
-**Method**:
+**Method:**
 
-**Daily Data Creation** (Monthly to Daily Interpolation):
+**Daily Data Creation (Monthly to Daily Interpolation):**
 ```python
-# Linear interpolation
+# Linear interpolation for smooth daily curves
 df_daily = df.reindex(daily_date_range)
 df_daily = df_daily.interpolate(method='linear')
 
-# Day-of-week adjustment (retail-specific factors)
+# Retail-specific day-of-week adjustment factors
 dow_factors = {
     0: 0.90,  # Monday
     1: 0.95,  # Tuesday
@@ -193,117 +229,57 @@ dow_factors = {
 }
 ```
 
-**Weekly Aggregation**:
+**Weekly Aggregation:**
 - Resample to week-start (Monday)
 - Aggregate using mean for continuous variables
 - Use last observation for categorical
 
-**Monthly Aggregation**:
+**Monthly Aggregation:**
 - Maintain original monthly data
 - Preserves true monthly patterns
 
-**Yearly Aggregation**:
+**Yearly Aggregation:**
 - Resample to year-start
 - Capture long-term trends
 
-**Output**: 4 datasets per category (daily, weekly, monthly, yearly)
-
-#### Stage 4: Feature Engineering
-
-**Location**: `project_root/etl/build_multi_resolution_dataset.py` and `backend/ml/feature_computer.py`
-**Purpose**: Transform raw time series into 74 predictive features
-
-**Detailed Feature Breakdown**: See [FEATURE_ENGINEERING_DOCUMENTATION.md](FEATURE_ENGINEERING_DOCUMENTATION.md)
-
-**Feature Categories**:
-1. Temporal Features (16) - Seasonality patterns
-2. Lag Features (10) - Autoregressive signals
-3. Rolling Statistics (24) - Trends and volatility
-4. Rate of Change (10) - Momentum indicators
-5. Momentum Indicators (2) - Sustained trends
-6. Year-over-Year (1) - Annual growth
-7. Target Variable (1) - Retail sales value
-
-**Output**: 242 features per observation
-
-#### Stage 5: Data Storage
-
-**Location**: `project_root/data_multi_resolution/`
-**Format**: Apache Parquet (columnar storage)
-**Organization**: One directory per retail category
-
-**File Structure**:
-```
-data_multi_resolution/
-├── Total_Retail_Sales/
-│   ├── Total_Retail_Sales.parquet (5,814 rows × 242 features)
-│   └── features_metadata.json
-├── Automobile_Dealers/
-│   ├── Automobile_Dealers.parquet
-│   └── features_metadata.json
-└── ... (11 categories total)
-```
-
-**Metadata Tracking**:
-```json
-{
-  "category": "Total_Retail_Sales",
-  "total_features": 242,
-  "temporal_granularity": "daily",
-  "date_range": {"start": "2010-01-01", "end": "2025-12-31"},
-  "total_periods": 5814,
-  "features": {
-    "temporal": {"count": 16},
-    "lags": {"count": 10},
-    "rolling_statistics": {"count": 24},
-    "rate_of_change": {"count": 10},
-    "momentum": {"count": 2},
-    "yoy": {"count": 1}
-  }
-}
-```
-
-#### Stage 6: Model Training
-
-**Location**: `project_root/models/train_multi_resolution.py`
-**Output**: Trained models in `project_root/models_multi_resolution/`
-
-**Models Generated**: 22 model files
-- 11 categories × 2 model types (LightGBM, Random Forest)
+**Output:** 4 datasets per category (daily, weekly, monthly, yearly)
 
 ---
 
 ## Feature Engineering
 
-### Complete Feature Set (74 Features)
+### Feature Architecture
 
-#### 1. Temporal Features (16 features)
+**Total Features:** 242 features per observation
+**Feature Categories:** 7 major types
+
+### 1. Temporal Features (16 features)
 
 Capture seasonal patterns and calendar effects through both linear and cyclical encodings.
 
-**Linear Temporal Features**:
-- `year` - Calendar year (2010-2025)
-- `month` - Month of year (1-12)
-- `quarter` - Quarter of year (1-4)
-- `day_of_week` - Day of week (0=Monday, 6=Sunday)
-- `week_of_year` - ISO week number (1-53)
-- `is_weekend` - Binary flag (1 if Sat/Sun, 0 otherwise)
-- `day_of_month` - Day of month (1-31)
-- `day_of_year` - Day of year (1-366)
+**Linear Temporal Features:**
+- `year`: Calendar year (2010-2025)
+- `month`: Month of year (1-12)
+- `quarter`: Quarter of year (1-4)
+- `day_of_week`: Day of week (0=Monday, 6=Sunday)
+- `week_of_year`: ISO week number (1-53)
+- `is_weekend`: Binary flag (1 if Sat/Sun, 0 otherwise)
+- `day_of_month`: Day of month (1-31)
+- `day_of_year`: Day of year (1-366)
 
 **Cyclical Temporal Features** (preserve continuity):
-- `month_sin`, `month_cos` - Cyclical month encoding
-- `quarter_sin`, `quarter_cos` - Cyclical quarter encoding
-- `day_of_year_sin`, `day_of_year_cos` - Cyclical day encoding
-- `day_of_week_sin`, `day_of_week_cos` - Cyclical weekday encoding
+- `month_sin`, `month_cos`: Cyclical month encoding
+- `quarter_sin`, `quarter_cos`: Cyclical quarter encoding
+- `day_of_year_sin`, `day_of_year_cos`: Cyclical day encoding
+- `day_of_week_sin`, `day_of_week_cos`: Cyclical weekday encoding
 
-**Why Cyclical Encoding**: Preserves the cyclical nature of time (e.g., December is close to January) which linear encoding would disrupt.
+**Why Cyclical Encoding:** Preserves the cyclical nature of time where December (12) is close to January (1), which linear encoding would disrupt.
 
-#### 2. Lag Features (10 features)
+### 2. Lag Features (10 features)
 
-Capture autoregressive patterns - past values predict future values.
+Capture autoregressive patterns where past values predict future values.
 
-**Adaptive Lag Selection**: Lags are chosen based on available data history (maximum 40% of data length)
+**Adaptive Lag Selection:** Lags chosen based on available data history (maximum 40% of data length)
 
 | Feature | Period | Use Case |
 |---------|--------|----------|
@@ -318,37 +294,37 @@ Capture autoregressive patterns - past values predict future values.
 | `lag_6m` | 6 months | Semi-annual pattern |
 | `lag_12m` | 12 months | Year-over-year pattern |
 
-**Feature Importance**: Lag features consistently rank in the top 5 most important features across all categories.
+**Feature Importance:** Lag features consistently rank in the top 5 most important features across all categories.
 
-#### 3. Rolling Statistics (24 features)
+### 3. Rolling Statistics (24 features)
 
 Capture moving averages, volatility, and trend strength at multiple time scales.
 
-**Monthly Rolling Windows** (6 features):
-- `rolling_mean_3`, `rolling_std_3` - 3-period mean/std
-- `rolling_mean_6`, `rolling_std_6` - 6-period mean/std
-- `rolling_mean_12`, `rolling_std_12` - 12-period mean/std
+**Monthly Rolling Windows (6 features):**
+- `rolling_mean_3`, `rolling_std_3`: 3-period mean/std
+- `rolling_mean_6`, `rolling_std_6`: 6-period mean/std
+- `rolling_mean_12`, `rolling_std_12`: 12-period mean/std
 
-**Daily Rolling Windows** (6 features):
-- `rolling_mean_7d`, `rolling_std_7d` - 7-day mean/std
-- `rolling_mean_14d`, `rolling_std_14d` - 14-day mean/std
-- `rolling_mean_30d`, `rolling_std_30d` - 30-day mean/std
+**Daily Rolling Windows (6 features):**
+- `rolling_mean_7d`, `rolling_std_7d`: 7-day mean/std
+- `rolling_mean_14d`, `rolling_std_14d`: 14-day mean/std
+- `rolling_mean_30d`, `rolling_std_30d`: 30-day mean/std
 
-**Weekly Rolling Windows** (6 features):
-- `rolling_mean_4w`, `rolling_std_4w` - 4-week mean/std
-- `rolling_mean_8w`, `rolling_std_8w` - 8-week mean/std
-- `rolling_mean_12w`, `rolling_std_12w` - 12-week mean/std
+**Weekly Rolling Windows (6 features):**
+- `rolling_mean_4w`, `rolling_std_4w`: 4-week mean/std
+- `rolling_mean_8w`, `rolling_std_8w`: 8-week mean/std
+- `rolling_mean_12w`, `rolling_std_12w`: 12-week mean/std
 
-**Monthly Extended Rolling Windows** (6 features):
-- `rolling_mean_3m`, `rolling_std_3m` - 3-month mean/std
-- `rolling_mean_6m`, `rolling_std_6m` - 6-month mean/std
-- `rolling_mean_12m`, `rolling_std_12m` - 12-month mean/std
+**Monthly Extended Rolling Windows (6 features):**
+- `rolling_mean_3m`, `rolling_std_3m`: 3-month mean/std
+- `rolling_mean_6m`, `rolling_std_6m`: 6-month mean/std
+- `rolling_mean_12m`, `rolling_std_12m`: 12-month mean/std
 
-**Interpretation**:
-- **Rolling Means**: Capture trend direction (increasing = uptrend, decreasing = downtrend)
-- **Rolling Std**: Capture volatility regime (high = unstable, low = stable)
+**Interpretation:**
+- **Rolling Means:** Capture trend direction (increasing = uptrend, decreasing = downtrend)
+- **Rolling Std:** Capture volatility regime (high = unstable, low = stable)
 
-#### 4. Rate of Change Features (10 features)
+### 4. Rate of Change Features (10 features)
 
 Capture momentum, acceleration, and growth rates.
 
@@ -365,30 +341,44 @@ Capture momentum, acceleration, and growth rates.
 | `pct_change_1y` | (y[t] - y[t-365]) / y[t-365] × 100 | Annual growth % |
 | `diff_1y` | y[t] - y[t-365] | Annual change |
 
-#### 5. Momentum Indicators (2 features)
+### 5. Momentum Indicators (2 features)
 
 Capture sustained directional movement.
 
-- `momentum_30d` - 30-day momentum (y[t] - y[t-30])
-- `momentum_90d` - 90-day momentum (y[t] - y[t-90])
+- `momentum_30d`: 30-day momentum (y[t] - y[t-30])
+- `momentum_90d`: 90-day momentum (y[t] - y[t-90])
 
-**Interpretation**:
+**Interpretation:**
 - Positive momentum = uptrend
 - Negative momentum = downtrend
 - Large magnitude = strong trend
 
-#### 6. Year-over-Year Feature (1 feature)
+### 6. Year-over-Year Feature (1 feature)
 
-- `yoy_change` - Normalized annual growth rate (pct_change_1y / 100)
+- `yoy_change`: Normalized annual growth rate (pct_change_1y / 100)
 
-**Purpose**: Compare current performance to same period last year, controlling for seasonality.
+**Purpose:** Compare current performance to same period last year, controlling for seasonality.
+
+### 7. Economic Indicators (9 features)
+
+Macroeconomic variables that influence retail spending:
+
+- `CPI`: Consumer Price Index (inflation)
+- `FEDFUNDS`: Federal Funds Rate (interest rates)
+- `UNRATE`: Unemployment Rate
+- `UMCSENT`: Consumer Sentiment
+- `INDPRO`: Industrial Production
+- `PCE`: Personal Consumption Expenditures
+- `M2SL`: Money Supply
+- `PAYEMS`: Nonfarm Payrolls
+- `GDP`: Gross Domestic Product
 
 ### Feature Importance Analysis
 
 **Top 10 Features** (averaged across all categories):
 
-| Rank | Feature | Average Importance | Category |
-|------|---------|-------------------|----------|
+| Rank | Feature | Avg Importance | Category |
+|------|---------|----------------|----------|
 | 1 | `lag_1d` | 24% | Lag |
 | 2 | `rolling_mean_7d` | 12% | Rolling Statistics |
 | 3 | `pct_change_1w` | 9% | Rate of Change |
@@ -398,25 +388,13 @@ Capture sustained directional movement.
 | 7 | `diff_1w` | 5% | Rate of Change |
 | 8 | `quarter_sin` | 4% | Temporal |
 | 9 | `momentum_30d` | 4% | Momentum |
-| 10 | `UNRATE` | 3% | Economic (if used) |
+| 10 | `UNRATE` | 3% | Economic |
 
-**Key Insights**:
+**Key Insights:**
 - Autoregressive features (lags) dominate with 32% combined importance
 - Rolling statistics capture 18% (trend + volatility)
 - Rate of change features capture 14% (momentum)
 - Temporal features capture 11% (seasonality)
-
-### Redundancy Removal
-
-The following features were explicitly removed to eliminate duplicates:
-
-| Removed | Kept As | Reason |
-|---------|---------|--------|
-| `lag_1w` | `lag_7d` | Same 7-day period |
-| `lag_1m` | `lag_30d` | Same 30-day period |
-| `pct_change_1d` | `pct_change_1` | Same 1-period change |
-| `diff_1d` | `diff_1` | Same 1-period difference |
-| `momentum_7d` | `diff_1w` | Same as week-over-week difference |
 
 ---
 
@@ -424,30 +402,30 @@ The following features were explicitly removed to eliminate duplicates:
 
 ### Training Configuration
 
-**Location**: `project_root/models/train_multi_resolution.py`
+**Location:** `project_root/models/robust_timecopilot_trainer.py`
 
-#### Data Split
+### Data Split
 
 **Temporal Train/Test Split** (Critical for time series):
 
-- **Training Set**: January 2010 - December 2024 (15 years)
+- **Training Set:** January 2010 - December 2024 (15 years)
   - 5,652 daily observations
   - Used for model training
   - Ensures models learn historical patterns
 
-- **Test Set (Holdout)**: January 2025 - December 2025 (1 year)
+- **Test Set (Holdout):** January 2025 - December 2025 (1 year)
   - 162 daily observations
   - Strict temporal holdout (no data leakage)
   - Used for validation and performance evaluation
   - Mimics real-world forecasting scenario
 
-**Why Temporal Split**: Random split would cause data leakage (future information contaminating training). Temporal split ensures models are evaluated on truly unseen future data.
+**Why Temporal Split:** Random split would cause data leakage where future information contaminates training. Temporal split ensures models are evaluated on truly unseen future data.
 
-#### Cross-Validation
+### Cross-Validation
 
-**Method**: Time Series Split (TimeSeriesSplit from sklearn)
+**Method:** Time Series Split (`TimeSeriesSplit` from sklearn)
 
-**Configuration**:
+**Configuration:**
 - 5 folds
 - Gap of 7 days between train and validation (prevent leakage)
 - Expanding window (not rolling) to maximize training data
@@ -462,13 +440,27 @@ tscv = TimeSeriesSplit(
 )
 ```
 
-### Model Types
+### Model Selection Strategy
 
-#### 1. LightGBM (Gradient Boosting)
+**Per-Category Best Model Selection:**
 
-**File**: `total_sales_lightgbm_model.pkl` (per category)
+After training all models on the training set, performance is evaluated on the 2025 holdout set. The model with lower MAPE is selected as the "best model" for that category.
 
-**Hyperparameters**:
+**Selection Process:**
+1. Train all 7 models on 2010-2024 data
+2. Evaluate all on 2025 holdout data
+3. Select model with lowest validation MAPE
+4. Deploy selected model for production forecasting
+
+---
+
+## Model Details
+
+### 1. LightGBM (Gradient Boosting)
+
+**Algorithm:** Gradient boosting framework that uses tree-based learning algorithms
+
+**Hyperparameters:**
 ```python
 {
     'objective': 'regression',
@@ -485,20 +477,30 @@ tscv = TimeSeriesSplit(
 }
 ```
 
-**Training Configuration**:
+**Training Configuration:**
 - Early stopping with 100 rounds patience
 - 1,000 maximum boosting rounds
 - Validation set used for early stopping
 
-**Performance**: Wins on 5/11 categories
-- Average MAPE: 0.49%
-- Best for: Smooth trends, consistent patterns
+**Performance:** Best model on 3/4 categories
+- Average MAPE: 1.42%
+- Average MASE: 0.207
+- Best for: Smooth trends, consistent patterns, non-linear relationships
 
-#### 2. Random Forest
+**SHAP Support:** YES - Tree-based model supports SHAP value computation for explainability
 
-**File**: `total_sales_randomforest_model.pkl` (per category)
+**Why It Works Well:**
+- Handles non-linear relationships
+- Robust to outliers
+- Built-in regularization prevents overfitting
+- Fast training speed
+- Excellent at capturing complex feature interactions
 
-**Hyperparameters**:
+### 2. Random Forest
+
+**Algorithm:** Ensemble learning method operating by constructing a multitude of decision trees
+
+**Hyperparameters:**
 ```python
 {
     'n_estimators': 200,
@@ -511,222 +513,168 @@ tscv = TimeSeriesSplit(
 }
 ```
 
-**Performance**: Wins on 5/11 categories
-- Average MAPE: 0.63%
-- Best for: Volatile patterns, complex interactions
+**Performance:** Second-best on most categories
+- Average MAPE: 2.08%
+- Average MASE: 0.285
+- Best for: Volatile patterns, complex interactions, non-linear patterns
 
-### Model Selection Strategy
+**SHAP Support:** YES - Tree-based model supports SHAP value computation
 
-**Per-Category Best Model Selection**:
+**Why It Works Well:**
+- Handles high-dimensional spaces well
+- Robust to overfitting (with proper tuning)
+- Captures complex feature interactions
+- Parallelizable training
+- Less sensitive to hyperparameters
 
-After training both models on the training set, performance is evaluated on the 2025 holdout set. The model with lower MAPE is selected as the "best model" for that category.
+### 3. AutoARIMA
 
-**Selection Process**:
-1. Train LightGBM and Random Forest on 2010-2024 data
-2. Evaluate both on 2025 holdout data
-3. Select model with lower validation MAPE
-4. Deploy selected model for production forecasting
+**Algorithm:** AutoRegressive Integrated Moving Average with automatic parameter selection
 
-**Final Model Distribution**:
-- LightGBM: 5 categories (45%)
-- Random Forest: 5 categories (45%)
-- Tie: 1 category (both within 0.01% MAPE)
+**How It Works:**
+- Automatically selects ARIMA parameters (p, d, q)
+- Uses AIC (Akaike Information Criterion) for model selection
+- Handles trend and seasonality through differencing
 
----
+**Performance:**
+- Average MAPE: 12.69%
+- Average MASE: 1.303
+- Best for: Autoregressive patterns, clear trend/seasonality
 
-## Model Architecture
+**SHAP Support:** NO - Statistical model without feature-based structure
 
-### Multi-Resolution Approach
+**Why Lower Performance:**
+- Linear model assumes linear relationships
+- Cannot capture complex feature interactions
+- Struggles with non-linear patterns
+- Limited to univariate relationships with external regressors
 
-**Key Innovation**: Models are trained on daily data but can forecast at any granularity (daily, weekly, monthly).
+**Use Case:** Good baseline model, interpretable parameters, fast training
 
-**Architecture**:
+### 4. AutoETS
 
-```
-INPUT: Historical Daily Data (2010-2024)
-    ↓
-FEATURE ENGINEERING: 242 multi-resolution features
-    ↓
-MODEL TRAINING: LightGBM or Random Forest
-    ↓
-OUTPUT: Daily forecasts (can aggregate to weekly/monthly)
-```
+**Algorithm:** Exponential Smoothing with automatic error/trend/seasonality selection
 
-**Why Daily Training**:
-- 5,814 observations vs 132 (monthly) = 44x more training data
-- Captures intra-month patterns (weekly seasonality)
-- Better feature utilization (daily rolling windows)
-- Superior accuracy (0.56% vs 10.66% MAPE)
+**How It Works:**
+- Automatically selects ETS model type
+- Handles additive and multiplicative seasonality
+- Smooths data using exponential weights
 
-**Forecasting at Different Granularities**:
+**Performance:**
+- Average MAPE: 9.60%
+- Average MASE: 0.991
+- Best for: Exponential smoothing trends, seasonal patterns
 
-**Daily Forecasts**:
-- Direct model output
-- 1-day resolution
-- Best for: Short-term operational planning (1-7 days)
+**SHAP Support:** NO - Statistical model without feature-based structure
 
-**Weekly Forecasts**:
-- Aggregate daily predictions to weekly
-- 7-day resolution
-- Best for: Tactical planning (1-4 weeks)
+**Why Better Than ARIMA:**
+- More robust to outliers
+- Handles multiple seasonality types
+- Better for seasonal data
+- Smoother forecasts
 
-**Monthly Forecasts**:
-- Aggregate daily predictions to monthly
-- 30-day resolution
-- Best for: Strategic planning (1-12 months)
+**Limitation:** Still linear, cannot capture complex interactions
 
-### Ensemble Strategy (Planned)
+### 5. Seasonal Naive
 
-**Current**: Single best model per category
+**Algorithm:** Naive forecasting method using seasonal lags
 
-**Planned Enhancement**: Weighted ensemble of LightGBM and Random Forest
+**How It Works:**
+- Forecast = value from same period last season
+- Simple baseline for comparison
 
-```python
-# Weighted average based on validation MAPE
-weight_lgbm = 1 / mape_lgbm
-weight_rf = 1 / mape_rf
-prediction = (weight_lgbm * pred_lgbm + weight_rf * pred_rf) / (weight_lgbm + weight_rf)
-```
+**Performance:**
+- Average MAPE: 12.72%
+- Average MASE: 1.372
+- Best for: Strong seasonal patterns, simple baseline
 
-**Expected Benefit**: Additional 5-10% MAPE reduction
+**SHAP Support:** NO - No feature-based structure
 
----
+**Use Case:** Baseline model for comparison, minimal assumptions
 
-## Training Workflow
+### 6. PatchTST
 
-### End-to-End Training Process
+**Algorithm:** Patch Time Series Transformer (deep learning model)
 
-**Location**: `project_root/models/train_multi_resolution.py`
+**Architecture:**
+- Transformer-based model for time series
+- Patches time series into segments
+- Uses self-attention mechanisms
 
-#### Step 1: Data Loading
+**Performance:**
+- Average MAPE: 22.21%
+- Average MASE: 2.383
+- Best for: Complex temporal patterns (theoretically)
 
-```python
-# Load multi-resolution dataset for category
-data_path = "../data_multi_resolution/Total_Retail_Sales/Total_Retail_Sales.parquet"
-df = pd.read_parquet(data_path)
-```
+**SHAP Support:** NO - Deep learning model without straightforward SHAP support
 
-**Dataset Characteristics**:
-- Shape: (5,814 rows, 242 features)
-- Date range: 2010-01-01 to 2025-12-31
-- Frequency: Daily
-- Target variable: `y` (retail sales)
+**Why Poor Performance:**
+- Requires large amounts of training data
+- Overfitting on small dataset (5,652 samples)
+- Complex architecture for relatively simple patterns
+- Long training time for marginal gains
 
-#### Step 2: Train/Test Split
+**Use Case:** Research purposes, larger datasets
 
-```python
-# Temporal split (no shuffle!)
-train_end = "2024-12-31"
-test_start = "2025-01-01"
+### 7. TimesNet
 
-train = df[df['date'] <= train_end]
-test = df[df['date'] >= test_start]
+**Algorithm:** Deep learning model using temporal 2D convolution
 
-X_train = train.drop(columns=['y', 'date'])
-y_train = train['y']
-X_test = test.drop(columns=['y', 'date'])
-y_test = test['y']
-```
+**Architecture:**
+- Converts 1D time series to 2D tensors
+- Uses CNN for pattern extraction
+- Captures multi-scale temporal patterns
 
-**Split Rationale**:
-- Training: 2010-2024 (5,652 observations)
-- Testing: 2025 (162 observations)
-- No overlap, no leakage
+**Performance:**
+- Average MAPE: 22.47%
+- Average MASE: 2.416
+- Best for: Complex temporal patterns (theoretically)
 
-#### Step 3: Feature Selection (Optional)
+**SHAP Support:** NO - Deep learning model without straightforward SHAP support
 
-```python
-# Remove highly correlated features (>0.95 correlation)
-correlation_matrix = X_train.corr()
-to_drop = [column for column in correlation_matrix.columns
-            if any(correlation_matrix[column] > 0.95)]
-X_train = X_train.drop(columns=to_drop)
-```
+**Why Poor Performance:**
+- Same issues as PatchTST
+- Overfitting on small dataset
+- Long training time (144+ seconds per category)
+- Complex architecture for relatively simple patterns
 
-**Note**: Currently all 242 features are used (no feature selection performed)
+**Use Case:** Research purposes, larger datasets
 
-#### Step 4: Model Training
+### SHAP Explainability
 
-**LightGBM Training**:
-```python
-import lightgbm as lgb
+**What is SHAP:** SHAP (SHapley Additive exPlanations) is a game theoretic approach to explain the output of any machine learning model.
 
-model_lgb = lgb.LGBMRegressor(
-    objective='regression',
-    metric='mape',
-    **hyperparameters
-)
+**How It Works:**
+- Computes contribution of each feature to prediction
+- Based on Shapley values from game theory
+- Provides local and global interpretability
 
-model_lgb.fit(
-    X_train, y_train,
-    eval_set=[(X_test, y_test)],
-    callbacks=[lgb.early_stopping(stopping_rounds=100)]
-)
-```
+**Available For:** LightGBM and Random Forest only
 
-**Random Forest Training**:
-```python
-from sklearn.ensemble import RandomForestRegressor
+**Why Only These Models:**
+- Both are tree-based models
+- SHAP has optimized TreeExplainer for tree models
+- Fast computation (O(TLD) where T=trees, L=leaves, D=depth)
+- Statistical models (ARIMA, ETS) don't have feature-based structure
+- Deep learning models (PatchTST, TimesNet) require expensive approximations
 
-model_rf = RandomForestRegressor(
-    **hyperparameters
-)
-
-model_rf.fit(X_train, y_train)
-```
-
-#### Step 5: Validation
-
-```python
-from sklearn.metrics import mean_absolute_percentage_error
-
-# Predict on test set
-y_pred_lgb = model_lgb.predict(X_test)
-y_pred_rf = model_rf.predict(X_test)
-
-# Calculate MAPE
-mape_lgb = mean_absolute_percentage_error(y_test, y_pred_lgb) * 100
-mape_rf = mean_absolute_percentage_error(y_test, y_pred_rf) * 100
-
-# Select best model
-best_model = 'lgb' if mape_lgb < mape_rf else 'rf'
-best_mape = min(mape_lgb, mape_rf)
-```
-
-#### Step 6: Model Persistence
-
-```python
-import joblib
-
-# Save best model
-model_path = f"../models_multi_resolution/Total_Retail_Sales/total_sales_{best_model}_model.pkl"
-joblib.dump(model, model_path)
-
-# Save metadata
-metadata = {
-    'category': 'Total_Retail_Sales',
-    'model_type': best_model,
-    'validation_mape': best_mape,
-    'training_date': datetime.now().isoformat(),
-    'features_count': len(X_train.columns),
-    'training_samples': len(X_train),
-    'test_samples': len(X_test)
+**Example Output:**
+```json
+{
+  "prediction": 72345.67,
+  "baseline": 70000.00,
+  "shap_values": [
+    {"feature": "lag_1d", "value": 1500.00, "importance": 0.35},
+    {"feature": "rolling_mean_7d", "value": 800.00, "importance": 0.18},
+    {"feature": "month", "value": 450.00, "importance": 0.10},
+    {"feature": "UNRATE", "value": -200.00, "importance": -0.05}
+  ]
 }
-
-with open(model_path.replace('.pkl', '_metadata.json'), 'w') as f:
-    json.dump(metadata, f)
 ```
 
-#### Step 7: Training Report
-
-**Output**: `project_root/models_multi_resolution/training_summary.json`
-
-**Report Contents**:
-- Per-category validation MAPE
-- Feature importance rankings
-- Training time metrics
-- Model hyperparameters
-- Cross-validation results
+**Interpretation:**
+- `lag_1d` increases prediction by $1,500 (35% of deviation from baseline)
+- `UNRATE` decreases prediction by $200 (negative impact on sales)
 
 ---
 
@@ -734,65 +682,57 @@ with open(model_path.replace('.pkl', '_metadata.json'), 'w') as f:
 
 ### Real-Time Prediction Generation
 
-**Location**: `backend/ml/inference.py`
+**Location:** `backend/ml/inference.py`
 
-**API Endpoint**: `GET /api/predict`
+**API Endpoint:** `GET /api/predict`
 
-#### Request Parameters
+### Request Parameters
 
 ```python
 {
     'category': 'total_sales',
-    'model_name': 'lightgbm',  # optional, defaults to best
+    'model_name': 'lightgbm',  # optional, defaults to best model
     'weeks_ahead': 4,
     'granularity': 'weekly'
 }
 ```
 
-#### Prediction Process
+### Prediction Process
 
-**Step 1: Model Loading**
+#### Step 1: Model Loading
 
 ```python
 import joblib
 
 # Load trained model
-model_path = f"../models_multi_resolution/Total_Retail_Sales/total_sales_lightgbm_model.pkl"
+model_path = f"../training_outputs/models/Total_Retail_Sales/LGBM_model.pkl"
 model = joblib.load(model_path)
 ```
 
-**Step 2: Historical Data Loading**
+#### Step 2: Historical Data Loading
 
 ```python
-from backend.ml.feature_computer import load_historical_data_from_csv
-
-# Load historical data
-historical_df = load_historical_data_from_csv(
-    category_display="Total Retail Sales",
+# Load historical data for feature computation
+historical_df = load_historical_data(
+    category="Total_Retail_Sales",
     days_back=400  # Enough data for lags
 )
 ```
 
-**Step 3: Feature Computation**
+#### Step 3: Feature Computation
 
 ```python
-from backend.ml.feature_computer import compute_real_features
-
 # Get most recent date
 last_date = historical_df['date'].max()
 
 # Compute features for prediction date
-features_df = compute_real_features(historical_df, last_date)
+features_df = compute_features(
+    historical_data=historical_df,
+    prediction_date=last_date + timedelta(days=7)
+)
 ```
 
-**Step 4: Prediction**
-
-```python
-# Generate prediction
-prediction = model.predict(features_df)[0]
-```
-
-**Step 5: Multi-Step Forecast**
+#### Step 4: Multi-Step Forecast
 
 For `weeks_ahead > 1`, use recursive forecasting:
 
@@ -803,7 +743,7 @@ current_df = historical_df.copy()
 for week in range(weeks_ahead):
     # Compute features for next date
     next_date = current_df['date'].max() + timedelta(days=7)
-    features = compute_real_features(current_df, next_date)
+    features = compute_features(current_df, next_date)
 
     # Predict
     pred = model.predict(features)[0]
@@ -817,113 +757,61 @@ for week in range(weeks_ahead):
     current_df = pd.concat([current_df, pd.DataFrame([new_row])])
 ```
 
-**Step 6: Confidence Intervals**
+#### Step 5: Confidence Intervals
 
 ```python
 # Calculate confidence intervals (±15% default)
 confidence_lower = prediction * 0.85
 confidence_upper = prediction * 1.15
+confidence_score = 0.85  # Model confidence score
 ```
 
-**Step 7: SHAP Value Computation**
+#### Step 6: SHAP Value Computation (Tree-based models only)
 
 ```python
-from backend.ml.feature_computer import compute_shap_values
+if model_type in ['LGBM', 'RandomForest']:
+    import shap
 
-# Compute SHAP values for explainability
-shap_results = compute_shap_values(
-    model=model,
-    features_df=features_df,
-    feature_names=features_df.columns.tolist(),
-    top_n=10
-)
+    # Compute SHAP values for explainability
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(features_df)
+
+    # Get top N features
+    top_features = get_top_features(shap_values, feature_names, n=10)
+else:
+    top_features = None  # Not available for statistical models
 ```
 
-#### Response Format
+### Response Format
 
 ```json
 {
     "prediction_id": 1234,
-    "model_name": "total_sales_lightgbm_model",
-    "model_type": "lightgbm",
+    "model_name": "Total_Retail_Sales_LGBM_model",
+    "model_type": "LGBM",
     "forecasts": [
         {
             "date": "2026-01-10",
-            "predicted_value": 17278.52,
-            "confidence_lower": 17181.76,
-            "confidence_upper": 17375.28
+            "predicted_value": 72345.67,
+            "confidence_lower": 68928.39,
+            "confidence_upper": 75762.95
         }
     ],
     "shap_values": [
         {
             "feature": "lag_1d",
-            "value": 145.23,
+            "value": 71_850.00,
+            "contribution": 1500.00,
             "importance": 0.35
         }
     ],
-    "features_used": {
-        "category": "total_sales",
-        "features_count": 74,
-        "average_mape": 0.56
+    "metrics": {
+        "mape": 1.42,
+        "mase": 0.207,
+        "training_samples": 5652
     }
 }
 ```
-
----
-
-## Performance Metrics
-
-### Overall Performance Comparison
-
-| Metric | Monthly Models | Multi-Resolution Models | Improvement |
-|--------|---------------|-------------------------|-------------|
-| **Average MAPE** | 10.66% | **0.56%** | **-95%** |
-| **Std Deviation** | 5.79% | 0.26% | -96% |
-| **Best MAPE** | 4.58% | **0.17%** | -96% |
-| **Worst MAPE** | 23.79% | **1.18%** | -95% |
-| **Training Data** | 192 obs (monthly) | 5,652 obs (daily) | +2,844% |
-| **Features** | 28 | 74 | +164% |
-
-### Per-Category Performance
-
-| Retail Category | Best Model | Validation MAPE | Accuracy Rating | Top 3 Features |
-|-----------------|------------|-----------------|-----------------|----------------|
-| Building Materials & Garden | LightGBM | **0.17%** | Outstanding | lag_7d, lag_1d, rolling_mean_7d |
-| Gasoline Stations | LightGBM | **0.35%** | Excellent | lag_7d, lag_1d, pct_change_1w |
-| Health & Personal Care | Random Forest | **0.30%** | Excellent | lag_1d, lag_7d, rolling_mean_7d |
-| Food & Beverage Stores | Random Forest | **0.45%** | Very Good | lag_7d, lag_1d, diff_1w |
-| Furniture & Home Furnishings | LightGBM | **0.51%** | Very Good | lag_1d, lag_7d, pct_change_1w |
-| Clothing & Accessories | Random Forest | **0.51%** | Very Good | lag_7d, lag_1d, diff_1w |
-| Total Retail Sales | LightGBM | **0.54%** | Very Good | lag_7d, lag_1d, rolling_mean_7d |
-| Sporting Goods & Hobby | LightGBM | **0.64%** | Good | lag_7d, lag_1d, pct_change_1w |
-| Electronics & Appliances | Random Forest | **0.69%** | Good | lag_1d, lag_7d, diff_1w |
-| Automobile Dealers | LightGBM | **0.79%** | Good | lag_7d, lag_1d, rolling_mean_7d |
-| General Merchandise | Random Forest | **1.18%** | Good | lag_7d, lag_1d, diff_1w |
-
-### Business Impact
-
-**Forecast Error Reduction**:
-
-For a $1M monthly retail sales forecast:
-
-**Before** (Monthly Models):
-- Average error: ±$106,600 (10.66% MAPE)
-- Confidence interval: Wide and unreliable
-- Planning confidence: Low
-
-**After** (Multi-Resolution Models):
-- Average error: ±$5,600 (0.56% MAPE)
-- Confidence interval: Tight and reliable (±15%)
-- Planning confidence: High
-
-**Improvement**: 19x more accurate forecasts
-
-**Operational Benefits**:
-- Reduced stockouts by 40-50%
-- Improved inventory turnover
-- Better labor scheduling
-- Enhanced budget accuracy
-- Optimized supply chain planning
 
 ---
 
@@ -934,28 +822,37 @@ retailPRED/
 ├── backend/                          # FastAPI backend service
 │   ├── api/                         # API layer
 │   │   ├── routes.py               # API endpoints
-│   │   ├── schemas.py              # Pydantic schemas
-│   │   └── category_routes.py      # Category-specific routes
+│   │   └── schemas.py              # Pydantic schemas
 │   ├── ml/                         # ML models and inference
 │   │   ├── inference.py            # Prediction logic
-│   │   ├── feature_computer.py     # Feature computation (242 features)
-│   │   ├── train_model.py          # Training script
-│   │   ├── multi_resolution_inference.py  # Multi-res prediction
-│   │   └── model_loader.py         # Model loading utilities
+│   │   └── feature_computer.py     # Feature computation (242 features)
 │   ├── services/                   # Business logic layer
 │   │   ├── prediction_service.py   # Prediction logging & validation
 │   │   └── counterfactual_service.py  # What-if scenarios
 │   ├── db/                         # Database layer
-│   │   ├── database.py             # SQLite database interface
-│   │   └── schema.sql              # Database schema
+│   │   └── database.py             # SQLite database interface
 │   ├── main.py                     # FastAPI application entry point
 │   └── requirements.txt            # Python dependencies
 │
 ├── frontend/                        # React + TypeScript frontend
 │   ├── src/
-│   │   ├── api/                    # API client
+│   │   ├── api/                    # API client (unifiedApi.ts)
 │   │   ├── components/             # UI components
-│   │   └── pages/                  # Page components
+│   │   │   ├── ForecastChart.tsx   # Main forecasting visualization
+│   │   │   ├── FeatureImportanceChart.tsx  # SHAP visualization
+│   │   │   └── ModelInfoCard.tsx   # Model performance display
+│   │   ├── pages/                  # Page components
+│   │   │   ├── DashboardPage.tsx   # Main dashboard
+│   │   │   ├── ValidationPage.tsx  # Prediction validation tracking
+│   │   │   ├── EconomicScenariosPage.tsx  # What-if analysis
+│   │   │   └── SensitivityPage.tsx  # Feature sensitivity analysis
+│   │   └── services/               # Data services
+│   │       └── demoDataService.ts  # Static data loading for demo mode
+│   ├── public/
+│   │   └── demo-data/              # Pre-generated demo data
+│   │       ├── predictions.json    # 7,873 predictions
+│   │       ├── summary.json        # Model metadata
+│   │       └── economic-indicators.json  # Economic indicators
 │   └── package.json
 │
 ├── project_root/                   # Training and data pipeline
@@ -964,27 +861,31 @@ retailPRED/
 │   ├── data_processed/             # Merged raw data
 │   ├── data_multi_resolution/      # Engineered features (OUTPUT)
 │   ├── models/                     # Training scripts
-│   │   └── train_multi_resolution.py  # Main training script
-│   ├── models_multi_resolution/    # Trained models (22 .pkl files)
-│   ├── models_monthly/             # Legacy monthly models
-│   └── etl/                        # Data processing scripts
-│       ├── build_dataset.py        # Data merging
-│       ├── build_multi_resolution_dataset.py  # Feature engineering
-│       ├── fetch_fred.py           # FRED data fetcher
-│       ├── fetch_mrts.py           # MRTS data fetcher
-│       └── fetch_yahoo.py          # Yahoo data fetcher
+│   │   └── robust_timecopilot_trainer.py  # Main training script
+│   ├── training_outputs/           # Training results
+│   │   ├── models/                 # Trained model files (.pkl)
+│   │   ├── visualizations/         # Performance plots
+│   │   ├── training_report.md      # Training summary
+│   │   └── robust_training_summary.json  # Training metrics
+│   ├── etl/                        # Data processing scripts
+│   │   ├── build_dataset.py        # Data merging
+│   │   ├── build_multi_resolution_dataset.py  # Feature engineering
+│   │   ├── fetch_fred.py           # FRED data fetcher
+│   │   ├── fetch_mrts.py           # MRTS data fetcher
+│   │   └── fetch_yahoo.py          # Yahoo data fetcher
+│   └── sqlite/                     # SQLite dataset builder
+│       └── sqlite_dataset_builder.py  # Build dataset from raw data
 │
 ├── data/                            # Runtime data directory
 │   └── retailpred.db               # SQLite database (predictions, validation)
 │
-├── docs/                            # Documentation
-│   ├── FEATURE_ENGINEERING_DOCUMENTATION.md
-│   ├── WEBAPP_README.md
-│   └── API_DOCUMENTATION.md
+├── scripts/                         # Utility scripts
+│   └── export-for-demo.py          # Export database to JSON for demo
 │
 ├── docker-compose.yml              # Docker deployment configuration
+├── vercel.json                     # Vercel deployment configuration
 ├── README.md                       # This file
-└── LICENSE                          # MIT License
+└── WEBREADME.md                    # Web app deployment guide
 ```
 
 ---
@@ -1048,10 +949,10 @@ If training models from scratch:
 
 ```bash
 cd project_root/models
-python train_multi_resolution.py
+python robust_timecopilot_trainer.py
 ```
 
-**Note**: Pre-trained models are already included in `project_root/models_multi_resolution/`
+**Note:** Pre-trained models are already included in `training_outputs/models/`
 
 ---
 
@@ -1065,15 +966,15 @@ python train_multi_resolution.py
 GET /api/predict
 ```
 
-**Query Parameters**:
+**Query Parameters:**
 - `category` (required): Retail category key
-- `model_name` (optional): 'lightgbm' or 'randomforest'
+- `model_name` (optional): 'LGBM', 'RandomForest', 'AutoARIMA', 'AutoETS', 'SeasonalNaive', 'PatchTST', 'TimesNet'
 - `weeks_ahead` (required): 1-52
 - `granularity` (required): 'daily', 'weekly', or 'monthly'
 
-**Example**:
+**Example:**
 ```bash
-curl "http://localhost:8000/api/predict?category=total_sales&weeks_ahead=4&granularity=weekly&model_name=lightgbm"
+curl "http://localhost:8000/api/predict?category=total_sales&weeks_ahead=4&granularity=weekly&model_name=LGBM"
 ```
 
 #### Get Prediction History
@@ -1082,11 +983,11 @@ curl "http://localhost:8000/api/predict?category=total_sales&weeks_ahead=4&granu
 GET /api/predictions/history
 ```
 
-**Query Parameters**:
+**Query Parameters:**
 - `model_name` (optional): Filter by model
 - `start_date` (optional): Start date (YYYY-MM-DD)
 - `end_date` (optional): End date (YYYY-MM-DD)
-- `limit` (optional): Max results (default: 10)
+- `limit` (optional): Max results (default: 100)
 
 #### Validate Prediction
 
@@ -1094,7 +995,7 @@ GET /api/predictions/history
 POST /api/predictions/validate
 ```
 
-**Body**:
+**Body:**
 ```json
 {
   "prediction_id": 123,
@@ -1145,78 +1046,37 @@ Visit http://localhost:8000/docs for interactive API documentation (Swagger UI).
 
 ---
 
-## Development
-
-### Concurrent Development
-
-Run both backend and frontend with single command:
-
-```bash
-npm run dev
-```
-
-This starts:
-- Backend on port 8000
-- Frontend on port 5173
-
-### Database Management
-
-```bash
-# Initialize database
-cd backend
-python -m db.database init
-
-# Check database status
-python -m db.database status
-
-# View predictions
-sqlite3 data/retailpred.db "SELECT * FROM prediction_log LIMIT 10;"
-```
-
-### Model Retraining
-
-```bash
-cd project_root/models
-python train_multi_resolution.py
-```
-
-See [MULTI_RESOLUTION_TRAINING_COMPLETE.md](MULTI_RESOLUTION_TRAINING_COMPLETE.md) for details.
-
----
-
-## 🚀 Deployment Status
-
-| Environment | Status | URL | Mode |
-|------------|--------|-----|------|
-| **Production** | [![Vercel](https://img.shields.io/badge/vercel-deployed-success)](https://retailpred.vercel.app) | [retailpred.vercel.app](https://retailpred.vercel.app) | Static Demo |
-| **Development** | ✅ Ready | http://localhost:5173 | Full API |
-| **Staging** | - | - | - |
-
-The production deployment uses **static demo mode** with pre-generated predictions. For full API access with real-time forecasting, use the development deployment.
-
-### Deployment Options
-
-**1. Vercel (Recommended for Demo)**
-- ✅ Zero configuration deployment
-- ✅ Global CDN
-- ✅ Automatic HTTPS
-- ✅ Free tier available
-- 📖 [See Deployment Guide](docs/DEPLOYMENT.md)
-
-**2. Docker (Full Stack)**
-```bash
-docker-compose up -d
-```
-Access at http://localhost:80
-
-**3. Manual Deployment**
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed instructions.
-
----
-
 ## Deployment
 
-### Docker Deployment
+### Vercel Deployment (Demo Mode)
+
+The live demo uses static JSON files exported from the database for zero-backend deployment.
+
+**Build Configuration:** `vercel.json`
+
+**Demo Mode:** Enabled via `VITE_DEMO_MODE=true` environment variable
+
+**Data Export:**
+```bash
+# Export database to JSON
+python scripts/export-for-demo.py
+```
+
+**Output:** `frontend/public/demo-data/` containing:
+- `predictions.json`: 7,873 predictions
+- `summary.json`: Model metadata
+- `economic-indicators.json`: Economic indicators
+
+**Deploy to Vercel:**
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+```
+
+### Docker Deployment (Full Stack)
 
 ```bash
 # Build and start all services
@@ -1236,14 +1096,14 @@ Services:
 
 ### Manual Deployment
 
-**Backend**:
+**Backend:**
 ```bash
 cd backend
 docker build -t retailpred-backend .
 docker run -p 8000:8000 retailpred-backend
 ```
 
-**Frontend**:
+**Frontend:**
 ```bash
 cd frontend
 npm run build
@@ -1251,36 +1111,40 @@ docker build -t retailpred-frontend .
 docker run -p 80:80 retailpred-frontend
 ```
 
-See [DEPLOYMENT_SUMMARY.md](DEPLOYMENT_SUMMARY.md) for complete deployment guide.
+---
+
+## Project Background
+
+This project was completed as part of a machine learning portfolio to demonstrate:
+
+- **Full-stack ML engineering**: From data collection to production deployment
+- **Time series forecasting**: Using both statistical and deep learning approaches
+- **Model explainability**: Implementing SHAP values for interpretability
+- **Production deployment**: Static site deployment with Vercel
+- **Interactive visualization**: Real-time forecast exploration with React
+
+## Key Learnings
+
+Through this project, I gained experience with:
+
+- **Data engineering**: Building multi-resolution datasets from heterogeneous sources
+- **Feature engineering**: Creating 242 features including lag, rolling statistics, and economic indicators
+- **Model selection**: Comparing 7 algorithms (LightGBM, Random Forest, AutoARIMA, AutoETS, Seasonal Naive, PatchTST, TimesNet)
+- **Model interpretation**: Understanding why SHAP only works with tree-based models
+- **Frontend development**: Building responsive React applications with TypeScript
+- **Deployment strategies**: Implementing zero-backend deployment with static data
+
+## Technologies Used
+
+**Python Backend:**
+- FastAPI, LightGBM, scikit-learn, statsmodels, SHAP, SQLite, Pandas, NumPy
+
+**TypeScript Frontend:**
+- React 19, TanStack Query, Recharts, TailwindCSS, Framer Motion, Vite
+
+**Deployment:**
+- Vercel (frontend), Docker (full-stack)
 
 ---
 
-## Documentation
-
-- **[FEATURE_ENGINEERING_DOCUMENTATION.md](FEATURE_ENGINEERING_DOCUMENTATION.md)** - Complete feature engineering details
-- **[WEBAPP_README.md](WEBAPP_README.md)** - Web application interface documentation
-- **[API_DOCUMENTATION.md](backend/API_DOCUMENTATION.md)** - Comprehensive API reference
-- **[MULTI_RESOLUTION_TRAINING_COMPLETE.md](MULTI_RESOLUTION_TRAINING_COMPLETE.md)** - Training methodology and results
-- **[MULTI_RESOLUTION_DEPLOYMENT_GUIDE.md](MULTI_RESOLUTION_DEPLOYMENT_GUIDE.md)** - Step-by-step deployment guide
-- **[MODEL_COMPARISON_REPORT.md](MODEL_COMPARISON_REPORT.md)** - Performance comparison analysis
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Support
-
-For issues, questions, or contributions:
-
-- **Issues**: [GitHub Issues](https://github.com/oleeveeuh/retailPRED/issues)
-- **Documentation**: See `/docs` directory
-
----
-
-*Last Updated: January 5, 2026*
-*Model Version: multi_resolution_v2*
-*Status: Production Ready*
+*Last Updated: January 8, 2026*
