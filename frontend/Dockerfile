@@ -15,8 +15,8 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
-# Build the application (skip type checking for Docker)
-RUN npm run build:prod
+# Build the application (skip type checking for faster Docker builds)
+RUN npm run build:only
 
 # Stage 2: Production with nginx
 FROM nginx:1.25-alpine
