@@ -98,9 +98,53 @@ const demoPredictionsApi = {
     };
   },
 
-  // Other methods not supported in demo mode
-  predict: async (...args: any[]) => {
-    throw new Error('Predictions are read-only in demo mode');
+  // Generate demo predictions for model comparisons
+  predict: async (request: { category: string; model_name: string; weeks_ahead: number }) => {
+    // Generate demo predictions for different models
+    const baseValue = 600000;
+
+    // Category-specific multipliers
+    const categoryMultipliers: Record<string, number> = {
+      'total_sales': 1.0,
+      'automobile_dealers': 0.15,
+      'building_materials': 0.08,
+      'clothing_accessories': 0.05,
+      'electronics_appliances': 0.07,
+      'food_beverage': 0.12,
+      'furniture_home': 0.06,
+      'gasoline_stations': 0.04,
+      'general_merchandise': 0.20,
+      'health_personal_care': 0.04,
+      'sporting_goods': 0.03,
+    };
+
+    // Model-specific performance characteristics
+    const modelMultipliers: Record<string, number> = {
+      'LGBM': 1.0,
+      'RandomForest': 0.98,
+      'PatchTST': 1.02,
+      'TimesNet': 1.01,
+    };
+
+    const categoryMultiplier = categoryMultipliers[request.category] || 1.0;
+    const modelMultiplier = modelMultipliers[request.model_name] || 1.0;
+    const prediction = baseValue * categoryMultiplier * modelMultiplier;
+
+    return {
+      forecasts: [
+        {
+          category: request.category,
+          model_name: request.model_name,
+          prediction_date: new Date().toISOString(),
+          predicted_value: Math.round(prediction),
+          confidence_interval: [
+            Math.round(prediction * 0.95),
+            Math.round(prediction * 1.05),
+          ],
+          prediction_horizon: request.weeks_ahead,
+        },
+      ],
+    };
   },
   validate: async (...args: any[]) => {
     throw new Error('Validation is not available in demo mode');
@@ -476,6 +520,17 @@ const demoScenariosApi = {
         gdp: 2.5,
         consumer_confidence: 100,
       },
+      recession: {
+        multiplier: 0.85,
+        name: 'Recession',
+        description: 'Economic downturn with elevated unemployment and negative GDP growth',
+        unrate: 6.5,
+        fedfunds: 5.5,
+        cpi: 3.5,
+        payems: 180000,
+        gdp: -1.5,
+        consumer_confidence: 75,
+      },
       optimistic: {
         multiplier: 1.15,
         name: 'Economic Recovery',
@@ -488,15 +543,15 @@ const demoScenariosApi = {
         consumer_confidence: 115,
       },
       pessimistic: {
-        multiplier: 0.85,
-        name: 'Recession',
-        description: 'Economic downturn with elevated unemployment and negative GDP growth',
-        unrate: 6.5,
-        fedfunds: 5.5,
-        cpi: 3.5,
-        payems: 180000,
-        gdp: -1.5,
-        consumer_confidence: 75,
+        multiplier: 0.82,
+        name: 'Deep Recession',
+        description: 'Severe economic downturn with very high unemployment and negative GDP growth',
+        unrate: 8.0,
+        fedfunds: 6.0,
+        cpi: 4.0,
+        payems: 170000,
+        gdp: -2.5,
+        consumer_confidence: 65,
       },
       rate_hike: {
         multiplier: 0.92,
