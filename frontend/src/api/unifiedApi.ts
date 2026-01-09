@@ -450,13 +450,93 @@ const demoScenariosApi = {
    * Analyze scenario (demo mode)
    */
   analyzeScenario: async (request: ScenarioAnalysisRequest): Promise<any> => {
-    // Generate demo scenario predictions
+    // Generate demo scenario predictions based on scenario type
     const basePrediction = 600000;
-    const scenarioMultiplier =
-      request.scenario_type === 'optimistic' ? 1.1 :
-      request.scenario_type === 'pessimistic' ? 0.9 : 1.0;
 
-    const prediction = basePrediction * scenarioMultiplier;
+    // Define scenario configurations
+    const scenarioConfigs: Record<string, {
+      multiplier: number;
+      name: string;
+      description: string;
+      unrate: number;
+      fedfunds: number;
+      cpi: number;
+      payems: number;
+      gdp: number;
+      consumer_confidence: number;
+    }> = {
+      baseline: {
+        multiplier: 1.0,
+        name: 'Baseline',
+        description: 'Continue current economic conditions with no changes',
+        unrate: 4.2,
+        fedfunds: 4.25,
+        cpi: 2.8,
+        payems: 200000,
+        gdp: 2.5,
+        consumer_confidence: 100,
+      },
+      optimistic: {
+        multiplier: 1.15,
+        name: 'Economic Recovery',
+        description: 'Strong growth with falling unemployment and rising confidence',
+        unrate: 3.5,
+        fedfunds: 3.0,
+        cpi: 2.2,
+        payems: 210000,
+        gdp: 3.5,
+        consumer_confidence: 115,
+      },
+      pessimistic: {
+        multiplier: 0.85,
+        name: 'Recession',
+        description: 'Economic downturn with elevated unemployment and negative GDP growth',
+        unrate: 6.5,
+        fedfunds: 5.5,
+        cpi: 3.5,
+        payems: 180000,
+        gdp: -1.5,
+        consumer_confidence: 75,
+      },
+      rate_hike: {
+        multiplier: 0.92,
+        name: 'Rate Hike Cycle',
+        description: 'Tightening monetary policy with higher interest rates',
+        unrate: 4.8,
+        fedfunds: 6.0,
+        cpi: 3.2,
+        payems: 190000,
+        gdp: 1.5,
+        consumer_confidence: 85,
+      },
+      inflation_surge: {
+        multiplier: 0.88,
+        name: 'Inflation Surge',
+        description: 'High inflation environment with elevated consumer prices',
+        unrate: 5.2,
+        fedfunds: 5.0,
+        cpi: 5.5,
+        payems: 185000,
+        gdp: 0.5,
+        consumer_confidence: 80,
+      },
+      recovery: {
+        multiplier: 1.12,
+        name: 'Economic Recovery',
+        description: 'Strong growth with falling unemployment and rising confidence',
+        unrate: 3.8,
+        fedfunds: 3.5,
+        cpi: 2.5,
+        payems: 205000,
+        gdp: 3.2,
+        consumer_confidence: 110,
+      },
+    };
+
+    // Get scenario config, default to baseline if not found
+    const config = scenarioConfigs[request.scenario_type] || scenarioConfigs.baseline;
+
+    const prediction = basePrediction * config.multiplier;
     const confidence = basePrediction * 0.05;
 
     // Generate impact summary for different economic indicators
@@ -466,75 +546,73 @@ const demoScenariosApi = {
         category: 'Labor Market',
         source: 'BLS',
         base_value: 4.2,
-        scenario_value: request.scenario_type === 'optimistic' ? 3.8 : request.scenario_type === 'pessimistic' ? 5.5 : 4.2,
-        change: request.scenario_type === 'optimistic' ? -0.4 : request.scenario_type === 'pessimistic' ? 1.3 : 0,
-        change_pct: request.scenario_type === 'optimistic' ? -9.5 : request.scenario_type === 'pessimistic' ? 31.0 : 0,
+        scenario_value: config.unrate,
+        change: config.unrate - 4.2,
+        change_pct: ((config.unrate - 4.2) / 4.2) * 100,
       },
       {
         indicator: 'FEDFUNDS',
         category: 'Monetary Policy',
         source: 'FRED',
         base_value: 4.25,
-        scenario_value: request.scenario_type === 'optimistic' ? 3.5 : request.scenario_type === 'pessimistic' ? 5.5 : 4.25,
-        change: request.scenario_type === 'optimistic' ? -0.75 : request.scenario_type === 'pessimistic' ? 1.25 : 0,
-        change_pct: request.scenario_type === 'optimistic' ? -17.6 : request.scenario_type === 'pessimistic' ? 29.4 : 0,
+        scenario_value: config.fedfunds,
+        change: config.fedfunds - 4.25,
+        change_pct: ((config.fedfunds - 4.25) / 4.25) * 100,
       },
       {
         indicator: 'CPI',
         category: 'Consumer',
         source: 'BLS',
         base_value: 2.8,
-        scenario_value: request.scenario_type === 'optimistic' ? 2.2 : request.scenario_type === 'pessimistic' ? 4.0 : 2.8,
-        change: request.scenario_type === 'optimistic' ? -0.6 : request.scenario_type === 'pessimistic' ? 1.2 : 0,
-        change_pct: request.scenario_type === 'optimistic' ? -21.4 : request.scenario_type === 'pessimistic' ? 42.9 : 0,
+        scenario_value: config.cpi,
+        change: config.cpi - 2.8,
+        change_pct: ((config.cpi - 2.8) / 2.8) * 100,
       },
       {
         indicator: 'PAYEMS',
         category: 'Labor Market',
         source: 'BLS',
         base_value: 200000,
-        scenario_value: request.scenario_type === 'optimistic' ? 250000 : request.scenario_type === 'pessimistic' ? 150000 : 200000,
-        change: request.scenario_type === 'optimistic' ? 50000 : request.scenario_type === 'pessimistic' ? -50000 : 0,
-        change_pct: request.scenario_type === 'optimistic' ? 25.0 : request.scenario_type === 'pessimistic' ? -25.0 : 0,
+        scenario_value: config.payems,
+        change: config.payems - 200000,
+        change_pct: ((config.payems - 200000) / 200000) * 100,
       },
       {
         indicator: 'GDP',
         category: 'Production',
         source: 'BEA',
         base_value: 2.5,
-        scenario_value: request.scenario_type === 'optimistic' ? 3.5 : request.scenario_type === 'pessimistic' ? -0.5 : 2.5,
-        change: request.scenario_type === 'optimistic' ? 1.0 : request.scenario_type === 'pessimistic' ? -3.0 : 0,
-        change_pct: request.scenario_type === 'optimistic' ? 40.0 : request.scenario_type === 'pessimistic' ? -120.0 : 0,
+        scenario_value: config.gdp,
+        change: config.gdp - 2.5,
+        change_pct: ((config.gdp - 2.5) / 2.5) * 100,
       },
       {
         indicator: 'Consumer Confidence',
         category: 'Consumer',
         source: 'Conference Board',
         base_value: 100,
-        scenario_value: request.scenario_type === 'optimistic' ? 115 : request.scenario_type === 'pessimistic' ? 75 : 100,
-        change: request.scenario_type === 'optimistic' ? 15 : request.scenario_type === 'pessimistic' ? -25 : 0,
-        change_pct: request.scenario_type === 'optimistic' ? 15.0 : request.scenario_type === 'pessimistic' ? -25.0 : 0,
+        scenario_value: config.consumer_confidence,
+        change: config.consumer_confidence - 100,
+        change_pct: config.consumer_confidence - 100,
       },
     ];
 
     return {
       scenario_type: request.scenario_type,
-      scenario_name: request.scenario_type === 'optimistic' ? 'Optimistic' :
-                     request.scenario_type === 'pessimistic' ? 'Pessimistic' : 'Baseline',
-      description: request.scenario_type === 'optimistic' ? 'Strong economic growth scenario' :
-                   request.scenario_type === 'pessimistic' ? 'Economic downturn scenario' : 'Baseline economic conditions',
+      scenario_name: config.name,
+      description: config.description,
       category: request.category,
       prediction: Math.round(prediction),
       confidence_interval: [
         Math.round(prediction - confidence),
         Math.round(prediction + confidence),
       ],
-      change_from_baseline: scenarioMultiplier !== 1.0 ? Math.round((scenarioMultiplier - 1.0) * 100) : undefined,
+      change_from_baseline: config.multiplier !== 1.0 ? Math.round((config.multiplier - 1.0) * 100) : 0,
       impact_summary,
       assumptions: {
-        gdp_growth: request.scenario_type === 'optimistic' ? 2.5 : request.scenario_type === 'pessimistic' ? 1.0 : 2.0,
-        unemployment_rate: request.scenario_type === 'optimistic' ? 4.0 : request.scenario_type === 'pessimistic' ? 5.5 : 4.5,
-        inflation_rate: 2.5,
+        gdp_growth: config.gdp,
+        unemployment_rate: config.unrate,
+        inflation_rate: config.cpi,
       },
     };
   },
@@ -543,35 +621,74 @@ const demoScenariosApi = {
    * Perform sensitivity analysis (demo mode)
    */
   analyzeSensitivity: async (request: SensitivityAnalysisRequest): Promise<any> => {
-    // Generate demo sensitivity data
+    // Generate demo sensitivity data with realistic elasticity for each indicator
     const numPoints = request.num_steps || 10;
     const values_tested = [];
     const predictions = [];
+
+    // Base prediction varies by category to make it more realistic
+    const categoryMultipliers: Record<string, number> = {
+      'total_sales': 1.0,
+      'automobile_dealers': 0.15,
+      'building_materials': 0.08,
+      'clothing_accessories': 0.05,
+      'electronics_appliances': 0.07,
+      'food_beverage': 0.12,
+      'furniture_home': 0.06,
+      'gasoline_stations': 0.04,
+      'general_merchandise': 0.20,
+      'health_personal_care': 0.04,
+      'sporting_goods': 0.03,
+    };
+
+    const categoryMultiplier = categoryMultipliers[request.category] || 1.0;
+    const basePrediction = 600000 * categoryMultiplier;
+
+    // Define elasticity for each indicator (how much sales change per unit change)
+    const elasticities: Record<string, { sensitivity: number; baseline: number; direction: 'negative' | 'positive' }> = {
+      'UNRATE': { sensitivity: 0.08, baseline: 4.5, direction: 'negative' },  // Higher unemployment = lower sales
+      'FEDFUNDS': { sensitivity: 0.03, baseline: 4.25, direction: 'negative' },  // Higher rates = lower sales
+      'CPI': { sensitivity: 0.04, baseline: 2.8, direction: 'negative' },  // Higher inflation = lower sales
+      'GDP': { sensitivity: 0.12, baseline: 2.5, direction: 'positive' },  // Higher GDP = higher sales
+      'PAYEMS': { sensitivity: 0.0005, baseline: 200, direction: 'positive' },  // More jobs = higher sales (value in thousands)
+    };
+
+    const indicatorConfig = elasticities[request.feature_name] || {
+      sensitivity: 0.05,
+      baseline: (request.min_value + request.max_value) / 2,
+      direction: 'negative'
+    };
 
     for (let i = 0; i <= numPoints; i++) {
       const value = request.min_value + (request.max_value - request.min_value) * (i / numPoints);
       values_tested.push(value);
 
-      // Simulate sensitivity: unemployment/gdp affect sales negatively/positively
-      let impact = 1.0;
-      if (request.feature_name === 'UNRATE') {
-        impact = 1.0 - (value - 4.5) * 0.05; // Higher unemployment = lower sales
-      } else if (request.feature_name === 'GDP') {
-        impact = 1.0 + (value - 2.0) * 0.1; // Higher GDP = higher sales
-      } else if (request.feature_name === 'FEDFUNDS') {
-        impact = 1.0 - (value - 2.0) * 0.02; // Higher rates = lower sales
-      } else if (request.feature_name === 'CPI') {
-        impact = 1.0 - (value - 2.5) * 0.03; // Higher inflation = lower sales
-      } else if (request.feature_name === 'PAYEMS') {
-        impact = 1.0 + (value - 200) * 0.0001; // More jobs = higher sales
+      // Calculate impact based on deviation from baseline
+      const deviation = value - indicatorConfig.baseline;
+
+      // Apply elasticity with direction
+      let impact;
+      if (indicatorConfig.direction === 'negative') {
+        impact = 1.0 - (deviation * indicatorConfig.sensitivity);
+      } else {
+        impact = 1.0 + (deviation * indicatorConfig.sensitivity);
       }
 
-      predictions.push(Math.round(600000 * impact));
+      // Clamp impact to reasonable bounds (0.5x to 1.5x)
+      impact = Math.max(0.5, Math.min(1.5, impact));
+
+      predictions.push(Math.round(basePrediction * impact));
     }
 
     const predictionRange = Math.max(...predictions) - Math.min(...predictions);
     const predictionMean = predictions.reduce((sum, val) => sum + val, 0) / predictions.length;
-    const baselineValue = (request.min_value + request.max_value) / 2;
+    const baselineValue = indicatorConfig.baseline;
+
+    // Calculate actual elasticity (percent change in sales / percent change in indicator)
+    const baselinePrediction = predictions[Math.floor(numPoints / 2)];
+    const percentChangeInSales = ((predictions[numPoints] - predictions[0]) / baselinePrediction) * 100;
+    const percentChangeInIndicator = ((values_tested[numPoints] - values_tested[0]) / baselineValue) * 100 || 1;
+    const elasticity = percentChangeInSales / percentChangeInIndicator;
 
     return {
       feature_name: request.feature_name,
@@ -582,7 +699,8 @@ const demoScenariosApi = {
       max_prediction: Math.max(...predictions),
       prediction_mean: predictionMean,
       baseline_value: baselineValue,
-      elasticity: -0.5, // Demo value
+      elasticity: Number(elasticity.toFixed(3)),
+      category: request.category,
     };
   },
 

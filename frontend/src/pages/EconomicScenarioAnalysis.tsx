@@ -97,10 +97,8 @@ export const EconomicScenarioAnalysis: FC = () => {
   const { data: scenarioResults, isLoading: loadingScenarios } = useQuery({
     queryKey: ['scenario-results', category, selectedScenario],
     queryFn: async () => {
-      const scenarioType = selectedScenario === 'baseline' ? 'baseline' :
-                         selectedScenario === 'optimistic' ? 'optimistic' : 'pessimistic';
       return await scenariosApi.analyzeScenario({
-        scenario_type: scenarioType,
+        scenario_type: selectedScenario,
         category
       });
     },
