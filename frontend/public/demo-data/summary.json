@@ -1,54 +1,44 @@
 {
-  "export_timestamp": "2026-01-08T07:25:38.916098",
+  "export_timestamp": "2026-01-09T13:54:26.968778",
   "database_path": "/Users/olivialiau/retailPRED/data/retailpred.db",
   "predictions": {
-    "total_count": 7873,
+    "total_count": 7357,
     "by_year": {
-      "2026": 4067,
-      "2025": 3806
+      "2026": 3643,
+      "2025": 3714
     },
     "by_model_type": {
-      "RandomForest": 1159,
-      "LGBM": 1126,
       "SeasonalNaive": 1122,
       "AutoETS": 1122,
       "AutoARIMA": 1122,
       "TimesNet": 1111,
-      "PatchTST": 1111
+      "PatchTST": 1111,
+      "LGBM": 926,
+      "RandomForest": 843
     },
     "shap_coverage": {
-      "with_shap": 2187,
-      "total": 7873,
-      "percentage": 27.78
-    },
-    "models_available": [
-      "LGBM",
-      "RandomForest",
-      "AutoARIMA",
-      "AutoETS",
-      "SeasonalNaive",
-      "TimesNet",
-      "PatchTST"
-    ]
+      "with_shap": 1408,
+      "total": 7357,
+      "percentage": 19.14
+    }
   },
   "economic_indicators": {
     "count": 500,
     "source": "synthetic_demo_data"
   },
   "demo_data": {
-    "predictions_sample": 7873,
+    "predictions_sample": 7357,
     "indicators_sample": 500
   },
   "models_available": {
-    "total_count": 7,
-    "models": [
+    "with_shap": [
       "LGBM",
-      "RandomForest",
+      "RandomForest"
+    ],
+    "without_shap": [
       "AutoARIMA",
       "AutoETS",
-      "SeasonalNaive",
-      "TimesNet",
-      "PatchTST"
+      "SeasonalNaive"
     ]
   }
 }

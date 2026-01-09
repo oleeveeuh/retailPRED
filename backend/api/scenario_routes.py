@@ -243,6 +243,13 @@ class SensitivityRequest(BaseModel):
     base_features: Optional[Dict[str, float]] = None
 
 
+class ModelScenarioRequest(BaseModel):
+    scenario_type: str
+    category: str = "total_sales"
+    model_name: str
+    base_features: Optional[Dict[str, float]] = None
+
+
 @router.get("/list")
 async def list_scenarios():
     """List all available economic scenarios"""
@@ -402,6 +409,102 @@ async def analyze_scenario_get(
     except Exception as e:
         logger.error(f"Error analyzing scenario (GET): {e}")
         raise HTTPException(status_code=500, detail=f"Failed to analyze scenario: {str(e)}")
+
+
+@router.post("/model-prediction")
+async def analyze_scenario_for_model(request: ModelScenarioRequest):
+    """
+    Generate forecast for a specific model under specified economic scenario
+
+    Args:
+        request: Scenario request with type, category, and model name
+
+    Returns:
+        Model prediction with scenario adjustments applied
+    """
+    try:
+        analyzer = get_scenario_analyzer()
+        model_loader = get_model_loader_instance()
+
+        # Get current economic indicators (or use provided)
+        if request.base_features:
+            current_indicators = request.base_features
+        else:
+            # Use latest values from historical data
+            latest_row = analyzer.historical_data.iloc[-1]
+            current_indicators = latest_row.to_dict()
+
+        # Try to get the most recent prediction for the specified model
+        try:
+            cursor = db.get_connection().cursor()
+
+            # Map category to model name pattern
+            category_model_map = {
+                "total_sales": f"total_sales_{request.model_name}_model",
+                "automobile_dealers": f"automobile_dealers_{request.model_name}_model",
+                "building_materials": f"building_material_{request.model_name}_model",
+                "clothing_accessories": f"clothing_accessories_{request.model_name}_model",
+                "electronics_and_appliances": f"electronics_and_appliances_{request.model_name}_model",
+                "food_beverage": f"food_beverage_{request.model_name}_model",
+                "furniture_home_furnishings": f"furniture_home_furnishings_{request.model_name}_model",
+                "gasoline_stations": f"gasonline_stations_{request.model_name}_model",
+                "general_merchandise": f"general_merchandise_{request.model_name}_model",
+                "health_personal_care": f"health_personal_care_{request.model_name}_model",
+                "sporting_goods_hobby": f"sporting_goods_hobby_{request.model_name}_model",
+            }
+
+            model_name = category_model_map.get(request.category, f"{request.category}_{request.model_name}_model")
+
+            cursor.execute("""
+                SELECT predicted_value
+                FROM prediction_log
+                WHERE model_name = ?
+                AND predicted_value IS NOT NULL
+                ORDER BY prediction_date DESC
+                LIMIT 1
+            """, (model_name,))
+
+            result = cursor.fetchone()
+            if result and result[0]:
+                base_prediction = result[0]
+                logger.info(f"Using most recent {model_name} prediction: ${base_prediction:,.2f}")
+            else:
+                # Fallback to average if no prediction found
+                cursor.execute("""
+                    SELECT AVG(value) as avg_sales
+                    FROM time_series_data
+                    WHERE data_type = 'retail_sales'
+                    AND date >= date('now', '-6 months')
+                """)
+                result = cursor.fetchone()
+                base_prediction = result[0] if result and result[0] else 50000
+                logger.info(f"No {model_name} prediction found, using historical average: ${base_prediction:,.2f}")
+
+            cursor.close()
+        except Exception as e:
+            logger.warning(f"Failed to get {request.model_name} prediction from database: {e}")
+            base_prediction = 50000  # Fallback to $50K
+
+        # Generate scenario with the specific model's prediction
+        scenario_result = analyzer.generate_economic_scenario(
+            base_features=current_indicators,
+            scenario_type=request.scenario_type,
+            prediction_model=None,  # Not using model loader, just applying adjustments
+            base_prediction=base_prediction if base_prediction else 450000
+        )
+
+        # Add model and category info
+        scenario_result["category"] = request.category
+        scenario_result["model_name"] = request.model_name
+        scenario_result["base_prediction"] = base_prediction
+
+        return scenario_result
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error analyzing scenario for model {request.model_name}: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to analyze scenario for model: {str(e)}")
 
 
 @router.post("/custom")
