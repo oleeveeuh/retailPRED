@@ -480,7 +480,7 @@ export interface HistoricalSalesResponse {
 }
 
 export interface ScenarioAnalysisRequest {
-  scenario_type: 'baseline' | 'optimistic' | 'pessimistic';
+  scenario_type: 'baseline' | 'optimistic' | 'pessimistic' | 'recession' | 'rate_hike' | 'inflation_surge' | 'recovery';
   category: string;
   custom_params?: Record<string, number>;
 }

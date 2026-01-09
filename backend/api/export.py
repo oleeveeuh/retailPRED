@@ -37,7 +37,13 @@ async def export_predictions_csv(
 
     Returns:
     - CSV file with columns: date, store, product, predicted_sales,
-      actual_sales, model_name, error_pct, confidence_lower, confidence_upper
+      actual_sales, model_name, error_pct (MAPE), error_abs (MAE),
+      mase (Mean Absolute Scaled Error), confidence_lower, confidence_upper
+
+    Error Metrics:
+    - error_pct: MAPE = |actual - predicted| / actual * 100 (standard MAPE formula)
+    - error_abs: MAE = |actual - predicted| (absolute error in dollars)
+    - mase: MASE = MAE_model / MAE_naive (scaled error, <1 means better than naive)
     """
 
     try:
@@ -89,6 +95,40 @@ async def export_predictions_csv(
         output = StringIO()
         writer = csv.writer(output)
 
+        # Calculate MASE scaling factor (naive forecast errors)
+        # MASE = MAE / Naive_MAE
+        # where naive forecast uses the previous period's actual value
+        mase_query = """
+            SELECT
+                model_name,
+                AVG(ABS(actual_value - predicted_value)) as model_mae
+            FROM prediction_log
+            WHERE actual_value IS NOT NULL
+            GROUP BY model_name
+        """
+        cursor.execute(mase_query)
+        model_maes = {row['model_name']: row['model_mae'] for row in cursor.fetchall()}
+
+        # Calculate naive MAE (using seasonal naive: same month from previous year)
+        naive_query = """
+            SELECT
+                AVG(ABS(t1.value - (
+                    SELECT t2.value
+                    FROM time_series_data t2
+                    JOIN categories c ON t2.category_id = c.id
+                    WHERE c.name = 'total_sales'
+                    AND t2.date = date(t1.date, '-1 year')
+                    LIMIT 1
+                ))) as naive_mae
+            FROM time_series_data t1
+            JOIN categories c ON t1.category_id = c.id
+            WHERE c.name = 'total_sales'
+            AND t1.date >= date('now', '-2 years')
+        """
+        cursor.execute(naive_query)
+        naive_result = cursor.fetchone()
+        naive_mae = naive_result['naive_mae'] if naive_result and naive_result['naive_mae'] else 100000
+
         # Write header
         writer.writerow([
             'date',
@@ -98,6 +138,8 @@ async def export_predictions_csv(
             'actual_sales',
             'model_name',
             'error_pct',
+            'error_abs',
+            'mase',
             'confidence_lower',
             'confidence_upper',
             'is_validated'
@@ -114,12 +156,23 @@ async def export_predictions_csv(
             conf_lower = row['confidence_interval_lower']
             conf_upper = row['confidence_interval_upper']
 
-            # Calculate error percentage if actual value exists
+            # Calculate error metrics if actual value exists
             if actual_value is not None:
-                error_pct = abs((actual_value - predicted_value) / predicted_value * 100)
+                # MAPE: Mean Absolute Percentage Error (using actual as denominator)
+                error_pct = abs((actual_value - predicted_value) / actual_value * 100)
+
+                # MAE: Mean Absolute Error
+                error_abs = abs(actual_value - predicted_value)
+
+                # MASE: Mean Absolute Scaled Error
+                model_mae = model_maes.get(model_name, 0)
+                mase = (model_mae / naive_mae) if naive_mae > 0 else 0
+
                 is_validated = 'Yes'
             else:
                 error_pct = ''
+                error_abs = ''
+                mase = ''
                 is_validated = 'No'
 
             # Write row
@@ -131,6 +184,8 @@ async def export_predictions_csv(
                 f"{actual_value:.2f}" if actual_value else '',
                 model_name,
                 f"{error_pct:.2f}" if error_pct else '',
+                f"{error_abs:.2f}" if error_abs else '',
+                f"{mase:.4f}" if mase else '',
                 f"{conf_lower:.2f}" if conf_lower else '',
                 f"{conf_upper:.2f}" if conf_upper else '',
                 is_validated
