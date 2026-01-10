@@ -27,10 +27,15 @@ const AnomalyDetectionPage: FC = () => {
   const [anomaliesWithContext, setAnomaliesWithContext] = useState<any[]>([]);
 
   // Fetch predictions for anomaly detection
-  const { data: predictions, isLoading } = useQuery({
+  const { data: predictionsResponse, isLoading } = useQuery({
     queryKey: ['predictions', selectedCategory],
-    queryFn: () => predictionsApi.getPredictions(selectedCategory, 100),
+    queryFn: () => predictionsApi.getHistory({
+      model_name: selectedCategory,
+      limit: 100
+    }),
   });
+
+  const predictions = predictionsResponse?.predictions || [];
 
   // Detect anomalies from actual prediction data
   const anomalies = (() => {
