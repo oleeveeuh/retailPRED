@@ -29,82 +29,8 @@ const AnomalyDetectionPage: FC = () => {
     queryFn: () => predictionsApi.getPredictions(selectedCategory, 100),
   });
 
-  // Detect anomalies using the hook
+  // Detect anomalies from actual prediction data
   const anomalies = (() => {
-    // DEMO MODE: Return demo anomalies
-    if (import.meta.env.VITE_DEMO_MODE === 'true') {
-      return [
-        {
-          id: `demo-1-${selectedCategory}`,
-          date: new Date().toISOString().split('T')[0],
-          predicted_value: 485000,
-          actual_value: 478000,
-          change_percent: -8.2,
-          model_name: 'LGBM',
-          category: selectedCategory,
-          severity: 'severe' as const,
-          type: 'decline' as const,
-          economicContext: {
-            regime: 'recession' as const,
-            indicators: {
-              unemployment: 5.2,
-              unemploymentChange: 0.8,
-              consumerConfidence: 95.3,
-              confidenceChange: -5.2,
-              fedRate: 4.75,
-            },
-            anomalies: ['Rising unemployment', 'Declining consumer confidence'],
-            explanation: 'Economic indicators suggest weakening consumer spending. Rising unemployment and falling confidence correlate with reduced retail sales. Model predicts continued decline through Q1 2026.',
-          },
-        },
-        {
-          id: `demo-2-${selectedCategory}`,
-          date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          predicted_value: 525000,
-          change_percent: 6.5,
-          model_name: 'RandomForest',
-          category: selectedCategory,
-          severity: 'moderate' as const,
-          type: 'surge' as const,
-          economicContext: {
-            regime: 'expansion' as const,
-            indicators: {
-              unemployment: 4.8,
-              unemploymentChange: -0.4,
-              consumerConfidence: 102.5,
-              confidenceChange: 3.2,
-              fedRate: 4.50,
-            },
-            anomalies: ['Rising consumer confidence'],
-            explanation: 'Strong holiday season performance driven by improving consumer sentiment and lower unemployment. Model anticipates sustained growth through early 2026.',
-          },
-        },
-        {
-          id: `demo-3-${selectedCategory}`,
-          date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          predicted_value: 462000,
-          change_percent: -7.8,
-          model_name: 'PatchTST',
-          category: selectedCategory,
-          severity: 'severe' as const,
-          type: 'decline' as const,
-          economicContext: {
-            regime: 'crisis' as const,
-            indicators: {
-              unemployment: 5.5,
-              unemploymentChange: 1.2,
-              consumerConfidence: 88.5,
-              confidenceChange: -8.3,
-              fedRate: 5.00,
-            },
-            anomalies: ['High unemployment', 'Low confidence', 'Elevated interest rates'],
-            explanation: 'Automotive sector facing significant headwinds from high interest rates reducing vehicle financing affordability and declining consumer confidence delaying major purchases.',
-          },
-        },
-      ];
-    }
-
-    // PRODUCTION MODE: Detect real anomalies from data
     if (!predictions || predictions.length === 0) return [];
 
     const hasPredictedValue = predictions[0].predicted_value !== undefined;
