@@ -12,6 +12,7 @@ import { PredictionsPage, ModelsPage, ValidationPage, ExplainPage } from './page
 import { EconomicScenarioAnalysis } from './pages/EconomicScenarioAnalysis';
 import { SensitivityAnalysis } from './pages/SensitivityAnalysis';
 import { BusinessDashboard } from './pages/BusinessDashboard';
+import AnomalyDetectionPage from './pages/AnomalyDetectionPage';
 import './index.css';
 
 const queryClient = new QueryClient({
@@ -36,6 +37,7 @@ function App() {
             <Route path="/dashboard/models" element={<ModelsPage />} />
             <Route path="/dashboard/validation" element={<ValidationPage />} />
             <Route path="/dashboard/explain" element={<ExplainPage />} />
+            <Route path="/dashboard/anomalies" element={<AnomalyDetectionPage />} />
             <Route path="/dashboard/scenarios" element={<EconomicScenarioAnalysis />} />
             <Route path="/dashboard/sensitivity" element={<SensitivityAnalysis />} />
             <Route path="/dashboard/business" element={<BusinessDashboard />} />

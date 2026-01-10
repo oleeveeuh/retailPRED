@@ -5,6 +5,7 @@
  */
 
 import { FC, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { predictionsApi, trainingMetricsApi } from '../api/unifiedApi';
 import ForecastChart from './ForecastChart';
@@ -12,7 +13,10 @@ import FeatureImportanceChart from './FeatureImportanceChart';
 import ModelInfoCard from './ModelInfoCard';
 import { EconomicRegimeIndicator } from './EconomicRegimeIndicator';
 import { EconomicContextInfo } from './EconomicContextInfo';
+import { AnomalyExplanation } from './AnomalyExplanation';
 import { useCurrentRegime } from '@/hooks/useEconomicRegime';
+import { useAnomalyDetection } from '@/hooks/useAnomalyDetection';
+import { AlertTriangle } from 'lucide-react';
 
 export const Dashboard: FC = () => {
   const [selectedModel, setSelectedModel] = useState<string>('all');
@@ -112,6 +116,85 @@ export const Dashboard: FC = () => {
 
       {/* Economic Context Info */}
       <EconomicContextInfo />
+
+      {/* Recent Anomalies Alert */}
+      {(import.meta.env.VITE_DEMO_MODE === 'true' || (historyData && historyData.predictions.length > 1)) && (() => {
+        // Demo mode: always show alert
+        if (import.meta.env.VITE_DEMO_MODE === 'true') {
+          return (
+            <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-orange-500 rounded-lg">
+                    <AlertTriangle className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-100">
+                      Recent Anomalies Detected
+                    </h3>
+                    <p className="text-sm text-orange-700 dark:text-orange-300 mt-1">
+                      3 unusual predictions found in recent forecasts
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  to="/dashboard/anomalies"
+                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
+                >
+                  View All
+                </Link>
+              </div>
+            </div>
+          );
+        }
+
+        // Production mode: check real data
+        const recentPredictions = historyData.predictions.slice(0, 20);
+        const hasPredictedValue = recentPredictions[0]?.predicted_value !== undefined;
+
+        const anomalies = recentPredictions
+          .map((pred, i) => {
+            if (i === 0) return null;
+            const prev = recentPredictions[i - 1];
+            const currentValue = hasPredictedValue ? pred.predicted_value : pred.value;
+            const previousValue = hasPredictedValue ? prev.predicted_value : prev.value;
+
+            if (!currentValue || !previousValue) return null;
+
+            const change = Math.abs(((currentValue - previousValue) / previousValue) * 100);
+            return { prediction: pred, change: Math.abs(change) };
+          })
+          .filter(item => item && item.change > 5)
+          .slice(0, 3);
+
+        if (anomalies.length === 0) return null;
+
+        return (
+          <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-orange-500 rounded-lg">
+                  <AlertTriangle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-100">
+                    Recent Anomalies Detected
+                  </h3>
+                  <p className="text-sm text-orange-700 dark:text-orange-300 mt-1">
+                    {anomalies.length} unusual prediction{anomalies.length > 1 ? 's' : ''} found in recent forecasts
+                  </p>
+                </div>
+              </div>
+              <Link
+                to="/dashboard/anomalies"
+                className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                View All
+              </Link>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Forecast Chart */}
       <ForecastChart />

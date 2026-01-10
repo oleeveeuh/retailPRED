@@ -48,6 +48,7 @@ import {
   Activity,
 } from 'lucide-react';
 import { predictionsApi, categoriesApi, scenariosApi, Granularity } from '../api/unifiedApi';
+import { AnomalyExplanation } from '../components/AnomalyExplanation';
 import { triggerConfetti } from '../components/PremiumAnimations';
 import { SkeletonCard } from '../components/PremiumAnimations';
 
@@ -663,6 +664,27 @@ export const PredictionsPage: FC = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Anomaly Explanation */}
+              {forecastResults && forecastResults.length > 1 && (() => {
+                const latest = forecastResults[forecastResults.length - 1];
+                const previous = forecastResults[forecastResults.length - 2];
+                const change = previous && previous.predicted_value
+                  ? ((latest.predicted_value - previous.predicted_value) / previous.predicted_value) * 100
+                  : 0;
+
+                if (Math.abs(change) < 5) return null;
+
+                return (
+                  <div className="mb-6">
+                    {/* @ts-ignore */}
+                    <AnomalyExplanation
+                      date={latest.date || new Date().toISOString().split('T')[0]}
+                      predictionChange={change}
+                    />
+                  </div>
+                );
+              })()}
 
               {/* Feature Contributions */}
               {/* @ts-ignore */}

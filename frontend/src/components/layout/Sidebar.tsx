@@ -18,6 +18,7 @@ import {
   Bot,
   CheckCircle,
   Lightbulb,
+  AlertTriangle,
   TrendingUp,
   Sliders,
   ChevronLeft,
@@ -62,6 +63,12 @@ const navItems: NavItem[] = [
     path: '/dashboard/explain',
     icon: Lightbulb,
     description: 'SHAP values and feature importance',
+  },
+  {
+    name: 'Anomaly Detection',
+    path: '/dashboard/anomalies',
+    icon: AlertTriangle,
+    description: 'Unusual predictions explained',
   },
   {
     name: 'Economic Scenarios',
