@@ -92,7 +92,7 @@ const AnomalyDetectionPage: FC = () => {
     { value: 'automobile_dealers', label: 'Automobile Dealers' },
     { value: 'building_materials', label: 'Building Materials' },
     { value: 'clothing_accessories', label: 'Clothing & Accessories' },
-    { value: 'electronics_appliances', label: 'Electronics & Appliances' },
+    { value: 'electronics_and_appliances', label: 'Electronics & Appliances' },
   ];
 
   return (
