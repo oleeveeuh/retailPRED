@@ -3,7 +3,7 @@
  * Displays unusual predictions with economic context explanations
  */
 
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   AlertTriangle,
@@ -17,11 +17,14 @@ import { AnomalyExplanation } from '../components/AnomalyExplanation';
 import { useAnomalyDetection } from '../hooks/useAnomalyDetection';
 import { useQuery } from '@tanstack/react-query';
 import { predictionsApi } from '../api/unifiedApi';
+import { api } from '../api/client';
+import { useEconomicContext } from '../hooks/useEconomicContext';
 
 const AnomalyDetectionPage: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('total_sales');
   const [severityFilter, setSeverityFilter] = useState<'all' | 'moderate' | 'severe'>('all');
   const [typeFilter, setTypeFilter] = useState<'all' | 'surge' | 'decline'>('all');
+  const [anomaliesWithContext, setAnomaliesWithContext] = useState<any[]>([]);
 
   // Fetch predictions for anomaly detection
   const { data: predictions, isLoading } = useQuery({
@@ -70,18 +73,64 @@ const AnomalyDetectionPage: FC = () => {
     });
   })();
 
+  // Fetch economic context for each anomaly
+  useEffect(() => {
+    const fetchEconomicContext = async () => {
+      if (!anomalies || anomalies.length === 0) {
+        setAnomaliesWithContext([]);
+        return;
+      }
+
+      const anomaliesWithCtx = await Promise.all(
+        anomalies.map(async (anomaly) => {
+          try {
+            const response = await api.get(`/api/context/regime/${anomaly.date}`);
+            return {
+              ...anomaly,
+              economicContext: {
+                regime: response.regime,
+                indicators: {
+                  unemployment: response.indicators?.unemployment || 0,
+                  unemploymentChange: 0, // Would need historical data
+                  consumerConfidence: response.indicators?.consumer_confidence || 0,
+                  confidenceChange: 0, // Would need historical data
+                  fedRate: response.indicators?.fed_rate || 0,
+                },
+                anomalies: response.trends ? Object.entries(response.trends)
+                  .filter(([_, trend]) => trend !== 'stable')
+                  .map(([indicator, trend]) => {
+                    const label = indicator === 'unemployment' ? 'Unemployment' : 'Consumer confidence';
+                    const status = trend === 'rising' ? 'Rising' : 'Falling';
+                    return `${status} ${label.toLowerCase()}`;
+                  }) : [],
+                explanation: response.explanation || '',
+              },
+            };
+          } catch (error) {
+            console.error(`Failed to fetch economic context for ${anomaly.date}:`, error);
+            return anomaly;
+          }
+        })
+      );
+
+      setAnomaliesWithContext(anomaliesWithCtx);
+    };
+
+    fetchEconomicContext();
+  }, [anomalies]);
+
   // Apply filters
-  const filteredAnomalies = anomalies.filter((a: any) => {
+  const filteredAnomalies = anomaliesWithContext.filter((a: any) => {
     if (severityFilter !== 'all' && a.severity !== severityFilter) return false;
     if (typeFilter !== 'all' && a.type !== typeFilter) return false;
     return true;
   });
 
   const stats = {
-    total: anomalies.length,
-    surges: anomalies.filter((a: any) => a.type === 'surge').length,
-    declines: anomalies.filter((a: any) => a.type === 'decline').length,
-    severe: anomalies.filter((a: any) => a.severity === 'severe').length,
+    total: anomaliesWithContext.length,
+    surges: anomaliesWithContext.filter((a: any) => a.type === 'surge').length,
+    declines: anomaliesWithContext.filter((a: any) => a.type === 'decline').length,
+    severe: anomaliesWithContext.filter((a: any) => a.severity === 'severe').length,
   };
 
   const categories = [
