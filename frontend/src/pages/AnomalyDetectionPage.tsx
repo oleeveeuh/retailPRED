@@ -3,7 +3,7 @@
  * Displays unusual predictions with economic context explanations
  */
 
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   AlertTriangle,
@@ -16,10 +16,47 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { predictionsApi } from '../api/unifiedApi';
 
+// Helper function to load economic context for demo mode
+const loadEconomicContext = async (date: string) => {
+  try {
+    const response = await fetch('/demo-data/economic-context.json');
+    const data = await response.json();
+
+    // Find the closest date match (within same month)
+    const targetDate = new Date(date);
+    const closestMatch = data.data.reduce((best: any, current: any) => {
+      const currentDate = new Date(current.date);
+      const bestDate = new Date(best.date);
+
+      const currentDiff = Math.abs(targetDate.getTime() - currentDate.getTime());
+      const bestDiff = Math.abs(targetDate.getTime() - bestDate.getTime());
+
+      return currentDiff < bestDiff ? current : best;
+    }, data.data[0]);
+
+    return {
+      regime: closestMatch.regime,
+      indicators: {
+        unemployment: closestMatch.unemployment,
+        unemploymentChange: closestMatch.unemploymentChange,
+        consumerConfidence: closestMatch.consumerConfidence,
+        confidenceChange: closestMatch.confidenceChange,
+        fedRate: closestMatch.fedRate,
+      },
+      anomalies: closestMatch.anomalies,
+      explanation: closestMatch.explanation,
+    };
+  } catch (error) {
+    console.error('Failed to load economic context:', error);
+    return null;
+  }
+};
+
 const AnomalyDetectionPage: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('total_sales');
   const [severityFilter, setSeverityFilter] = useState<'all' | 'moderate' | 'severe'>('all');
   const [typeFilter, setTypeFilter] = useState<'all' | 'surge' | 'decline'>('all');
+  const [anomaliesWithContext, setAnomaliesWithContext] = useState<any[]>([]);
 
   // Fetch predictions for anomaly detection
   const { data: predictionsResponse, isLoading } = useQuery({
@@ -73,18 +110,42 @@ const AnomalyDetectionPage: FC = () => {
     });
   })();
 
+  // Fetch economic context for each anomaly
+  useEffect(() => {
+    const fetchEconomicContext = async () => {
+      if (!anomalies || anomalies.length === 0) {
+        setAnomaliesWithContext([]);
+        return;
+      }
+
+      const anomaliesWithCtx = await Promise.all(
+        anomalies.map(async (anomaly) => {
+          const context = await loadEconomicContext(anomaly.date);
+          return {
+            ...anomaly,
+            economicContext: context,
+          };
+        })
+      );
+
+      setAnomaliesWithContext(anomaliesWithCtx);
+    };
+
+    fetchEconomicContext();
+  }, [anomalies]);
+
   // Apply filters
-  const filteredAnomalies = anomalies.filter((a: any) => {
+  const filteredAnomalies = anomaliesWithContext.filter((a: any) => {
     if (severityFilter !== 'all' && a.severity !== severityFilter) return false;
     if (typeFilter !== 'all' && a.type !== typeFilter) return false;
     return true;
   });
 
   const stats = {
-    total: anomalies.length,
-    surges: anomalies.filter((a: any) => a.type === 'surge').length,
-    declines: anomalies.filter((a: any) => a.type === 'decline').length,
-    severe: anomalies.filter((a: any) => a.severity === 'severe').length,
+    total: anomaliesWithContext.length,
+    surges: anomaliesWithContext.filter((a: any) => a.type === 'surge').length,
+    declines: anomaliesWithContext.filter((a: any) => a.type === 'decline').length,
+    severe: anomaliesWithContext.filter((a: any) => a.severity === 'severe').length,
   };
 
   const categories = [
@@ -329,6 +390,63 @@ const AnomalyDetectionPage: FC = () => {
                       from previous period
                     </span>
                   </div>
+
+                  {/* Economic Context */}
+                  {anomaly.economicContext && (
+                    <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                          anomaly.economicContext.regime === 'crisis'
+                            ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+                            : anomaly.economicContext.regime === 'recession'
+                            ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'
+                            : anomaly.economicContext.regime === 'expansion'
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                            : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                        }`}>
+                          {anomaly.economicContext.regime.charAt(0).toUpperCase() + anomaly.economicContext.regime.slice(1)}
+                        </span>
+                        <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
+                          Economic Context
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-2 mb-2 text-xs">
+                        <div>
+                          <span className="text-slate-500 dark:text-slate-400">Unemployment: </span>
+                          <span className="font-semibold text-slate-900 dark:text-slate-100">
+                            {anomaly.economicContext.indicators.unemployment}%
+                            {anomaly.economicContext.indicators.unemploymentChange !== 0 && (
+                              <span className={`ml-1 ${anomaly.economicContext.indicators.unemploymentChange > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                                ({anomaly.economicContext.indicators.unemploymentChange > 0 ? '+' : ''}{anomaly.economicContext.indicators.unemploymentChange.toFixed(1)}%)
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 dark:text-slate-400">Confidence: </span>
+                          <span className="font-semibold text-slate-900 dark:text-slate-100">
+                            {anomaly.economicContext.indicators.consumerConfidence}
+                            {anomaly.economicContext.indicators.confidenceChange !== 0 && (
+                              <span className={`ml-1 ${anomaly.economicContext.indicators.confidenceChange < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                                ({anomaly.economicContext.indicators.confidenceChange > 0 ? '+' : ''}{anomaly.economicContext.indicators.confidenceChange.toFixed(1)})
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 dark:text-slate-400">Fed Rate: </span>
+                          <span className="font-semibold text-slate-900 dark:text-slate-100">
+                            {anomaly.economicContext.indicators.fedRate}%
+                          </span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        {anomaly.economicContext.explanation}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </motion.div>
