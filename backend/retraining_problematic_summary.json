@@ -1,0 +1,32 @@
+{
+  "furniture_and_home_furnishings_stores": {
+    "status": "success",
+    "model_file": "furniture_and_home_furnishings_stores_LGBM_model.pkl",
+    "metrics": {
+      "train_mape": 1.2513008537499741,
+      "test_mape": 4.659767050610912,
+      "train_rmse": 24.30885939059318,
+      "test_rmse": 57.945232189167434
+    }
+  },
+  "general_merchandise_stores": {
+    "status": "success",
+    "model_file": "general_merchandise_stores_LGBM_model.pkl",
+    "metrics": {
+      "train_mape": 1.2915023895178392,
+      "test_mape": 4.30267623412214,
+      "train_rmse": 258.610434103725,
+      "test_rmse": 614.5017880086691
+    }
+  },
+  "sporting_goods_hobby_and_musical_instrument_stores": {
+    "status": "success",
+    "model_file": "sporting_goods_hobby_and_musical_instrument_stores_LGBM_model.pkl",
+    "metrics": {
+      "train_mape": 1.2975469842531517,
+      "test_mape": 4.386343302445327,
+      "train_rmse": 30.281233420353423,
+      "test_rmse": 73.5659369685719
+    }
+  }
+}
