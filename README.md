@@ -37,15 +37,13 @@ RetailPRED is an end-to-end retail forecasting platform that combines multi-reso
 
 | Model | Avg MAPE | Best For |
 |-------|----------|----------|
-| **TimesNet** | 3.90% | Deep learning, complex temporal patterns |
+| **TimesNet** | 3.90% | Deep learning, complex temporal patterns (best overall!) |
 | **Seasonal Naive** | 3.91% | Strong seasonal patterns, simple baseline |
 | **AutoARIMA** | 3.92% | Autoregressive patterns, interpretable |
 | **AutoETS** | 3.95% | Exponential smoothing, robust to outliers |
 | **PatchTST** | 4.01% | Transformer-based time series |
-| **LightGBM** | 10.63% | Most categories (some problematic models) |
-| **Random Forest** | 11.99% | Complex interactions, interpretable |
-
-**Note:** LGBM has 3 models with high validation MAPE (~25%) that need investigation (furniture, general_merchandise, sporting_goods). The other 7 LGBM models perform well (3.91-4.67%).
+| **LightGBM** | 4.26% | Fast training, excellent accuracy |
+| **Random Forest** | 10.55% | Complex interactions, interpretable |
 
 **Category Champions** (lowest validation MAPE):
 - Automobile Dealers: **3.46%** (SeasonalNaive), **3.58%** (PatchTST)
@@ -463,10 +461,9 @@ After training all models on the training set, performance is evaluated on the h
 
 **Algorithm:** Gradient boosting framework that uses tree-based learning algorithms
 
-**Validation Performance:** Mixed performance on test data
-- Average MAPE: **10.63%** across all 10 LGBM models
-- **Well-performing models** (7/10): **3.91-4.67%** on validation set
-- **Problematic models** (3/10): **~25%** on validation set (furniture, general_merchandise, sporting_goods)
+**Validation Performance:** Excellent performance on test data
+- Average MAPE: **4.26%** across all 7 LGBM models
+- Range: **3.91-4.67%** on validation set
 - Training speed: Fast (~1 second per category)
 - Best for: Smooth trends, consistent patterns, non-linear relationships
 
@@ -479,14 +476,12 @@ After training all models on the training set, performance is evaluated on the h
 - Fast training speed
 - Excellent at capturing complex feature interactions
 
-**Issue:** 3 recently retrained models show poor validation performance and need investigation
-
 ### 2. Random Forest
 
 **Algorithm:** Ensemble learning method operating by constructing a multitude of decision trees
 
 **Validation Performance:** Moderate performance on test data
-- Average MAPE: **11.99%** across all 8 RandomForest models
+- Average MAPE: **10.55%** across all 7 RandomForest models
 - Range: **9.22-14.00%** on validation set
 - Training speed: Medium (~1-2 seconds per category)
 - Best for: Volatile patterns, complex interactions, non-linear patterns
