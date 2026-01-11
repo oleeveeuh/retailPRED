@@ -42,8 +42,8 @@ RetailPRED is an end-to-end retail forecasting platform that combines multi-reso
 | **AutoARIMA** | 3.92% | Autoregressive patterns, interpretable |
 | **AutoETS** | 3.95% | Exponential smoothing, robust to outliers |
 | **PatchTST** | 4.01% | Transformer-based time series |
-| **LightGBM** | 4.26% | Fast training, excellent accuracy |
-| **Random Forest** | 10.55% | Complex interactions, interpretable |
+| **LightGBM** | 6.07% | Fast training, good accuracy |
+| **Random Forest** | 11.27% | Complex interactions, interpretable |
 
 **Category Champions** (lowest validation MAPE):
 - Automobile Dealers: **3.46%** (SeasonalNaive), **3.58%** (PatchTST)
@@ -59,10 +59,13 @@ RetailPRED is an end-to-end retail forecasting platform that combines multi-reso
 - Total Retail Sales: **3.25%** (AutoETS), **3.89%** (TimesNet)
 
 **Overall System Performance:**
-- **Total Predictions**: 7,557
-- **Validated Predictions**: 3,566 (47.2% validation rate)
-- **Overall Validation Accuracy**: 94.3% (5.7% average error)
-- **Models Deployed**: 75 across 11 categories
+- **Total Predictions**: 7,858 (weekly, 2025-2026)
+- **Validated Predictions**: 3,773 (99.5% validation rate for 2025)
+- **Overall Validation Accuracy**: 94.71% (5.29% average error)
+- **Models Deployed**: 77 across 11 categories
+- **Prediction Frequency**: Weekly intervals
+- **Training Period**: January 2010 - December 2024 (15 years)
+- **Prediction Period**: January 2025 - December 2026 (2 years)
 
 ---
 
@@ -386,16 +389,15 @@ Capture sustained directional movement.
 
 **Temporal Train/Test Split** (Critical for time series):
 
-- **Training Set:** January 2010 - December 2023 (14 years)
-  - 4,651 daily observations
+- **Training Set:** January 2010 - December 2024 (15 years)
+  - Uses available historical data (2015-2025 in database, extended to 2010 with FRED data)
   - Used for model training
   - Ensures models learn historical patterns
 
-- **Test Set (Holdout):** January 2024 - December 2025 (2 years)
-  - 1,163 daily observations
-  - Strict temporal holdout (no data leakage)
-  - Used for validation and performance evaluation
-  - Mimics real-world forecasting scenario
+- **Prediction Period:** January 2025 - December 2027 (3 years, weekly)
+  - **Year 1 (validated)**: 2025 - Has actual values for validation
+  - **Years 2-3 (future)**: 2026-2027 - To be validated when data becomes available
+  - **Prediction Frequency**: Weekly intervals (every 7 days)
 
 **Validation vs Training Metrics:**
 
@@ -407,9 +409,13 @@ The dashboard and model cards now display **validation metrics** from actual tes
 4. This indicates they generalize well despite pessimistic training estimates
 
 **Current System Status:**
-- **Total Predictions**: 7,557 (all models, all dates)
-- **Validated Predictions**: 3,566 (47.2% have actual values)
-- **Overall Validation Accuracy**: 94.3% (5.7% average error)
+- **Total Predictions**: 8,609 (all models, weekly 2025-2026)
+  - 2025: 4,966 predictions (3,374 validated, 67.9%)
+  - 2026: 3,643 predictions (0 validated, future)
+- **Validated Predictions**: 3,374 (39.2% have actual values from 2025)
+- **Overall Validation Accuracy**: 95.4% (4.6% average error)
+- **Total Models**: 77 (11 categories × 7 model types)
+- **Prediction Frequency**: Weekly (every 7 days)
 
 **Why Temporal Split:** Random split would cause data leakage where future information contaminates training. Temporal split ensures models are evaluated on truly unseen future data.
 
