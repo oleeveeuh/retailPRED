@@ -1,6 +1,6 @@
 /**
  * Model Info Card Component
- * Displays key information about a trained model
+ * Displays key information about a trained model with VALIDATION metrics
  */
 
 import { FC } from 'react';
@@ -15,25 +15,27 @@ export interface ModelInfoCardProps {
       MASE?: number | { mean: number };
       MAPE?: number | { mean: number };
       SMAPE?: number | { mean: number };
-      RMSE?: number;
-      MAE?: number;
+      RMSE?: number | { mean: number };
+      MAE?: number | { mean: number };
       r2?: number;
     };
     training_date: string;
     is_active: boolean;
+    validated_predictions?: number;
+    total_predictions?: number;
   };
 }
 
 export const ModelInfoCard: FC<ModelInfoCardProps> = ({ model }) => {
   const getMetricColor = (value: number, lowerIsBetter: boolean = true) => {
     if (lowerIsBetter) {
-      if (value <= 0.05) return 'text-green-600';
-      if (value <= 0.10) return 'text-yellow-600';
-      return 'text-red-600';
+      if (value <= 5) return 'text-green-600 dark:text-green-400';
+      if (value <= 10) return 'text-yellow-600 dark:text-yellow-400';
+      return 'text-red-600 dark:text-red-400';
     } else {
-      if (value >= 0.95) return 'text-green-600';
-      if (value >= 0.90) return 'text-yellow-600';
-      return 'text-red-600';
+      if (value >= 0.95) return 'text-green-600 dark:text-green-400';
+      if (value >= 0.90) return 'text-yellow-600 dark:text-yellow-400';
+      return 'text-red-600 dark:text-red-400';
     }
   };
 
@@ -43,9 +45,9 @@ export const ModelInfoCard: FC<ModelInfoCardProps> = ({ model }) => {
     return 0;
   };
 
-  const mase = getMetricValue(model.metrics.MASE);
   const mape = getMetricValue(model.metrics.MAPE);
-  const smape = getMetricValue(model.metrics.SMAPE);
+  const rmse = model.metrics.RMSE ? getMetricValue(model.metrics.RMSE) : null;
+  const mae = model.metrics.MAE ? getMetricValue(model.metrics.MAE) : null;
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
@@ -63,29 +65,42 @@ export const ModelInfoCard: FC<ModelInfoCardProps> = ({ model }) => {
 
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-500 dark:text-gray-400">MASE</span>
-          <span className={`text-sm font-semibold ${getMetricColor(mase)}`}>
-            {mase.toFixed(3)}
-          </span>
-        </div>
-
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-500 dark:text-gray-400">MAPE</span>
+          <span className="text-sm text-gray-500 dark:text-gray-400">MAPE (Validation)</span>
           <span className={`text-sm font-semibold ${getMetricColor(mape)}`}>
             {mape.toFixed(2)}%
           </span>
         </div>
 
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-500 dark:text-gray-400">sMAPE</span>
-          <span className={`text-sm font-semibold ${getMetricColor(smape)}`}>
-            {smape.toFixed(2)}%
-          </span>
-        </div>
+        {mae !== null && (
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-500 dark:text-gray-400">MAE (Validation)</span>
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              ${mae.toFixed(2)}
+            </span>
+          </div>
+        )}
+
+        {rmse !== null && (
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-500 dark:text-gray-400">RMSE (Validation)</span>
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              ${rmse.toFixed(2)}
+            </span>
+          </div>
+        )}
+
+        {model.validated_predictions !== undefined && model.total_predictions !== undefined && (
+          <div className="pt-2 mt-2 border-t border-gray-200 dark:border-slate-700">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Validated: {model.validated_predictions}/{model.total_predictions} predictions
+              ({Math.round((model.validated_predictions / model.total_predictions) * 100)}%)
+            </p>
+          </div>
+        )}
 
         <div className="pt-2 mt-2 border-t border-gray-200 dark:border-slate-700">
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Trained: {new Date(model.training_date).toLocaleDateString()}
+            Based on actual test data
           </p>
         </div>
       </div>

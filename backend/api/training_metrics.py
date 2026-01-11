@@ -48,47 +48,55 @@ async def get_training_summary():
 @router.get("/models")
 async def get_all_model_metrics():
     """
-    Get flattened list of all models with their metrics
+    Get flattened list of all models with their VALIDATION metrics
 
-    Returns array of model objects with metrics for easy frontend consumption
+    Returns array of model objects with VALIDATION metrics from actual predictions (not training metrics)
     """
     try:
-        summary_file = TRAINING_OUTPUTS / "robust_training_summary.json"
+        # Load validation metrics from prediction_log table
+        validation_file = TRAINING_OUTPUTS / "validation_metrics.json"
 
-        if not summary_file.exists():
+        if not validation_file.exists():
             raise HTTPException(
                 status_code=404,
-                detail="Training summary not found. Please ensure models have been trained."
+                detail="Validation metrics not found. Please run backend/calculate_validation_metrics.py"
             )
 
-        with open(summary_file, 'r') as f:
-            summary = json.load(f)
+        with open(validation_file, 'r') as f:
+            validation_data = json.load(f)
 
-        # Flatten the nested structure into a list of models
         models = []
+        validation_models = validation_data.get('models', {})
 
-        # Check if summary has detailed_results structure
-        if 'detailed_results' in summary:
-            for category_name, category_data in summary['detailed_results'].items():
-                if 'models' in category_data:
-                    for model_name, model_metrics in category_data['models'].items():
-                        # Convert lowercase metric names to uppercase for frontend
-                        formatted_metrics = {}
-                        for key, value in model_metrics.items():
-                            if key in ['mape', 'smape', 'mase', 'rmse', 'mae']:
-                                formatted_metrics[key.upper()] = {'mean': value}
-                            else:
-                                formatted_metrics[key] = value
+        # Convert validation metrics to frontend format
+        for model_name, model_data in validation_models.items():
+            # Extract category and model type from model_name
+            # Format: "category_model_type_model"
+            parts = model_name.rsplit('_', 2)  # Split from right into max 3 parts
+            if len(parts) >= 3:
+                category = '_'.join(parts[:-2])
+                model_type = parts[-2] + '_' + parts[-1]  # e.g., "LGBM_model" -> "LGBM"
+            elif len(parts) == 2:
+                category = parts[0]
+                model_type = parts[1]
+            else:
+                category = model_name
+                model_type = "Unknown"
 
-                        models.append({
-                            'id': f"{category_name}_{model_name}",
-                            'model_name': f"{category_name}_{model_name}",
-                            'model_type': model_name,
-                            'category': category_name,
-                            'metrics': formatted_metrics,
-                            'training_date': summary.get('training_completed', '2026-01-04'),
-                            'is_active': model_name in ['LGBM', 'RandomForest'],  # Mark best models as active
-                        })
+            # Clean up model_type (remove "_model" suffix if present)
+            model_type = model_type.replace('_model', '').replace('_', ' ')
+
+            models.append({
+                'id': model_name,
+                'model_name': model_name,
+                'model_type': model_type,
+                'category': category,
+                'metrics': model_data['metrics'],
+                'training_date': validation_data.get('generated_at', '2026-01-04'),
+                'is_active': model_type in ['LGBM', 'RandomForest', 'TimesNet', 'PatchTST'],
+                'validated_predictions': model_data.get('validated_predictions', 0),
+                'total_predictions': model_data.get('total_predictions', 0),
+            })
 
         return {
             'models': models,
@@ -99,7 +107,7 @@ async def get_all_model_metrics():
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error loading model metrics: {e}")
+        logger.error(f"Error loading validation metrics: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
