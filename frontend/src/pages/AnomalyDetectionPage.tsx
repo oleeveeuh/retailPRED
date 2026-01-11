@@ -384,7 +384,9 @@ const AnomalyDetectionPage: FC = () => {
                       <TrendingDown className="w-5 h-5" />
                     )}
                     <span>
-                      {anomaly.change_percent > 0 ? '+' : ''}{anomaly.change_percent.toFixed(1)}%
+                      {anomaly.change_percent != null && !isNaN(anomaly.change_percent)
+                        ? `${anomaly.change_percent > 0 ? '+' : ''}${anomaly.change_percent.toFixed(1)}%`
+                        : 'N/A'}
                     </span>
                     <span className="text-sm font-normal text-slate-500 dark:text-slate-400">
                       from previous period
@@ -415,8 +417,8 @@ const AnomalyDetectionPage: FC = () => {
                         <div>
                           <span className="text-slate-500 dark:text-slate-400">Unemployment: </span>
                           <span className="font-semibold text-slate-900 dark:text-slate-100">
-                            {anomaly.economicContext.indicators.unemployment}%
-                            {anomaly.economicContext.indicators.unemploymentChange !== 0 && (
+                            {anomaly.economicContext.indicators?.unemployment != null ? `${anomaly.economicContext.indicators.unemployment}%` : 'N/A'}
+                            {anomaly.economicContext.indicators?.unemploymentChange != null && anomaly.economicContext.indicators.unemploymentChange !== 0 && (
                               <span className={`ml-1 ${anomaly.economicContext.indicators.unemploymentChange > 0 ? 'text-red-600' : 'text-green-600'}`}>
                                 ({anomaly.economicContext.indicators.unemploymentChange > 0 ? '+' : ''}{anomaly.economicContext.indicators.unemploymentChange.toFixed(1)}%)
                               </span>
@@ -426,8 +428,8 @@ const AnomalyDetectionPage: FC = () => {
                         <div>
                           <span className="text-slate-500 dark:text-slate-400">Confidence: </span>
                           <span className="font-semibold text-slate-900 dark:text-slate-100">
-                            {anomaly.economicContext.indicators.consumerConfidence}
-                            {anomaly.economicContext.indicators.confidenceChange !== 0 && (
+                            {anomaly.economicContext.indicators?.consumerConfidence != null ? anomaly.economicContext.indicators.consumerConfidence : 'N/A'}
+                            {anomaly.economicContext.indicators?.confidenceChange != null && anomaly.economicContext.indicators.confidenceChange !== 0 && (
                               <span className={`ml-1 ${anomaly.economicContext.indicators.confidenceChange < 0 ? 'text-red-600' : 'text-green-600'}`}>
                                 ({anomaly.economicContext.indicators.confidenceChange > 0 ? '+' : ''}{anomaly.economicContext.indicators.confidenceChange.toFixed(1)})
                               </span>
@@ -437,7 +439,7 @@ const AnomalyDetectionPage: FC = () => {
                         <div>
                           <span className="text-slate-500 dark:text-slate-400">Fed Rate: </span>
                           <span className="font-semibold text-slate-900 dark:text-slate-100">
-                            {anomaly.economicContext.indicators.fedRate}%
+                            {anomaly.economicContext.indicators?.fedRate != null ? `${anomaly.economicContext.indicators.fedRate}%` : 'N/A'}
                           </span>
                         </div>
                       </div>
