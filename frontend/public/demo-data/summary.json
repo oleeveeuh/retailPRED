@@ -1,11 +1,11 @@
 {
-  "export_timestamp": "2026-01-10T19:39:41.709905",
+  "export_timestamp": "2026-01-10T19:47:26.765375",
   "database_path": "/Users/olivialiau/retailPRED/data/retailpred.db",
   "predictions": {
-    "total_count": 7565,
+    "total_count": 7557,
     "by_year": {
-      "2026": 3851,
-      "2025": 3714
+      "2026": 3855,
+      "2025": 3702
     },
     "by_model_type": {
       "SeasonalNaive": 1122,
@@ -13,13 +13,13 @@
       "AutoARIMA": 1122,
       "TimesNet": 1111,
       "PatchTST": 1111,
-      "LGBM": 1082,
-      "RandomForest": 895
+      "LGBM": 1076,
+      "RandomForest": 893
     },
     "shap_coverage": {
       "with_shap": 1408,
-      "total": 7565,
-      "percentage": 18.61
+      "total": 7557,
+      "percentage": 18.63
     }
   },
   "economic_indicators": {
@@ -27,7 +27,7 @@
     "source": "synthetic_demo_data"
   },
   "demo_data": {
-    "predictions_sample": 7565,
+    "predictions_sample": 7557,
     "indicators_sample": 500
   },
   "models_available": {
