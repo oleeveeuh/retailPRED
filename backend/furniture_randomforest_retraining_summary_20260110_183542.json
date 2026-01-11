@@ -1,0 +1,12 @@
+{
+  "furniture_and_home_furnishings_stores": {
+    "status": "success",
+    "model_file": "furniture_and_home_furnishings_stores_RandomForest_model.pkl",
+    "metrics": {
+      "train_mape": 1.6032723600009051,
+      "test_mape": 5.9977812344028925,
+      "train_rmse": 26.282597477390542,
+      "test_rmse": 63.234828303258055
+    }
+  }
+}

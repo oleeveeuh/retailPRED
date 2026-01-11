@@ -336,20 +336,19 @@ async def export_model_performance_csv():
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
-        # Query model metadata
+        # Query model metadata - extract metrics from JSON
         query = """
             SELECT
                 model_name,
                 model_type,
-                category,
-                mape,
-                rmse,
-                mae,
-                r2,
+                json_extract(metrics, '$.mape') as mape,
+                json_extract(metrics, '$.rmse') as rmse,
+                json_extract(metrics, '$.mae') as mae,
+                json_extract(metrics, '$.r2') as r2,
                 is_active,
                 created_at
             FROM model_metadata
-            ORDER BY category, model_type, mape ASC
+            ORDER BY model_type, json_extract(metrics, '$.mape') ASC
         """
 
         cursor.execute(query)
@@ -366,7 +365,6 @@ async def export_model_performance_csv():
         writer.writerow([
             'model_name',
             'model_type',
-            'category',
             'mape_percentage',
             'rmse',
             'mae',
@@ -377,10 +375,20 @@ async def export_model_performance_csv():
 
         # Write data rows
         for row in rows:
+            # Extract category from model_name (e.g., "total_sales_lgbm_model" -> "total_sales")
+            model_parts = row['model_name'].split('_')
+            if len(model_parts) >= 3:
+                # Join parts that aren't 'model' at the end
+                category_parts = []
+                for part in model_parts[:-2]:  # Exclude last 2 parts (model_type, 'model')
+                    category_parts.append(part)
+                category = '_'.join(category_parts)
+            else:
+                category = 'unknown'
+
             writer.writerow([
                 row['model_name'],
                 row['model_type'],
-                row['category'],
                 f"{row['mape']:.2f}" if row['mape'] else '',
                 f"{row['rmse']:.2f}" if row['rmse'] else '',
                 f"{row['mae']:.2f}" if row['mae'] else '',

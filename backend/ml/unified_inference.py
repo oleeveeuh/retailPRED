@@ -17,8 +17,9 @@ from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
-# Model directory
+# Model directories
 MODELS_DIR = Path(__file__).parent.parent.parent / "training_outputs" / "models"
+BACKEND_MODELS_DIR = Path(__file__).parent / "models"
 
 # Category mappings
 CATEGORY_KEY_TO_DISPLAY = {
@@ -46,7 +47,21 @@ def get_model_file_path(category: str, model_type: str) -> Path:
     """Get the file path for a trained model"""
     display_name = CATEGORY_KEY_TO_DISPLAY.get(category, category.replace("_", " ").replace(" ", "_"))
     model_filename = f"{model_type}_model.pkl"
-    return MODELS_DIR / display_name / model_filename
+
+    # First check backend/ml/models (newly retrained models with unified pipeline)
+    # These use category_key_model_type_model.pkl format
+    backend_filename = f"{category}_{model_type}_model.pkl"
+    backend_path = BACKEND_MODELS_DIR / backend_filename
+    if backend_path.exists():
+        return backend_path
+
+    # Then check training_outputs (old models)
+    path = MODELS_DIR / display_name / model_filename
+    if path.exists():
+        return path
+
+    # Default to backend path
+    return backend_path
 
 
 def load_model(category: str, model_type: str):
@@ -161,6 +176,9 @@ def _forecast_with_sklearn_model(
 
         # Make prediction
         prediction = float(model.predict(features_df)[0])
+
+        # NOTE: Scaling fix removed - models retrained on 2026-01-10 with unified pipeline
+        # No scaling correction needed for newly trained models
 
         # Estimate confidence interval
         base_error_pct = 0.7

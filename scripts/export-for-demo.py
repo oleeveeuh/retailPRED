@@ -508,7 +508,7 @@ def export_economic_context(conn: sqlite3.Connection) -> Dict[str, Any]:
     logger.info(f"    Date range: 2001-2024")
     logger.info(f"    Regimes: crisis (3), recession (3), expansion (2), normal (2)")
 
-    return {"events": economic_events, "metadata": metadata}
+    return {"data": economic_events, "metadata": metadata}
 
 
 def create_summary_stats(conn: sqlite3.Connection, predictions_data: Dict, economic_data: Dict) -> Dict[str, Any]:
