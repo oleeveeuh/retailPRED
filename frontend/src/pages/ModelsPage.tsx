@@ -60,6 +60,7 @@ interface Model {
     mae: number;
     r2: number;
     mape: number;
+    mase: number;
     smape: number;
   };
   is_active: boolean;
@@ -107,6 +108,10 @@ const loadRealTrainingData = async (): Promise<Model[]> => {
         const mape = m.metrics?.MAPE?.mean || 0;
         return sum + mape;
       }, 0);
+      const totalMase = modelList.reduce((sum, m) => {
+        const mase = m.metrics?.MASE?.mean || 1.0;
+        return sum + mase;
+      }, 0);
       const totalSmape = modelList.reduce((sum, m) => {
         const smape = m.metrics?.SMAPE?.mean || 0;
         return sum + smape;
@@ -114,9 +119,10 @@ const loadRealTrainingData = async (): Promise<Model[]> => {
       const avgRmse = totalRmse / modelList.length;
       const avgMae = totalMae / modelList.length;
       const avgMape = totalMape / modelList.length;
+      const avgMase = totalMase / modelList.length;
       const avgSmape = totalSmape / modelList.length;
 
-      // Calculate R² from MAPE (approximate)
+      // Calculate R² from MAPE (approximate) - for display only
       const r2 = Math.max(0, 1 - (avgMape / 100));
 
       const avgTrainingTime = modelList.reduce((sum, m) => {
@@ -132,6 +138,7 @@ const loadRealTrainingData = async (): Promise<Model[]> => {
           mae: avgMae,
           r2: r2,
           mape: avgMape,
+          mase: avgMase,
           smape: avgSmape,
         },
         is_active: modelList.some((m: any) => m.is_active),
@@ -140,6 +147,7 @@ const loadRealTrainingData = async (): Promise<Model[]> => {
           cv_samples: 12,
           successful_categories: modelList.length,
           avg_mape: avgMape,
+          avg_mase: avgMase,
           avg_smape: avgSmape,
           success_rate: 100,
         },
@@ -167,14 +175,14 @@ const generateSparklineData = (modelName: string, baseR2: number) => {
 };
 
 type TabType = 'performance' | 'architecture' | 'history';
-type SortField = 'model_name' | 'rmse' | 'mae' | 'mape' | 'r2' | 'training_time' | 'inference_time';
+type SortField = 'model_name' | 'rmse' | 'mae' | 'mape' | 'mase' | 'r2' | 'training_time' | 'inference_time';
 type SortOrder = 'asc' | 'desc';
 
 export const ModelsPage: FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('performance');
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
-  const [sortField, setSortField] = useState<SortField>('r2');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [sortField, setSortField] = useState<SortField>('mase');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
   const [selectedModels, setSelectedModels] = useState<string[]>(['1', '2']);
   const [retrainingModel, setRetrainingModel] = useState<string | null>(null);
 
@@ -194,9 +202,9 @@ export const ModelsPage: FC = () => {
 
   const models = modelsData?.models || [];
 
-  // Find best model
+  // Find best model (lowest MASE is best)
   const bestModel = models.length > 0 ? models.reduce((best, model) =>
-    model.metrics.r2 > best.metrics.r2 ? model : best
+    model.metrics.mase < best.metrics.mase ? model : best
   , models[0]) : null;
 
   const avgAccuracy = models.length > 0
@@ -225,6 +233,10 @@ export const ModelsPage: FC = () => {
       case 'mape':
         aVal = a.metrics.mape;
         bVal = b.metrics.mape;
+        break;
+      case 'mase':
+        aVal = a.metrics.mase;
+        bVal = b.metrics.mase;
         break;
       case 'r2':
         aVal = a.metrics.r2;
@@ -261,8 +273,14 @@ export const ModelsPage: FC = () => {
   };
 
   // Get performance color
-  const getPerformanceColor = (value: number, type: 'error' | 'accuracy' | 'mape') => {
-    if (type === 'mape') {
+  const getPerformanceColor = (value: number, type: 'error' | 'accuracy' | 'mape' | 'mase') => {
+    if (type === 'mase') {
+      // MASE < 1 is better than naive, < 0.85 is good, > 1.15 is bad
+      if (value < 0.85) return 'text-emerald-600 bg-emerald-50';
+      if (value < 1.0) return 'text-green-600 bg-green-50';
+      if (value < 1.15) return 'text-amber-600 bg-amber-50';
+      return 'text-red-600 bg-red-50';
+    } else if (type === 'mape') {
       if (value < 5) return 'text-emerald-600 bg-emerald-50';
       if (value < 10) return 'text-amber-600 bg-amber-50';
       return 'text-red-600 bg-red-50';
@@ -397,7 +415,7 @@ export const ModelsPage: FC = () => {
                 {bestModel?.model_name || 'N/A'}
               </h3>
               <p className="text-emerald-600 font-semibold mt-1">
-                R² Score: {bestModel?.metrics.r2.toFixed(4)}
+                MASE: {bestModel?.metrics.mase.toFixed(4)} (lower is better)
               </p>
             </div>
             <div className="p-3 bg-amber-100 dark:bg-amber-900/20 rounded-xl">
@@ -531,6 +549,7 @@ export const ModelsPage: FC = () => {
                     <tr>
                       {[
                         { field: 'model_name' as SortField, label: 'Model' },
+                        { field: 'mase' as SortField, label: 'MASE ↓' },
                         { field: 'rmse' as SortField, label: 'RMSE ↓' },
                         { field: 'mae' as SortField, label: 'MAE ↓' },
                         { field: 'mape' as SortField, label: 'MAPE ↓' },
@@ -582,6 +601,11 @@ export const ModelsPage: FC = () => {
                                 </span>
                               )}
                             </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className={`px-3 py-1 rounded-lg font-semibold ${getPerformanceColor(model.metrics?.mase || 1, 'mase' as any)}`}>
+                              {(model.metrics?.mase || 1).toFixed(4)}
+                            </span>
                           </td>
                           <td className="px-6 py-4">
                             <span className={`px-3 py-1 rounded-lg font-semibold ${getPerformanceColor(model.metrics?.rmse || 0, 'error')}`}>

@@ -1,5 +1,5 @@
 {
-  "export_timestamp": "2026-01-11T02:20:30.181089",
+  "export_timestamp": "2026-01-11T12:38:13.879651",
   "database_path": "/Users/olivialiau/retailPRED/data/retailpred.db",
   "predictions": {
     "total_count": 7858,
@@ -17,9 +17,9 @@
       "PatchTST": 1111
     },
     "shap_coverage": {
-      "with_shap": 1303,
+      "with_shap": 2221,
       "total": 7858,
-      "percentage": 16.58
+      "percentage": 28.26
     }
   },
   "economic_indicators": {
