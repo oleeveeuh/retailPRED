@@ -37,17 +37,18 @@ export const Dashboard: FC = () => {
     retry: 2,
   });
 
-  // Calculate summary metrics
+  // Calculate summary metrics from actual predictions
   const summaryMetrics = {
     totalPredictions: historyData?.total_count || 0,
     activeModels: modelsData?.active_count || 0,
-    avgAccuracy: modelsData?.models
+    avgAccuracy: historyData?.predictions
       ? (() => {
-          const avgMape = modelsData.models.reduce((sum: number, m: any) => {
-            const mape = m?.metrics?.MAPE?.mean || 0;
-            return sum + mape;
-          }, 0) / modelsData.models.length;
-          return 100 - avgMape;
+          // Calculate accuracy from actual prediction validation
+          const validatedPredictions = historyData.predictions.filter((p: any) => p.actual_value !== null && p.error_percentage !== null);
+          if (validatedPredictions.length === 0) return 0;
+
+          const avgError = validatedPredictions.reduce((sum: number, p: any) => sum + (p.error_percentage || 0), 0) / validatedPredictions.length;
+          return 100 - avgError;
         })()
       : 0,
   };
