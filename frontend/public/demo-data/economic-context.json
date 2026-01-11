@@ -247,7 +247,7 @@
     }
   ],
   "metadata": {
-    "export_timestamp": "2026-01-11T12:38:13.871168",
+    "export_timestamp": "2026-01-11T12:46:58.343529",
     "row_count": 10,
     "source": "FRED API (Federal Reserve Economic Data)",
     "note": "Economic context for interpretation - NOT used in model predictions",
