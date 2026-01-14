@@ -118,9 +118,11 @@ class DemoDataService {
   }> {
     await this.delay();
 
-    const response = await this.loadJSON<DemoDataResponse<DemoPrediction>>('predictions.json');
+    // Load predictions - handle both plain array and wrapped formats
+    const response = await this.loadJSON<any>('predictions.json');
 
-    let predictions = response.data;
+    // Handle both formats: plain array or { data: [...], metadata: {...} }
+    let predictions = Array.isArray(response) ? response : response.data;
 
     // Apply filters
     if (filters?.model_name) {
@@ -159,7 +161,7 @@ class DemoDataService {
 
     return {
       predictions: transformedPredictions,
-      total_count: response.metadata.total_predictions_in_db,
+      total_count: predictions.length,
       filters_applied: filters || {},
     };
   }
@@ -173,11 +175,18 @@ class DemoDataService {
   }> {
     await this.delay();
 
-    const response = await this.loadJSON<DemoDataResponse<DemoEconomicIndicator>>('economic-indicators.json');
+    const response = await this.loadJSON<any>('economic-indicators.json');
+
+    // Handle both formats: plain array or { data: [...], metadata: {...} }
+    const data = Array.isArray(response) ? response : response.data;
+    const metadata = response.metadata || {
+      export_timestamp: new Date().toISOString(),
+      row_count: data.length
+    };
 
     return {
-      data: response.data,
-      metadata: response.metadata,
+      data,
+      metadata,
     };
   }
 
@@ -314,8 +323,9 @@ class DemoDataService {
   }> {
     await this.delay();
 
-    const response = await this.loadJSON<DemoDataResponse<DemoPrediction>>('predictions.json');
-    const prediction = response.data.find(p => p.id === predictionId);
+    const response = await this.loadJSON<any>('predictions.json');
+    const data = Array.isArray(response) ? response : response.data;
+    const prediction = data.find(p => p.id === predictionId);
 
     if (!prediction || !prediction.shap_values) {
       throw new Error(`No SHAP values found for prediction ${predictionId}`);
