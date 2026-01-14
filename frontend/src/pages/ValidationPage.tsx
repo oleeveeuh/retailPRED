@@ -278,20 +278,57 @@ export const ValidationPage: FC = () => {
       .sort((a, b) => a.date.localeCompare(b.date));
   }, [filteredPredictions]);
 
-  // Model health status
+  // Model health status (only consider production models: RandomForest and LGBM)
   const modelHealth = useMemo(() => {
-    const lastAccuracy = trendChartData[trendChartData.length - 1]?.accuracy || 0;
-    const threshold = 95;
+    // Filter to only production models
+    const productionPredictions = filteredPredictions.filter(p =>
+      p.is_validated &&
+      (p.model_name?.includes('randomforest') || p.model_name?.includes('lgbm'))
+    );
 
-    if (lastAccuracy < threshold) {
+    // Calculate accuracy per model, then average the models
+    const modelAccuracies = productionPredictions.reduce((acc, p) => {
+      const modelName = p.model_name || 'unknown';
+      if (!acc[modelName]) acc[modelName] = [];
+      acc[modelName].push(100 - (p.error_percentage || 0));
+      return acc;
+    }, {} as Record<string, number[]>);
+
+    // Average each model's predictions, then average across models
+    const avgModelAccuracies = Object.values(modelAccuracies).map(accuracies =>
+      accuracies.reduce((sum, acc) => sum + acc, 0) / accuracies.length
+    );
+
+    const avgAccuracy = avgModelAccuracies.length > 0
+      ? avgModelAccuracies.reduce((sum, acc) => sum + acc, 0) / avgModelAccuracies.length
+      : 0;
+
+    const threshold = 90;
+
+    if (avgAccuracy < threshold && avgAccuracy > 0) {
       return {
         status: 'drift',
-        message: `Model accuracy (${lastAccuracy.toFixed(1)}%) below threshold (${threshold}%)`,
+        message: `Production model accuracy (${avgAccuracy.toFixed(1)}%) below threshold (${threshold}%)`,
         severity: 'high',
       };
     }
 
-    const recentTrend = trendChartData.slice(-3);
+    // Check for declining trend (last 3 time periods)
+    const productionByDate = productionPredictions.reduce((acc, p) => {
+      const date = p.prediction_date;
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(p);
+      return acc;
+    }, {} as Record<string, typeof productionPredictions>);
+
+    const recentTrend = Object.entries(productionByDate)
+      .map(([date, preds]) => ({
+        date,
+        accuracy: preds.reduce((sum, p) => sum + (100 - (p.error_percentage || 0)), 0) / preds.length,
+      }))
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .slice(-3);
+
     if (recentTrend.length >= 3) {
       const decreasing = recentTrend.every((acc, i) =>
         i === 0 ? true : acc.accuracy < recentTrend[i - 1].accuracy
@@ -299,7 +336,7 @@ export const ValidationPage: FC = () => {
       if (decreasing) {
         return {
           status: 'degrading',
-          message: 'Model accuracy showing declining trend',
+          message: 'Production model accuracy showing declining trend',
           severity: 'medium',
         };
       }
@@ -307,10 +344,10 @@ export const ValidationPage: FC = () => {
 
     return {
       status: 'healthy',
-      message: 'Model performing within expected parameters',
+      message: `Production models performing well (${avgAccuracy.toFixed(1)}% average accuracy)`,
       severity: 'low',
     };
-  }, [trendChartData]);
+  }, [filteredPredictions]);
 
   // Get unique models
   const uniqueModels = useMemo(() => {
