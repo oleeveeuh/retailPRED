@@ -61,11 +61,17 @@ const AnomalyDetectionPage: FC = () => {
   // Fetch predictions for anomaly detection
   // Map category names to model name patterns
   const categoryToPattern: Record<string, string> = {
-    'total_sales': 'total_sales',
+    'total_sales': 'total_retail_sales',
     'automobile_dealers': 'automobile_dealers',
-    'building_materials': 'building_materials',
+    'building_materials': 'building_materials_garden',
     'clothing_accessories': 'clothing_accessories',
     'electronics_and_appliances': 'electronics_and_appliances',
+    'food_beverage_stores': 'food_beverage_stores',
+    'furniture_home_furnishings': 'furniture_home_furnishings',
+    'gasoline_stations': 'gasoline_stations',
+    'general_merchandise': 'general_merchandise',
+    'health_personal_care': 'health_personal_care',
+    'sporting_goods_hobby': 'sporting_goods_hobby',
   };
 
   const { data: predictionsResponse, isLoading } = useQuery({
@@ -95,8 +101,8 @@ const AnomalyDetectionPage: FC = () => {
     return predictions.filter((p, i) => {
       if (i === 0) return false;
       const prev = predictions[i - 1];
-      const currentValue = hasPredictedValue ? p.predicted_value : p.value;
-      const previousValue = hasPredictedValue ? prev.predicted_value : prev.value;
+      const currentValue = hasPredictedValue ? p.predicted_value! : (p as any).value;
+      const previousValue = hasPredictedValue ? prev.predicted_value! : (prev as any).value;
 
       if (!currentValue || !previousValue) return false;
 
@@ -105,8 +111,8 @@ const AnomalyDetectionPage: FC = () => {
     }).map((p, i, arr) => {
       const predIndex = predictions.indexOf(p);
       const prev = predictions[predIndex - 1];
-      const currentValue = hasPredictedValue ? p.predicted_value : p.value;
-      const previousValue = hasPredictedValue ? prev.predicted_value : prev.value;
+      const currentValue = hasPredictedValue ? p.predicted_value! : (p as any).value;
+      const previousValue = hasPredictedValue ? prev.predicted_value! : (prev as any).value;
 
       const change = ((currentValue - previousValue) / previousValue) * 100;
       const changeMagnitude = Math.abs(change);
@@ -114,12 +120,12 @@ const AnomalyDetectionPage: FC = () => {
       const type = change > 0 ? 'surge' : 'decline';
 
       return {
-        id: `${p.date || p.prediction_date}-${selectedCategory}`,
-        date: p.date || p.prediction_date,
+        id: `${p.prediction_date}-${selectedCategory}`,
+        date: p.prediction_date,
         predicted_value: currentValue,
         actual_value: p.actual_value,
         change_percent: change,
-        model_name: p.model_name || p.model_type || 'LGBM',
+        model_name: p.model_name || 'LGBM',
         category: selectedCategory,
         severity,
         type,
@@ -168,9 +174,15 @@ const AnomalyDetectionPage: FC = () => {
   const categories = [
     { value: 'total_sales', label: 'Total Retail Sales' },
     { value: 'automobile_dealers', label: 'Automobile Dealers' },
-    { value: 'building_materials', label: 'Building Materials' },
+    { value: 'building_materials', label: 'Building Materials & Garden' },
     { value: 'clothing_accessories', label: 'Clothing & Accessories' },
     { value: 'electronics_and_appliances', label: 'Electronics & Appliances' },
+    { value: 'food_beverage_stores', label: 'Food & Beverage Stores' },
+    { value: 'furniture_home_furnishings', label: 'Furniture & Home Furnishings' },
+    { value: 'gasoline_stations', label: 'Gasoline Stations' },
+    { value: 'general_merchandise', label: 'General Merchandise Stores' },
+    { value: 'health_personal_care', label: 'Health & Personal Care' },
+    { value: 'sporting_goods_hobby', label: 'Sporting Goods & Hobby' },
   ];
 
   return (
