@@ -214,7 +214,6 @@ class PredictionHistoryItem(BaseModel):
     is_validated: bool = False
     error_percentage: Optional[float] = None
     error_absolute: Optional[float] = None
-    confidence_score: Optional[float] = None
     shap_values: Optional[Dict[str, float]] = None
     created_at: str
 

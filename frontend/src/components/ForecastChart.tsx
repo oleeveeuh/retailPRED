@@ -187,7 +187,7 @@ export const ForecastChart: FC<ForecastChartProps> = ({ height = 400 }) => {
             <span className="text-gray-600 dark:text-gray-400">Historical (through Dec 2025)</span>
           </div>
           <div className="flex items-center">
-            <div className="w-3 h-3 bg-blue-500 mr-2 rounded-full"></div>
+            <div className="w-3 h-3 bg-primary mr-2 rounded-full"></div>
             <span className="text-gray-600 dark:text-gray-400">Forecast (Jan 2026+)</span>
           </div>
         </div>

@@ -439,7 +439,7 @@ export const ModelsPage: FC = () => {
           className="glass-card p-6 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-4 opacity-10">
-            <Crosshair className="w-24 h-24 text-blue-500" />
+            <Crosshair className="w-24 h-24 text-primary" />
           </div>
           <div className="flex items-start justify-between">
             <div>
@@ -452,12 +452,12 @@ export const ModelsPage: FC = () => {
               >
                 {avgAccuracy.toFixed(1)}%
               </motion.h3>
-              <p className="text-blue-600 font-semibold mt-1">
+              <p className="text-primary-600 font-semibold mt-1">
                 Across {models.length} models
               </p>
             </div>
             <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-xl">
-              <Star className="w-8 h-8 text-blue-600" />
+              <Star className="w-8 h-8 text-primary-600" />
             </div>
           </div>
         </motion.div>
@@ -470,7 +470,7 @@ export const ModelsPage: FC = () => {
           className="glass-card p-6 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-4 opacity-10">
-            <Zap className="w-24 h-24 text-purple-500" />
+            <Zap className="w-24 h-24 text-accent" />
           </div>
           <div className="flex items-start justify-between">
             <div>
@@ -483,12 +483,12 @@ export const ModelsPage: FC = () => {
               >
                 {totalPredictions.toLocaleString()}
               </motion.h3>
-              <p className="text-purple-600 font-semibold mt-1">
+              <p className="text-accent font-semibold mt-1">
                 +12.5% this week
               </p>
             </div>
             <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-xl">
-              <TrendingUp className="w-8 h-8 text-purple-600" />
+              <TrendingUp className="w-8 h-8 text-accent" />
             </div>
           </div>
         </motion.div>
@@ -508,7 +508,7 @@ export const ModelsPage: FC = () => {
               onClick={() => setActiveTab(tab)}
               className={`flex-1 py-3 px-6 rounded-xl font-semibold capitalize transition-all duration-200 ${
                 activeTab === tab
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/50'
+                  ? 'bg-gradient-to-r from-blue-600 to-accent text-white shadow-lg shadow-blue-500/50'
                   : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
             >
@@ -592,7 +592,7 @@ export const ModelsPage: FC = () => {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-                                <Brain className="w-5 h-5 text-blue-600" />
+                                <Brain className="w-5 h-5 text-primary-600" />
                               </div>
                               <div>
                                 <p className="font-semibold text-slate-900 dark:text-slate-100">
@@ -774,7 +774,7 @@ export const ModelsPage: FC = () => {
                     }}
                     className={`px-4 py-2 rounded-xl font-medium transition-all ${
                       selectedModels.includes(model.id)
-                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                        ? 'bg-primary-600 text-white shadow-lg shadow-blue-500/50'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                     }`}
                   >
@@ -994,7 +994,7 @@ export const ModelsPage: FC = () => {
                       className={`px-4 py-2 rounded-lg font-medium transition-all ${
                         retrainingModel === model.id
                           ? 'bg-amber-100 text-amber-700 cursor-not-allowed'
-                          : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/50'
+                          : 'bg-primary-600 text-white hover:bg-primary-700 shadow-lg shadow-blue-500/50'
                       }`}
                     >
                       {retrainingModel === model.id ? (

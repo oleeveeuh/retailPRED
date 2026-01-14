@@ -440,7 +440,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
             className="bg-blue-50 border border-blue-200 rounded-xl p-4"
           >
             <div className="flex items-center mb-2">
-              <Crosshair className="w-5 h-5 text-blue-600 mr-2" />
+              <Crosshair className="w-5 h-5 text-primary-600 mr-2" />
               <span className="text-sm font-medium text-blue-700">Net Change</span>
             </div>
             <div className="text-2xl font-bold text-blue-900">
@@ -506,7 +506,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
 
           <div className="text-center mt-8">
             <div className="text-sm font-medium text-slate-600 mb-2">Final Prediction</div>
-            <div className="text-4xl font-bold text-blue-600">${finalValue.toLocaleString()}</div>
+            <div className="text-4xl font-bold text-primary-600">${finalValue.toLocaleString()}</div>
           </div>
         </div>
       </div>
@@ -666,7 +666,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
             {/* Historical Trend */}
             <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-6 border border-slate-200">
               <h4 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
-                <Activity className="w-5 h-5 mr-2 text-blue-600" />
+                <Activity className="w-5 h-5 mr-2 text-primary-600" />
                 Historical Importance Trend
                 <span className="ml-auto text-sm font-normal text-slate-600">Last 6 months</span>
               </h4>
@@ -858,7 +858,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
                 onClick={() => {
                   console.log('Exporting feature analysis:', selectedFeature.feature);
                 }}
-                className="w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 transition-all hover:shadow-lg flex items-center justify-center"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-violet-500 to-accent hover:from-violet-600 hover:to-purple-700 transition-all hover:shadow-lg flex items-center justify-center"
               >
                 <Download className="w-5 h-5 inline mr-2" />
                 Export Analysis
@@ -926,7 +926,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={exportAsPNG}
-            className="px-4 py-2 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-colors flex items-center"
+            className="px-4 py-2 rounded-xl font-semibold text-white bg-gradient-to-r from-primary to-primary-600 hover:from-blue-600 hover:to-primary-700 transition-colors flex items-center"
           >
             <Download className="w-4 h-4 mr-2" />
             Export PNG
@@ -950,7 +950,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.5, type: 'spring', stiffness: 200 }}
-              className="bg-gradient-to-r from-violet-500 to-purple-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5"
+              className="bg-gradient-to-r from-violet-500 to-accent text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5"
             >
               <Info className="w-3.5 h-3.5" />
               Click bars for details
@@ -963,7 +963,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.5, type: 'spring', stiffness: 200 }}
-              className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5"
+              className="bg-gradient-to-r from-primary to-cyan-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5"
             >
               <Info className="w-3.5 h-3.5" />
               Click points for details
@@ -979,7 +979,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
       {/* Legend */}
       <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-sm">
         <div className="flex items-center shap-interactive">
-          <div className="w-4 h-4 bg-blue-500 mr-2 rounded" style={{ opacity: 0.3 }}></div>
+          <div className="w-4 h-4 bg-primary mr-2 rounded" style={{ opacity: 0.3 }}></div>
           <span className="text-slate-600">Base Value</span>
         </div>
         <div className="flex items-center shap-interactive">

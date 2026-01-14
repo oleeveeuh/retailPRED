@@ -121,7 +121,7 @@ export const Header: FC = () => {
       case 'error':
         return <XCircle className="w-5 h-5 text-red-500" />;
       default:
-        return <Bell className="w-5 h-5 text-blue-500" />;
+        return <Bell className="w-5 h-5 text-primary" />;
     }
   };
 
@@ -206,7 +206,7 @@ export const Header: FC = () => {
                       ? 'bg-emerald-500 text-white'
                       : refreshStatus === 'error'
                       ? 'bg-red-500 text-white hover:bg-red-600'
-                      : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/50'
+                      : 'bg-primary-600 text-white hover:bg-primary-700 shadow-lg shadow-blue-500/50'
                   }
                 `}
               >

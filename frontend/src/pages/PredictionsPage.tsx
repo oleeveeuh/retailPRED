@@ -222,7 +222,7 @@ export const PredictionsPage: FC = () => {
   const downloadChart = () => {
     toast.success('Chart exported as PNG!', {
       duration: 2000,
-      icon: <Download className="w-5 h-5 text-blue-500" />,
+      icon: <Download className="w-5 h-5 text-primary" />,
     });
   };
 
@@ -243,12 +243,12 @@ export const PredictionsPage: FC = () => {
         </h1>
         <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-slate-600 dark:text-slate-400">
           <span className="flex items-center gap-1">
-            <Sparkles className="w-4 h-4 text-purple-500" />
+            <Sparkles className="w-4 h-4 text-accent" />
             Trained on 50K+ samples
           </span>
           <span className="text-slate-300">•</span>
           <span className="flex items-center gap-1">
-            <Brain className="w-4 h-4 text-blue-500" />
+            <Brain className="w-4 h-4 text-primary" />
             7 model architectures
           </span>
           <span className="text-slate-300">•</span>
@@ -271,7 +271,7 @@ export const PredictionsPage: FC = () => {
           {/* Configuration Card */}
           <div className="glass-card space-y-6">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+              <div className="p-2 bg-gradient-to-br from-primary to-accent rounded-lg">
                 <Wand2 className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -329,13 +329,13 @@ export const PredictionsPage: FC = () => {
                       className={`
                         relative p-4 rounded-xl border-2 transition-all duration-200
                         ${isSelected
-                          ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20'
+                          ? 'border-primary bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20'
                           : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                         }
                       `}
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <Icon className={`w-5 h-5 ${isSelected ? 'text-blue-600' : 'text-slate-400'}`} />
+                        <Icon className={`w-5 h-5 ${isSelected ? 'text-primary-600' : 'text-slate-400'}`} />
                         <span className={`font-medium text-sm ${isSelected ? 'text-slate-900 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'}`}>
                           {model.label}
                         </span>
@@ -344,7 +344,7 @@ export const PredictionsPage: FC = () => {
                         <motion.span
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
-                          className="text-xs text-blue-600 dark:text-blue-400 font-medium"
+                          className="text-xs text-primary-600 dark:text-blue-400 font-medium"
                         >
                           {model.badge}
                         </motion.span>
@@ -370,7 +370,7 @@ export const PredictionsPage: FC = () => {
                     className={`
                       px-4 py-2 rounded-lg text-sm font-medium transition-all
                       ${granularity === gran.value
-                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                        ? 'bg-primary-600 text-white shadow-lg shadow-blue-500/50'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
                       }
                     `}
@@ -385,7 +385,7 @@ export const PredictionsPage: FC = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Forecast Horizon</label>
-                <span className="text-sm font-bold text-blue-600 bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full">
+                <span className="text-sm font-bold text-primary-600 bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full">
                   {weeksAhead} {weeksAhead === 1 ? 'week' : weeksAhead === 52 ? 'year (52 weeks)' : 'weeks'}
                 </span>
               </div>
@@ -418,7 +418,7 @@ export const PredictionsPage: FC = () => {
                     className={`
                       px-3 py-1 text-xs font-medium rounded-lg transition-all
                       ${weeksAhead === weeks
-                        ? 'bg-blue-600 text-white shadow-md'
+                        ? 'bg-primary-600 text-white shadow-md'
                         : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'
                       }
                     `}
@@ -437,7 +437,7 @@ export const PredictionsPage: FC = () => {
               whileTap={{ scale: 0.98 }}
               className={`
                 w-full py-4 rounded-xl font-semibold text-white
-                bg-gradient-to-r from-blue-600 to-purple-600
+                bg-gradient-to-r from-blue-600 to-accent
                 hover:from-blue-700 hover:to-purple-700
                 shadow-lg shadow-blue-500/50
                 disabled:opacity-50 disabled:cursor-not-allowed
@@ -488,7 +488,7 @@ export const PredictionsPage: FC = () => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
-                className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
+                className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-6"
               >
                 <BarChart3 className="w-10 h-10 text-white" />
               </motion.div>
@@ -521,14 +521,14 @@ export const PredictionsPage: FC = () => {
                 {/* Average Forecast */}
                 <div className="glass-card p-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-blue-600 dark:text-blue-400 font-semibold">Average Forecast</span>
-                    <Zap className="w-4 h-4 text-blue-500" />
+                    <span className="text-sm text-primary-600 dark:text-blue-400 font-semibold">Average Forecast</span>
+                    <Zap className="w-4 h-4 text-primary" />
                   </div>
                   <motion.p
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.1 }}
-                    className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                    className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-accent bg-clip-text text-transparent"
                   >
                     ${getPredictedValue().toFixed(2)}
                   </motion.p>
@@ -648,7 +648,7 @@ export const PredictionsPage: FC = () => {
                     <span>Historical</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-0.5 bg-blue-500"></div>
+                    <div className="w-3 h-0.5 bg-primary"></div>
                     <span>Forecast</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -684,7 +684,7 @@ export const PredictionsPage: FC = () => {
               {predictionMutation.data?.shap_values && predictionMutation.data?.shap_values?.length > 0 && (
                 <div className="glass-card p-6">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg">
+                    <div className="p-2 bg-gradient-to-br from-accent to-pink-600 rounded-lg">
                       <Info className="w-5 h-5 text-white" />
                     </div>
                     <div>

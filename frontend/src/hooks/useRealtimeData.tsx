@@ -100,7 +100,7 @@ export function useRealtimeData<T>({
       if (hasChanged && previousDataRef.current !== undefined && showToast) {
         // Show toast for new data
         toast.success(toastMessage, {
-          icon: <RefreshCw className="w-5 h-5 text-blue-500" />,
+          icon: <RefreshCw className="w-5 h-5 text-primary" />,
           duration: 4000,
           position: 'top-right',
         });

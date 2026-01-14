@@ -80,7 +80,7 @@ export const ResponsiveNav: FC = () => {
             {/* Logo */}
             <Link
               to="/dashboard/overview"
-              className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+              className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-accent bg-clip-text text-transparent hover:opacity-80 transition-opacity"
             >
               RetailPRED
             </Link>
@@ -98,7 +98,7 @@ export const ResponsiveNav: FC = () => {
                     className={`
                       relative px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2
                       ${isActive
-                        ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                        ? 'bg-blue-100 dark:bg-blue-900/20 text-primary-600 dark:text-blue-400'
                         : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50'
                       }
                     `}
@@ -110,13 +110,13 @@ export const ResponsiveNav: FC = () => {
                     {isActive && (
                       <motion.div
                         layoutId="activeNav"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600"
                         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                       />
                     )}
 
                     {item.badge && (
-                      <span className="ml-1 px-2 py-0.5 bg-blue-600 text-white text-xs rounded-full">
+                      <span className="ml-1 px-2 py-0.5 bg-primary-600 text-white text-xs rounded-full">
                         {item.badge}
                       </span>
                     )}
@@ -140,7 +140,7 @@ export const ResponsiveNav: FC = () => {
           {/* Logo */}
           <Link
             to="/dashboard/overview"
-            className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            className="text-xl font-bold bg-gradient-to-r from-blue-600 to-accent bg-clip-text text-transparent"
           >
             RetailPRED
           </Link>
@@ -185,7 +185,7 @@ export const ResponsiveNav: FC = () => {
             >
               {/* Menu Header */}
               <div className="flex items-center justify-between h-16 px-4 border-b border-slate-200 dark:border-slate-700">
-                <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-accent bg-clip-text text-transparent">
                   Menu
                 </span>
                 <motion.button
@@ -217,7 +217,7 @@ export const ResponsiveNav: FC = () => {
                           className={`
                             relative flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200
                             ${isActive
-                              ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                              ? 'bg-blue-100 dark:bg-blue-900/20 text-primary-600 dark:text-blue-400'
                               : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50'
                             }
                           `}
@@ -226,11 +226,11 @@ export const ResponsiveNav: FC = () => {
                           <span className="flex-1">{item.label}</span>
 
                           {isActive && (
-                            <ChevronRight className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            <ChevronRight className="w-5 h-5 text-primary-600 dark:text-blue-400" />
                           )}
 
                           {item.badge && (
-                            <span className="px-2 py-0.5 bg-blue-600 text-white text-xs rounded-full">
+                            <span className="px-2 py-0.5 bg-primary-600 text-white text-xs rounded-full">
                               {item.badge}
                             </span>
                           )}

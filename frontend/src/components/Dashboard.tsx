@@ -88,7 +88,7 @@ export const Dashboard: FC = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow p-6 text-white">
+        <div className="bg-gradient-to-br from-primary to-primary-600 rounded-lg shadow p-6 text-white">
           <p className="text-sm opacity-90">Total Predictions</p>
           <p className="text-4xl font-bold mt-2">{summaryMetrics.totalPredictions}</p>
           <p className="text-sm opacity-75 mt-2">All time</p>
@@ -100,7 +100,7 @@ export const Dashboard: FC = () => {
           <p className="text-sm opacity-75 mt-2">Currently deployed</p>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow p-6 text-white">
+        <div className="bg-gradient-to-br from-accent to-accent rounded-lg shadow p-6 text-white">
           <p className="text-sm opacity-90">Avg. Accuracy</p>
           <p className="text-4xl font-bold mt-2">{summaryMetrics.avgAccuracy.toFixed(1)}%</p>
           <p className="text-sm opacity-75 mt-2">Last 30 days</p>

@@ -613,7 +613,6 @@ async def get_prediction_history(
                     is_validated=is_validated,
                     error_percentage=error_pct,
                     error_absolute=pred.get("error_absolute"),
-                    confidence_score=pred.get("confidence_score"),
                     shap_values=pred.get("shap_values"),
                     created_at=pred["created_at"],
                 )
