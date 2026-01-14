@@ -177,7 +177,7 @@ export const ValidationPage: FC = () => {
       overall_accuracy: accuracy,
       avg_error_rate: avgError,
       predictions_validated: validated.length,
-      model_confidence: confidence * 100,
+      model_confidence: confidence,
       accuracy_trend: trend,
     };
   }, [filteredPredictions]);
