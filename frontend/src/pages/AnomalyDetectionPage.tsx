@@ -59,11 +59,20 @@ const AnomalyDetectionPage: FC = () => {
   const [anomaliesWithContext, setAnomaliesWithContext] = useState<any[]>([]);
 
   // Fetch predictions for anomaly detection
+  // Map category names to model name patterns
+  const categoryToPattern: Record<string, string> = {
+    'total_sales': 'total_sales',
+    'automobile_dealers': 'automobile_dealers',
+    'building_materials': 'building_materials',
+    'clothing_accessories': 'clothing_accessories',
+    'electronics_and_appliances': 'electronics_and_appliances',
+  };
+
   const { data: predictionsResponse, isLoading } = useQuery({
     queryKey: ['predictions', selectedCategory],
     queryFn: () => predictionsApi.getHistory({
-      model_name: selectedCategory,
-      limit: 100
+      model_name: categoryToPattern[selectedCategory] || selectedCategory,
+      limit: 500  // Get more predictions to find anomalies
     }),
   });
 

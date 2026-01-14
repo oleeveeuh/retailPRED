@@ -43,6 +43,7 @@ import {
   AlertCircle,
   CheckCircle2,
   Crosshair,
+  BarChart3,
 } from 'lucide-react';
 import { predictionsApi, categoriesApi, scenariosApi, Granularity } from '../api/unifiedApi';
 import { AnomalyExplanation } from '../components/AnomalyExplanation';
