@@ -33,8 +33,6 @@ import {
   TrendingDown,
   Sparkles,
   Zap,
-  Target,
-  BarChart3,
   Download,
   RefreshCw,
   Info,
@@ -42,10 +40,8 @@ import {
   ChevronUp,
   Wand2,
   Brain,
-  Clock,
   AlertCircle,
   CheckCircle2,
-  Activity,
 } from 'lucide-react';
 import { predictionsApi, categoriesApi, scenariosApi, Granularity } from '../api/unifiedApi';
 import { AnomalyExplanation } from '../components/AnomalyExplanation';
@@ -55,11 +51,6 @@ import { SkeletonCard } from '../components/PremiumAnimations';
 const MODEL_TYPES = [
   { value: 'lightgbm', label: 'LightGBM', icon: Zap, badge: 'Best Accuracy' },
   { value: 'randomforest', label: 'Random Forest', icon: Brain, badge: 'Robust' },
-  { value: 'autoarima', label: 'AutoARIMA', icon: TrendingUp, badge: 'Seasonal' },
-  { value: 'autoets', label: 'AutoETS', icon: BarChart3, badge: 'Trend' },
-  { value: 'patchtst', label: 'PatchTST', icon: Activity, badge: 'Deep Learning' },
-  { value: 'timesnet', label: 'TimesNet', icon: Target, badge: 'Advanced' },
-  { value: 'seasonalnaive', label: 'Seasonal Naive', icon: Clock, badge: 'Baseline' },
 ];
 
 const DEFAULT_FEATURES = {
