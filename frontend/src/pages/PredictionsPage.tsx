@@ -42,6 +42,7 @@ import {
   Brain,
   AlertCircle,
   CheckCircle2,
+  Crosshair,
 } from 'lucide-react';
 import { predictionsApi, categoriesApi, scenariosApi, Granularity } from '../api/unifiedApi';
 import { AnomalyExplanation } from '../components/AnomalyExplanation';
@@ -251,7 +252,7 @@ export const PredictionsPage: FC = () => {
           </span>
           <span className="text-slate-300">•</span>
           <span className="flex items-center gap-1">
-            <Target className="w-4 h-4 text-emerald-500" />
+            <Crosshair className="w-4 h-4 text-emerald-500" />
             95% accuracy
           </span>
         </div>

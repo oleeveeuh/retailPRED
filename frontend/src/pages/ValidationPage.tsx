@@ -18,7 +18,7 @@ import {
   Filter,
   Download,
   Brain,
-  Target,
+  Crosshair,
   Activity,
   BarChart3,
   FileText,
@@ -362,7 +362,7 @@ export const ValidationPage: FC = () => {
         const accurateCount = results.filter((r: any) => (r.error_percentage || 0) < 2).length;
 
         toast(`Average error: ${avgError.toFixed(2)}% | ${accurateCount}/${results.length} within 2%`, {
-          icon: <Target className="w-5 h-5 text-blue-500" />,
+          icon: <Crosshair className="w-5 h-5 text-blue-500" />,
           duration: 5000,
         });
       }
@@ -536,7 +536,7 @@ export const ValidationPage: FC = () => {
               </p>
             </div>
             <div className="p-3 bg-emerald-100 dark:bg-emerald-900/20 rounded-xl">
-              <Target className="w-8 h-8 text-emerald-600" />
+              <Crosshair className="w-8 h-8 text-emerald-600" />
             </div>
           </div>
 
