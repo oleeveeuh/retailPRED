@@ -583,8 +583,17 @@ def create_summary_stats(conn: sqlite3.Connection, predictions_data: Dict, econo
             "indicators_sample": economic_data.get("metadata", {}).get("row_count", 0)
         },
         "models_available": {
+            "models": [
+                "TimesNet",
+                "PatchTST",
+                "AutoARIMA",
+                "SeasonalNaive",
+                "LGBM",
+                "RandomForest"
+            ],
             "with_shap": ["LGBM", "RandomForest"],
-            "without_shap": ["AutoARIMA", "AutoETS", "SeasonalNaive"]
+            "without_shap": ["AutoARIMA", "SeasonalNaive", "TimesNet", "PatchTST"],
+            "total_count": 6
         }
     }
 

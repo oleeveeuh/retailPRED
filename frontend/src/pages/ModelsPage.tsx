@@ -202,10 +202,11 @@ export const ModelsPage: FC = () => {
 
   const models = modelsData?.models || [];
 
-  // Find best model (lowest MASE is best)
-  const bestModel = models.length > 0 ? models.reduce((best, model) =>
+  // Find best model (lowest MASE is best), but exclude SeasonalNaive since it's the baseline
+  const nonBaselineModels = models.filter(m => !m.model_name.toLowerCase().includes('seasonal'));
+  const bestModel = nonBaselineModels.length > 0 ? nonBaselineModels.reduce((best, model) =>
     model.metrics.mase < best.metrics.mase ? model : best
-  , models[0]) : null;
+  , nonBaselineModels[0]) : null;
 
   const avgAccuracy = models.length > 0
     ? (models.reduce((sum, m) => sum + m.metrics.r2, 0) / models.length) * 100
@@ -417,6 +418,11 @@ export const ModelsPage: FC = () => {
               <p className="text-emerald-600 font-semibold mt-1">
                 MASE: {bestModel?.metrics.mase.toFixed(4)} (lower is better)
               </p>
+              {bestModel?.metrics.mase && bestModel.metrics.mase < 1.0 && (
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">
+                  ✓ Beats baseline forecast
+                </p>
+              )}
             </div>
             <div className="p-3 bg-amber-100 dark:bg-amber-900/20 rounded-xl">
               <Medal className="w-8 h-8 text-amber-600" />

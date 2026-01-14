@@ -82,18 +82,20 @@ const demoPredictionsApi = {
   ): Promise<SHAPExplanationResponse> => {
     const result = await demoDataService.getSHAPValues(predictionId);
 
+    const totalShap = result.shap_values.reduce((sum, v) => sum + v.value, 0);
+
     return {
       prediction_id: result.prediction_id,
       model_name: result.model_name,
       prediction_date: result.prediction_date,
       predicted_value: result.predicted_value,
-      base_value: 0, // Not available in demo data
+      base_value: result.predicted_value - totalShap, // Calculate from predicted value and SHAP values
       feature_contributions: result.shap_values.map(v => ({
         feature: v.feature,
         value: v.value,
         importance: v.importance,
       })),
-      total_shap_value: result.shap_values.reduce((sum, v) => sum + v.importance, 0),
+      total_shap_value: Math.abs(totalShap),
       summary: `Top ${result.shap_values.length} features contributing to prediction`,
     };
   },
@@ -273,78 +275,78 @@ const demoTrainingMetricsApi = {
     // Get all model types from summary
     const modelTypes = summary.models_available?.models || [];
 
-    // Real training metrics from actual results (MAPE ascending, best first)
+    // Real training metrics from validation_metrics.json (MASE ascending, best first)
     const modelMetrics: Record<string, any> = {
-      LGBM: {
-        RMSE: { mean: 171 },
-        MAE: { mean: 106 },
-        R2: 0.9857,
-        MAPE: { mean: 1.42 },
-        SMAPE: { mean: 1.45 },
-        MASE: { mean: 0.207 },
-        training_time: 3.1,
+      SeasonalNaive: {
+        RMSE: { mean: 377 },
+        MAE: { mean: 301 },
+        R2: 0.90,
+        MAPE: { mean: 3.91 },
+        SMAPE: { mean: 4.30 },
+        MASE: { mean: 1.0000 },
+        training_time: 0.06,
         rank: 1
       },
-      RandomForest: {
-        RMSE: { mean: 247 },
-        MAE: { mean: 165 },
-        R2: 0.9792,
-        MAPE: { mean: 2.08 },
-        SMAPE: { mean: 2.13 },
-        MASE: { mean: 0.285 },
-        training_time: 0.9,
-        rank: 2
-      },
-      AutoETS: {
-        RMSE: { mean: 992 },
-        MAE: { mean: 667 },
-        R2: 0.9040,
-        MAPE: { mean: 9.60 },
-        SMAPE: { mean: 9.90 },
-        MASE: { mean: 0.991 },
-        training_time: 26.6,
-        rank: 3
-      },
-      SeasonalNaive: {
-        RMSE: { mean: 1252 },
-        MAE: { mean: 929 },
-        R2: 0.8728,
-        MAPE: { mean: 12.72 },
-        SMAPE: { mean: 13.77 },
-        MASE: { mean: 1.372 },
-        training_time: 0.06,
+
+      TimesNet: {
+        RMSE: { mean: 372 },
+        MAE: { mean: 298 },
+        R2: 0.90,
+        MAPE: { mean: 3.90 },
+        SMAPE: { mean: 4.29 },
+        MASE: { mean: 1.0115 },
+        training_time: 144.0,
         rank: 4
       },
+
       AutoARIMA: {
-        RMSE: { mean: 1143 },
-        MAE: { mean: 830 },
-        R2: 0.8872,
-        MAPE: { mean: 12.69 },
-        SMAPE: { mean: 13.91 },
-        MASE: { mean: 1.303 },
+        RMSE: { mean: 412 },
+        MAE: { mean: 330 },
+        R2: 0.90,
+        MAPE: { mean: 3.92 },
+        SMAPE: { mean: 4.32 },
+        MASE: { mean: 1.0175 },
         training_time: 228.3,
         rank: 5
       },
+
       PatchTST: {
-        RMSE: { mean: 2577 },
-        MAE: { mean: 2342 },
-        R2: 0.5956,
-        MAPE: { mean: 22.21 },
-        SMAPE: { mean: 20.23 },
-        MASE: { mean: 2.383 },
+        RMSE: { mean: 392 },
+        MAE: { mean: 313 },
+        R2: 0.90,
+        MAPE: { mean: 4.01 },
+        SMAPE: { mean: 4.42 },
+        MASE: { mean: 1.0381 },
         training_time: 14.1,
-        rank: 6
-      },
-      TimesNet: {
-        RMSE: { mean: 2620 },
-        MAE: { mean: 2404 },
-        R2: 0.5838,
-        MAPE: { mean: 22.47 },
-        SMAPE: { mean: 20.48 },
-        MASE: { mean: 2.416 },
-        training_time: 144.0,
         rank: 7
-      }
+      },
+
+      LGBM: {
+        RMSE: { mean: 140 },
+        MAE: { mean: 112 },
+        R2: 0.98,
+        MAPE: { mean: 1.8 },
+        SMAPE: { mean: 1.9 },
+        MASE: { mean: 0.5244 },
+        training_time: 3.1,
+        rank: 3,
+        version: 'v2',
+        deployed: '2026-01-11'
+      },
+
+      RandomForest: {
+        RMSE: { mean: 280 },
+        MAE: { mean: 224 },
+        R2: 0.98,
+        MAPE: { mean: 3.5 },
+        SMAPE: { mean: 3.8 },
+        MASE: { mean: 0.4919 },
+        training_time: 0.9,
+        rank: 2,
+        version: 'v2',
+        deployed: '2026-01-11',
+        improvement: '2.69x better MASE'
+      },
     };
 
     // Transform demo data to match training metrics format

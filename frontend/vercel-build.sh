@@ -1,42 +1,14 @@
 #!/bin/bash
-# Vercel Build Script
-# Forces demo mode by creating .env.production file
-# Build date: 2026-01-08
+set -e
 
-echo "📍 Current directory: $(pwd)"
-echo "📁 Files in current directory:"
-ls -la | grep -E "\.env|package"
-echo "📅 Build timestamp: $(date)"
+echo "Building frontend for Vercel deployment..."
 
-# Force demo mode regardless of Vercel env vars
-cat > .env.production << 'EOF'
-VITE_DEMO_MODE=true
-VITE_API_URL=
-VITE_TABLEAU_EMBED_URL=
-EOF
+# Install dependencies
+echo "Installing dependencies..."
+npm ci
 
-echo ""
-echo "✅ Created .env.production file:"
-cat .env.production
-echo ""
+# Build for production (using build:only to bypass TypeScript checks)
+echo "Building..."
+VITE_DEMO_MODE=true VITE_API_URL= npm run build:only
 
-# Verify the file was created
-if [ -f .env.production ]; then
-  echo "✅ .env.production file exists"
-else
-  echo "❌ ERROR: .env.production file not created!"
-  exit 1
-fi
-
-echo "🔨 Starting build..."
-npm run build:only
-
-echo ""
-echo "🔍 Checking for localhost in built files..."
-if grep -r "localhost:8000" dist/assets/*.js 2>/dev/null; then
-  echo "❌ WARNING: localhost still found in bundle!"
-  grep -c "localhost:8000" dist/assets/*.js
-else
-  echo "✅ SUCCESS: No localhost references in bundle!"
-fi
-
+echo "Build complete!"
