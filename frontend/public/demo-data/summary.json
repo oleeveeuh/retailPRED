@@ -1,15 +1,35 @@
 {
-  "export_timestamp": "2026-01-14T09:38:57.943824",
-  "database_path": "data/retailpred.db",
+  "export_timestamp": "2026-01-14T09:59:33.510305",
+  "database_path": "/Users/olivialiau/retailPRED/data/retailpred.db",
   "predictions": {
-    "total_count": 1092,
-    "models_exported": 22,
-    "categories": 11,
-    "average_mape": 9.12,
-    "validated_count": 1092
+    "total_count": 4100,
+    "by_year": {
+      "2026": 1160,
+      "2025": 2940
+    },
+    "by_model_type": {
+      "RandomForest": 1107,
+      "LGBM": 1107,
+      "SeasonalNaive": 546,
+      "TimesNet": 496,
+      "PatchTST": 496,
+      "AutoARIMA": 348
+    },
+    "shap_coverage": {
+      "with_shap": 4100,
+      "total": 4100,
+      "percentage": 100.0
+    }
+  },
+  "economic_indicators": {
+    "count": 500,
+    "source": "synthetic_demo_data"
+  },
+  "demo_data": {
+    "predictions_sample": 2214,
+    "indicators_sample": 500
   },
   "models_available": {
-    "total_count": 2,
     "models": [
       "LGBM",
       "RandomForest"
@@ -17,10 +37,7 @@
     "with_shap": [
       "LGBM",
       "RandomForest"
-    ]
-  },
-  "demo_data": {
-    "predictions_included": 1092,
-    "note": "Only working models (LGBM, RandomForest) included. Broken models (PatchTST, TimesNet, AutoARIMA) excluded."
+    ],
+    "total_count": 2
   }
 }
