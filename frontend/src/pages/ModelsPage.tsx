@@ -208,8 +208,9 @@ export const ModelsPage: FC = () => {
     model.metrics.mase < best.metrics.mase ? model : best
   , nonBaselineModels[0]) : null;
 
+  // Calculate average prediction accuracy from MAPE (100 - MAPE)
   const avgAccuracy = models.length > 0
-    ? (models.reduce((sum, m) => sum + m.metrics.r2, 0) / models.length) * 100
+    ? (models.reduce((sum, m) => sum + (100 - m.metrics.mape), 0) / models.length)
     : 0;
 
   // Calculate total predictions from real data
