@@ -201,7 +201,7 @@ export const ExplainPage: FC = () => {
             >
               <option value="">Select a model...</option>
               {selectedTimestamp && historyData?.predictions
-                .filter((p) => p.prediction_date === selectedTimestamp && (p.model_name.includes('LGBM') || p.model_name.includes('RandomForest')))
+                .filter((p) => p.prediction_date === selectedTimestamp && (p.model_name.includes('lgbm') || p.model_name.includes('randomforest')))
                 .map((prediction) => {
                   // Format model name for display
                   const modelName = prediction.model_name
@@ -216,7 +216,7 @@ export const ExplainPage: FC = () => {
                 })}
             </select>
             <p className="text-xs text-gray-500 mt-1">
-              {selectedTimestamp && historyData?.predictions.filter((p) => p.prediction_date === selectedTimestamp && (p.model_name.includes('LGBM') || p.model_name.includes('RandomForest'))).length} models available with SHAP values
+              {selectedTimestamp && historyData?.predictions.filter((p) => p.prediction_date === selectedTimestamp && (p.model_name.includes('lgbm') || p.model_name.includes('randomforest'))).length} models available with SHAP values
             </p>
           </div>
 
