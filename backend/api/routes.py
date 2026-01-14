@@ -891,6 +891,11 @@ async def get_shap_explanation(
 
         shap_dict = json.loads(prediction["shap_values"]) if prediction.get("shap_values") else None
 
+        # Handle new array format: [{"feature": "lag_1", "value": 123.45}, ...]
+        if shap_dict and isinstance(shap_dict, list):
+            # Convert array format to dict format for compatibility
+            shap_dict = {item["feature"]: item["value"] for item in shap_dict}
+
         # If no SHAP values exist, try to compute them for multi-resolution models
         if not shap_dict:
             model_name = prediction["model_name"]

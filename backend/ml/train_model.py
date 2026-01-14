@@ -127,13 +127,17 @@ def train_random_forest_model(
     if not SKLEARN_AVAILABLE:
         raise ImportError("scikit-learn is not installed")
 
-    # Default hyperparameters
+    # Default hyperparameters (optimized to prevent overfitting)
     params = {
-        "n_estimators": 100,
-        "max_depth": 10,
-        "min_samples_split": 5,
-        "min_samples_leaf": 2,
+        "n_estimators": 200,              # More trees (but limited depth)
+        "max_depth": 5,                   # SHALLOWER trees to prevent overfitting
+        "min_samples_split": 20,          # More samples required to split
+        "min_samples_leaf": 10,           # More samples required at leaf nodes
+        "max_features": 0.7,              # Use only 70% of features per tree
+        "bootstrap": True,                # Bootstrap sampling
+        "oob_score": True,                # Out-of-bag scoring for validation
         "random_state": 42,
+        "n_jobs": -1,
     }
     if hyperparameters:
         params.update(hyperparameters)

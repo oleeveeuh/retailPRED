@@ -19,7 +19,7 @@ export interface DemoPrediction {
   actual_value: number | null;
   confidence_interval_lower: number | null;
   confidence_interval_upper: number | null;
-  shap_values: Record<string, number> | null;
+  shap_values: Record<string, number> | Array<{feature: string; value: number}> | null;
   features: string | null;
   created_at: string;
 }
@@ -330,12 +330,28 @@ class DemoDataService {
     }
 
     // Transform SHAP values to API format
-    const shapArray: SHAPValue[] = Object.entries(prediction.shap_values)
-      .map(([feature, value]) => ({
-        feature,
-        value: Math.abs(value),
-        importance: Math.abs(value),
-      }))
+    // Handle both array format [{"feature": "lag_1", "value": 67.38}, ...]
+    // and dict format {"lag_1": 67.38, "lag_2": -45.23, ...}
+    let shapArray: SHAPValue[];
+
+    if (Array.isArray(prediction.shap_values)) {
+      // New array format
+      shapArray = prediction.shap_values.map((item: any) => ({
+        feature: item.feature,
+        value: item.value,
+        importance: Math.abs(item.value),
+      }));
+    } else {
+      // Old dictionary format
+      shapArray = Object.entries(prediction.shap_values)
+        .map(([feature, value]) => ({
+          feature,
+          value: value, // Preserve the sign
+          importance: Math.abs(value),
+        }));
+    }
+
+    shapArray = shapArray
       .sort((a, b) => b.importance - a.importance)
       .slice(0, 20); // Top 20 features
 

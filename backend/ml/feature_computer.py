@@ -22,13 +22,15 @@ except ImportError:
     logger.warning("✗ SHAP library not available. Install with: pip install shap")
 
 
-def load_historical_data_from_csv(category_display: str, days_back: int = 400) -> pd.DataFrame:
+def load_historical_data_from_csv(category_display: str, days_back: int = 400, frequency: str = 'daily') -> pd.DataFrame:
     """
     Load historical data from CSV files
 
     Args:
         category_display: Display name (e.g., "Total Retail Sales")
         days_back: Number of days to load
+        frequency: Data frequency - 'daily' (default), 'weekly', or 'monthly'
+                  For 'weekly', samples every 7th day. For 'monthly', samples ~30th day.
 
     Returns:
         DataFrame with date and value columns
@@ -81,7 +83,19 @@ def load_historical_data_from_csv(category_display: str, days_back: int = 400) -
         df = df[['date', 'value']]
         df = df.sort_values('date').tail(days_back).reset_index(drop=True)
 
-        logger.info(f"✓ Loaded {len(df)} records from multi-resolution CSV: {filename}")
+        # Apply frequency sampling
+        if frequency == 'weekly':
+            # Sample every 7th day (weekly frequency)
+            df = df.iloc[::7].reset_index(drop=True)
+            logger.info(f"✓ Sampled weekly data (every 7th day) from {filename}")
+        elif frequency == 'monthly':
+            # Sample approximately every 30th day (monthly frequency)
+            df = df.iloc[::30].reset_index(drop=True)
+            logger.info(f"✓ Sampled monthly data (every 30th day) from {filename}")
+        else:
+            logger.info(f"✓ Loaded daily data from {filename}")
+
+        logger.info(f"✓ Loaded {len(df)} {frequency} records from multi-resolution CSV: {filename}")
         logger.info(f"  Date range: {df['date'].min()} to {df['date'].max()}")
         logger.info(f"  Value range: ${df['value'].min():,.2f} to ${df['value'].max():,.2f}")
         return df

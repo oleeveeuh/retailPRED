@@ -39,7 +39,7 @@ CATEGORY_KEY_TO_DISPLAY = {
 # Model type classifications
 SKLEARN_MODELS = ["RandomForest", "LGBM"]
 NEURAL_FORECAST_MODELS = ["PatchTST", "TimesNet"]
-STATS_FORECAST_MODELS = ["AutoARIMA", "AutoETS", "SeasonalNaive"]
+STATS_FORECAST_MODELS = ["AutoARIMA", "SeasonalNaive"]  # AutoETS removed due to poor performance
 ALL_MODEL_TYPES = SKLEARN_MODELS + NEURAL_FORECAST_MODELS + STATS_FORECAST_MODELS
 
 
@@ -127,8 +127,8 @@ def _forecast_with_sklearn_model(
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     """Generate forecast using sklearn-style models (RandomForest, LGBM)"""
 
-    from ml.feature_computer_full import compute_full_features
-    from ml.feature_computer import load_historical_data_from_csv
+    from backend.ml.feature_computer import load_historical_data_from_csv
+    import pandas as pd
 
     # Load model
     model = load_model(category, model_type)
@@ -150,8 +150,33 @@ def _forecast_with_sklearn_model(
 
     display_name = category_display_names.get(category, category.replace("_", " ").title())
 
-    # Load historical data
+    # Load historical data with all pre-computed features from CSV
+    # The models were trained on the CSV features directly, so we need to use the same approach
     historical_df = load_historical_data_from_csv(display_name, days_back=400)
+
+    # Load the full multi-resolution CSV to get all features
+    from pathlib import Path
+
+    # Use category_key directly for CSV filename (matches the training script)
+    csv_name = category
+
+    csv_path = Path(__file__).parent.parent.parent / "project_root" / "data_multi_resolution" / f"retail_{csv_name}_multi_resolution.csv"
+
+    # Read CSV and prepare features (matching training approach)
+    full_df = pd.read_csv(csv_path)
+
+    # Define feature columns BEFORE adding 'date'
+    # We exclude 'y', 'index', AND 'year' from the 76 CSV columns
+    # This gives 73 features for proper time series forecasting without data leakage
+    exclude_cols = ['y', 'index', 'year']
+    feature_cols = [col for col in full_df.columns if col not in exclude_cols]
+
+    # The CSV has an 'index' column that represents dates
+    # Convert to datetime for date matching AFTER defining feature_cols
+    if 'index' in full_df.columns:
+        full_df['date'] = pd.to_datetime(full_df['index'])
+
+    logger.info(f"Using {len(feature_cols)} features (excluding 'year' for proper time series forecasting)")
 
     # Generate forecast
     start = datetime.strptime(start_date, "%Y-%m-%d")
@@ -160,25 +185,46 @@ def _forecast_with_sklearn_model(
     for i in range(weeks_ahead):
         forecast_date = start + timedelta(weeks=i)
 
-        # Compute features for this date
-        features_df = compute_full_features(historical_df, forecast_date.strftime("%Y-%m-%d"), category)
+        # Get features for this date from the CSV
+        matching_rows = full_df[full_df['date'] == pd.Timestamp(forecast_date)]
 
-        # Align features to model expectations
-        if hasattr(model, 'feature_names_in_'):
-            expected_features = model.feature_names_in_
-            aligned_data = {}
-            for feat in expected_features:
-                if feat in features_df.columns:
-                    aligned_data[feat] = features_df[feat].values[0]
-                else:
-                    aligned_data[feat] = 0.0
-            features_df = pd.DataFrame([aligned_data])
+        if len(matching_rows) > 0:
+            # Use exact match
+            features_df = matching_rows[feature_cols].copy()
+        else:
+            # Date doesn't exist in CSV (future prediction)
+            # Use most recent row and update temporal features
+            recent_row = full_df.iloc[-1:].copy()
+            pred_dt = pd.Timestamp(forecast_date)
+
+            # Update temporal features for prediction date
+            recent_row['month'] = pred_dt.month
+            recent_row['day_of_week'] = pred_dt.weekday()
+            recent_row['day_of_month'] = pred_dt.day
+            recent_row['day_of_year'] = pred_dt.timetuple().tm_yday
+            recent_row['is_weekend'] = 1 if pred_dt.weekday() >= 5 else 0
+            recent_row['is_month_start'] = 1 if pred_dt.day <= 7 else 0
+            recent_row['is_month_end'] = 1 if pred_dt.day >= 24 else 0
+
+            # Update cyclical features
+            recent_row['month_sin'] = np.sin(2 * np.pi * pred_dt.month / 12)
+            recent_row['month_cos'] = np.cos(2 * np.pi * pred_dt.month / 12)
+            recent_row['quarter_sin'] = np.sin(2 * np.pi * ((pred_dt.month - 1) // 3 + 1) / 4)
+            recent_row['quarter_cos'] = np.cos(2 * np.pi * ((pred_dt.month - 1) // 3 + 1) / 4)
+            recent_row['day_of_year_sin'] = np.sin(2 * np.pi * pred_dt.timetuple().tm_yday / 365)
+            recent_row['day_of_year_cos'] = np.cos(2 * np.pi * pred_dt.timetuple().tm_yday / 365)
+            recent_row['day_of_week_sin'] = np.sin(2 * np.pi * pred_dt.weekday() / 7)
+            recent_row['day_of_week_cos'] = np.cos(2 * np.pi * pred_dt.weekday() / 7)
+
+            features_df = recent_row[feature_cols].copy()
+
+        # Ensure we have exactly the feature columns (no 'date' or other non-feature columns)
+        # features_df already only contains feature_cols since we selected from feature_cols
+        # So we can use it directly for prediction
+        features_df_for_pred = features_df.copy()
 
         # Make prediction
-        prediction = float(model.predict(features_df)[0])
-
-        # NOTE: Scaling fix removed - models retrained on 2026-01-10 with unified pipeline
-        # No scaling correction needed for newly trained models
+        prediction = float(model.predict(features_df_for_pred)[0])
 
         # Estimate confidence interval
         base_error_pct = 0.7
@@ -204,7 +250,7 @@ def _forecast_with_sklearn_model(
         "forecast_start_date": start_date,
         "forecast_end_date": forecast[-1]["date"] if forecast else start_date,
         "weeks_ahead": weeks_ahead,
-        "features_used": len(features_df.columns),
+        "features_used": len(feature_cols),  # 74 features from CSV
         "average_mape": 0.7,
         "model_accuracy": "high",
     }
@@ -240,7 +286,7 @@ def _forecast_with_neural_forecast_model(
 
     display_name = category_display_names.get(category, category.replace("_", " ").title())
 
-    from ml.feature_computer import load_historical_data_from_csv
+    from backend.ml.feature_computer import load_historical_data_from_csv
     historical_df = load_historical_data_from_csv(display_name, days_back=400)
 
     # Prepare data in NeuralForecast format
@@ -342,7 +388,7 @@ def _forecast_with_stats_forecast_model(
     weeks_ahead: int,
     start_date: str
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    """Generate forecast using StatsForecast models (AutoARIMA, AutoETS, SeasonalNaive)"""
+    """Generate forecast using StatsForecast models (AutoARIMA, SeasonalNaive)"""
 
     # Load the model
     model = load_model(category, model_type)
@@ -364,8 +410,8 @@ def _forecast_with_stats_forecast_model(
 
     display_name = category_display_names.get(category, category.replace("_", " ").title())
 
-    from ml.feature_computer import load_historical_data_from_csv
-    historical_df = load_historical_data_from_csv(display_name, days_back=400)
+    from backend.ml.feature_computer import load_historical_data_from_csv
+    historical_df = load_historical_data_from_csv(display_name, days_back=400, frequency='weekly')
 
     # Prepare data in StatsForecast format
     historical_df['unique_id'] = category
@@ -377,12 +423,11 @@ def _forecast_with_stats_forecast_model(
     # Get base value from recent data
     base_value = float(historical_df['y'].tail(4).mean())
 
-    # Model-specific MAPE
+    # Model-specific MAPE (AutoETS removed - performed poorly at 39-420% MAPE)
     model_mape = {
-        "AutoARIMA": 10.66,
-        "AutoETS": 6.84,
-        "SeasonalNaive": 6.94
-    }.get(model_type, 8.0)
+        "AutoARIMA": 37.58,
+        "SeasonalNaive": 19.37
+    }.get(model_type, 20.0)
 
     forecast = []
     start = datetime.strptime(start_date, "%Y-%m-%d")
