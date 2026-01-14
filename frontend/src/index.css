@@ -47,7 +47,7 @@ body {
 
 /* Gradient Text */
 .gradient-text {
-  background: linear-gradient(to right, #2563eb, #9333ea);
+  background: linear-gradient(to right, #81C1AC, #3A3A6C);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -56,12 +56,12 @@ body {
 /* Focus Ring */
 .focus-ring:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #2563eb, 0 0 0 4px rgba(255, 255, 255, 1);
+  box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(255, 255, 255, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   .focus-ring:focus {
-    box-shadow: 0 0 0 2px #2563eb, 0 0 0 4px rgba(15, 23, 42, 1);
+    box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(15, 23, 42, 1);
   }
 }
 
@@ -71,14 +71,14 @@ body {
   border-radius: 0.5rem;
   font-weight: 500;
   color: white;
-  background: linear-gradient(to right, #2563eb, #1d4ed8);
-  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.5);
+  background: linear-gradient(to right, #81C1AC, #3A3A6C);
+  box-shadow: 0 10px 15px -3px rgba(129, 193, 172, 0.5);
   transition: all 0.2s;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(to right, #1d4ed8, #1e40af);
-  box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.6);
+  background: linear-gradient(to right, #6FB39C, #2E2E5A);
+  box-shadow: 0 20px 25px -5px rgba(129, 193, 172, 0.6);
 }
 
 /* Button Secondary */
@@ -127,8 +127,8 @@ body {
 }
 
 .input-base:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px #2563eb;
+  border-color: #81C1AC;
+  box-shadow: 0 0 0 2px #81C1AC;
 }
 
 .input-base::placeholder {
@@ -183,9 +183,9 @@ body {
 /* Sidebar Active Item */
 .sidebar-active {
   position: relative;
-  background: linear-gradient(to right, #2563eb, #9333ea);
+  background: linear-gradient(to right, #81C1AC, #3A3A6C);
   color: white;
-  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 10px 15px -3px rgba(129, 193, 172, 0.5);
 }
 
 .sidebar-active::before {
@@ -304,7 +304,7 @@ body {
 
 /* Selection */
 ::selection {
-  background-color: rgba(37, 99, 235, 0.3);
+  background-color: rgba(129, 193, 172, 0.3);
   color: inherit;
 }
 
@@ -324,12 +324,12 @@ body {
 /* Focus Visible for Better Keyboard Navigation */
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #2563eb, 0 0 0 4px rgba(255, 255, 255, 1);
+  box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(255, 255, 255, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :focus-visible {
-    box-shadow: 0 0 0 2px #2563eb, 0 0 0 4px rgba(15, 23, 42, 1);
+    box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(15, 23, 42, 1);
   }
 }
 
@@ -354,7 +354,7 @@ body {
   top: 1rem;
   left: 1rem;
   z-index: 50;
-  background-color: #2563eb;
+  background-color: #81C1AC;
   color: white;
   border-radius: 0.5rem;
 }
@@ -396,7 +396,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #2563eb, 0 0 0 4px rgba(255, 255, 255, 1);
+  box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(255, 255, 255, 1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -405,7 +405,7 @@ textarea:focus-visible {
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    box-shadow: 0 0 0 2px #2563eb, 0 0 0 4px rgba(15, 23, 42, 1);
+    box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(15, 23, 42, 1);
   }
 }
 
