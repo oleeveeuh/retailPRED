@@ -163,7 +163,7 @@ export const BusinessDashboard: FC = () => {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-4xl font-bold text-gray-900 flex items-center">
-              <BarChart3 className="w-10 h-10 mr-3 text-blue-600" />
+              <BarChart3 className="w-10 h-10 mr-3 text-primary-600" />
               Business Dashboard
             </h1>
             <p className="text-gray-600 mt-2">
@@ -184,7 +184,7 @@ export const BusinessDashboard: FC = () => {
         {statsLoading ? (
           <>
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500 animate-pulse">
+              <div key={i} className="bg-white rounded-lg shadow p-6 border-l-4 border-primary animate-pulse">
                 <div className="h-20 bg-gray-200 rounded"></div>
               </div>
             ))}
@@ -194,8 +194,8 @@ export const BusinessDashboard: FC = () => {
             <KPICard
               title="Total Predictions"
               value={kpis.totalPredictions.toLocaleString()}
-              icon={<Calendar className="w-6 h-6 text-blue-600" />}
-              color="border-blue-500"
+              icon={<Calendar className="w-6 h-6 text-primary-600" />}
+              color="border-primary"
             />
             <KPICard
               title="Forecast Accuracy"
@@ -206,7 +206,7 @@ export const BusinessDashboard: FC = () => {
             <KPICard
               title="Total Sales Forecast"
               value={kpis.totalSales}
-              icon={<DollarSign className="w-6 h-6 text-purple-600" />}
+              icon={<DollarSign className="w-6 h-6 text-accent" />}
               color="border-purple-500"
             />
             <KPICard
@@ -233,7 +233,7 @@ export const BusinessDashboard: FC = () => {
               onClick={() => setActiveTab('tableau')}
               className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'tableau'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-primary text-primary-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -244,7 +244,7 @@ export const BusinessDashboard: FC = () => {
               onClick={() => setActiveTab('export')}
               className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'export'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-primary text-primary-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -255,7 +255,7 @@ export const BusinessDashboard: FC = () => {
               onClick={() => setActiveTab('guide')}
               className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'guide'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-primary text-primary-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -279,7 +279,7 @@ export const BusinessDashboard: FC = () => {
                   <div className="space-y-4">
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <div className="flex items-start">
-                        <Info className="w-5 h-5 text-blue-600 mr-3 mt-0.5" />
+                        <Info className="w-5 h-5 text-primary-600 mr-3 mt-0.5" />
                         <div>
                           <p className="text-sm text-blue-800 font-medium">
                             Interactive Dashboard
@@ -300,7 +300,7 @@ export const BusinessDashboard: FC = () => {
                         href={tableauEmbedUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                        className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
                       >
                         Open in Tableau Public
                         <ExternalLink className="w-4 h-4 ml-2" />
@@ -326,7 +326,7 @@ export const BusinessDashboard: FC = () => {
                       href="https://public.tableau.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                      className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
                     >
                       Go to Tableau Public
                       <ExternalLink className="w-4 h-4 ml-2" />
@@ -357,27 +357,27 @@ export const BusinessDashboard: FC = () => {
                     <h4 className="font-semibold text-blue-900 mb-4">Included Fields</h4>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                       <div className="flex items-start">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 mr-2"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-1.5 mr-2"></div>
                         <span className="text-blue-800">Prediction Date</span>
                       </div>
                       <div className="flex items-start">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 mr-2"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-1.5 mr-2"></div>
                         <span className="text-blue-800">Store/Product</span>
                       </div>
                       <div className="flex items-start">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 mr-2"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-1.5 mr-2"></div>
                         <span className="text-blue-800">Predicted Sales</span>
                       </div>
                       <div className="flex items-start">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 mr-2"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-1.5 mr-2"></div>
                         <span className="text-blue-800">Actual Sales</span>
                       </div>
                       <div className="flex items-start">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 mr-2"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-1.5 mr-2"></div>
                         <span className="text-blue-800">Error %</span>
                       </div>
                       <div className="flex items-start">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 mr-2"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-1.5 mr-2"></div>
                         <span className="text-blue-800">Model Name</span>
                       </div>
                     </div>
@@ -389,7 +389,7 @@ export const BusinessDashboard: FC = () => {
                       <button
                         onClick={handleExportCSV}
                         disabled={exportLoading}
-                        className="w-full flex items-center justify-center px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center px-6 py-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {exportLoading ? (
                           <>
@@ -459,7 +459,7 @@ export const BusinessDashboard: FC = () => {
 
                       <div className="bg-white border border-gray-200 rounded-lg p-6">
                         <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
-                          <Calendar className="w-5 h-5 mr-2 text-blue-600" />
+                          <Calendar className="w-5 h-5 mr-2 text-primary-600" />
                           Total Predictions
                         </h4>
                         <p className="text-gray-700">
@@ -470,7 +470,7 @@ export const BusinessDashboard: FC = () => {
 
                       <div className="bg-white border border-gray-200 rounded-lg p-6">
                         <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
-                          <TrendingUp className="w-5 h-5 mr-2 text-purple-600" />
+                          <TrendingUp className="w-5 h-5 mr-2 text-accent" />
                           Total Sales Forecast
                         </h4>
                         <p className="text-gray-700">
@@ -487,7 +487,7 @@ export const BusinessDashboard: FC = () => {
                     </h3>
                     <div className="space-y-3">
                       <div className="flex items-start">
-                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold mr-4">
+                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-primary-600 rounded-full flex items-center justify-center font-bold mr-4">
                           1
                         </div>
                         <div className="flex-1">
@@ -497,7 +497,7 @@ export const BusinessDashboard: FC = () => {
                         </div>
                       </div>
                       <div className="flex items-start">
-                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold mr-4">
+                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-primary-600 rounded-full flex items-center justify-center font-bold mr-4">
                           2
                         </div>
                         <div className="flex-1">
@@ -507,7 +507,7 @@ export const BusinessDashboard: FC = () => {
                         </div>
                       </div>
                       <div className="flex items-start">
-                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold mr-4">
+                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-primary-600 rounded-full flex items-center justify-center font-bold mr-4">
                           3
                         </div>
                         <div className="flex-1">
@@ -517,7 +517,7 @@ export const BusinessDashboard: FC = () => {
                         </div>
                       </div>
                       <div className="flex items-start">
-                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold mr-4">
+                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-primary-600 rounded-full flex items-center justify-center font-bold mr-4">
                           4
                         </div>
                         <div className="flex-1">
@@ -537,7 +537,7 @@ export const BusinessDashboard: FC = () => {
                     </p>
                     <a
                       href="/"
-                      className="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm border border-blue-300"
+                      className="inline-flex items-center px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm border border-blue-300"
                     >
                       Go to Technical View
                       <ArrowRight className="w-4 h-4 ml-2" />

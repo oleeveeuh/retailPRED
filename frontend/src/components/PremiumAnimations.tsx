@@ -222,10 +222,10 @@ export const ProgressBar: FC<ProgressBarProps> = ({
   showLabel = false,
 }) => {
   const colors = {
-    blue: 'bg-blue-600',
+    blue: 'bg-primary-600',
     emerald: 'bg-emerald-600',
     amber: 'bg-amber-600',
-    purple: 'bg-purple-600',
+    purple: 'bg-accent',
   };
 
   return (
@@ -376,7 +376,7 @@ export const ErrorFallback: FC<{
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={resetErrorBoundary}
-        className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold shadow-lg shadow-blue-500/50 hover:shadow-xl transition-all"
+        className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-accent text-white rounded-lg font-semibold shadow-lg shadow-blue-500/50 hover:shadow-xl transition-all"
       >
         Try Again
       </motion.button>

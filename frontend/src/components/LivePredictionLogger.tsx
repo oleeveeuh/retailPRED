@@ -21,12 +21,12 @@ export const LivePredictionLogger: FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${isProcessing ? 'bg-blue-500 animate-pulse' : 'bg-slate-400'}`} />
+            <div className={`w-2 h-2 rounded-full ${isProcessing ? 'bg-primary animate-pulse' : 'bg-slate-400'}`} />
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
               Live Predictions
             </h3>
             {isProcessing && (
-              <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+              <span className="text-xs text-primary-600 dark:text-blue-400 font-medium">
                 Processing...
               </span>
             )}
@@ -70,7 +70,7 @@ export const LivePredictionLogger: FC = () => {
                       <Clock className="w-4 h-4 text-slate-400" />
                     )}
                     {prediction.status === 'processing' && (
-                      <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />
+                      <Loader2 className="w-4 h-4 text-primary animate-spin" />
                     )}
                     {prediction.status === 'completed' && (
                       <CheckCircle2 className="w-4 h-4 text-emerald-500" />
@@ -103,7 +103,7 @@ export const LivePredictionLogger: FC = () => {
                             initial={{ width: 0 }}
                             animate={{ width: `${prediction.progress}%` }}
                             transition={{ duration: 0.3 }}
-                            className="h-full bg-blue-500 rounded-full"
+                            className="h-full bg-primary rounded-full"
                           />
                         </div>
                       </div>
@@ -195,7 +195,7 @@ export const TrainingProgressModal: FC<TrainingProgressModalProps> = ({
             {/* Header */}
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-                <Sparkles className="w-6 h-6 text-blue-600" />
+                <Sparkles className="w-6 h-6 text-primary-600" />
               </div>
               <div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
@@ -219,7 +219,7 @@ export const TrainingProgressModal: FC<TrainingProgressModalProps> = ({
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
                   transition={{ duration: 0.3 }}
-                  className="h-full bg-gradient-to-r from-blue-600 to-purple-600 rounded-full relative"
+                  className="h-full bg-gradient-to-r from-blue-600 to-accent rounded-full relative"
                 >
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
@@ -243,14 +243,14 @@ export const TrainingProgressModal: FC<TrainingProgressModalProps> = ({
                     key={index}
                     className={`flex items-center gap-2 text-xs transition-colors ${
                       progress >= step.threshold
-                        ? 'text-blue-600 dark:text-blue-400'
+                        ? 'text-primary-600 dark:text-blue-400'
                         : 'text-slate-400'
                     }`}
                   >
                     <div
                       className={`w-4 h-4 rounded-full flex items-center justify-center border-2 ${
                         progress >= step.threshold
-                          ? 'border-blue-600 bg-blue-600'
+                          ? 'border-blue-600 bg-primary-600'
                           : 'border-slate-300'
                       }`}
                     >

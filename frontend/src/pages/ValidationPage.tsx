@@ -60,7 +60,6 @@ interface Prediction {
   error_absolute?: number;
   error_percentage?: number;
   is_validated: boolean;
-  confidence_score?: number;
   confidence_interval_lower?: number;
   confidence_interval_upper?: number;
   created_at: string;
@@ -159,8 +158,8 @@ export const ValidationPage: FC = () => {
     const accuracy = 100 - (validated.reduce((sum, p) => sum + (p.error_percentage || 0), 0) / validated.length);
     // @ts-ignore
     const avgError = validated.reduce((sum, p) => sum + ((p as any).error_absolute || 0), 0) / validated.length;
-    // @ts-ignore
-    const confidence = validated.reduce((sum, p) => sum + ((p as any).confidence_score || 0), 0) / validated.length;
+    // Calculate confidence as average accuracy (100 - error_percentage)
+    const confidence = validated.reduce((sum, p) => sum + (100 - (p.error_percentage || 0)), 0) / validated.length;
 
     // Calculate trend
     const halfway = Math.floor(validated.length / 2);
@@ -382,7 +381,7 @@ export const ValidationPage: FC = () => {
       // @ts-ignore
       if (results.length === 0) {
         toast('No pending predictions found to validate', {
-          icon: <Info className="w-5 h-5 text-blue-500" />,
+          icon: <Info className="w-5 h-5 text-primary" />,
           duration: 3000,
         });
       } else {
@@ -399,7 +398,7 @@ export const ValidationPage: FC = () => {
         const accurateCount = results.filter((r: any) => (r.error_percentage || 0) < 2).length;
 
         toast(`Average error: ${avgError.toFixed(2)}% | ${accurateCount}/${results.length} within 2%`, {
-          icon: <Crosshair className="w-5 h-5 text-blue-500" />,
+          icon: <Crosshair className="w-5 h-5 text-primary" />,
           duration: 5000,
         });
       }
@@ -465,7 +464,7 @@ export const ValidationPage: FC = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleExport}
-            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/50 flex items-center gap-2"
+            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-accent text-white rounded-xl font-medium shadow-lg shadow-blue-500/50 flex items-center gap-2"
           >
             <Download className="w-5 h-5" />
             Export Report
@@ -498,7 +497,7 @@ export const ValidationPage: FC = () => {
                   onClick={() => setDateRange(range)}
                   className={`px-4 py-2 rounded-lg font-medium transition-all ${
                     dateRange === range
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                      ? 'bg-primary-600 text-white shadow-lg shadow-blue-500/50'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                   }`}
                 >
@@ -563,7 +562,7 @@ export const ValidationPage: FC = () => {
                   <TrendingDown className="w-6 h-6 text-red-500" />
                 )}
                 {metrics.accuracy_trend === 'stable' && (
-                  <Activity className="w-6 h-6 text-blue-500" />
+                  <Activity className="w-6 h-6 text-primary" />
                 )}
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
@@ -659,7 +658,7 @@ export const ValidationPage: FC = () => {
               </p>
             </div>
             <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-xl">
-              <CheckCircle2 className="w-8 h-8 text-blue-600" />
+              <CheckCircle2 className="w-8 h-8 text-primary-600" />
             </div>
           </div>
 
@@ -669,7 +668,7 @@ export const ValidationPage: FC = () => {
               initial={{ width: 0 }}
               animate={{ width: `${(metrics.predictions_validated / filteredPredictions.length) * 100}%` }}
               transition={{ delay: 0.5, duration: 0.5 }}
-              className="h-full bg-blue-600 rounded-full"
+              className="h-full bg-primary-600 rounded-full"
             />
           </div>
         </motion.div>
@@ -697,7 +696,7 @@ export const ValidationPage: FC = () => {
               </p>
             </div>
             <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-xl">
-              <Brain className="w-8 h-8 text-purple-600" />
+              <Brain className="w-8 h-8 text-accent" />
             </div>
           </div>
 
@@ -707,7 +706,7 @@ export const ValidationPage: FC = () => {
               initial={{ width: 0 }}
               animate={{ width: `${metrics.model_confidence}%` }}
               transition={{ delay: 0.5, duration: 0.5 }}
-              className="h-full bg-purple-600 rounded-full"
+              className="h-full bg-accent rounded-full"
             />
           </div>
         </motion.div>
@@ -856,7 +855,7 @@ export const ValidationPage: FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Predicted</p>
-                    <p className="text-xl font-bold text-blue-600">
+                    <p className="text-xl font-bold text-primary-600">
                       ${selectedPrediction.predicted_value.toFixed(2)}
                     </p>
                   </div>
@@ -895,12 +894,12 @@ export const ValidationPage: FC = () => {
                     <div className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
-                        animate={{ width: `${(selectedPrediction.confidence_score || 0) * 100}%` }}
-                        className="h-full bg-purple-600 rounded-full"
+                        animate={{ width: `${100 - (selectedPrediction.error_percentage || 0)}%` }}
+                        className="h-full bg-accent rounded-full"
                       />
                     </div>
                     <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      {((selectedPrediction.confidence_score || 0) * 100).toFixed(0)}%
+                      {(100 - (selectedPrediction.error_percentage || 0)).toFixed(1)}%
                     </span>
                   </div>
                 </div>
@@ -952,7 +951,7 @@ export const ValidationPage: FC = () => {
           </h3>
           <div className="flex items-center gap-4 mb-4 text-sm">
             <div className="flex items-center">
-              <div className="w-3 h-3 bg-blue-500 mr-2 rounded-full"></div>
+              <div className="w-3 h-3 bg-primary mr-2 rounded-full"></div>
               <span className="text-slate-600 dark:text-slate-400">Validated</span>
             </div>
             <div className="flex items-center">
@@ -1101,7 +1100,7 @@ export const ValidationPage: FC = () => {
                   <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100">
                     {prediction.model_name}
                   </td>
-                  <td className="px-6 py-4 text-sm text-blue-600 font-semibold">
+                  <td className="px-6 py-4 text-sm text-primary-600 font-semibold">
                     ${prediction.predicted_value.toFixed(2)}
                   </td>
                   <td className="px-6 py-4 text-sm text-emerald-600 font-semibold">
@@ -1226,7 +1225,7 @@ export const ValidationPage: FC = () => {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/50 inline-flex items-center gap-2"
+            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-accent text-white rounded-xl font-medium shadow-lg shadow-blue-500/50 inline-flex items-center gap-2"
           >
             <Sparkles className="w-5 h-5" />
             Go to Predictions Page

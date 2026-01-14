@@ -170,7 +170,7 @@ export const ExplainPage: FC = () => {
                   setSelectedPredictionId(prediction.id);
                 }
               }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-primary"
             >
               <option value="">Select a timestamp...</option>
               {Array.from(new Set(historyData?.predictions
@@ -197,7 +197,7 @@ export const ExplainPage: FC = () => {
               value={selectedPredictionId}
               onChange={(e) => setSelectedPredictionId(e.target.value ? Number(e.target.value) : '')}
               disabled={!selectedTimestamp}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-primary disabled:bg-gray-100"
             >
               <option value="">Select a model...</option>
               {selectedTimestamp && historyData?.predictions
@@ -229,7 +229,7 @@ export const ExplainPage: FC = () => {
               value={topN}
               onChange={(e) => setTopN(Number(e.target.value))}
               disabled={!selectedPredictionId}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-primary disabled:bg-gray-100"
             >
               <option value={5}>Top 5 features</option>
               <option value={10}>Top 10 features</option>
@@ -269,7 +269,7 @@ export const ExplainPage: FC = () => {
 
             <div className="bg-white rounded-lg shadow p-6">
               <p className="text-sm text-gray-500">Predicted Value</p>
-              <p className="text-2xl font-bold text-blue-600">${shapData.predicted_value.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-primary-600">${shapData.predicted_value.toFixed(2)}</p>
             </div>
 
             <div className="bg-white rounded-lg shadow p-6">
@@ -279,7 +279,7 @@ export const ExplainPage: FC = () => {
 
             <div className="bg-white rounded-lg shadow p-6">
               <p className="text-sm text-gray-500">Total SHAP Value</p>
-              <p className="text-2xl font-bold text-purple-600">${shapData.total_shap_value.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-accent">${shapData.total_shap_value.toFixed(2)}</p>
             </div>
           </div>
 
@@ -425,7 +425,7 @@ export const ExplainPage: FC = () => {
                         <div className="flex items-center">
                           <div className="w-24 bg-gray-200 rounded-full h-2 mr-2">
                             <div
-                              className="bg-blue-600 h-2 rounded-full"
+                              className="bg-primary-600 h-2 rounded-full"
                               style={{ width: `${Math.min(row.percentage, 100)}%` }}
                             ></div>
                           </div>

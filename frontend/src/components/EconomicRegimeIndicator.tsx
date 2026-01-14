@@ -84,7 +84,7 @@ export function EconomicRegimeIndicator({
           borderColor: 'border-blue-300',
           textColor: 'text-blue-900',
           iconBg: 'bg-blue-100',
-          progressColor: 'bg-blue-500'
+          progressColor: 'bg-primary'
         }
     }
   }

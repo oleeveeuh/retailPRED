@@ -168,7 +168,7 @@ export const Header: FC = () => {
       case 'error':
         return <XCircle className="w-5 h-5 text-red-500" />;
       default:
-        return <Bell className="w-5 h-5 text-blue-500" />;
+        return <Bell className="w-5 h-5 text-primary" />;
     }
   };
 
@@ -255,12 +255,12 @@ export const Header: FC = () => {
                       !isOnline
                         ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
                         : isRefreshing
-                        ? 'bg-blue-600 text-white cursor-wait'
+                        ? 'bg-primary-600 text-white cursor-wait'
                         : hasError
                         ? 'bg-red-500 text-white hover:bg-red-600'
                         : allSuccess
                         ? 'bg-emerald-500 text-white'
-                        : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/50'
+                        : 'bg-primary-600 text-white hover:bg-primary-700 shadow-lg shadow-blue-500/50'
                     }
                   `}
                 >
@@ -334,7 +334,7 @@ export const Header: FC = () => {
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="2"
-                          className="text-blue-600 opacity-20"
+                          className="text-primary-600 opacity-20"
                         />
                         <motion.circle
                           cx="10"
@@ -345,7 +345,7 @@ export const Header: FC = () => {
                           strokeWidth="2"
                           strokeDasharray={50.3}
                           strokeDashoffset={12.6}
-                          className="text-blue-600"
+                          className="text-primary-600"
                           initial={{ strokeDashoffset: 50.3 }}
                           animate={{ strokeDashoffset: 0 }}
                           transition={{ duration: 2000, ease: 'linear' }}
@@ -422,7 +422,7 @@ export const Header: FC = () => {
                   className="relative p-2 rounded-lg hover:bg-slate-800/50 text-slate-400 hover:text-white transition-colors"
                 >
                   <Bell className="w-5 h-5" />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
                 </motion.button>
 
                 <AnimatePresence>

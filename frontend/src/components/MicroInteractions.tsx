@@ -23,7 +23,7 @@ export const PremiumButton: FC<PremiumButtonProps> = ({
   ...props
 }) => {
   const variants = {
-    primary: 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/60',
+    primary: 'bg-gradient-to-r from-blue-600 to-accent text-white shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/60',
     secondary: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-700',
     success: 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/50 hover:shadow-xl hover:shadow-emerald-500/60',
     danger: 'bg-gradient-to-r from-red-500 to-rose-500 text-white shadow-lg shadow-red-500/50 hover:shadow-xl hover:shadow-red-500/60',
@@ -133,7 +133,7 @@ export const PremiumInput: FC<PremiumInputProps> = ({
         className={`w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 rounded-lg transition-all duration-200 outline-none ${
           error
             ? 'border-red-500 focus:border-red-600'
-            : 'border-slate-300 dark:border-slate-600 focus:border-blue-500'
+            : 'border-slate-300 dark:border-slate-600 focus:border-primary'
         } ${icon ? 'pl-10' : ''} text-slate-900 dark:text-white placeholder:text-slate-400`}
         {...props}
       />
@@ -184,7 +184,7 @@ export const PremiumSelect: FC<PremiumSelectProps> = ({
       className={`w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 rounded-lg transition-all duration-200 outline-none appearance-none cursor-pointer ${
         error
           ? 'border-red-500 focus:border-red-600'
-          : 'border-slate-300 dark:border-slate-600 focus:border-blue-500'
+          : 'border-slate-300 dark:border-slate-600 focus:border-primary'
       } text-slate-900 dark:text-white`}
       {...props}
     >
@@ -258,7 +258,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     onClick={() => !disabled && onChange(!checked)}
     disabled={disabled}
     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
-      checked ? 'bg-blue-600' : 'bg-slate-300 dark:bg-slate-600'
+      checked ? 'bg-primary-600' : 'bg-slate-300 dark:bg-slate-600'
     } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
     role="switch"
     aria-checked={checked}
@@ -365,7 +365,7 @@ export const StatsCard: FC<StatsCardProps> = ({
         </div>
 
         {icon && (
-          <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg text-blue-600 dark:text-blue-400">
+          <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg text-primary-600 dark:text-blue-400">
             {icon}
           </div>
         )}
@@ -392,7 +392,7 @@ export const ProgressDots: FC<ProgressDotsProps> = ({ current, total, className 
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
         className={`h-2 rounded-full transition-all duration-300 ${
-          i < current ? 'bg-blue-600 flex-1' : i === current ? 'bg-blue-400 w-8' : 'bg-slate-300 dark:bg-slate-600 w-2'
+          i < current ? 'bg-primary-600 flex-1' : i === current ? 'bg-blue-400 w-8' : 'bg-slate-300 dark:bg-slate-600 w-2'
         }`}
       />
     ))}

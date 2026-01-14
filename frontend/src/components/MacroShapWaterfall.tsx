@@ -229,7 +229,7 @@ export const MacroShapWaterfall: FC<MacroShapWaterfallProps> = ({
       {/* Plain Language Explanations */}
       <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
         <h4 className="font-semibold text-slate-900 dark:text-white mb-2 flex items-center">
-          <Info className="w-4 h-4 mr-2 text-blue-600" />
+          <Info className="w-4 h-4 mr-2 text-primary-600" />
           Understanding the Economic Factors
         </h4>
         <div className="space-y-2 text-sm text-slate-700 dark:text-slate-300">

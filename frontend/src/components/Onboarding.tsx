@@ -216,7 +216,7 @@ export const EmptyState: FC<EmptyStateProps> = ({ type, onAction, demoMode = fal
       description:
         'Start by generating your first sales forecast. Select a retail category, choose a model, and get accurate predictions with confidence intervals.',
       actionText: 'Generate Your First Forecast',
-      icon: <TrendingUp className="w-12 h-12 text-blue-500" />,
+      icon: <TrendingUp className="w-12 h-12 text-primary" />,
     },
     models: {
       illustration: <NoModelsIllustration />,
@@ -224,7 +224,7 @@ export const EmptyState: FC<EmptyStateProps> = ({ type, onAction, demoMode = fal
       description:
         'Upload your historical retail sales data to train powerful ML models. Our system supports time series forecasting with LightGBM, XGBoost, and Random Forest.',
       actionText: 'Upload Training Data',
-      icon: <Brain className="w-12 h-12 text-purple-500" />,
+      icon: <Brain className="w-12 h-12 text-accent" />,
     },
     validations: {
       illustration: <NoValidationsIllustration />,
@@ -248,7 +248,7 @@ export const EmptyState: FC<EmptyStateProps> = ({ type, onAction, demoMode = fal
       description:
         'Generate a prediction first to view its SHAP (SHapley Additive exPlanations) values. Understand exactly which features influenced each prediction.',
       actionText: 'Generate Prediction',
-      icon: <Brain className="w-12 h-12 text-purple-500" />,
+      icon: <Brain className="w-12 h-12 text-accent" />,
     },
   };
 
@@ -307,7 +307,7 @@ export const EmptyState: FC<EmptyStateProps> = ({ type, onAction, demoMode = fal
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onAction}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/60 transition-all duration-200 flex items-center justify-center gap-2"
+              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-accent text-white rounded-xl font-semibold shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/60 transition-all duration-200 flex items-center justify-center gap-2"
             >
               <Sparkles className="w-5 h-5" />
               {current.actionText}
@@ -381,14 +381,14 @@ export const LoadSampleDataButton: FC<{ onLoad?: () => void }> = ({ onLoad }) =>
       whileTap={{ scale: 0.98 }}
       onClick={handleLoadSample}
       disabled={isLoading}
-      className="px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-2 border-slate-300 dark:border-slate-600 rounded-xl font-semibold hover:border-blue-500 hover:text-blue-600 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+      className="px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-2 border-slate-300 dark:border-slate-600 rounded-xl font-semibold hover:border-primary hover:text-primary-600 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {isLoading ? (
         <>
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-            className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full"
+            className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full"
           />
           Loading Sample Data...
         </>
@@ -460,7 +460,7 @@ export const HelpTooltip: FC<HelpTooltipProps> = ({ content, documentationLink, 
         onMouseLeave={() => setIsVisible(false)}
         onFocus={() => setIsVisible(true)}
         onBlur={() => setIsVisible(false)}
-        className="inline-flex items-center justify-center w-5 h-5 text-slate-400 hover:text-blue-500 transition-colors"
+        className="inline-flex items-center justify-center w-5 h-5 text-slate-400 hover:text-primary transition-colors"
         aria-label={`Get help with ${term}`}
       >
         <HelpCircle className="w-4 h-4" />
@@ -548,7 +548,7 @@ export const OnboardingModal: FC<OnboardingProps> = ({
               <div
                 key={i}
                 className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                  i < currentStep ? 'bg-blue-600' : i === currentStep ? 'bg-blue-400' : 'bg-slate-300 dark:bg-slate-600'
+                  i < currentStep ? 'bg-primary-600' : i === currentStep ? 'bg-blue-400' : 'bg-slate-300 dark:bg-slate-600'
                 }`}
               />
             ))}
@@ -588,7 +588,7 @@ export const OnboardingModal: FC<OnboardingProps> = ({
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium shadow-lg shadow-blue-500/50 flex items-center gap-2"
+                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-accent text-white rounded-lg font-medium shadow-lg shadow-blue-500/50 flex items-center gap-2"
               >
                 {currentStep === totalSteps - 1 ? 'Get Started' : 'Next'}
                 {currentStep < totalSteps - 1 && <ArrowRight className="w-4 h-4" />}
@@ -680,19 +680,19 @@ export const WelcomeModal: FC = () => {
       content: (
         <div className="space-y-4">
           <p className="text-lg">
-            Your intelligent <span className="font-bold text-blue-600">retail sales forecasting</span>{' '}
+            Your intelligent <span className="font-bold text-primary-600">retail sales forecasting</span>{' '}
             platform powered by advanced machine learning models.
           </p>
           <div className="grid grid-cols-2 gap-4 mt-6">
             <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-              <TrendingUp className="w-8 h-8 text-blue-600 mb-2" />
+              <TrendingUp className="w-8 h-8 text-primary-600 mb-2" />
               <p className="font-semibold">Accurate Forecasts</p>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 Ensemble ML models
               </p>
             </div>
             <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-              <Brain className="w-8 h-8 text-purple-600 mb-2" />
+              <Brain className="w-8 h-8 text-accent mb-2" />
               <p className="font-semibold">Explainable AI</p>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 SHAP-based insights
@@ -759,7 +759,7 @@ export const WelcomeModal: FC = () => {
               <p className="text-sm text-slate-600 dark:text-slate-400">Average Accuracy</p>
             </div>
             <div className="flex-1 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-center">
-              <p className="text-3xl font-bold text-blue-600">&lt;2%</p>
+              <p className="text-3xl font-bold text-primary-600">&lt;2%</p>
               <p className="text-sm text-slate-600 dark:text-slate-400">Mean Error Rate</p>
             </div>
           </div>
@@ -806,7 +806,7 @@ export const WelcomeModal: FC = () => {
               key={i}
               onClick={() => setCurrentStep(i)}
               className={`w-2 h-2 rounded-full transition-all ${
-                i === currentStep ? 'bg-blue-600 w-8' : 'bg-slate-300 dark:bg-slate-600'
+                i === currentStep ? 'bg-primary-600 w-8' : 'bg-slate-300 dark:bg-slate-600'
               }`}
             />
           ))}
@@ -814,7 +814,7 @@ export const WelcomeModal: FC = () => {
 
         <button
           onClick={handleNext}
-          className="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400"
+          className="text-sm font-medium text-primary-600 hover:text-blue-700 dark:text-blue-400"
         >
           {currentStep === steps.length - 1 ? 'Get Started' : 'Next'} →
         </button>

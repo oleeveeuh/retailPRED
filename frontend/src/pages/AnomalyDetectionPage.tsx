@@ -208,14 +208,14 @@ const AnomalyDetectionPage: FC = () => {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-blue-600 dark:text-blue-400">
+              <p className="text-sm font-medium text-primary-600 dark:text-blue-400">
                 Total Anomalies
               </p>
               <p className="text-3xl font-bold text-blue-900 dark:text-blue-100 mt-2">
                 {stats.total}
               </p>
             </div>
-            <div className="p-3 bg-blue-500 rounded-lg">
+            <div className="p-3 bg-primary rounded-lg">
               <AlertTriangle className="w-6 h-6 text-white" />
             </div>
           </div>
@@ -488,7 +488,7 @@ const AnomalyDetectionPage: FC = () => {
       {/* Info Box */}
       <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
         <div className="flex gap-3">
-          <AlertTriangle className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+          <AlertTriangle className="w-5 h-5 text-primary-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
             <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
               About Anomaly Detection

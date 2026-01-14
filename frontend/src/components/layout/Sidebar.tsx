@@ -134,7 +134,7 @@ export const Sidebar: FC = () => {
       >
         {/* Logo Section */}
         <div className="relative h-20 border-b border-slate-700/50">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-accent/20" />
 
           <div className="relative h-full flex items-center justify-between px-6">
             <AnimatePresence mode="wait">
@@ -147,8 +147,8 @@ export const Sidebar: FC = () => {
                   className="flex items-center space-x-3"
                 >
                   <div className="relative">
-                    <div className="absolute inset-0 bg-blue-500 blur-xl opacity-50 rounded-full animate-pulse" />
-                    <div className="relative w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="absolute inset-0 bg-primary blur-xl opacity-50 rounded-full animate-pulse" />
+                    <div className="relative w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg">
                       <BarChart3 className="w-6 h-6 text-white" />
                     </div>
                   </div>
@@ -197,7 +197,7 @@ export const Sidebar: FC = () => {
                     rounded-xl transition-all duration-200
                     ${
                       active
-                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/50'
+                        ? 'bg-gradient-to-r from-blue-600 to-accent text-white shadow-lg shadow-blue-500/50'
                         : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
                     }
                   `}
@@ -244,7 +244,7 @@ export const Sidebar: FC = () => {
                   {/* Hover Glow */}
                   {!active && (
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-accent/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
                       initial={false}
                       whileHover={{ opacity: 1 }}
                     />
