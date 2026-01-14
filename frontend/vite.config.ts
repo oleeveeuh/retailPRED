@@ -15,6 +15,8 @@ export default defineConfig(({ mode }) => ({
     },
   },
   publicDir: 'public',
+  // Empty base path for Vercel deployment
+  base: mode === 'production' ? '/' : '/',
   // Additional static file serving
   resolve: {
     alias: {
