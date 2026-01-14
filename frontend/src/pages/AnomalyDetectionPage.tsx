@@ -36,12 +36,12 @@ const loadEconomicContext = async (date: string) => {
 
     return {
       regime: closestMatch.regime,
-      indicators: {
+      indicators: closestMatch.indicators || {
         unemployment: closestMatch.unemployment,
-        unemploymentChange: closestMatch.unemploymentChange,
-        consumerConfidence: closestMatch.consumerConfidence,
-        confidenceChange: closestMatch.confidenceChange,
-        fedRate: closestMatch.fedRate,
+        unemploymentChange: closestMatch.unemployment_change,
+        consumerConfidence: closestMatch.consumer_confidence,
+        confidenceChange: closestMatch.confidence_change,
+        fedRate: closestMatch.fed_rate,
       },
       anomalies: closestMatch.anomalies,
       explanation: closestMatch.explanation,
@@ -97,7 +97,7 @@ const AnomalyDetectionPage: FC = () => {
 
     const hasPredictedValue = predictions[0]?.predicted_value !== undefined;
 
-    // Lower threshold from 5% to 2% for weekly data
+    // Detect anomalies: week-over-week changes > 5%
     return predictions.filter((p, i) => {
       if (i === 0) return false;
       const prev = predictions[i - 1];
@@ -107,7 +107,7 @@ const AnomalyDetectionPage: FC = () => {
       if (!currentValue || !previousValue) return false;
 
       const change = Math.abs(((currentValue - previousValue) / previousValue) * 100);
-      return change > 2; // Lowered from 5% to 2%
+      return change > 5; // 5% threshold for weekly retail sales anomalies
     }).map((p, i, arr) => {
       const predIndex = predictions.indexOf(p);
       const prev = predictions[predIndex - 1];
@@ -116,7 +116,7 @@ const AnomalyDetectionPage: FC = () => {
 
       const change = ((currentValue - previousValue) / previousValue) * 100;
       const changeMagnitude = Math.abs(change);
-      const severity = changeMagnitude > 8 ? 'severe' : 'moderate'; // Adjusted from 10% to 8%
+      const severity = changeMagnitude > 10 ? 'severe' : 'moderate'; // 10%+ is severe
       const type = change > 0 ? 'surge' : 'decline';
 
       return {
