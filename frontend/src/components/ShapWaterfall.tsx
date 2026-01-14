@@ -68,7 +68,7 @@ interface ShapWaterfallProps {
   categoryName?: string;
 }
 
-type ViewMode = 'waterfall' | 'force' | 'beeswarm';
+type ViewMode = 'waterfall' | 'force' | 'scatter';
 
 export const ShapWaterfall: FC<ShapWaterfallProps> = ({
   data,
@@ -513,8 +513,16 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
     );
   };
 
-  // Beeswarm View
-  const BeeswarmView = () => {
+  // Scatter Plot View (improved beeswarm)
+  const ScatterPlotView = () => {
+    if (data.length === 0) {
+      return (
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 text-center">
+          <p className="text-slate-500">No SHAP data available</p>
+        </div>
+      );
+    }
+
     const scatterData = data.map((d, i) => ({
       x: d.value,
       y: Math.random() * 100,
@@ -526,8 +534,12 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
 
     return (
       <div className="bg-white rounded-2xl border border-slate-200 p-6">
-        <ResponsiveContainer width="100%" height={height - 100}>
-          <ScatterChart margin={{ left: 20, right: 20, top: 20, bottom: 20 }}>
+        <div className="mb-4 text-sm text-slate-600 text-center">
+          Each point represents a feature's impact on the prediction.
+          Points to the right increase the prediction, points to the left decrease it.
+        </div>
+        <ResponsiveContainer width="100%" height={height - 120}>
+          <ScatterChart margin={{ left: 20, right: 20, top: 20, bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis
               type="number"
@@ -536,6 +548,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
               tickFormatter={(value) => `$${value.toFixed(0)}`}
               stroke="#64748b"
             />
+            <YAxis hide />
             <Tooltip
               content={({ active, payload }) => {
                 if (!active || !payload) return null;
@@ -544,7 +557,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
                   <div className="bg-slate-900/95 rounded-lg p-3 border border-slate-700">
                     <div className="text-white font-semibold mb-1">{data.feature}</div>
                     <div className="text-sm text-slate-300">
-                      SHAP: ${data.x.toFixed(2)}
+                      Impact: {data.isPositive ? '+' : ''}${data.x.toFixed(2)}
                     </div>
                     <div className="text-sm text-slate-300">
                       Importance: {data.importance.toFixed(1)}%
@@ -560,7 +573,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
                   fill={entry.isPositive ? colors.positive : colors.negative}
                   fillOpacity={0.7}
                   onClick={() => setSelectedFeature(data[index])}
-                  className="cursor-pointer"
+                  className="cursor-pointer transition-opacity hover:opacity-100"
                 />
               ))}
             </Scatter>
@@ -896,15 +909,15 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
               Force Plot
             </button>
             <button
-              onClick={() => setViewMode('beeswarm')}
+              onClick={() => setViewMode('scatter')}
               className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                viewMode === 'beeswarm'
+                viewMode === 'scatter'
                   ? 'bg-white text-slate-900 shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              <Zap className="w-4 h-4 inline mr-2" />
-              Beeswarm
+              <Crosshair className="w-4 h-4 inline mr-2" />
+              Scatter Plot
             </button>
           </div>
 
@@ -944,10 +957,23 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
             </motion.div>
           </div>
         )}
+        {viewMode === 'scatter' && (
+          <div className="absolute top-6 right-6 z-10">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.5, type: 'spring', stiffness: 200 }}
+              className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5"
+            >
+              <Info className="w-3.5 h-3.5" />
+              Click points for details
+            </motion.div>
+          </div>
+        )}
 
         {viewMode === 'waterfall' && <WaterfallChart />}
         {viewMode === 'force' && <ForcePlotView />}
-        {viewMode === 'beeswarm' && <BeeswarmView />}
+        {viewMode === 'scatter' && <ScatterPlotView />}
       </motion.div>
 
       {/* Legend */}
