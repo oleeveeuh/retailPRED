@@ -78,12 +78,20 @@ const AnomalyDetectionPage: FC = () => {
 
   const predictions = predictionsResponse?.predictions || [];
 
+  // Debug logging
+  console.log('Anomaly Detection Debug:');
+  console.log('Selected Category:', selectedCategory);
+  console.log('Model Pattern:', categoryToPattern[selectedCategory]);
+  console.log('Predictions fetched:', predictions.length);
+  console.log('First prediction:', predictions[0]);
+
   // Detect anomalies from actual prediction data (use Memo to prevent infinite loop)
   const anomalies = useMemo(() => {
     if (!predictions || predictions.length === 0) return [];
 
-    const hasPredictedValue = predictions[0].predicted_value !== undefined;
+    const hasPredictedValue = predictions[0]?.predicted_value !== undefined;
 
+    // Lower threshold from 5% to 2% for weekly data
     return predictions.filter((p, i) => {
       if (i === 0) return false;
       const prev = predictions[i - 1];
@@ -93,7 +101,7 @@ const AnomalyDetectionPage: FC = () => {
       if (!currentValue || !previousValue) return false;
 
       const change = Math.abs(((currentValue - previousValue) / previousValue) * 100);
-      return change > 5;
+      return change > 2; // Lowered from 5% to 2%
     }).map((p, i, arr) => {
       const predIndex = predictions.indexOf(p);
       const prev = predictions[predIndex - 1];
@@ -102,11 +110,11 @@ const AnomalyDetectionPage: FC = () => {
 
       const change = ((currentValue - previousValue) / previousValue) * 100;
       const changeMagnitude = Math.abs(change);
-      const severity = changeMagnitude > 10 ? 'severe' : 'moderate';
+      const severity = changeMagnitude > 8 ? 'severe' : 'moderate'; // Adjusted from 10% to 8%
       const type = change > 0 ? 'surge' : 'decline';
 
       return {
-        id: `${p.date}-${selectedCategory}`,
+        id: `${p.date || p.prediction_date}-${selectedCategory}`,
         date: p.date || p.prediction_date,
         predicted_value: currentValue,
         actual_value: p.actual_value,
