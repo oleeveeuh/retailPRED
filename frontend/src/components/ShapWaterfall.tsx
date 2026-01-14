@@ -41,7 +41,7 @@ import {
   Activity,
   BarChart3,
   Zap,
-  Target,
+  Crosshair,
   ChevronRight,
   ChevronLeft,
 } from 'lucide-react';
@@ -440,7 +440,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
             className="bg-blue-50 border border-blue-200 rounded-xl p-4"
           >
             <div className="flex items-center mb-2">
-              <Target className="w-5 h-5 text-blue-600 mr-2" />
+              <Crosshair className="w-5 h-5 text-blue-600 mr-2" />
               <span className="text-sm font-medium text-blue-700">Net Change</span>
             </div>
             <div className="text-2xl font-bold text-blue-900">
@@ -777,7 +777,7 @@ export const ShapWaterfall: FC<ShapWaterfallProps> = ({
 
               <div className="bg-gradient-to-br from-slate-50 to-violet-50 rounded-2xl p-6 border border-slate-200">
                 <h4 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
-                  <Target className="w-5 h-5 mr-2 text-violet-600" />
+                  <Crosshair className="w-5 h-5 mr-2 text-violet-600" />
                   Correlation with Outcomes
                 </h4>
 

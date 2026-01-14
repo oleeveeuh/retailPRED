@@ -13,7 +13,7 @@ import {
   Info,
   TrendingUp,
   DollarSign,
-  Target,
+  Crosshair,
   Calendar,
   Loader2,
   AlertCircle,
@@ -200,7 +200,7 @@ export const BusinessDashboard: FC = () => {
             <KPICard
               title="Forecast Accuracy"
               value={kpis.avgAccuracy}
-              icon={<Target className="w-6 h-6 text-green-600" />}
+              icon={<Crosshair className="w-6 h-6 text-green-600" />}
               color="border-green-500"
             />
             <KPICard
@@ -442,7 +442,7 @@ export const BusinessDashboard: FC = () => {
                     <div className="space-y-4">
                       <div className="bg-white border border-gray-200 rounded-lg p-6">
                         <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
-                          <Target className="w-5 h-5 mr-2 text-green-600" />
+                          <Crosshair className="w-5 h-5 mr-2 text-green-600" />
                           Forecast Accuracy
                         </h4>
                         <p className="text-gray-700 mb-2">

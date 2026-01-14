@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import {
   Trophy,
-  Target,
+  Crosshair,
   Zap,
   TrendingUp,
   ChevronDown,
@@ -438,7 +438,7 @@ export const ModelsPage: FC = () => {
           className="glass-card p-6 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-4 opacity-10">
-            <Target className="w-24 h-24 text-blue-500" />
+            <Crosshair className="w-24 h-24 text-blue-500" />
           </div>
           <div className="flex items-start justify-between">
             <div>

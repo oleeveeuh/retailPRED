@@ -3,7 +3,7 @@
  * Displays unusual predictions with economic context explanations
  */
 
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   AlertTriangle,
@@ -69,8 +69,8 @@ const AnomalyDetectionPage: FC = () => {
 
   const predictions = predictionsResponse?.predictions || [];
 
-  // Detect anomalies from actual prediction data
-  const anomalies = (() => {
+  // Detect anomalies from actual prediction data (use Memo to prevent infinite loop)
+  const anomalies = useMemo(() => {
     if (!predictions || predictions.length === 0) return [];
 
     const hasPredictedValue = predictions[0].predicted_value !== undefined;
@@ -108,7 +108,7 @@ const AnomalyDetectionPage: FC = () => {
         type,
       };
     });
-  })();
+  }, [predictions, selectedCategory]);
 
   // Fetch economic context for each anomaly
   useEffect(() => {
