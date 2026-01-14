@@ -125,7 +125,7 @@ export const EconomicScenarioAnalysis: FC = () => {
   const { data: modelPredictions } = useQuery({
     queryKey: ['model-predictions', category, selectedScenario],
     queryFn: async () => {
-      const models = ['LGBM', 'RandomForest', 'PatchTST', 'TimesNet'];
+      const models = ['LGBM', 'RandomForest'];
       const predictions = await Promise.all(
         models.map(async (model) => {
           try {
@@ -137,10 +137,7 @@ export const EconomicScenarioAnalysis: FC = () => {
             return {
               name: model,
               value: data.prediction || 0,
-              color: model === 'LGBM' ? 'bg-blue-500' :
-                     model === 'RandomForest' ? 'bg-green-500' :
-                     model === 'PatchTST' ? 'bg-purple-500' :
-                     'bg-orange-500'
+              color: model === 'LGBM' ? 'bg-blue-500' : 'bg-green-500'
             };
           } catch {
             return null;

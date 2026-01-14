@@ -194,14 +194,6 @@ class DemoDataService {
     const withoutShap = raw.models_available?.without_shap || [];
     const allModels = [...withShap, ...withoutShap];
 
-    // Add deep learning models if not present
-    const deepLearningModels = ['PatchTST', 'TimesNet'];
-    deepLearningModels.forEach(model => {
-      if (!allModels.includes(model)) {
-        allModels.push(model);
-      }
-    });
-
     return {
       ...raw,
       models_available: {
