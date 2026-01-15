@@ -25,9 +25,11 @@ export const Dashboard: FC = () => {
   const { regime: economicRegime, loading: regimeLoading } = useCurrentRegime();
 
   // Fetch predictions for metrics (fetch with high limit to get accurate total)
-  const { data: historyData, isLoading: predictionsLoading } = useQuery({
+  const { data: historyData, isLoading: predictionsLoading, error: predictionsError } = useQuery({
     queryKey: ['recentPredictions'],
     queryFn: () => predictionsApi.getHistory({ limit: 15000 }),
+    retry: 2,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   // Fetch models with actual training metrics
@@ -37,28 +39,54 @@ export const Dashboard: FC = () => {
     retry: 2,
   });
 
-  // Calculate summary metrics from actual predictions
-  const summaryMetrics = {
-    totalPredictions: historyData?.predictions?.length || historyData?.total_count || 0,
-    activeModels: modelsData?.active_count || 0,
-    avgAccuracy: historyData?.predictions
-      ? (() => {
-          // Calculate accuracy from actual prediction validation
-          const validatedPredictions = historyData.predictions.filter((p: any) =>
-            p.actual_value !== null && p.actual_value !== undefined && p.error_percentage !== null
-          );
-          if (validatedPredictions.length === 0) return 0;
+  // Debug logging
+  console.log('Dashboard historyData:', historyData);
+  console.log('Dashboard predictions:', historyData?.predictions);
+  console.log('Dashboard modelsData:', modelsData);
 
-          const avgError = validatedPredictions.reduce((sum: number, p: any) => sum + (p.error_percentage || 0), 0) / validatedPredictions.length;
-          return 100 - avgError;
-        })()
-      : 0,
+  // Calculate summary metrics from actual predictions
+  const predictionsArray = historyData?.predictions || [];
+  const summaryMetrics = {
+    totalPredictions: predictionsArray.length,
+    activeModels: modelsData?.active_count || 0,
+    avgAccuracy: (() => {
+      if (predictionsArray.length === 0) return 0;
+
+      // Calculate accuracy from actual prediction validation
+      const validatedPredictions = predictionsArray.filter((p: any) =>
+        p.actual_value !== null &&
+        p.actual_value !== undefined &&
+        p.error_percentage !== null &&
+        p.error_percentage !== undefined
+      );
+      if (validatedPredictions.length === 0) return 0;
+
+      const avgError = validatedPredictions.reduce((sum: number, p: any) => sum + (p.error_percentage || 0), 0) / validatedPredictions.length;
+      return 100 - avgError;
+    })(),
   };
+
+  console.log('Dashboard summaryMetrics:', summaryMetrics);
 
   if (predictionsLoading || modelsLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (predictionsError) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <p className="text-gray-600 mt-1">Overview of your retail forecasting system</p>
+        </div>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-red-900 mb-2">Error Loading Prediction Data</h3>
+          <p className="text-red-700">Unable to fetch prediction history. Please refresh the page and try again.</p>
+        </div>
       </div>
     );
   }
