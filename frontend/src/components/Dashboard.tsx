@@ -44,7 +44,9 @@ export const Dashboard: FC = () => {
     avgAccuracy: historyData?.predictions
       ? (() => {
           // Calculate accuracy from actual prediction validation
-          const validatedPredictions = historyData.predictions.filter((p: any) => p.actual_value !== null && p.error_percentage !== null);
+          const validatedPredictions = historyData.predictions.filter((p: any) =>
+            p.actual_value !== null && p.actual_value !== undefined && p.error_percentage !== null
+          );
           if (validatedPredictions.length === 0) return 0;
 
           const avgError = validatedPredictions.reduce((sum: number, p: any) => sum + (p.error_percentage || 0), 0) / validatedPredictions.length;
