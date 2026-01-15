@@ -39,12 +39,20 @@ export const Dashboard: FC = () => {
     retry: 2,
   });
 
-  // Debug logging
+  if (predictionsLoading || modelsLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Debug logging (only after loading is complete)
   console.log('Dashboard historyData:', historyData);
   console.log('Dashboard predictions:', historyData?.predictions);
   console.log('Dashboard modelsData:', modelsData);
 
-  // Calculate summary metrics from actual predictions
+  // Calculate summary metrics from actual predictions (only after data is loaded)
   const predictionsArray = historyData?.predictions || [];
   const summaryMetrics = {
     totalPredictions: predictionsArray.length,
@@ -67,14 +75,6 @@ export const Dashboard: FC = () => {
   };
 
   console.log('Dashboard summaryMetrics:', summaryMetrics);
-
-  if (predictionsLoading || modelsLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
 
   if (predictionsError) {
     return (
