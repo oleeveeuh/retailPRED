@@ -133,20 +133,70 @@ export const BusinessDashboard: FC = () => {
   const handleExportCSV = async () => {
     setExportLoading(true);
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_URL !== undefined
-        ? import.meta.env.VITE_API_URL
-        : 'http://localhost:8000';
-      const response = await fetch(`${apiBaseUrl}/api/export/predictions-csv`);
-      if (response.ok) {
-        const blob = await response.blob();
+      // Check if in demo mode
+      const isDemoMode = import.meta.env.VITE_DEMO_MODE === 'true';
+
+      if (isDemoMode) {
+        // Demo mode: Export from demo data
+        const response = await fetch('/demo-data/predictions.json');
+        const data = await response.json();
+        const predictions = Array.isArray(data) ? data : data.data;
+
+        if (!predictions || predictions.length === 0) {
+          throw new Error('No predictions data available');
+        }
+
+        // Create CSV content
+        const headers = ['date', 'store', 'product', 'predicted_sales', 'actual_sales', 'model_name', 'error_pct', 'error_abs', 'is_validated'];
+        const csvRows = [headers.join(',')];
+
+        predictions.forEach((p: any) => {
+          const actualValue = p.actual_value !== null && p.actual_value !== undefined ? p.actual_value : null;
+          const errorPct = p.error_percentage !== null && p.error_percentage !== undefined ? p.error_percentage : null;
+          const errorAbs = p.error_absolute !== null && p.error_absolute !== undefined ? p.error_absolute : null;
+
+          csvRows.push([
+            p.prediction_date,
+            'All Stores',
+            'All Products',
+            p.predicted_value.toFixed(2),
+            actualValue ? actualValue.toFixed(2) : '',
+            p.model_name,
+            errorPct ? errorPct.toFixed(2) : '',
+            errorAbs ? errorAbs.toFixed(2) : '',
+            actualValue ? 'Yes' : 'No'
+          ].join(','));
+        });
+
+        const csvContent = csvRows.join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `retail_predictions_${new Date().toISOString().split('T')[0]}.csv`;
+        a.download = `retail_predictions_demo_${new Date().toISOString().split('T')[0]}.csv`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
+      } else {
+        // Production mode: Call backend API
+        const apiBaseUrl = import.meta.env.VITE_API_URL !== undefined
+          ? import.meta.env.VITE_API_URL
+          : 'http://localhost:8000';
+        const response = await fetch(`${apiBaseUrl}/api/export/predictions-csv`);
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `retail_predictions_${new Date().toISOString().split('T')[0]}.csv`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        } else {
+          throw new Error(`Export failed with status ${response.status}`);
+        }
       }
     } catch (error) {
       console.error('Export failed:', error);
