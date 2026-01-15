@@ -48,7 +48,7 @@ import {
   Legend,
   Cell,
 } from 'recharts';
-import { modelsApi, trainingMetricsApi } from '../api/unifiedApi';
+import { modelsApi, trainingMetricsApi, predictionsApi } from '../api/unifiedApi';
 
 // Types
 interface Model {
@@ -174,6 +174,108 @@ const generateSparklineData = (modelName: string, baseR2: number) => {
   return data;
 };
 
+// Training methodology information based on model type
+const getModelTrainingInfo = (modelType: string) => {
+  const rfInfo = (
+    <div className="space-y-3 text-sm">
+      <div className="flex items-start gap-2">
+        <Settings className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="font-semibold text-slate-900 dark:text-slate-100">Manual Hyperparameter Tuning</p>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
+            Hyperparameters manually tuned to prevent overfitting. No grid search was used.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-start gap-2">
+        <GitBranch className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="font-semibold text-slate-900 dark:text-slate-100">Overfitting Prevention</p>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
+            Shallow trees (max_depth=5), higher min_samples_split (20), and max_features=0.7
+            to ensure generalization.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-start gap-2">
+        <Brain className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="font-semibold text-slate-900 dark:text-slate-100">Out-of-Bag Validation</p>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
+            Bootstrap sampling with OOB scoring for built-in validation without separate test set.
+          </p>
+        </div>
+      </div>
+      <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+        <p className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Key Hyperparameters:</p>
+        <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-1">
+          <li>• <strong>n_estimators:</strong> 200 trees</li>
+          <li>• <strong>max_depth:</strong> 5 (shallow trees)</li>
+          <li>• <strong>min_samples_split:</strong> 20</li>
+          <li>• <strong>min_samples_leaf:</strong> 10</li>
+          <li>• <strong>max_features:</strong> 0.7 (70% of features per tree)</li>
+        </ul>
+      </div>
+    </div>
+  );
+
+  const lgbmInfo = (
+    <div className="space-y-3 text-sm">
+      <div className="flex items-start gap-2">
+        <Settings className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="font-semibold text-slate-900 dark:text-slate-100">Manual Hyperparameter Tuning</p>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
+            Hyperparameters manually tuned for regularization. No grid search was used.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-start gap-2">
+        <Sparkles className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="font-semibold text-slate-900 dark:text-slate-100">Early Stopping</p>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
+            Training with 50-round early stopping patience. Model stops if validation MAE doesn't improve.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-start gap-2">
+        <GitBranch className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="font-semibold text-slate-900 dark:text-slate-100">Regularization</p>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
+            L1 (alpha=0.1) and L2 (lambda=0.1) regularization with subsample (0.8) and column sampling (0.7).
+          </p>
+        </div>
+      </div>
+      <div className="mt-3 p-3 bg-teal-50 dark:bg-teal-900/20 rounded-lg border border-teal-200 dark:border-teal-800">
+        <p className="font-semibold text-teal-900 dark:text-teal-100 mb-2">Key Hyperparameters:</p>
+        <ul className="text-xs text-teal-800 dark:text-teal-200 space-y-1">
+          <li>• <strong>n_estimators:</strong> 500 (max with early stopping)</li>
+          <li>• <strong>max_depth:</strong> 5 (shallow trees)</li>
+          <li>• <strong>num_leaves:</strong> 31 (limited complexity)</li>
+          <li>• <strong>learning_rate:</strong> 0.01 (conservative)</li>
+          <li>• <strong>min_child_samples:</strong> 20</li>
+          <li>• <strong>early_stopping_rounds:</strong> 50</li>
+        </ul>
+      </div>
+    </div>
+  );
+
+  const defaultInfo = (
+    <div className="text-sm text-slate-600 dark:text-slate-400">
+      <p>Training methodology information not available for this model type.</p>
+    </div>
+  );
+
+  if (modelType.toLowerCase().includes('randomforest') || modelType.toLowerCase().includes('random_forest')) {
+    return rfInfo;
+  } else if (modelType.toLowerCase().includes('lgbm') || modelType.toLowerCase().includes('lightgbm')) {
+    return lgbmInfo;
+  }
+  return defaultInfo;
+};
+
 type TabType = 'performance' | 'architecture' | 'history';
 type SortField = 'model_name' | 'rmse' | 'mae' | 'mape' | 'mase' | 'r2' | 'training_time' | 'inference_time';
 type SortOrder = 'asc' | 'desc';
@@ -200,7 +302,16 @@ export const ModelsPage: FC = () => {
     retry: 2,
   });
 
+  // Fetch predictions for accurate metrics
+  const { data: predictionsData } = useQuery({
+    queryKey: ['predictions-metrics'],
+    queryFn: () => predictionsApi.getHistory({ limit: 15000 }),
+    retry: 2,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
   const models = modelsData?.models || [];
+  const predictionsArray = predictionsData?.predictions || [];
 
   // Find best model (lowest MASE is best), but exclude SeasonalNaive since it's the baseline
   const nonBaselineModels = models.filter(m => !m.model_name.toLowerCase().includes('seasonal'));
@@ -208,16 +319,25 @@ export const ModelsPage: FC = () => {
     model.metrics.mase < best.metrics.mase ? model : best
   , nonBaselineModels[0]) : null;
 
-  // Calculate average prediction accuracy from MAPE (100 - MAPE)
-  const avgAccuracy = models.length > 0
-    ? (models.reduce((sum, m) => sum + (100 - m.metrics.mape), 0) / models.length)
-    : 0;
+  // Calculate average prediction accuracy from actual prediction validation
+  const avgAccuracy = (() => {
+    if (predictionsArray.length === 0) return 0;
 
-  // Calculate total predictions from real data
-  const totalPredictions = models.reduce((sum, m) => {
-    const categories = m.hyperparameters.successful_categories || 0;
-    return sum + (categories * 5814); // Each category has 5814 data points
-  }, 0);
+    const validatedPredictions = predictionsArray.filter((p: any) =>
+      p.actual_value !== null &&
+      p.actual_value !== undefined &&
+      p.error_percentage !== null &&
+      p.error_percentage !== undefined
+    );
+
+    if (validatedPredictions.length === 0) return 0;
+
+    const avgError = validatedPredictions.reduce((sum: number, p: any) => sum + (p.error_percentage || 0), 0) / validatedPredictions.length;
+    return 100 - avgError;
+  })();
+
+  // Calculate total predictions from actual data
+  const totalPredictions = predictionsArray.length;
 
   // Sort models
   const sortedModels = [...models].sort((a, b) => {
@@ -483,8 +603,8 @@ export const ModelsPage: FC = () => {
               >
                 {totalPredictions.toLocaleString()}
               </motion.h3>
-              <p className="text-accent font-semibold mt-1">
-                +12.5% this week
+              <p className="text-slate-600 dark:text-slate-400 font-medium mt-1">
+                All time
               </p>
             </div>
             <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-xl">
@@ -734,6 +854,16 @@ export const ModelsPage: FC = () => {
                                         </p>
                                       </div>
                                     ))}
+                                  </div>
+                                </div>
+
+                                {/* Training Methodology */}
+                                <div>
+                                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
+                                    Training Methodology
+                                  </h4>
+                                  <div className="bg-white dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                                    {getModelTrainingInfo(model.model_type)}
                                   </div>
                                 </div>
                               </motion.div>
