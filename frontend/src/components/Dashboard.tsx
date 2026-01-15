@@ -39,7 +39,7 @@ export const Dashboard: FC = () => {
 
   // Calculate summary metrics from actual predictions
   const summaryMetrics = {
-    totalPredictions: historyData?.total_count || 0,
+    totalPredictions: historyData?.predictions?.length || historyData?.total_count || 0,
     activeModels: modelsData?.active_count || 0,
     avgAccuracy: historyData?.predictions
       ? (() => {
