@@ -42,21 +42,23 @@ const KPICard: FC<KPICardProps> = ({ title, value, change, icon, color, trend })
     animate={{ opacity: 1, y: 0 }}
     className={`bg-white rounded-lg shadow-lg p-6 border-l-4 ${color}`}
   >
-    <div className="flex items-start justify-between">
-      <div className="flex-1">
-        <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
-        <p className="text-3xl font-bold text-gray-900">{value}</p>
+    <div className="flex items-center justify-between gap-4">
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-gray-600 mb-1 truncate">{title}</p>
+        <p className="text-3xl font-bold text-gray-900 truncate">{value}</p>
         {change && (
-          <p className={`text-sm mt-2 flex items-center ${
+          <p className={`text-sm mt-2 flex items-center gap-1 ${
             trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-600' : 'text-gray-600'
           }`}>
-            {trend === 'up' && <TrendingUp className="w-4 h-4 mr-1" />}
-            {change}
+            {trend === 'up' && <TrendingUp className="w-4 h-4 flex-shrink-0" />}
+            <span className="truncate">{change}</span>
           </p>
         )}
       </div>
-      <div className="ml-4 p-3 bg-gray-50 rounded-lg">
-        {icon}
+      <div className="flex-shrink-0 p-3 bg-gray-50 rounded-lg flex items-center justify-center">
+        <div className="text-gray-700">
+          {icon}
+        </div>
       </div>
     </div>
   </motion.div>
