@@ -27,12 +27,7 @@ export const Dashboard: FC = () => {
   // Fetch predictions for metrics (fetch with high limit to get accurate total)
   const { data: historyData, isLoading: predictionsLoading, error: predictionsError } = useQuery({
     queryKey: ['recentPredictions'],
-    queryFn: async () => {
-      console.log('Fetching predictions...');
-      const result = await predictionsApi.getHistory({ limit: 15000 });
-      console.log('Predictions fetched:', result);
-      return result;
-    },
+    queryFn: () => predictionsApi.getHistory({ limit: 15000 }),
     retry: 2,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -52,59 +47,29 @@ export const Dashboard: FC = () => {
     );
   }
 
-  // Debug logging (only after loading is complete)
-  console.log('Dashboard historyData:', historyData);
-  console.log('Dashboard predictions:', historyData?.predictions);
-  console.log('Dashboard predictions length:', historyData?.predictions?.length || 0);
-  console.log('Dashboard modelsData:', modelsData);
-
   // Calculate summary metrics from actual predictions (only after data is loaded)
   const predictionsArray = historyData?.predictions || [];
-
-  // Debug: Check first few predictions
-  console.log('First 3 predictions sample:', predictionsArray.slice(0, 3).map(p => ({
-    id: p.id,
-    actual_value: p.actual_value,
-    error_percentage: p.error_percentage,
-    hasActual: p.actual_value != null,
-    hasError: p.error_percentage != null,
-  })));
-
   const summaryMetrics = {
     totalPredictions: predictionsArray.length,
     activeModels: modelsData?.active_count || 0,
     avgAccuracy: (() => {
-      if (predictionsArray.length === 0) {
-        console.log('No predictions array, returning 0 accuracy');
-        return 0;
-      }
+      if (predictionsArray.length === 0) return 0;
 
       // Calculate accuracy from actual prediction validation
       const validatedPredictions = predictionsArray.filter((p: any) => {
-        const hasActual = p.actual_value != null; // Use != to catch both null and undefined
+        const hasActual = p.actual_value != null;
         const hasError = p.error_percentage != null;
         return hasActual && hasError;
       });
 
-      console.log('Total predictions:', predictionsArray.length);
-      console.log('Validated predictions:', validatedPredictions.length);
-
-      if (validatedPredictions.length === 0) {
-        console.log('No validated predictions, returning 0 accuracy');
-        return 0;
-      }
+      if (validatedPredictions.length === 0) return 0;
 
       const avgError = validatedPredictions.reduce((sum: number, p: any) => sum + (p.error_percentage || 0), 0) / validatedPredictions.length;
-      const accuracy = 100 - avgError;
-      console.log('Average error:', avgError, 'Accuracy:', accuracy);
-      return accuracy;
+      return 100 - avgError;
     })(),
   };
 
-  console.log('Dashboard summaryMetrics:', summaryMetrics);
-
   if (predictionsError) {
-    console.error('Predictions error:', predictionsError);
     return (
       <div className="space-y-6">
         <div>
