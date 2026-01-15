@@ -132,21 +132,39 @@ export const Dashboard: FC = () => {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Total Predictions Card */}
-        <div className="bg-gradient-to-br from-primary to-primary-600 rounded-lg shadow p-6 text-white" style={{ minHeight: '140px' }}>
+        <div
+          className="rounded-lg shadow p-6 text-white"
+          style={{
+            minHeight: '140px',
+            background: 'linear-gradient(135deg, #3A3A6C 0%, #2F2F5A 100%)'
+          }}
+        >
           <p className="text-sm opacity-90">Total Predictions</p>
           <p className="text-4xl font-bold mt-2">{summaryMetrics.totalPredictions.toLocaleString()}</p>
           <p className="text-sm opacity-75 mt-2">All time</p>
         </div>
 
         {/* Active Models Card */}
-        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow p-6 text-white" style={{ minHeight: '140px' }}>
+        <div
+          className="rounded-lg shadow p-6 text-white"
+          style={{
+            minHeight: '140px',
+            background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
+          }}
+        >
           <p className="text-sm opacity-90">Active Models</p>
           <p className="text-4xl font-bold mt-2">{summaryMetrics.activeModels}</p>
           <p className="text-sm opacity-75 mt-2">Currently deployed</p>
         </div>
 
         {/* Avg Accuracy Card */}
-        <div className="bg-gradient-to-br from-accent to-accent-600 rounded-lg shadow p-6 text-white" style={{ minHeight: '140px' }}>
+        <div
+          className="rounded-lg shadow p-6 text-white"
+          style={{
+            minHeight: '140px',
+            background: 'linear-gradient(135deg, #81C1AC 0%, #67AB94 100%)'
+          }}
+        >
           <p className="text-sm opacity-90">Avg. Accuracy</p>
           <p className="text-4xl font-bold mt-2">
             {summaryMetrics.avgAccuracy > 0 ? summaryMetrics.avgAccuracy.toFixed(1) : '0.0'}%
