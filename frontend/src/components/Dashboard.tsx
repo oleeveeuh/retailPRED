@@ -50,19 +50,11 @@ export const Dashboard: FC = () => {
   // Calculate summary metrics from actual predictions (only after data is loaded)
   const predictionsArray = historyData?.predictions || [];
 
-  console.log('=== DASHBOARD DEBUG ===');
-  console.log('historyData:', historyData);
-  console.log('predictionsArray length:', predictionsArray.length);
-  console.log('modelsData:', modelsData);
-
   const summaryMetrics = {
     totalPredictions: predictionsArray.length,
     activeModels: modelsData?.active_count || 0,
     avgAccuracy: (() => {
-      if (predictionsArray.length === 0) {
-        console.log('No predictions, returning 0 accuracy');
-        return 0;
-      }
+      if (predictionsArray.length === 0) return 0;
 
       // Calculate accuracy from actual prediction validation
       const validatedPredictions = predictionsArray.filter((p: any) => {
@@ -71,22 +63,12 @@ export const Dashboard: FC = () => {
         return hasActual && hasError;
       });
 
-      console.log('Validated predictions count:', validatedPredictions.length);
-
-      if (validatedPredictions.length === 0) {
-        console.log('No validated predictions, returning 0 accuracy');
-        return 0;
-      }
+      if (validatedPredictions.length === 0) return 0;
 
       const avgError = validatedPredictions.reduce((sum: number, p: any) => sum + (p.error_percentage || 0), 0) / validatedPredictions.length;
-      const accuracy = 100 - avgError;
-      console.log('Calculated accuracy:', accuracy);
-      return accuracy;
+      return 100 - avgError;
     })(),
   };
-
-  console.log('Final summaryMetrics:', summaryMetrics);
-  console.log('=====================');
 
   if (predictionsError) {
     return (
