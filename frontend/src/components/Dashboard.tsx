@@ -131,19 +131,22 @@ export const Dashboard: FC = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-br from-primary to-primary-600 rounded-lg shadow p-6 text-white">
+        {/* Total Predictions Card */}
+        <div className="bg-gradient-to-br from-primary to-primary-600 rounded-lg shadow p-6 text-white" style={{ minHeight: '140px' }}>
           <p className="text-sm opacity-90">Total Predictions</p>
           <p className="text-4xl font-bold mt-2">{summaryMetrics.totalPredictions.toLocaleString()}</p>
           <p className="text-sm opacity-75 mt-2">All time</p>
         </div>
 
-        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow p-6 text-white">
+        {/* Active Models Card */}
+        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow p-6 text-white" style={{ minHeight: '140px' }}>
           <p className="text-sm opacity-90">Active Models</p>
           <p className="text-4xl font-bold mt-2">{summaryMetrics.activeModels}</p>
           <p className="text-sm opacity-75 mt-2">Currently deployed</p>
         </div>
 
-        <div className="bg-gradient-to-br from-accent to-accent-600 rounded-lg shadow p-6 text-white">
+        {/* Avg Accuracy Card */}
+        <div className="bg-gradient-to-br from-accent to-accent-600 rounded-lg shadow p-6 text-white" style={{ minHeight: '140px' }}>
           <p className="text-sm opacity-90">Avg. Accuracy</p>
           <p className="text-4xl font-bold mt-2">
             {summaryMetrics.avgAccuracy > 0 ? summaryMetrics.avgAccuracy.toFixed(1) : '0.0'}%
