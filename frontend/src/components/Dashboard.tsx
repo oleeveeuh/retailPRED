@@ -60,6 +60,16 @@ export const Dashboard: FC = () => {
 
   // Calculate summary metrics from actual predictions (only after data is loaded)
   const predictionsArray = historyData?.predictions || [];
+
+  // Debug: Check first few predictions
+  console.log('First 3 predictions sample:', predictionsArray.slice(0, 3).map(p => ({
+    id: p.id,
+    actual_value: p.actual_value,
+    error_percentage: p.error_percentage,
+    hasActual: p.actual_value != null,
+    hasError: p.error_percentage != null,
+  })));
+
   const summaryMetrics = {
     totalPredictions: predictionsArray.length,
     activeModels: modelsData?.active_count || 0,
@@ -70,12 +80,11 @@ export const Dashboard: FC = () => {
       }
 
       // Calculate accuracy from actual prediction validation
-      const validatedPredictions = predictionsArray.filter((p: any) =>
-        p.actual_value !== null &&
-        p.actual_value !== undefined &&
-        p.error_percentage !== null &&
-        p.error_percentage !== undefined
-      );
+      const validatedPredictions = predictionsArray.filter((p: any) => {
+        const hasActual = p.actual_value != null; // Use != to catch both null and undefined
+        const hasError = p.error_percentage != null;
+        return hasActual && hasError;
+      });
 
       console.log('Total predictions:', predictionsArray.length);
       console.log('Validated predictions:', validatedPredictions.length);
