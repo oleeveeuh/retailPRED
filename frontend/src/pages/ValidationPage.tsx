@@ -17,7 +17,6 @@ import {
   AlertTriangle,
   Filter,
   Download,
-  Brain,
   Crosshair,
   Activity,
   BarChart3,
@@ -69,7 +68,6 @@ interface ValidationMetrics {
   overall_accuracy: number;
   avg_error_rate: number;
   predictions_validated: number;
-  model_confidence: number;
   accuracy_trend: 'up' | 'down' | 'stable';
 }
 
@@ -150,7 +148,6 @@ export const ValidationPage: FC = () => {
         overall_accuracy: 0,
         avg_error_rate: 0,
         predictions_validated: 0,
-        model_confidence: 0,
         accuracy_trend: 'stable',
       };
     }
@@ -158,8 +155,6 @@ export const ValidationPage: FC = () => {
     const accuracy = 100 - (validated.reduce((sum, p) => sum + (p.error_percentage || 0), 0) / validated.length);
     // @ts-ignore
     const avgError = validated.reduce((sum, p) => sum + ((p as any).error_absolute || 0), 0) / validated.length;
-    // Calculate confidence as average accuracy (100 - error_percentage)
-    const confidence = validated.reduce((sum, p) => sum + (100 - (p.error_percentage || 0)), 0) / validated.length;
 
     // Calculate trend
     const halfway = Math.floor(validated.length / 2);
@@ -176,7 +171,6 @@ export const ValidationPage: FC = () => {
       overall_accuracy: accuracy,
       avg_error_rate: avgError,
       predictions_validated: validated.length,
-      model_confidence: confidence,
       accuracy_trend: trend,
     };
   }, [filteredPredictions]);
@@ -535,7 +529,7 @@ export const ValidationPage: FC = () => {
       </motion.div>
 
       {/* Performance Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Overall Accuracy */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -669,44 +663,6 @@ export const ValidationPage: FC = () => {
               animate={{ width: `${(metrics.predictions_validated / filteredPredictions.length) * 100}%` }}
               transition={{ delay: 0.5, duration: 0.5 }}
               className="h-full bg-primary-600 rounded-full"
-            />
-          </div>
-        </motion.div>
-
-        {/* Model Confidence */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="glass-card p-6 relative overflow-hidden"
-        >
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Model Confidence</p>
-              <motion.h3
-                key={metrics.model_confidence}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="text-4xl font-bold text-slate-900 dark:text-slate-100 mt-2"
-              >
-                {metrics.model_confidence.toFixed(1)}%
-              </motion.h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
-                Average confidence score
-              </p>
-            </div>
-            <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-xl">
-              <Brain className="w-8 h-8 text-accent" />
-            </div>
-          </div>
-
-          {/* Mini gauge */}
-          <div className="mt-4 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${metrics.model_confidence}%` }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="h-full bg-accent rounded-full"
             />
           </div>
         </motion.div>
