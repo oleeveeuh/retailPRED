@@ -27,7 +27,12 @@ export const Dashboard: FC = () => {
   // Fetch predictions for metrics (fetch with high limit to get accurate total)
   const { data: historyData, isLoading: predictionsLoading, error: predictionsError } = useQuery({
     queryKey: ['recentPredictions'],
-    queryFn: () => predictionsApi.getHistory({ limit: 15000 }),
+    queryFn: async () => {
+      console.log('Fetching predictions...');
+      const result = await predictionsApi.getHistory({ limit: 15000 });
+      console.log('Predictions fetched:', result);
+      return result;
+    },
     retry: 2,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -50,6 +55,7 @@ export const Dashboard: FC = () => {
   // Debug logging (only after loading is complete)
   console.log('Dashboard historyData:', historyData);
   console.log('Dashboard predictions:', historyData?.predictions);
+  console.log('Dashboard predictions length:', historyData?.predictions?.length || 0);
   console.log('Dashboard modelsData:', modelsData);
 
   // Calculate summary metrics from actual predictions (only after data is loaded)
@@ -58,7 +64,10 @@ export const Dashboard: FC = () => {
     totalPredictions: predictionsArray.length,
     activeModels: modelsData?.active_count || 0,
     avgAccuracy: (() => {
-      if (predictionsArray.length === 0) return 0;
+      if (predictionsArray.length === 0) {
+        console.log('No predictions array, returning 0 accuracy');
+        return 0;
+      }
 
       // Calculate accuracy from actual prediction validation
       const validatedPredictions = predictionsArray.filter((p: any) =>
@@ -67,16 +76,26 @@ export const Dashboard: FC = () => {
         p.error_percentage !== null &&
         p.error_percentage !== undefined
       );
-      if (validatedPredictions.length === 0) return 0;
+
+      console.log('Total predictions:', predictionsArray.length);
+      console.log('Validated predictions:', validatedPredictions.length);
+
+      if (validatedPredictions.length === 0) {
+        console.log('No validated predictions, returning 0 accuracy');
+        return 0;
+      }
 
       const avgError = validatedPredictions.reduce((sum: number, p: any) => sum + (p.error_percentage || 0), 0) / validatedPredictions.length;
-      return 100 - avgError;
+      const accuracy = 100 - avgError;
+      console.log('Average error:', avgError, 'Accuracy:', accuracy);
+      return accuracy;
     })(),
   };
 
   console.log('Dashboard summaryMetrics:', summaryMetrics);
 
   if (predictionsError) {
+    console.error('Predictions error:', predictionsError);
     return (
       <div className="space-y-6">
         <div>
@@ -86,6 +105,7 @@ export const Dashboard: FC = () => {
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-red-900 mb-2">Error Loading Prediction Data</h3>
           <p className="text-red-700">Unable to fetch prediction history. Please refresh the page and try again.</p>
+          {predictionsError instanceof Error && <p className="text-red-600 text-sm mt-2">Error: {predictionsError.message}</p>}
         </div>
       </div>
     );

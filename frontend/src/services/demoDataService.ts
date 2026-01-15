@@ -118,11 +118,23 @@ class DemoDataService {
   }> {
     await this.delay();
 
+    console.log('[DemoDataService] Fetching predictions with filters:', filters);
+
     // Load predictions - handle both plain array and wrapped formats
     const response = await this.loadJSON<any>('predictions.json');
 
+    console.log('[DemoDataService] Raw response type:', Array.isArray(response) ? 'array' : 'object');
+    console.log('[DemoDataService] Response keys:', typeof response === 'object' && response !== null ? Object.keys(response) : 'N/A');
+
     // Handle both formats: plain array or { data: [...], metadata: {...} }
     let predictions = Array.isArray(response) ? response : response.data;
+
+    console.log('[DemoDataService] Predictions extracted, count:', predictions?.length || 0);
+
+    if (!predictions || !Array.isArray(predictions)) {
+      console.error('[DemoDataService] Predictions is not an array:', predictions);
+      throw new Error('Invalid predictions data format');
+    }
 
     // Apply filters
     if (filters?.model_name) {
@@ -143,6 +155,8 @@ class DemoDataService {
       predictions = predictions.slice(0, filters.limit);
     }
 
+    console.log('[DemoDataService] After filtering, count:', predictions.length);
+
     // Transform to API format
     const transformedPredictions: PredictionHistoryItem[] = predictions.map(p => ({
       id: p.id,
@@ -157,6 +171,8 @@ class DemoDataService {
       is_validated: p.actual_value !== null,
       created_at: p.created_at,
     }));
+
+    console.log('[DemoDataService] Transformed predictions:', transformedPredictions.length);
 
     return {
       predictions: transformedPredictions,
