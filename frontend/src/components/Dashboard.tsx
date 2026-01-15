@@ -49,11 +49,20 @@ export const Dashboard: FC = () => {
 
   // Calculate summary metrics from actual predictions (only after data is loaded)
   const predictionsArray = historyData?.predictions || [];
+
+  console.log('=== DASHBOARD DEBUG ===');
+  console.log('historyData:', historyData);
+  console.log('predictionsArray length:', predictionsArray.length);
+  console.log('modelsData:', modelsData);
+
   const summaryMetrics = {
     totalPredictions: predictionsArray.length,
     activeModels: modelsData?.active_count || 0,
     avgAccuracy: (() => {
-      if (predictionsArray.length === 0) return 0;
+      if (predictionsArray.length === 0) {
+        console.log('No predictions, returning 0 accuracy');
+        return 0;
+      }
 
       // Calculate accuracy from actual prediction validation
       const validatedPredictions = predictionsArray.filter((p: any) => {
@@ -62,12 +71,22 @@ export const Dashboard: FC = () => {
         return hasActual && hasError;
       });
 
-      if (validatedPredictions.length === 0) return 0;
+      console.log('Validated predictions count:', validatedPredictions.length);
+
+      if (validatedPredictions.length === 0) {
+        console.log('No validated predictions, returning 0 accuracy');
+        return 0;
+      }
 
       const avgError = validatedPredictions.reduce((sum: number, p: any) => sum + (p.error_percentage || 0), 0) / validatedPredictions.length;
-      return 100 - avgError;
+      const accuracy = 100 - avgError;
+      console.log('Calculated accuracy:', accuracy);
+      return accuracy;
     })(),
   };
+
+  console.log('Final summaryMetrics:', summaryMetrics);
+  console.log('=====================');
 
   if (predictionsError) {
     return (
@@ -114,7 +133,7 @@ export const Dashboard: FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-gradient-to-br from-primary to-primary-600 rounded-lg shadow p-6 text-white">
           <p className="text-sm opacity-90">Total Predictions</p>
-          <p className="text-4xl font-bold mt-2">{summaryMetrics.totalPredictions}</p>
+          <p className="text-4xl font-bold mt-2">{summaryMetrics.totalPredictions.toLocaleString()}</p>
           <p className="text-sm opacity-75 mt-2">All time</p>
         </div>
 
@@ -124,10 +143,12 @@ export const Dashboard: FC = () => {
           <p className="text-sm opacity-75 mt-2">Currently deployed</p>
         </div>
 
-        <div className="bg-gradient-to-br from-accent to-accent rounded-lg shadow p-6 text-white">
+        <div className="bg-gradient-to-br from-accent to-accent-600 rounded-lg shadow p-6 text-white">
           <p className="text-sm opacity-90">Avg. Accuracy</p>
-          <p className="text-4xl font-bold mt-2">{summaryMetrics.avgAccuracy.toFixed(1)}%</p>
-          <p className="text-sm opacity-75 mt-2">Last 30 days</p>
+          <p className="text-4xl font-bold mt-2">
+            {summaryMetrics.avgAccuracy > 0 ? summaryMetrics.avgAccuracy.toFixed(1) : '0.0'}%
+          </p>
+          <p className="text-sm opacity-75 mt-2">Based on validated predictions</p>
         </div>
       </div>
 
