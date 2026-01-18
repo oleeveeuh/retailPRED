@@ -38,7 +38,7 @@ RetailPRED is an end-to-end retail forecasting platform that combines multi-reso
 
 | Rank | Model | Avg MAPE | Avg MASE | vs Baseline | Status |
 |------|-------|----------|----------|-------------|--------|
-| **1** | **LGBM** | **8.53%** | **0.952** | **95% better than naive** | ⭐ BEST |
+| **1** | **LGBM** | **8.53%** | **0.952** | **95% better than naive** | BEST |
 | **2** | **PatchTST** | **11.15%** | **1.233** | **77% better than naive** | Excellent |
 | **3** | **RandomForest** | **11.46%** | **1.224** | **76% better than naive** | Excellent |
 | **4** | **TimesNet** | **12.02%** | **1.326** | **73% better than naive** | Good |
@@ -62,7 +62,7 @@ RetailPRED is an end-to-end retail forecasting platform that combines multi-reso
 - All 11 models working correctly
 
 **Production Models Deployed:**
-- **2 models**: LGBM ⭐, RandomForest (both excellent)
+- **2 models**: LGBM, RandomForest (both excellent)
 - **1,092 predictions**: 11 categories × 2 models × ~50 weeks
 - **Accuracy**: 9.12% average MAPE (90.88% accuracy)
 
@@ -102,33 +102,33 @@ A total of **6 model types** were tested across 11 retail categories with 73 tim
 
 | # | Model Type | Status | Reason for Exclusion/Inclusion |
 |---|------------|--------|--------------------------------|
-| 1 | **LGBM** | ✅ **PRODUCTION** | Excellent accuracy (8.85% MAPE), reliable across all categories |
-| 2 | **RandomForest** | ✅ **PRODUCTION** | Excellent accuracy (9.39% MAPE), robust performance |
-| 3 | SeasonalNaive | ⚠️ Excluded | Baseline model (19.37% MAPE) - used for comparison only |
-| 4 | PatchTST | ❌ Excluded | **Scale mismatch bug** - predicted 6-13x actual values in 1 category |
-| 5 | TimesNet | ❌ Excluded | **Scale mismatch bug** - predicted 6-13x actual values in 1 category |
-| 6 | AutoARIMA | ❌ Excluded | Poor performance (35%+ MAPE across all categories) |
-| 7 | AutoETS | ❌ Removed | Catastrophic performance (39-420% MAPE) - completely unusable |
+| 1 | **LGBM** | **PRODUCTION** | Excellent accuracy (8.85% MAPE), reliable across all categories |
+| 2 | **RandomForest** | **PRODUCTION** | Excellent accuracy (9.39% MAPE), robust performance |
+| 3 | SeasonalNaive | Excluded | Baseline model (19.37% MAPE) - used for comparison only |
+| 4 | PatchTST | Excluded | **Scale mismatch bug** - predicted 6-13x actual values in 1 category |
+| 5 | TimesNet | Excluded | **Scale mismatch bug** - predicted 6-13x actual values in 1 category |
+| 6 | AutoARIMA | Excluded | Poor performance (35%+ MAPE across all categories) |
+| 7 | AutoETS | Removed | Catastrophic performance (39-420% MAPE) - completely unusable |
 
 ### Detailed Results
 
-#### ✅ Production Models (Deployed)
+#### Production Models (Deployed)
 
 **LGBM (LightGBM)**
 - **Accuracy**: 8.85% MAPE (91.15% accurate)
 - **Status**: Best model across all 11 categories
 - **SHAP Support**: Yes - excellent explainability
 - **Training Time**: ~1 second per category
-- **Verdict**: **PRODUCTION READY** ⭐
+- **Verdict**: **PRODUCTION READY**
 
 **RandomForest**
 - **Accuracy**: 9.39% MAPE (90.61% accurate)
 - **Status**: Consistent performance across all categories
 - **SHAP Support**: Yes - excellent explainability
 - **Training Time**: ~1-2 seconds per category
-- **Verdict**: **PRODUCTION READY** ⭐
+- **Verdict**: **PRODUCTION READY**
 
-#### ⚠️ Baseline Model (Not Deployed)
+#### Baseline Model (Not Deployed)
 
 **SeasonalNaive**
 - **Accuracy**: 19.37% MAPE (80.63% accurate)
@@ -136,7 +136,7 @@ A total of **6 model types** were tested across 11 retail categories with 73 tim
 - **SHAP Support**: No
 - **Verdict**: Used for comparison only - not accurate enough for production
 
-#### ❌ Models with Training Issues (Not Deployed)
+#### Models with Training Issues (Not Deployed)
 
 **PatchTST (Patch Time Series Transformer)**
 - **Accuracy**: 11.15% MAPE (on 10/11 categories)
@@ -154,7 +154,7 @@ A total of **6 model types** were tested across 11 retail categories with 73 tim
   - Only 1 of 11 categories affected, but model excluded for consistency
 - **Verdict**: **EXCLUDED** - needs retraining with corrected code
 
-#### ❌ Poor Performance Models (Not Deployed)
+#### Poor Performance Models (Not Deployed)
 
 **AutoARIMA**
 - **Accuracy**: 35.55% MAPE across 7 categories (64% accurate)
@@ -1221,7 +1221,7 @@ Successfully generated **weekly predictions** for all 11 retail categories with 
 
 **Production Models Deployed:** 22 total
 - 11 categories
-- 2 model types per category: LGBM ⭐, RandomForest
+- 2 model types per category: LGBM, RandomForest
 - All models using 73 features (excluding 'year' to prevent data leakage)
 - Both models have excellent performance
 
@@ -1245,8 +1245,8 @@ Successfully generated **weekly predictions** for all 11 retail categories with 
 
 | Model | Predictions | Avg MAPE | Status |
 |-------|-------------|----------|--------|
-| LGBM | 546 (50%) | 8.85% | ⭐ Excellent |
-| RandomForest | 546 (50%) | 9.39% | ⭐ Excellent |
+| LGBM | 546 (50%) | 8.85% | Excellent |
+| RandomForest | 546 (50%) | 9.39% | Excellent |
 
 **Note:** PatchTST, TimesNet, and AutoARIMA models are excluded due to:
 - PatchTST/TimesNet: Scale mismatches in 1 category (Clothing)
@@ -1256,23 +1256,23 @@ Successfully generated **weekly predictions** for all 11 retail categories with 
 
 | Category | Predictions | Models | Status |
 |----------|-------------|--------|--------|
-| Total Retail Sales (4400) | 100 | 2 | ✓ Complete |
-| Automobile Dealers (441) | 100 | 2 | ✓ Complete |
-| Furniture & Home (442) | 98 | 2 | ✓ Complete |
-| Building Materials (443) | 100 | 2 | ✓ Complete |
-| Electronics & Appliances (4431) | 98 | 2 | ✓ Complete |
-| Food & Beverage (445) | 100 | 2 | ✓ Complete |
-| Health & Personal Care (447) | 98 | 2 | ✓ Complete |
-| Gasoline Stations (448) | 100 | 2 | ✓ Complete |
-| Clothing & Accessories (452) | 100 | 2 | ✓ Complete |
-| Sporting Goods & Hobby (453) | 98 | 2 | ✓ Complete |
-| General Merchandise (454) | 100 | 2 | ✓ Complete |
+| Total Retail Sales (4400) | 100 | 2 | Complete |
+| Automobile Dealers (441) | 100 | 2 | Complete |
+| Furniture & Home (442) | 98 | 2 | Complete |
+| Building Materials (443) | 100 | 2 | Complete |
+| Electronics & Appliances (4431) | 98 | 2 | Complete |
+| Food & Beverage (445) | 100 | 2 | Complete |
+| Health & Personal Care (447) | 98 | 2 | Complete |
+| Gasoline Stations (448) | 100 | 2 | Complete |
+| Clothing & Accessories (452) | 100 | 2 | Complete |
+| Sporting Goods & Hobby (453) | 98 | 2 | Complete |
+| General Merchandise (454) | 100 | 2 | Complete |
 
 **Note:** Category 456 (Nonstore_Retailers) has no CSV file - skipped
 
 ### Production Deployment
 
-✓ **Ready for deployment** - All 11 categories have weekly predictions from 2 properly trained models validated on 2025 data with excellent accuracy (9.12% MAPE).
+**Ready for deployment** - All 11 categories have weekly predictions from 2 properly trained models validated on 2025 data with excellent accuracy (9.12% MAPE).
 
 ---
 
