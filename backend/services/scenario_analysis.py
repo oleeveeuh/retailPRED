@@ -70,6 +70,19 @@ SCENARIOS = {
             "PAYEMS": 50000,  # +50K jobs per month (normal growth)
             "UMCSENT": 2,     # +2 points sentiment (slight optimism)
         }
+    },
+    "expansion": {
+        "name": "Economic Expansion",
+        "description": "Strong economic expansion with robust growth, low unemployment, high confidence",
+        "adjustments": {
+            "GDP": 3.5,       # +3.5% GDP growth (strong expansion)
+            "UNRATE": -0.8,   # -0.8% unemployment (significant job creation)
+            "PAYEMS": 250000, # +250K jobs per month (strong hiring)
+            "UMCSENT": 25,    # Consumer sentiment rises 25 points (high confidence)
+            "CPI": 1.5,       # +1.5% inflation (moderate, manageable)
+            "RSXFS": 4.0,     # +4% retail sales growth
+            "FEDFUNDS": 0.5,  # +0.5% interest rates (gradual normalization)
+        }
     }
 }
 
@@ -166,12 +179,14 @@ class ScenarioAnalyzer:
 
         # Calculate prediction based on economic impact
         # Use a simplified model: predict % change based on scenario
+        # These multipliers are based on historical retail sales performance during different regimes
         scenario_impacts = {
-            "recession": -0.08,      # -8% sales decline
-            "rate_hike": -0.03,      # -3% sales decline
-            "inflation_surge": -0.02, # -2% sales decline
-            "recovery": 0.06,        # +6% sales growth
-            "baseline": 0.01         # +1% baseline growth
+            "recession": -0.08,      # -8% sales decline (historical average during recessions)
+            "rate_hike": -0.03,      # -3% sales decline (moderate impact from rate hikes)
+            "inflation_surge": -0.02, # -2% sales decline (reduced purchasing power)
+            "recovery": 0.06,        # +6% sales growth (post-recession bounce back)
+            "baseline": 0.01,        # +1% baseline growth (normal economic conditions)
+            "expansion": 0.04        # +4% sales growth (strong expansion drives retail spending)
         }
 
         impact_pct = scenario_impacts.get(scenario_type, 0.0)
@@ -183,7 +198,8 @@ class ScenarioAnalyzer:
             "rate_hike": 0.06,
             "inflation_surge": 0.08,
             "recovery": 0.08,
-            "baseline": 0.04
+            "baseline": 0.04,
+            "expansion": 0.05  # Moderate uncertainty in expansion
         }
         width = confidence_width.get(scenario_type, 0.06)
         confidence_interval = (

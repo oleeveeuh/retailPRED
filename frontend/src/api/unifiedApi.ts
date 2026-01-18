@@ -588,6 +588,17 @@ const demoScenariosApi = {
         gdp: 3.2,
         consumer_confidence: 110,
       },
+      expansion: {
+        multiplier: 1.04,
+        name: 'Economic Expansion',
+        description: 'Strong expansion with robust growth, low unemployment, high confidence',
+        unrate: 3.4,
+        fedfunds: 4.75,
+        cpi: 4.3,
+        payems: 250000,
+        gdp: 6.0,
+        consumer_confidence: 125,
+      },
     };
 
     // Get scenario config, default to baseline if not found
@@ -848,9 +859,9 @@ const demoScenariosApi = {
    * Get regime analysis (demo mode)
    */
   getRegime: async (category: string): Promise<any> => {
-    // Return demo regime analysis
+    // Return demo regime analysis with capitalized regime name
     return {
-      regime: 'expansion',
+      regime: 'Expansion',
       confidence: 0.85,
       characteristics: {
         growth_rate: 2.5,
@@ -945,6 +956,17 @@ const demoScenariosApi = {
         payems: 205000,
         gdp: 3.2,
         consumer_confidence: 110,
+      },
+      expansion: {
+        multiplier: 1.04,
+        name: 'Economic Expansion',
+        description: 'Strong expansion with robust growth, low unemployment, high confidence',
+        unrate: 3.4,
+        fedfunds: 4.75,
+        cpi: 4.3,
+        payems: 250000,
+        gdp: 6.0,
+        consumer_confidence: 125,
       },
     };
 
