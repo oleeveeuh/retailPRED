@@ -100,20 +100,26 @@ export const ValidationPage: FC = () => {
     queryKey: ['predictions', dateRange, selectedModels],
     queryFn: async () => {
       // Calculate start date based on dateRange selection
-      let startDate: string | undefined;
+      const params: { start_date?: string; limit: number } = {
+        limit: 15000, // Get all predictions including validated ones from 2025
+      };
+
+      // Only add start_date filter if NOT "all"
       if (dateRange !== 'all') {
         const days = parseInt(dateRange);
         const date = new Date();
         date.setDate(date.getDate() - days);
-        startDate = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+        params.start_date = date.toISOString().split('T')[0]; // YYYY-MM-DD format
       }
+      // When dateRange === 'all', params will NOT include start_date at all
 
-      const data = await predictionsApi.getHistory({
-        start_date: startDate,
-        limit: 15000, // Get all predictions including validated ones from 2025
-      });
+      console.log('Fetching predictions with params:', params, 'dateRange:', dateRange);
+      const data = await predictionsApi.getHistory(params);
+      console.log('Received predictions count:', data?.predictions?.length || 0);
       return data;
     },
+    // Ensure refetch when dateRange or selectedModels changes
+    staleTime: 0, // Always consider data stale to force refetch on filter change
   });
 
   const predictions = predictionsData?.predictions || [];
@@ -122,20 +128,31 @@ export const ValidationPage: FC = () => {
   const filteredPredictions = useMemo(() => {
     let filtered = [...predictions];
 
+    console.log('Filtering predictions:', {
+      total: filtered.length,
+      dateRange,
+      selectedModels
+    });
+
     // Date range filter
     if (dateRange !== 'all') {
       const days = parseInt(dateRange);
       const cutoffDate = new Date();
       cutoffDate.setDate(cutoffDate.getDate() - days);
+      const beforeDateFilter = filtered.length;
       filtered = filtered.filter(p => new Date(p.prediction_date) >= cutoffDate);
+      console.log(`Date filter removed ${beforeDateFilter - filtered.length} predictions`);
     }
 
     // Model filter
     if (!selectedModels.includes('all')) {
+      const beforeModelFilter = filtered.length;
       filtered = filtered.filter(p => selectedModels.includes(p.model_name));
+      console.log(`Model filter removed ${beforeModelFilter - filtered.length} predictions`);
     }
 
     // Data is already sorted by date ASC from backend, just return filtered
+    console.log('Final filtered count:', filtered.length);
     return filtered;
   }, [predictions, dateRange, selectedModels]);
 
