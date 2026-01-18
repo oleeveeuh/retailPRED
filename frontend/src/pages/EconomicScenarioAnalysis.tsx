@@ -73,6 +73,13 @@ const SCENARIOS: Scenario[] = [
     color: 'green',
   },
   {
+    type: 'expansion',
+    name: 'Economic Expansion',
+    description: 'Strong expansion with robust growth, low unemployment, high confidence',
+    icon: TrendingUp,
+    color: 'emerald',
+  },
+  {
     type: 'baseline',
     name: 'Baseline',
     description: 'Continue current economic conditions with no changes',
@@ -178,7 +185,7 @@ export const EconomicScenarioAnalysis: FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
                 <div className="text-3xl font-bold text-primary-600 dark:text-blue-400 mb-2">
-                  {currentRegime.regime}
+                  {currentRegime.regime.charAt(0).toUpperCase() + currentRegime.regime.slice(1)}
                 </div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">
                   Detected Regime
@@ -213,7 +220,7 @@ export const EconomicScenarioAnalysis: FC = () => {
             Select Economic Scenario
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-6">
             {SCENARIOS.map((scenario) => {
               const Icon = scenario.icon;
               const isSelected = selectedScenario === scenario.type;
