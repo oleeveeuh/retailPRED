@@ -508,7 +508,7 @@ export const ValidationPage: FC = () => {
                   onClick={() => setDateRange(range)}
                   className={`px-3 py-2 rounded-lg font-medium transition-all text-sm whitespace-nowrap ${
                     dateRange === range
-                      ? 'bg-primary text-white shadow-lg hover:bg-primary-700'
+                      ? 'bg-indigo-600 text-white shadow-lg hover:bg-indigo-700'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                   }`}
                 >
