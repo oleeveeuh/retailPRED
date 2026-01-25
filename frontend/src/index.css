@@ -1,8 +1,67 @@
 @import "tailwindcss";
 
-/* Custom Theme */
+/* Custom Theme - Minimalistic Design with RetailPRED Colors */
 @theme {
   --font-family-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+
+  /* RetailPRED Brand Colors */
+  --color-primary: #3A3A6C;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #81C1AC;
+  --color-accent-foreground: #3A3A6C;
+
+  /* Minimalistic Color Palette */
+  --color-background: #ffffff;
+  --color-foreground: #0a0a0a;
+  --color-card: #ffffff;
+  --color-card-foreground: #0a0a0a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0a0a0a;
+  --color-secondary: #f5f5f5;
+  --color-secondary-foreground: #0a0a0a;
+  --color-muted: #f5f5f5;
+  --color-muted-foreground: #737373;
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-input: #e5e5e5;
+  --color-ring: #81C1AC;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+
+  /* Chart Colors */
+  --color-chart-1: #3A3A6C;
+  --color-chart-2: #81C1AC;
+  --color-chart-3: #22c55e;
+  --color-chart-4: #f59e0b;
+  --color-chart-5: #ef4444;
+
+  /* Radius */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.375rem;
+  --radius-xl: 0.5rem;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+
+  @theme {
+    --color-background: #0a0a0a;
+    --color-foreground: #fafafa;
+    --color-card: #0a0a0a;
+    --color-card-foreground: #fafafa;
+    --color-popover: #0a0a0a;
+    --color-popover-foreground: #fafafa;
+    --color-secondary: #1a1a1a;
+    --color-secondary-foreground: #fafafa;
+    --color-muted: #1a1a1a;
+    --color-muted-foreground: #a3a3a3;
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-input: #262626;
+    --color-ring: #81C1AC;
+  }
 }
 
 /* Base Styles */
@@ -20,32 +79,182 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-weight: 300; /* Light font weight like the reference design */
+  font-family: var(--font-family-sans);
 }
 
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-  }
+/* ============================================
+   MINIMALISTIC DESIGN SYSTEM
+   Clean, sharp borders, light typography
+   ============================================ */
+
+/* Primary Card - Minimalistic Style */
+.card-minimal {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.25rem; /* Slightly rounded */
 }
 
-/* Glassmorphism Card */
+.card-minimal .card-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.card-minimal .card-header h2 {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0a0a0a;
+  margin: 0;
+}
+
+.card-minimal .card-header p {
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: #737373;
+  margin-top: 0.25rem;
+}
+
+.card-minimal .card-content {
+  padding: 1.5rem;
+}
+
+/* Tab Navigation - Minimalistic Style */
+.tabs-minimal {
+  display: inline-flex;
+  background: #f5f5f5;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.tab-trigger-minimal {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: #737373;
+  background: transparent;
+  border: none;
+  border-radius: 0.125rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tab-trigger-minimal:hover {
+  color: #0a0a0a;
+}
+
+.tab-trigger-minimal[data-state="active"] {
+  background: #3A3A6C;
+  color: #81C1AC;
+}
+
+/* Header Box Style */
+.header-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-icon-box {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #3A3A6C;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon-box svg {
+  color: #81C1AC;
+}
+
+.header-title {
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: #0a0a0a;
+  letter-spacing: -0.025em;
+}
+
+.header-subtitle {
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: #737373;
+}
+
+/* Button Primary - Minimalistic */
+.btn-primary-minimal {
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.25rem;
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: #ffffff;
+  background: #3A3A6C;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-primary-minimal:hover {
+  background: #2F2F5A;
+}
+
+.btn-accent-minimal {
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.25rem;
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: #3A3A6C;
+  background: #81C1AC;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-accent-minimal:hover {
+  background: #67AB94;
+}
+
+/* Input Minimalistic */
+.input-minimal {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.25rem;
+  border: 1px solid #e5e5e5;
+  background: #ffffff;
+  color: #0a0a0a;
+  font-size: 0.875rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-minimal:focus {
+  border-color: #81C1AC;
+  box-shadow: 0 0 0 2px rgba(129, 193, 172, 0.2);
+}
+
+.input-minimal::placeholder {
+  color: #a3a3a3;
+}
+
+/* Focus Ring */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #81C1AC;
+}
+
+/* Legacy Utility Classes */
 .glass-card {
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(24px);
-  border-radius: 1rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(226, 232, 240, 0.5);
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.375rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  .glass-card {
-    background-color: rgba(30, 41, 59, 0.8);
-    border-color: rgba(51, 65, 85, 0.5);
-  }
-}
-
-/* Gradient Text */
 .gradient-text {
   background: linear-gradient(to right, #81C1AC, #3A3A6C);
   -webkit-background-clip: text;
@@ -53,108 +262,56 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* Focus Ring */
-.focus-ring:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(255, 255, 255, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  .focus-ring:focus {
-    box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(15, 23, 42, 1);
-  }
-}
-
-/* Button Primary */
 .btn-primary {
-  padding: 0.625rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  color: white;
-  background: linear-gradient(to right, #81C1AC, #3A3A6C);
-  box-shadow: 0 10px 15px -3px rgba(129, 193, 172, 0.5);
-  transition: all 0.2s;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.25rem;
+  font-weight: 400;
+  color: #ffffff;
+  background: #3A3A6C;
+  transition: all 0.15s ease;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(to right, #6FB39C, #2E2E5A);
-  box-shadow: 0 20px 25px -5px rgba(129, 193, 172, 0.6);
+  background: #2F2F5A;
 }
 
-/* Button Secondary */
 .btn-secondary {
-  padding: 0.625rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  background-color: #f1f5f9;
-  color: #334155;
-  transition: all 0.2s;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.25rem;
+  font-weight: 300;
+  background-color: #f5f5f5;
+  color: #0a0a0a;
+  transition: all 0.15s ease;
 }
 
 .btn-secondary:hover {
-  background-color: #e2e8f0;
+  background-color: #e5e5e5;
 }
 
-@media (prefers-color-scheme: dark) {
-  .btn-secondary {
-    background-color: #1e293b;
-    color: #cbd5e1;
-  }
-
-  .btn-secondary:hover {
-    background-color: #334155;
-  }
-}
-
-/* Input Base */
 .input-base {
   width: 100%;
   padding: 0.625rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #cbd5e1;
-  background-color: white;
-  color: #0f172a;
+  border-radius: 0.25rem;
+  border: 1px solid #e5e5e5;
+  background-color: #ffffff;
+  color: #0a0a0a;
   outline: none;
-  transition: all 0.2s;
-}
-
-@media (prefers-color-scheme: dark) {
-  .input-base {
-    border-color: #475569;
-    background-color: #1e293b;
-    color: #f1f5f9;
-  }
+  transition: border-color 0.15s ease;
 }
 
 .input-base:focus {
   border-color: #81C1AC;
-  box-shadow: 0 0 0 2px #81C1AC;
+  box-shadow: 0 0 0 2px rgba(129, 193, 172, 0.2);
 }
 
 .input-base::placeholder {
-  color: #94a3b8;
+  color: #a3a3a3;
 }
 
-@media (prefers-color-scheme: dark) {
-  .input-base::placeholder {
-    color: #64748b;
-  }
-}
-
-/* Card Hover */
-.card-hover {
-  transition: all 0.3s;
-}
-
-.card-hover:hover {
-  transform: translateY(-0.25rem);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-/* Custom Scrollbar */
+/* Custom Scrollbar - Minimalistic */
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 *::-webkit-scrollbar-track {
@@ -162,30 +319,19 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: #e5e5e5;
+  border-radius: 2px;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #d4d4d4;
 }
 
-@media (prefers-color-scheme: dark) {
-  *::-webkit-scrollbar-thumb {
-    background: #475569;
-  }
-
-  *::-webkit-scrollbar-thumb:hover {
-    background: #64748b;
-  }
-}
-
-/* Sidebar Active Item */
+/* Sidebar Active Item - Minimalistic */
 .sidebar-active {
   position: relative;
-  background: linear-gradient(to right, #81C1AC, #3A3A6C);
-  color: white;
-  box-shadow: 0 10px 15px -3px rgba(129, 193, 172, 0.5);
+  background: #3A3A6C;
+  color: #81C1AC;
 }
 
 .sidebar-active::before {
@@ -194,17 +340,17 @@ body {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 4px;
-  height: 2rem;
-  background: white;
-  border-radius: 0 9999px 9999px 0;
+  width: 3px;
+  height: 1.5rem;
+  background: #81C1AC;
+  border-radius: 0 2px 2px 0;
 }
 
 /* Status Indicators */
 .status-online {
   width: 0.5rem;
   height: 0.5rem;
-  background-color: #10b981;
+  background-color: #22c55e;
   border-radius: 9999px;
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -224,45 +370,21 @@ body {
   border-radius: 9999px;
 }
 
-/* Loading Skeleton */
+/* Loading Skeleton - Minimalistic */
 .skeleton {
-  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background: linear-gradient(90deg, #f5f5f5 25%, #e5e5e5 50%, #f5f5f5 75%);
   background-size: 200% 100%;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   animation: shimmer 2s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  .skeleton {
-    background: linear-gradient(90deg, #334155 25%, #475569 50%, #334155 75%);
-  }
-}
-
 /* Animation Keyframes */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
 @keyframes shimmer {
   0% {
     background-position: 1000px 0;
   }
   100% {
     background-position: -1000px 0;
-  }
-}
-
-@keyframes gradient {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
   }
 }
 
@@ -275,19 +397,8 @@ body {
   }
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
 .animate-shimmer {
   animation: shimmer 2s linear infinite;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
-  background-size: 1000px 100%;
-}
-
-.animate-gradient {
-  animation: gradient 3s ease infinite;
-  background-size: 200% 200%;
 }
 
 /* Print Styles */
@@ -295,7 +406,6 @@ body {
   .no-print {
     display: none !important;
   }
-
   body {
     background-color: white !important;
     color: black !important;
@@ -321,16 +431,9 @@ body {
 }
 
 /* Accessibility Enhancements */
-/* Focus Visible for Better Keyboard Navigation */
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(255, 255, 255, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :focus-visible {
-    box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(15, 23, 42, 1);
-  }
+  box-shadow: 0 0 0 2px #81C1AC;
 }
 
 /* Skip to Content Link */
@@ -356,14 +459,7 @@ body {
   z-index: 50;
   background-color: #81C1AC;
   color: white;
-  border-radius: 0.5rem;
-}
-
-/* High Contrast Mode Support */
-@media (prefers-contrast: high) {
-  * {
-    border: 2px solid currentColor;
-  }
+  border-radius: 0.25rem;
 }
 
 /* Screen Reader Only */
@@ -378,17 +474,6 @@ body {
   border-width: 0;
 }
 
-/* Not Screen Reader Only */
-.not-sr-only {
-  position: static;
-  width: auto;
-  height: auto;
-  padding: 0;
-  margin: 0;
-  overflow: visible;
-  white-space: normal;
-}
-
 /* Focus Styles for Interactive Elements */
 button:focus-visible,
 a:focus-visible,
@@ -396,17 +481,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(255, 255, 255, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  button:focus-visible,
-  a:focus-visible,
-  input:focus-visible,
-  select:focus-visible,
-  textarea:focus-visible {
-    box-shadow: 0 0 0 2px #81C1AC, 0 0 0 4px rgba(15, 23, 42, 1);
-  }
+  box-shadow: 0 0 0 2px #81C1AC;
 }
 
 /* Disabled State */
@@ -416,17 +491,4 @@ select:disabled,
 textarea:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-/* Loading Attribute Optimization */
-img[loading='lazy'] {
-  transition: opacity 0.3s;
-}
-
-img[loading='lazy']:not([src]) {
-  opacity: 0;
-}
-
-img[loading='lazy'][src] {
-  opacity: 1;
 }

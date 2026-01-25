@@ -1,7 +1,6 @@
 /**
- * Dashboard Component
+ * Dashboard Component - Minimalistic Design
  * Overview page with key metrics and visualizations
- * Includes economic context for anomaly interpretation
  */
 
 import { FC, useState } from 'react';
@@ -13,9 +12,7 @@ import FeatureImportanceChart from './FeatureImportanceChart';
 import ModelInfoCard from './ModelInfoCard';
 import { EconomicRegimeIndicator } from './EconomicRegimeIndicator';
 import { EconomicContextInfo } from './EconomicContextInfo';
-import { AnomalyExplanation } from './AnomalyExplanation';
 import { useCurrentRegime } from '@/hooks/useEconomicRegime';
-import { useAnomalyDetection } from '@/hooks/useAnomalyDetection';
 import { AlertTriangle } from 'lucide-react';
 
 export const Dashboard: FC = () => {
@@ -24,12 +21,12 @@ export const Dashboard: FC = () => {
   // Get current economic regime
   const { regime: economicRegime, loading: regimeLoading } = useCurrentRegime();
 
-  // Fetch predictions for metrics (fetch with high limit to get accurate total)
+  // Fetch predictions for metrics
   const { data: historyData, isLoading: predictionsLoading, error: predictionsError } = useQuery({
     queryKey: ['recentPredictions'],
     queryFn: () => predictionsApi.getHistory({ limit: 15000 }),
     retry: 2,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
   // Fetch models with actual training metrics
@@ -42,12 +39,11 @@ export const Dashboard: FC = () => {
   if (predictionsLoading || modelsLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#3A3A6C]"></div>
       </div>
     );
   }
 
-  // Calculate summary metrics from actual predictions (only after data is loaded)
   const predictionsArray = historyData?.predictions || [];
 
   const summaryMetrics = {
@@ -56,7 +52,6 @@ export const Dashboard: FC = () => {
     avgAccuracy: (() => {
       if (predictionsArray.length === 0) return 0;
 
-      // Calculate accuracy from actual prediction validation
       const validatedPredictions = predictionsArray.filter((p: any) => {
         const hasActual = p.actual_value != null;
         const hasError = p.error_percentage != null;
@@ -74,13 +69,13 @@ export const Dashboard: FC = () => {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">Overview of your retail forecasting system</p>
+          <h1 className="text-2xl font-normal text-gray-900 tracking-tight">Dashboard</h1>
+          <p className="text-sm font-light text-gray-500 mt-1">Overview of your retail forecasting system</p>
         </div>
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-red-900 mb-2">Error Loading Prediction Data</h3>
-          <p className="text-red-700">Unable to fetch prediction history. Please refresh the page and try again.</p>
-          {predictionsError instanceof Error && <p className="text-red-600 text-sm mt-2">Error: {predictionsError.message}</p>}
+        <div className="bg-red-50 border border-red-200 rounded-sm p-5">
+          <h3 className="text-sm font-normal text-red-900 mb-2">Error Loading Prediction Data</h3>
+          <p className="text-sm font-light text-red-700">Unable to fetch prediction history. Please refresh the page and try again.</p>
+          {predictionsError instanceof Error && <p className="text-xs font-light text-red-600 mt-2">Error: {predictionsError.message}</p>}
         </div>
       </div>
     );
@@ -90,12 +85,12 @@ export const Dashboard: FC = () => {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">Overview of your retail forecasting system</p>
+          <h1 className="text-2xl font-normal text-gray-900 tracking-tight">Dashboard</h1>
+          <p className="text-sm font-light text-gray-500 mt-1">Overview of your retail forecasting system</p>
         </div>
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-red-900 mb-2">Error Loading Model Data</h3>
-          <p className="text-red-700">Unable to fetch training metrics. Please ensure the backend server is running and try again.</p>
+        <div className="bg-red-50 border border-red-200 rounded-sm p-5">
+          <h3 className="text-sm font-normal text-red-900 mb-2">Error Loading Model Data</h3>
+          <p className="text-sm font-light text-red-700">Unable to fetch training metrics. Please ensure the backend server is running and try again.</p>
         </div>
       </div>
     );
@@ -105,53 +100,35 @@ export const Dashboard: FC = () => {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-1">
+        <h1 className="text-2xl font-normal text-gray-900 tracking-tight">Dashboard</h1>
+        <p className="text-sm font-light text-gray-500 mt-1">
           Overview of your retail forecasting system
         </p>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Total Predictions Card */}
-        <div
-          className="rounded-lg shadow p-6 text-white"
-          style={{
-            minHeight: '140px',
-            background: 'linear-gradient(135deg, #3A3A6C 0%, #2F2F5A 100%)'
-          }}
-        >
-          <p className="text-sm opacity-90">Total Predictions</p>
-          <p className="text-4xl font-bold mt-2">{summaryMetrics.totalPredictions.toLocaleString()}</p>
-          <p className="text-sm opacity-75 mt-2">All time</p>
+        <div className="bg-white border border-gray-200 rounded-sm p-5">
+          <p className="text-xs font-light text-gray-600">Total Predictions</p>
+          <p className="text-3xl font-normal mt-2 text-gray-900">{summaryMetrics.totalPredictions.toLocaleString()}</p>
+          <p className="text-xs font-light text-gray-500 mt-2">All time</p>
         </div>
 
         {/* Active Models Card */}
-        <div
-          className="rounded-lg shadow p-6 text-white"
-          style={{
-            minHeight: '140px',
-            background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
-          }}
-        >
-          <p className="text-sm opacity-90">Active Models</p>
-          <p className="text-4xl font-bold mt-2">{summaryMetrics.activeModels}</p>
-          <p className="text-sm opacity-75 mt-2">Currently deployed</p>
+        <div className="bg-white border border-gray-200 rounded-sm p-5">
+          <p className="text-xs font-light text-gray-600">Active Models</p>
+          <p className="text-3xl font-normal mt-2 text-gray-900">{summaryMetrics.activeModels}</p>
+          <p className="text-xs font-light text-gray-500 mt-2">Currently deployed</p>
         </div>
 
         {/* Avg Accuracy Card */}
-        <div
-          className="rounded-lg shadow p-6 text-white"
-          style={{
-            minHeight: '140px',
-            background: 'linear-gradient(135deg, #81C1AC 0%, #67AB94 100%)'
-          }}
-        >
-          <p className="text-sm opacity-90">Avg. Accuracy</p>
-          <p className="text-4xl font-bold mt-2">
+        <div className="bg-white border border-gray-200 rounded-sm p-5">
+          <p className="text-xs font-light text-gray-600">Avg. Accuracy</p>
+          <p className="text-3xl font-normal mt-2 text-gray-900">
             {summaryMetrics.avgAccuracy > 0 ? summaryMetrics.avgAccuracy.toFixed(1) : '0.0'}%
           </p>
-          <p className="text-sm opacity-75 mt-2">Based on validated predictions</p>
+          <p className="text-xs font-light text-gray-500 mt-2">Based on validated predictions</p>
         </div>
       </div>
 
@@ -171,24 +148,24 @@ export const Dashboard: FC = () => {
         // Demo mode: always show alert
         if (import.meta.env.VITE_DEMO_MODE === 'true') {
           return (
-            <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
+            <div className="bg-orange-50 border border-orange-200 rounded-sm p-5">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-orange-500 rounded-lg">
-                    <AlertTriangle className="w-6 h-6 text-white" />
+                  <div className="p-2 bg-orange-500 rounded-sm">
+                    <AlertTriangle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-100">
+                    <h3 className="text-sm font-normal text-orange-900">
                       Recent Anomalies Detected
                     </h3>
-                    <p className="text-sm text-orange-700 dark:text-orange-300 mt-1">
+                    <p className="text-xs font-light text-orange-700 mt-1">
                       3 unusual predictions found in recent forecasts
                     </p>
                   </div>
                 </div>
                 <Link
                   to="/dashboard/anomalies"
-                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
+                  className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-sm text-xs font-light transition-colors"
                 >
                   View All
                 </Link>
@@ -219,24 +196,24 @@ export const Dashboard: FC = () => {
         if (anomalies.length === 0) return null;
 
         return (
-          <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
+          <div className="bg-orange-50 border border-orange-200 rounded-sm p-5">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-500 rounded-lg">
-                  <AlertTriangle className="w-6 h-6 text-white" />
+                <div className="p-2 bg-orange-500 rounded-sm">
+                  <AlertTriangle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-100">
+                  <h3 className="text-sm font-normal text-orange-900">
                     Recent Anomalies Detected
                   </h3>
-                  <p className="text-sm text-orange-700 dark:text-orange-300 mt-1">
+                  <p className="text-xs font-light text-orange-700 mt-1">
                     {anomalies.length} unusual prediction{anomalies.length > 1 ? 's' : ''} found in recent forecasts
                   </p>
                 </div>
               </div>
               <Link
                 to="/dashboard/anomalies"
-                className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
+                className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-sm text-xs font-light transition-colors"
               >
                 View All
               </Link>
@@ -250,17 +227,17 @@ export const Dashboard: FC = () => {
 
       {/* Model Comparison */}
       <div>
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">All Models</h2>
+        <h2 className="text-lg font-normal text-gray-800 mb-4">All Models</h2>
         {modelsData?.models && modelsData.models.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {modelsData.models
               .map((model: any) => (
                 <ModelInfoCard key={model.id} model={model} />
               ))}
           </div>
         ) : (
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-            <p className="text-gray-600">No model data available. Please train models first.</p>
+          <div className="bg-gray-50 border border-gray-200 rounded-sm p-5">
+            <p className="text-sm font-light text-gray-600">No model data available. Please train models first.</p>
           </div>
         )}
       </div>
@@ -270,31 +247,35 @@ export const Dashboard: FC = () => {
 
       {/* Recent Activity */}
       {historyData && historyData.predictions.length > 0 && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Recent Predictions</h2>
-          <div className="space-y-3">
-            {historyData.predictions.slice(0, 5).map((prediction) => (
-              <div key={prediction.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div>
-                  <p className="font-medium text-gray-900">
-                    {prediction.model_name}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    {prediction.prediction_date}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-lg font-semibold text-gray-900">
-                    {'$' + prediction.predicted_value.toFixed(2)}
-                  </p>
-                  {prediction.actual_value && (
-                    <p className="text-sm text-gray-600">
-                      Actual: {'$' + prediction.actual_value.toFixed(2)}
+        <div className="bg-white border border-gray-200 rounded-sm">
+          <div className="px-5 py-4 border-b border-gray-100">
+            <h2 className="text-xs font-medium text-gray-900 uppercase tracking-wide">Recent Predictions</h2>
+          </div>
+          <div className="p-5">
+            <div className="space-y-3">
+              {historyData.predictions.slice(0, 5).map((prediction) => (
+                <div key={prediction.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-sm">
+                  <div>
+                    <p className="text-sm font-normal text-gray-900">
+                      {prediction.model_name}
                     </p>
-                  )}
+                    <p className="text-xs font-light text-gray-600">
+                      {prediction.prediction_date}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-normal text-gray-900">
+                      {'$' + prediction.predicted_value.toFixed(2)}
+                    </p>
+                    {prediction.actual_value && (
+                      <p className="text-xs font-light text-gray-600">
+                        Actual: {'$' + prediction.actual_value.toFixed(2)}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       )}
