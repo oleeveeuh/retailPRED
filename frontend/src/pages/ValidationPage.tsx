@@ -436,7 +436,7 @@ export const ValidationPage: FC = () => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -444,10 +444,10 @@ export const ValidationPage: FC = () => {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-5xl font-bold gradient-text animate-gradient">
+          <h1 className="text-2xl font-normal text-gray-900 tracking-tight">
             Model Validation Dashboard
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 text-lg mt-2">
+          <p className="text-gray-500 text-sm font-light mt-2">
             Monitor model performance, track accuracy, and detect drift
           </p>
         </div>
@@ -457,16 +457,16 @@ export const ValidationPage: FC = () => {
             whileTap={{ scale: 0.98 }}
             onClick={handleAutoValidate}
             disabled={isAutoValidating}
-            className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-medium shadow-lg shadow-emerald-500/50 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2.5 bg-emerald-600 text-white rounded-sm font-normal flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isAutoValidating ? (
               <>
-                <RefreshCw className="w-5 h-5 animate-spin" />
+                <RefreshCw className="w-4 h-4 animate-spin" />
                 Validating...
               </>
             ) : (
               <>
-                <Zap className="w-5 h-5" />
+                <Zap className="w-4 h-4" />
                 Auto-Validate
               </>
             )}
@@ -475,9 +475,9 @@ export const ValidationPage: FC = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleExport}
-            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-accent text-white rounded-xl font-medium shadow-lg shadow-blue-500/50 flex items-center gap-2"
+            className="px-5 py-2.5 bg-[#3A3A6C] text-white rounded-sm font-normal flex items-center gap-2"
           >
-            <Download className="w-5 h-5" />
+            <Download className="w-4 h-4" />
             Export Report
           </motion.button>
         </div>
@@ -488,11 +488,11 @@ export const ValidationPage: FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="glass-card p-6"
+        className="bg-white border border-gray-200 rounded-sm p-5"
       >
         <div className="flex items-center gap-3 mb-4">
-          <Filter className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Filters</h3>
+          <Filter className="w-4 h-4 text-gray-500" />
+          <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide">Filters</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -506,10 +506,10 @@ export const ValidationPage: FC = () => {
                 <button
                   key={range}
                   onClick={() => setDateRange(range)}
-                  className={`px-3 py-2 rounded-lg font-medium transition-all text-sm whitespace-nowrap ${
+                  className={`px-3 py-2 rounded-sm font-normal transition-all text-sm whitespace-nowrap ${
                     dateRange === range
-                      ? 'bg-indigo-600 text-white shadow-lg hover:bg-indigo-700'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                      ? 'bg-[#3A3A6C] text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
                   {range === 'all' ? 'All Time' : range === '7d' ? '7 Days' : range === '30d' ? '30 Days' : '90 Days'}
@@ -532,7 +532,7 @@ export const ValidationPage: FC = () => {
                   setSelectedModels([e.target.value]);
                 }
               }}
-              className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800 border-0 rounded-lg text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-gray-100 border-0 rounded-sm text-gray-900 focus:ring-1 focus:ring-[#81C1AC]"
             >
               <option value="all">All Models</option>
               {uniqueModels.filter(m => m !== 'all').map(model => (
@@ -546,23 +546,23 @@ export const ValidationPage: FC = () => {
       </motion.div>
 
       {/* Performance Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {/* Overall Accuracy */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass-card p-6 relative overflow-hidden"
+          className="bg-white border border-gray-200 rounded-sm p-6 relative overflow-hidden"
         >
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Overall Accuracy</p>
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">Overall Accuracy</p>
               <div className="flex items-center gap-2 mt-2">
                 <motion.h3
                   key={metrics.overall_accuracy}
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="text-4xl font-bold text-slate-900 dark:text-slate-100"
+                  className="text-4xl font-normal text-gray-900"
                 >
                   {metrics.overall_accuracy.toFixed(1)}%
                 </motion.h3>
@@ -576,14 +576,14 @@ export const ValidationPage: FC = () => {
                   <Activity className="w-6 h-6 text-primary" />
                 )}
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              <p className="text-xs text-gray-500 mt-2">
                 {metrics.accuracy_trend === 'up' && 'Improving'}
                 {metrics.accuracy_trend === 'down' && 'Declining'}
                 {metrics.accuracy_trend === 'stable' && 'Stable'}
               </p>
             </div>
-            <div className="p-3 bg-emerald-100 dark:bg-emerald-900/20 rounded-xl">
-              <Crosshair className="w-8 h-8 text-emerald-600" />
+            <div className="p-3 bg-emerald-50 rounded-sm">
+              <Crosshair className="w-6 h-6 text-emerald-600" />
             </div>
           </div>
 
@@ -608,25 +608,25 @@ export const ValidationPage: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="glass-card p-6 relative overflow-hidden"
+          className="bg-white border border-gray-200 rounded-sm p-6 relative overflow-hidden"
         >
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Avg Error (MAE)</p>
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">Avg Error (MAE)</p>
               <motion.h3
                 key={metrics.avg_error_rate}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="text-4xl font-bold text-slate-900 dark:text-slate-100 mt-2"
+                className="text-4xl font-normal text-gray-900 mt-2"
               >
                 ${metrics.avg_error_rate.toFixed(2)}
               </motion.h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              <p className="text-xs text-gray-500 mt-2">
                 Mean absolute error
               </p>
             </div>
-            <div className="p-3 bg-amber-100 dark:bg-amber-900/20 rounded-xl">
-              <BarChart3 className="w-8 h-8 text-amber-600" />
+            <div className="p-3 bg-amber-50 rounded-sm">
+              <BarChart3 className="w-6 h-6 text-amber-600" />
             </div>
           </div>
 
@@ -651,35 +651,35 @@ export const ValidationPage: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="glass-card p-6 relative overflow-hidden"
+          className="bg-white border border-gray-200 rounded-sm p-6 relative overflow-hidden"
         >
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Validated This Month</p>
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">Validated This Month</p>
               <motion.h3
                 key={metrics.predictions_validated}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="text-4xl font-bold text-slate-900 dark:text-slate-100 mt-2"
+                className="text-4xl font-normal text-gray-900 mt-2"
               >
                 {metrics.predictions_validated}
               </motion.h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              <p className="text-xs text-gray-500 mt-2">
                 {filteredPredictions.filter(p => !p.is_validated).length} pending
               </p>
             </div>
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-xl">
-              <CheckCircle2 className="w-8 h-8 text-primary-600" />
+            <div className="p-3 bg-[#3A3A6C]/10 rounded-sm">
+              <CheckCircle2 className="w-6 h-6 text-[#3A3A6C]" />
             </div>
           </div>
 
           {/* Mini progress bar */}
-          <div className="mt-4 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+          <div className="mt-4 h-2 bg-gray-200 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${(metrics.predictions_validated / filteredPredictions.length) * 100}%` }}
               transition={{ delay: 0.5, duration: 0.5 }}
-              className="h-full bg-primary-600 rounded-full"
+              className="h-full bg-[#81C1AC] rounded-full"
             />
           </div>
         </motion.div>
@@ -690,14 +690,14 @@ export const ValidationPage: FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="glass-card p-6"
+        className="bg-white border border-gray-200 rounded-sm p-6"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <h2 className="text-lg font-normal text-gray-900">
               Prediction Timeline
             </h2>
-            <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
+            <p className="text-gray-500 text-sm mt-1">
               Click on any dot to view prediction details
             </p>
           </div>

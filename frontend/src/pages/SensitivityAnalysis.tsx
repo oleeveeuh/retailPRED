@@ -175,14 +175,14 @@ export const SensitivityAnalysis: FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+          <h1 className="text-2xl font-normal text-gray-900 tracking-tight">
             Economic Factor Sensitivity Analysis
           </h1>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="text-gray-500 text-sm font-light mt-1">
             Understand how changes in economic indicators impact retail sales forecasts
           </p>
         </div>
@@ -191,10 +191,10 @@ export const SensitivityAnalysis: FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6"
+          className="bg-white border border-gray-200 rounded-sm p-5"
         >
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
-            <AlertCircle className="w-5 h-5 mr-2 text-orange-600" />
+          <h2 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4 flex items-center">
+            <AlertCircle className="w-4 h-4 mr-2 text-orange-600" />
             Stress Test Scenarios
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -202,13 +202,13 @@ export const SensitivityAnalysis: FC = () => {
               <button
                 key={scenario.name}
                 onClick={() => applyStressScenario(scenario.name)}
-                className="p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700 hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all"
+                className="p-4 rounded-sm border-2 border-gray-200 hover:border-orange-500 hover:bg-orange-50 transition-all"
               >
                 <div className="text-2xl mb-2">{scenario.icon}</div>
-                <div className="font-semibold text-slate-900 dark:text-white mb-1">
+                <div className="font-normal text-sm text-gray-900 mb-1">
                   {scenario.name}
                 </div>
-                <div className="text-xs text-slate-600 dark:text-slate-400">
+                <div className="text-xs text-gray-500">
                   {scenario.description}
                 </div>
               </button>
@@ -221,21 +221,21 @@ export const SensitivityAnalysis: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6"
+          className="bg-white border border-gray-200 rounded-sm p-5"
         >
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
-            <Sliders className="w-5 h-5 mr-2 text-primary-600" />
+          <h2 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4 flex items-center">
+            <Sliders className="w-4 h-4 mr-2 text-[#3A3A6C]" />
             Economic Indicators
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {KEY_INDICATORS.map((indicator) => (
               <div key={indicator.name} className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  <label className="text-sm font-medium text-gray-700">
                     {indicator.display}
                   </label>
-                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <span className="text-sm font-normal text-gray-900">
                     {indicatorValues[indicator.name]} {indicator.unit}
                   </span>
                 </div>
@@ -246,13 +246,13 @@ export const SensitivityAnalysis: FC = () => {
                   step={indicator.step}
                   value={indicatorValues[indicator.name] || 0}
                   onChange={(e) => handleIndicatorChange(indicator.name, parseFloat(e.target.value))}
-                  className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                  className="w-full h-2 bg-gray-200 rounded-sm appearance-none cursor-pointer accent-[#3A3A6C]"
                 />
-                <div className="flex justify-between text-xs text-slate-600 dark:text-slate-400">
+                <div className="flex justify-between text-xs text-gray-500">
                   <span>{indicator.min} {indicator.unit}</span>
                   <span>{indicator.max} {indicator.unit}</span>
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">
+                <div className="text-xs text-gray-400">
                   Category: {indicator.category}
                 </div>
               </div>
@@ -266,29 +266,29 @@ export const SensitivityAnalysis: FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-5"
           >
             {/* Line Chart */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
-                <Activity className="w-5 h-5 mr-2 text-green-600" />
+            <div className="bg-white border border-gray-200 rounded-sm p-5">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4 flex items-center">
+                <Activity className="w-4 h-4 mr-2 text-green-600" />
                 Sensitivity to {selectedIndicator.display}
               </h3>
 
-              <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <div className="mb-4 p-4 bg-blue-50 rounded-sm">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-slate-600 dark:text-slate-400">
+                  <span className="text-sm text-gray-600">
                     Baseline ({selectedIndicator.display} = {sensitivityData.baseline_value.toFixed(2)})
                   </span>
-                  <span className="font-semibold text-slate-900 dark:text-white">
+                  <span className="font-normal text-gray-900">
                     ${baselinePrediction.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-600 dark:text-slate-400">
+                  <span className="text-sm text-gray-600">
                     Range of Forecasts
                   </span>
-                  <span className="font-semibold text-slate-900 dark:text-white">
+                  <span className="font-normal text-gray-900">
                     ${sensitivityData.min_prediction.toLocaleString()} - ${sensitivityData.max_prediction.toLocaleString()}
                   </span>
                 </div>
@@ -332,12 +332,12 @@ export const SensitivityAnalysis: FC = () => {
             </div>
 
             {/* Tornado Chart */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
-                <BarChart3 className="w-5 h-5 mr-2 text-accent" />
+            <div className="bg-white border border-gray-200 rounded-sm p-5">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4 flex items-center">
+                <BarChart3 className="w-4 h-4 mr-2 text-[#3A3A6C]" />
                 Factor Importance (Tornado Chart)
               </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+              <p className="text-xs text-gray-500 mb-4">
                 Shows the range of forecast values across indicator extremes
               </p>
 
@@ -362,13 +362,13 @@ export const SensitivityAnalysis: FC = () => {
               </ResponsiveContainer>
 
               <div className="mt-4 space-y-2">
-                <div className="flex items-center text-sm">
+                <div className="flex items-center text-xs">
                   <div className="w-4 h-4 bg-green-500 mr-2"></div>
-                  <span className="text-slate-700 dark:text-slate-300">High value scenario</span>
+                  <span className="text-gray-700">High value scenario</span>
                 </div>
-                <div className="flex items-center text-sm">
+                <div className="flex items-center text-xs">
                   <div className="w-4 h-4 bg-red-500 mr-2"></div>
-                  <span className="text-slate-700 dark:text-slate-300">Low value scenario</span>
+                  <span className="text-gray-700">Low value scenario</span>
                 </div>
               </div>
             </div>
@@ -380,15 +380,15 @@ export const SensitivityAnalysis: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6"
+          className="bg-white border border-gray-200 rounded-sm p-5"
         >
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+          <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4">
             Analyze Category
           </h3>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full max-w-xs px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+            className="w-full max-w-xs px-4 py-2 rounded-sm border border-gray-200 bg-white text-gray-900"
           >
             <option value="total_sales">Total Retail Sales</option>
             <option value="general_merchandise">General Merchandise</option>

@@ -122,17 +122,17 @@ export const ExplainPage: FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Model Explainability</h1>
-        <p className="text-gray-600 mt-1">
+        <h1 className="text-2xl font-normal text-gray-900 tracking-tight">Model Explainability</h1>
+        <p className="text-gray-500 text-sm font-light mt-1">
           Understand model predictions with SHAP (SHapley Additive exPlanations)
         </p>
       </div>
 
       {/* Info Banner */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div className="bg-blue-50 border border-blue-200 rounded-sm p-4">
         <div className="flex">
           <div className="flex-shrink-0">
             <svg className="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
@@ -150,8 +150,8 @@ export const ExplainPage: FC = () => {
       </div>
 
       {/* Prediction Selector */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Select Prediction to Explain</h2>
+      <div className="bg-white border border-gray-200 rounded-sm p-5">
+        <h2 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4">Select Prediction to Explain</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Timestamp Dropdown */}
@@ -170,7 +170,7 @@ export const ExplainPage: FC = () => {
                   setSelectedPredictionId(prediction.id);
                 }
               }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-primary"
+              className="w-full px-3 py-2 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#81C1AC] focus:border-[#81C1AC]"
             >
               <option value="">Select a timestamp...</option>
               {Array.from(new Set(historyData?.predictions
@@ -197,7 +197,7 @@ export const ExplainPage: FC = () => {
               value={selectedPredictionId}
               onChange={(e) => setSelectedPredictionId(e.target.value ? Number(e.target.value) : '')}
               disabled={!selectedTimestamp}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-primary disabled:bg-gray-100"
+              className="w-full px-3 py-2 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#81C1AC] focus:border-[#81C1AC] disabled:bg-gray-100"
             >
               <option value="">Select a model...</option>
               {selectedTimestamp && historyData?.predictions
@@ -229,7 +229,7 @@ export const ExplainPage: FC = () => {
               value={topN}
               onChange={(e) => setTopN(Number(e.target.value))}
               disabled={!selectedPredictionId}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-primary disabled:bg-gray-100"
+              className="w-full px-3 py-2 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#81C1AC] focus:border-[#81C1AC] disabled:bg-gray-100"
             >
               <option value={5}>Top 5 features</option>
               <option value={10}>Top 10 features</option>
@@ -242,14 +242,14 @@ export const ExplainPage: FC = () => {
 
       {/* Loading State */}
       {isLoading && (
-        <div className="bg-white rounded-lg shadow p-12 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="bg-white border border-gray-200 rounded-sm p-12 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3A3A6C]"></div>
         </div>
       )}
 
       {/* Error State */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="bg-red-50 border border-red-200 rounded-sm p-4">
           <p className="text-red-800 font-medium">Failed to load SHAP explanation</p>
           <p className="text-sm text-red-600 mt-1">
             Please check the prediction ID and try again.
@@ -261,25 +261,25 @@ export const ExplainPage: FC = () => {
       {shapData && (
         <>
           {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              <p className="text-sm text-gray-500">Prediction ID</p>
-              <p className="text-2xl font-bold text-gray-900">#{shapData.prediction_id}</p>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+            <div className="bg-white border border-gray-200 rounded-sm p-5">
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">Prediction ID</p>
+              <p className="text-2xl font-normal text-gray-900">#{shapData.prediction_id}</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow p-6">
-              <p className="text-sm text-gray-500">Predicted Value</p>
-              <p className="text-2xl font-bold text-primary-600">${shapData.predicted_value.toFixed(2)}</p>
+            <div className="bg-white border border-gray-200 rounded-sm p-5">
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">Predicted Value</p>
+              <p className="text-2xl font-normal text-[#3A3A6C]">${shapData.predicted_value.toFixed(2)}</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow p-6">
-              <p className="text-sm text-gray-500">Base Value</p>
-              <p className="text-2xl font-bold text-gray-600">${shapData.base_value.toFixed(2)}</p>
+            <div className="bg-white border border-gray-200 rounded-sm p-5">
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">Base Value</p>
+              <p className="text-2xl font-normal text-gray-600">${shapData.base_value.toFixed(2)}</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow p-6">
-              <p className="text-sm text-gray-500">Total SHAP Value</p>
-              <p className="text-2xl font-bold text-accent">${shapData.total_shap_value.toFixed(2)}</p>
+            <div className="bg-white border border-gray-200 rounded-sm p-5">
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">Total SHAP Value</p>
+              <p className="text-2xl font-normal text-[#81C1AC]">${shapData.total_shap_value.toFixed(2)}</p>
             </div>
           </div>
 
@@ -293,10 +293,10 @@ export const ExplainPage: FC = () => {
           />
 
           {/* Charts Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {/* Feature Contributions Bar Chart */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            <div className="bg-white border border-gray-200 rounded-sm p-5">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4">
                 Feature Contributions (Top {topN})
               </h3>
               <ResponsiveContainer width="100%" height={350}>
@@ -324,8 +324,8 @@ export const ExplainPage: FC = () => {
             </div>
 
             {/* Feature Importance Pie Chart */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            <div className="bg-white border border-gray-200 rounded-sm p-5">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4">
                 Feature Importance Distribution
               </h3>
               <ResponsiveContainer width="100%" height={350}>
@@ -351,19 +351,19 @@ export const ExplainPage: FC = () => {
           </div>
 
           {/* Impact Summary */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-              <h4 className="text-lg font-semibold text-green-800 mb-2">Positive Impact</h4>
-              <p className="text-3xl font-bold text-green-600">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="bg-green-50 border border-green-200 rounded-sm p-5">
+              <h4 className="text-sm font-medium text-green-800 uppercase tracking-wide mb-2">Positive Impact</h4>
+              <p className="text-3xl font-normal text-green-600">
                 ${(shapData.feature_contributions?.filter((f) => f.value > 0).reduce((sum, f) => sum + f.value, 0) || 0).toFixed(2)}
               </p>
               <p className="text-sm text-green-700 mt-2">
                 Features that increased the prediction
               </p>
             </div>
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-              <h4 className="text-lg font-semibold text-red-800 mb-2">Negative Impact</h4>
-              <p className="text-3xl font-bold text-red-600">
+            <div className="bg-red-50 border border-red-200 rounded-sm p-5">
+              <h4 className="text-sm font-medium text-red-800 uppercase tracking-wide mb-2">Negative Impact</h4>
+              <p className="text-3xl font-normal text-red-600">
                 ${Math.abs(shapData.feature_contributions?.filter((f) => f.value < 0).reduce((sum, f) => sum + f.value, 0) || 0).toFixed(2)}
               </p>
               <p className="text-sm text-red-700 mt-2">
@@ -373,9 +373,9 @@ export const ExplainPage: FC = () => {
           </div>
 
           {/* Sortable Feature Table */}
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-800">Feature Details</h3>
+          <div className="bg-white border border-gray-200 rounded-sm overflow-hidden">
+            <div className="px-5 py-4 border-b border-gray-200">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide">Feature Details</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
@@ -451,9 +451,9 @@ export const ExplainPage: FC = () => {
           </div>
 
           {/* Text Summary */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Explanation Summary</h3>
-            <div className="bg-gray-50 rounded-lg p-4">
+          <div className="bg-white border border-gray-200 rounded-sm p-5">
+            <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4">Explanation Summary</h3>
+            <div className="bg-gray-50 rounded-sm p-4">
               <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono whitespace-pre">
                 {shapData.summary}
               </pre>
@@ -464,7 +464,7 @@ export const ExplainPage: FC = () => {
 
       {/* Empty State */}
       {!selectedPredictionId && !isLoading && !error && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-12 text-center">
+        <div className="bg-blue-50 border border-blue-200 rounded-sm p-12 text-center">
           <svg
             className="mx-auto h-16 w-16 text-blue-400 mb-4"
             fill="none"
