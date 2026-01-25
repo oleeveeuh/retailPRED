@@ -40,12 +40,12 @@ const KPICard: FC<KPICardProps> = ({ title, value, change, icon, color, trend })
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    className={`bg-white rounded-lg shadow-lg p-6 border-l-4 ${color}`}
+    className={`bg-white border border-gray-200 rounded-sm p-6 border-l-2 ${color}`}
   >
     <div className="flex items-center justify-between gap-4">
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-600 mb-1 truncate">{title}</p>
-        <p className="text-3xl font-bold text-gray-900 truncate">{value}</p>
+        <p className="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">{title}</p>
+        <p className="text-3xl font-normal text-gray-900 truncate">{value}</p>
         {change && (
           <p className={`text-sm mt-2 flex items-center gap-1 ${
             trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-600' : 'text-gray-600'
@@ -55,7 +55,7 @@ const KPICard: FC<KPICardProps> = ({ title, value, change, icon, color, trend })
           </p>
         )}
       </div>
-      <div className="flex-shrink-0 p-3 bg-gray-50 rounded-lg flex items-center justify-center">
+      <div className="flex-shrink-0 p-3 bg-gray-50 rounded-sm flex items-center justify-center">
         <div className="text-gray-700">
           {icon}
         </div>
@@ -209,22 +209,22 @@ export const BusinessDashboard: FC = () => {
   const tableauEmbedUrl = import.meta.env.VITE_TABLEAU_EMBED_URL || '';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-8">
+    <div className="min-h-screen bg-white p-8">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 flex items-center">
-              <BarChart3 className="w-10 h-10 mr-3 text-primary-600" />
+            <h1 className="text-2xl font-normal text-gray-900 flex items-center">
+              <BarChart3 className="w-6 h-6 mr-3 text-[#3A3A6C]" />
               Business Dashboard
             </h1>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-500 mt-1">
               Executive view of retail forecasting performance and insights
             </p>
           </div>
           <a
             href="/"
-            className="px-4 py-2 bg-white text-gray-700 rounded-lg shadow hover:shadow-md transition-shadow text-sm font-medium"
+            className="px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-sm hover:shadow-sm transition-shadow text-sm font-normal"
           >
             Switch to Technical View
           </a>
@@ -232,11 +232,11 @@ export const BusinessDashboard: FC = () => {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 mb-6">
         {statsLoading ? (
           <>
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="bg-white rounded-lg shadow p-6 border-l-4 border-primary animate-pulse">
+              <div key={i} className="bg-white border border-gray-200 rounded-sm p-6 border-l-2 border-[#3A3A6C] animate-pulse">
                 <div className="h-20 bg-gray-200 rounded"></div>
               </div>
             ))}
@@ -246,46 +246,46 @@ export const BusinessDashboard: FC = () => {
             <KPICard
               title="Total Predictions"
               value={kpis.totalPredictions.toLocaleString()}
-              icon={<Calendar className="w-6 h-6 text-primary-600" />}
-              color="border-primary"
+              icon={<Calendar className="w-5 h-5 text-[#3A3A6C]" />}
+              color="border-[#3A3A6C]"
             />
             <KPICard
               title="Forecast Accuracy"
               value={kpis.avgAccuracy}
-              icon={<Crosshair className="w-6 h-6 text-green-600" />}
-              color="border-green-500"
+              icon={<Crosshair className="w-5 h-5 text-green-600" />}
+              color="border-green-600"
             />
             <KPICard
               title="Total Sales Forecast"
               value={kpis.totalSales}
-              icon={<DollarSign className="w-6 h-6 text-accent" />}
-              color="border-purple-500"
+              icon={<DollarSign className="w-5 h-5 text-[#81C1AC]" />}
+              color="border-[#81C1AC]"
             />
             <KPICard
               title="Forecast Period"
               value={kpis.forecastRange !== 'N/A' ? kpis.forecastRange.split(' - ')[1] : 'N/A'}
-              icon={<TrendingUp className="w-6 h-6 text-orange-600" />}
-              color="border-orange-500"
+              icon={<TrendingUp className="w-5 h-5 text-orange-600" />}
+              color="border-orange-600"
             />
             <KPICard
               title="Active Models"
               value={kpis.activeModels}
-              icon={<Users className="w-6 h-6 text-indigo-600" />}
-              color="border-indigo-500"
+              icon={<Users className="w-5 h-5 text-indigo-600" />}
+              color="border-indigo-600"
             />
           </>
         ) : null}
       </div>
 
       {/* Tab Navigation */}
-      <div className="bg-white rounded-lg shadow-lg mb-6">
+      <div className="bg-white border border-gray-200 rounded-sm mb-6">
         <div className="border-b border-gray-200">
           <nav className="flex -mb-px">
             <button
               onClick={() => setActiveTab('tableau')}
-              className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
+              className={`py-4 px-6 border-b-2 font-normal text-sm transition-colors ${
                 activeTab === 'tableau'
-                  ? 'border-primary text-primary-600'
+                  ? 'border-[#3A3A6C] text-[#3A3A6C]'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -294,9 +294,9 @@ export const BusinessDashboard: FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('export')}
-              className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
+              className={`py-4 px-6 border-b-2 font-normal text-sm transition-colors ${
                 activeTab === 'export'
-                  ? 'border-primary text-primary-600'
+                  ? 'border-[#3A3A6C] text-[#3A3A6C]'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -305,9 +305,9 @@ export const BusinessDashboard: FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('guide')}
-              className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
+              className={`py-4 px-6 border-b-2 font-normal text-sm transition-colors ${
                 activeTab === 'guide'
-                  ? 'border-primary text-primary-600'
+                  ? 'border-[#3A3A6C] text-[#3A3A6C]'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -329,11 +329,11 @@ export const BusinessDashboard: FC = () => {
               >
                 {tableauEmbedUrl ? (
                   <div className="space-y-4">
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="bg-blue-50 border border-blue-200 rounded-sm p-4">
                       <div className="flex items-start">
-                        <Info className="w-5 h-5 text-primary-600 mr-3 mt-0.5" />
+                        <Info className="w-4 h-4 text-[#3A3A6C] mr-3 mt-0.5" />
                         <div>
-                          <p className="text-sm text-blue-800 font-medium">
+                          <p className="text-sm text-blue-800 font-normal">
                             Interactive Dashboard
                           </p>
                           <p className="text-sm text-blue-700 mt-1">
@@ -352,7 +352,7 @@ export const BusinessDashboard: FC = () => {
                         href={tableauEmbedUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
+                        className="inline-flex items-center px-4 py-2 bg-[#3A3A6C] text-white rounded-sm hover:bg-[#4a4a7c] transition-colors text-sm font-normal"
                       >
                         Open in Tableau Public
                         <ExternalLink className="w-4 h-4 ml-2" />
@@ -362,7 +362,7 @@ export const BusinessDashboard: FC = () => {
                 ) : (
                   <div className="text-center py-16">
                     <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    <h3 className="text-xl font-normal text-gray-900 mb-2">
                       Tableau Dashboard Not Configured
                     </h3>
                     <p className="text-gray-600 mb-6 max-w-md mx-auto">
@@ -378,7 +378,7 @@ export const BusinessDashboard: FC = () => {
                       href="https://public.tableau.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
+                      className="inline-flex items-center px-5 py-2.5 bg-[#3A3A6C] text-white rounded-sm hover:bg-[#4a4a7c] transition-colors font-normal"
                     >
                       Go to Tableau Public
                       <ExternalLink className="w-4 h-4 ml-2" />
@@ -397,15 +397,15 @@ export const BusinessDashboard: FC = () => {
               >
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                    <h3 className="text-lg font-normal text-gray-900 mb-4">
                       Export Prediction Data
                     </h3>
-                    <p className="text-gray-600 mb-6">
+                    <p className="text-gray-500 mb-6">
                       Download all predictions in CSV format optimized for Tableau and other BI tools.
                     </p>
                   </div>
 
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                  <div className="bg-blue-50 border border-blue-200 rounded-sm p-6">
                     <h4 className="font-semibold text-blue-900 mb-4">Included Fields</h4>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                       <div className="flex items-start">

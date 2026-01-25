@@ -159,14 +159,14 @@ export const EconomicScenarioAnalysis: FC = () => {
   const selectedScenarioInfo = SCENARIOS.find(s => s.type === selectedScenario);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+          <h1 className="text-2xl font-normal text-gray-900 tracking-tight">
             Economic Scenario Analysis
           </h1>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="text-gray-500 text-sm font-light mt-1">
             Analyze retail sales forecasts under different macroeconomic scenarios
           </p>
         </div>
@@ -176,31 +176,31 @@ export const EconomicScenarioAnalysis: FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6"
+            className="bg-white border border-gray-200 rounded-sm p-5"
           >
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
-              <Activity className="w-6 h-6 mr-2 text-primary-600" />
+            <h2 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4 flex items-center">
+              <Activity className="w-4 h-4 mr-2 text-[#3A3A6C]" />
               Current Economic Regime
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary-600 dark:text-blue-400 mb-2">
+                <div className="text-2xl font-normal text-[#3A3A6C] mb-2">
                   {currentRegime.regime.charAt(0).toUpperCase() + currentRegime.regime.slice(1)}
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="text-xs text-gray-500 uppercase tracking-wide">
                   Detected Regime
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
+                <div className="text-2xl font-normal text-green-600 mb-2">
                   {(currentRegime.confidence * 100).toFixed(0)}%
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="text-xs text-gray-500 uppercase tracking-wide">
                   Confidence
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center">
+                <div className="text-xs text-gray-500 flex items-center justify-center">
                   <Info className="w-4 h-4 mr-2" />
                   {currentRegime.description}
                 </div>
@@ -214,13 +214,13 @@ export const EconomicScenarioAnalysis: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6"
+          className="bg-white border border-gray-200 rounded-sm p-5"
         >
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-4">
+          <h2 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4">
             Select Economic Scenario
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-5">
             {SCENARIOS.map((scenario) => {
               const Icon = scenario.icon;
               const isSelected = selectedScenario === scenario.type;
@@ -229,17 +229,17 @@ export const EconomicScenarioAnalysis: FC = () => {
                 <button
                   key={scenario.type}
                   onClick={() => setSelectedScenario(scenario.type)}
-                  className={`relative p-4 rounded-lg border-2 transition-all ${
+                  className={`relative p-4 rounded-sm border-2 transition-all ${
                     isSelected
-                      ? `border-${scenario.color}-500 bg-${scenario.color}-50 dark:bg-${scenario.color}-900/20`
-                      : 'border-slate-200 dark:border-slate-700 hover:border-slate-300'
+                      ? `border-[#3A3A6C] bg-[#3A3A6C]/5`
+                      : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <Icon className={`w-8 h-8 mb-2 text-${scenario.color}-600`} />
-                  <div className="font-semibold text-slate-900 dark:text-white mb-1">
+                  <Icon className={`w-6 h-6 mb-2 ${isSelected ? 'text-[#3A3A6C]' : `text-gray-400`}`} />
+                  <div className="font-normal text-sm text-gray-900 mb-1">
                     {scenario.name}
                   </div>
-                  <div className="text-xs text-slate-600 dark:text-slate-400">
+                  <div className="text-xs text-gray-500">
                     {scenario.description}
                   </div>
                 </button>
@@ -249,13 +249,13 @@ export const EconomicScenarioAnalysis: FC = () => {
 
           {/* Category Selector */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Retail Category
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full max-w-xs px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+              className="w-full max-w-xs px-4 py-2 rounded-sm border border-gray-200 bg-white text-gray-900"
             >
               <option value="total_sales">Total Retail Sales</option>
               <option value="general_merchandise">General Merchandise</option>
@@ -272,79 +272,79 @@ export const EconomicScenarioAnalysis: FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-5"
           >
             {/* Prediction Under Scenario */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
-                <DollarSign className="w-5 h-5 mr-2 text-green-600" />
+            <div className="bg-white border border-gray-200 rounded-sm p-5">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4 flex items-center">
+                <DollarSign className="w-4 h-4 mr-2 text-green-600" />
                 Forecast Under {selectedScenarioInfo?.name}
               </h3>
 
-              <div className="text-center mb-6">
-                <div className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+              <div className="text-center mb-5">
+                <div className="text-3xl font-normal text-gray-900 mb-2">
                   ${scenarioResults.prediction.toLocaleString()}
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="text-xs text-gray-500 uppercase tracking-wide">
                   Predicted Monthly Retail Sales
                 </div>
               </div>
 
               {/* Confidence Interval */}
-              <div className="mb-6">
-                <div className="flex justify-between text-sm text-slate-600 dark:text-slate-400 mb-2">
+              <div className="mb-5">
+                <div className="flex justify-between text-xs text-gray-500 mb-2 uppercase tracking-wide">
                   <span>Confidence Interval (95%)</span>
                 </div>
-                <div className="relative h-8 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div className="relative h-8 bg-gray-200 rounded-sm overflow-hidden">
                   <div
-                    className="absolute h-full bg-primary-600 dark:bg-blue-400"
+                    className="absolute h-full bg-[#81C1AC]"
                     style={{
                       left: `${((scenarioResults.confidence_interval[0] - 40000) / 40000) * 100}%`,
                       width: `${((scenarioResults.confidence_interval[1] - scenarioResults.confidence_interval[0]) / 40000) * 100}%`,
                     }}
                   />
-                  <div className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-slate-900 dark:text-white">
+                  <div className="absolute inset-0 flex items-center justify-center text-xs font-normal text-gray-900">
                     ${scenarioResults.confidence_interval[0].toLocaleString()} - ${scenarioResults.confidence_interval[1].toLocaleString()}
                   </div>
                 </div>
               </div>
 
               {/* Scenario Description */}
-              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
-                <p className="text-sm text-slate-700 dark:text-slate-300">
+              <div className="bg-gray-50 rounded-sm p-4">
+                <p className="text-xs text-gray-700">
                   {selectedScenarioInfo?.description}
                 </p>
               </div>
             </div>
 
             {/* Macro Factor Attribution */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
-                <BarChart3 className="w-5 h-5 mr-2 text-primary-600" />
+            <div className="bg-white border border-gray-200 rounded-sm p-5">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4 flex items-center">
+                <BarChart3 className="w-4 h-4 mr-2 text-[#3A3A6C]" />
                 Macro Factor Impact
               </h3>
 
               <div className="space-y-3">
                 {scenarioResults.impact_summary.slice(0, 6).map((impact, idx) => (
-                  <div key={idx} className="border-b border-slate-200 dark:border-slate-700 pb-3 last:border-0">
+                  <div key={idx} className="border-b border-gray-200 pb-3 last:border-0">
                     <div className="flex justify-between items-start mb-1">
                       <div>
-                        <div className="font-medium text-slate-900 dark:text-white">
+                        <div className="font-normal text-xs text-gray-900">
                           {impact.indicator}
                         </div>
-                        <div className="text-xs text-slate-600 dark:text-slate-400">
+                        <div className="text-xs text-gray-500">
                           {impact.category} • {impact.source}
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className={`font-semibold ${
+                        <div className={`font-normal text-xs ${
                           impact.change_pct > 0 ? 'text-green-600' : 'text-red-600'
                         }`}>
                           {impact.change_pct > 0 ? '+' : ''}{impact.change_pct.toFixed(1)}%
                         </div>
                       </div>
                     </div>
-                    <div className="flex justify-between text-xs text-slate-600 dark:text-slate-400">
+                    <div className="flex justify-between text-xs text-gray-500">
                       <span>{impact.base_value.toFixed(2)} → {impact.scenario_value.toFixed(2)}</span>
                     </div>
                   </div>
@@ -352,21 +352,21 @@ export const EconomicScenarioAnalysis: FC = () => {
               </div>
 
               {/* Model Predictions Chart */}
-              <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
-                <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">
+              <div className="mt-5 pt-5 border-t border-gray-200">
+                <h4 className="text-xs font-medium text-gray-700 uppercase tracking-wide mb-4">
                   Model Predictions Under This Scenario
                 </h4>
                 {modelPredictions && modelPredictions.length > 0 ? (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {modelPredictions.map((model) => (
-                      <div key={model.name} className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3">
-                        <div className="text-xs text-slate-600 dark:text-slate-400 mb-1">{model.name}</div>
-                        <div className="text-lg font-bold text-slate-900 dark:text-white">
+                      <div key={model.name} className="bg-gray-50 rounded-sm p-3">
+                        <div className="text-xs text-gray-500 mb-1">{model.name}</div>
+                        <div className="text-sm font-normal text-gray-900">
                           ${(model.value / 1000).toFixed(1)}K
                         </div>
-                        <div className="mt-2 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                        <div className="mt-2 h-1.5 bg-gray-200 rounded-sm overflow-hidden">
                           <div
-                            className={`h-full ${model.color} rounded-full`}
+                            className={`h-full ${model.color} rounded-sm`}
                             style={{
                               width: `${(model.value / (Math.max(...modelPredictions.map(m => m.value)) * 1.05)) * 100}%`
                             }}
@@ -376,7 +376,7 @@ export const EconomicScenarioAnalysis: FC = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-sm text-slate-500 dark:text-slate-400 text-center py-4">
+                  <div className="text-xs text-gray-500 text-center py-4">
                     Loading model predictions...
                   </div>
                 )}
@@ -391,43 +391,43 @@ export const EconomicScenarioAnalysis: FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6"
+            className="bg-white border border-gray-200 rounded-sm p-5"
           >
-            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
+            <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4">
               Historical Pattern Matching
             </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            <p className="text-xs text-gray-500 mb-5">
               Finding similar economic periods in history can help predict future outcomes
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               {similarPeriods.periods.map((period: any, idx: number) => (
-                <div key={idx} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+                <div key={idx} className="border border-gray-200 rounded-sm p-4">
                   <div className="text-center mb-3">
-                    <div className="text-lg font-bold text-slate-900 dark:text-white mb-1">
+                    <div className="text-sm font-normal text-gray-900 mb-1">
                       {new Date(period.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                     </div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">
+                    <div className="text-xs text-gray-500">
                       Similarity: {(period.similarity_score * 100).toFixed(0)}%
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600 dark:text-slate-400">Unemployment</span>
-                      <span className="font-medium text-slate-900 dark:text-white">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-500">Unemployment</span>
+                      <span className="font-normal text-gray-900">
                         {period.indicators.UNRATE?.toFixed(1)}%
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600 dark:text-slate-400">GDP Growth</span>
-                      <span className="font-medium text-slate-900 dark:text-white">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-500">GDP Growth</span>
+                      <span className="font-normal text-gray-900">
                         {period.indicators.GDP?.toFixed(1)}%
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600 dark:text-slate-400">Retail Sales</span>
-                      <span className="font-medium text-green-600">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-500">Retail Sales</span>
+                      <span className="font-normal text-green-600">
                         ${(period.retail_sales / 1000).toFixed(0)}K
                       </span>
                     </div>

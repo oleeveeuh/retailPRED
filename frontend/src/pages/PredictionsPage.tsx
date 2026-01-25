@@ -230,59 +230,38 @@ export const PredictionsPage: FC = () => {
     <div className="space-y-8">
       <Toaster position="top-right" />
 
-      {/* Hero Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center space-y-4"
-      >
-        <h1 className="text-4xl md:text-5xl font-bold">
-          <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient">
-            Retail Sales Forecasting Engine
-          </span>
-        </h1>
-        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-slate-600 dark:text-slate-400">
-          <span className="flex items-center gap-1">
-            <Sparkles className="w-4 h-4 text-accent" />
-            Trained on 50K+ samples
-          </span>
-          <span className="text-slate-300">•</span>
-          <span className="flex items-center gap-1">
-            <Brain className="w-4 h-4 text-primary" />
-            7 model architectures
-          </span>
-          <span className="text-slate-300">•</span>
-          <span className="flex items-center gap-1">
-            <Crosshair className="w-4 h-4 text-emerald-500" />
-            95% accuracy
-          </span>
-        </div>
-      </motion.div>
+      {/* Page Header - Minimalistic */}
+      <div>
+        <h1 className="text-2xl font-normal text-gray-900 tracking-tight">Forecasts</h1>
+        <p className="text-sm font-light text-gray-500 mt-1">
+          Generate retail sales predictions with ML models
+        </p>
+      </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Input Section - Left Panel (40%) */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
-          className="lg:col-span-2 space-y-6"
+          className="lg:col-span-2 space-y-5"
         >
           {/* Configuration Card */}
-          <div className="glass-card space-y-6">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-gradient-to-br from-primary to-accent rounded-lg">
-                <Wand2 className="w-5 h-5 text-white" />
+          <div className="bg-white border border-gray-200 rounded-sm p-5 space-y-5">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-[#3A3A6C] rounded-sm flex items-center justify-center">
+                <Wand2 className="w-4 h-4 text-[#81C1AC]" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Configuration</h2>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Customize your prediction</p>
+                <h2 className="text-xs font-medium text-gray-900 uppercase tracking-wide">Configuration</h2>
+                <p className="text-xs font-light text-gray-500 mt-0.5">Customize your prediction</p>
               </div>
             </div>
 
             {/* Category Selection */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Retail Category</label>
+              <label className="text-xs font-medium text-gray-700 uppercase tracking-wide">Retail Category</label>
               {categoriesLoading ? (
                 <SkeletonCard className="h-12" />
               ) : categoriesError ? (
@@ -315,7 +294,7 @@ export const PredictionsPage: FC = () => {
 
             {/* Model Selector - Pill Buttons */}
             <div className="space-y-3">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Select Model</label>
+              <label className="text-xs font-medium text-gray-700 uppercase tracking-wide">Select Model</label>
               <div className="grid grid-cols-2 gap-3">
                 {MODEL_TYPES.map((model) => {
                   const Icon = model.icon;
@@ -327,16 +306,16 @@ export const PredictionsPage: FC = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className={`
-                        relative p-4 rounded-xl border-2 transition-all duration-200
+                        relative p-4 rounded-sm border-2 transition-all duration-200
                         ${isSelected
-                          ? 'border-primary bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20'
-                          : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                          ? 'border-[#3A3A6C] bg-[#3A3A6C]/5'
+                          : 'border-gray-200 hover:border-gray-300'
                         }
                       `}
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <Icon className={`w-5 h-5 ${isSelected ? 'text-primary-600' : 'text-slate-400'}`} />
-                        <span className={`font-medium text-sm ${isSelected ? 'text-slate-900 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'}`}>
+                        <Icon className={`w-5 h-5 ${isSelected ? 'text-[#3A3A6C]' : 'text-gray-400'}`} />
+                        <span className={`font-normal text-sm ${isSelected ? 'text-gray-900' : 'text-gray-600'}`}>
                           {model.label}
                         </span>
                       </div>
@@ -344,7 +323,7 @@ export const PredictionsPage: FC = () => {
                         <motion.span
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
-                          className="text-xs text-primary-600 dark:text-blue-400 font-medium"
+                          className="text-xs text-[#81C1AC] font-light"
                         >
                           {model.badge}
                         </motion.span>
@@ -357,7 +336,7 @@ export const PredictionsPage: FC = () => {
 
             {/* Granularity */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Granularity</label>
+              <label className="text-xs font-medium text-gray-700 uppercase tracking-wide">Granularity</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
                   { value: Granularity.WEEKLY, label: 'Weekly' },
@@ -368,10 +347,10 @@ export const PredictionsPage: FC = () => {
                     key={gran.value}
                     onClick={() => setGranularity(gran.value as Granularity)}
                     className={`
-                      px-4 py-2 rounded-lg text-sm font-medium transition-all
+                      px-4 py-2 rounded-sm text-sm font-normal transition-all
                       ${granularity === gran.value
-                        ? 'bg-primary-600 text-white shadow-lg shadow-blue-500/50'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                        ? 'bg-[#3A3A6C] text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }
                     `}
                   >
@@ -384,8 +363,8 @@ export const PredictionsPage: FC = () => {
             {/* Forecast Horizon Slider */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Forecast Horizon</label>
-                <span className="text-sm font-bold text-primary-600 bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full">
+                <label className="text-xs font-medium text-gray-700 uppercase tracking-wide">Forecast Horizon</label>
+                <span className="text-sm font-normal text-[#3A3A6C] bg-gray-100 px-3 py-1 rounded-sm">
                   {weeksAhead} {weeksAhead === 1 ? 'week' : weeksAhead === 52 ? 'year (52 weeks)' : 'weeks'}
                 </span>
               </div>
@@ -396,9 +375,9 @@ export const PredictionsPage: FC = () => {
                 step="1"
                 value={weeksAhead}
                 onChange={(e) => setWeeksAhead(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-2 bg-gray-200 rounded-sm appearance-none cursor-pointer accent-[#3A3A6C]"
               />
-              <div className="flex justify-between text-xs text-slate-500">
+              <div className="flex justify-between text-xs text-gray-500">
                 <span>1 week</span>
                 <span>13 weeks (3 months)</span>
                 <span>26 weeks (6 months)</span>
@@ -416,10 +395,10 @@ export const PredictionsPage: FC = () => {
                     key={weeks}
                     onClick={() => setWeeksAhead(weeks)}
                     className={`
-                      px-3 py-1 text-xs font-medium rounded-lg transition-all
+                      px-3 py-1 text-xs font-normal rounded-sm transition-all
                       ${weeksAhead === weeks
-                        ? 'bg-primary-600 text-white shadow-md'
-                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'
+                        ? 'bg-[#3A3A6C] text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }
                     `}
                   >
@@ -436,10 +415,9 @@ export const PredictionsPage: FC = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className={`
-                w-full py-4 rounded-xl font-semibold text-white
-                bg-gradient-to-r from-blue-600 to-accent
-                hover:from-blue-700 hover:to-purple-700
-                shadow-lg shadow-blue-500/50
+                w-full py-4 rounded-sm font-normal text-white
+                bg-[#3A3A6C]
+                hover:bg-[#4a4a7c]
                 disabled:opacity-50 disabled:cursor-not-allowed
                 transition-all duration-200
                 relative overflow-hidden
@@ -479,23 +457,23 @@ export const PredictionsPage: FC = () => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="lg:col-span-3 space-y-6"
+          className="lg:col-span-3 space-y-5"
         >
           {!predictionMutation.data ? (
             /* Empty State */
-            <div className="glass-card p-12 text-center">
+            <div className="bg-white border border-gray-200 rounded-sm p-12 text-center">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
-                className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-6"
+                className="w-20 h-20 bg-[#3A3A6C] rounded-sm flex items-center justify-center mx-auto mb-6"
               >
-                <BarChart3 className="w-10 h-10 text-white" />
+                <BarChart3 className="w-10 h-10 text-[#81C1AC]" />
               </motion.div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+              <h3 className="text-xl font-normal text-gray-900 mb-2">
                 Ready to Forecast
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 mb-6">
+              <p className="text-gray-500 mb-6">
                 Configure your parameters and click "Generate Forecast" to see predictions
               </p>
             </div>
@@ -504,51 +482,44 @@ export const PredictionsPage: FC = () => {
               {/* Prediction Summary */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Last Historical Value */}
-                <div className="glass-card p-6">
+                <div className="bg-white border border-gray-200 rounded-sm p-6">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-slate-600 dark:text-slate-400">Last Historical</span>
-                    <Clock className="w-4 h-4 text-slate-400" />
+                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Last Historical</span>
                   </div>
                   <motion.p
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-3xl font-bold text-slate-900 dark:text-slate-100"
+                    className="text-3xl font-normal text-gray-900"
                   >
                     ${getCurrentValue().toFixed(2)}
                   </motion.p>
                 </div>
 
                 {/* Average Forecast */}
-                <div className="glass-card p-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
+                <div className="bg-white border border-gray-200 rounded-sm p-6 bg-[#3A3A6C]/5">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-primary-600 dark:text-blue-400 font-semibold">Average Forecast</span>
-                    <Zap className="w-4 h-4 text-primary" />
+                    <span className="text-xs font-medium text-[#3A3A6C] uppercase tracking-wide">Average Forecast</span>
                   </div>
                   <motion.p
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.1 }}
-                    className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-accent bg-clip-text text-transparent"
+                    className="text-3xl font-normal text-[#3A3A6C]"
                   >
                     ${getPredictedValue().toFixed(2)}
                   </motion.p>
                 </div>
 
                 {/* Percentage Change */}
-                <div className={`glass-card p-6 ${isPositive ? 'border-l-4 border-emerald-500' : 'border-l-4 border-red-500'}`}>
+                <div className={`bg-white border border-gray-200 rounded-sm p-6 ${isPositive ? 'border-l-2 border-emerald-500' : 'border-l-2 border-red-500'}`}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-slate-600 dark:text-slate-400">Expected Change</span>
-                    {isPositive ? (
-                      <TrendingUp className="w-4 h-4 text-emerald-500" />
-                    ) : (
-                      <TrendingDown className="w-4 h-4 text-red-500" />
-                    )}
+                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Expected Change</span>
                   </div>
                   <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
-                    className={`text-3xl font-bold ${isPositive ? 'text-emerald-600' : 'text-red-600'}`}
+                    className={`text-3xl font-normal ${isPositive ? 'text-emerald-600' : 'text-red-600'}`}
                   >
                     {isPositive ? '+' : ''}{percentageChange.toFixed(2)}%
                   </motion.p>
@@ -556,11 +527,11 @@ export const PredictionsPage: FC = () => {
               </div>
 
               {/* Forecast Chart */}
-              <div className="glass-card p-6">
+              <div className="bg-white border border-gray-200 rounded-sm p-6">
                 <div className="flex items-center justify-between mb-6">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Sales Forecast</h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                    <h3 className="text-lg font-normal text-gray-900">Sales Forecast</h3>
+                    <p className="text-sm font-light text-gray-500">
                       {selectedCategory} • {modelType}
                     </p>
                   </div>

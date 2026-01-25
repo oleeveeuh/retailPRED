@@ -503,50 +503,47 @@ export const ModelsPage: FC = () => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Hero Section - Model Arena Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center space-y-4"
+        className="text-center space-y-2"
       >
-        <h1 className="text-5xl font-bold gradient-text animate-gradient">
+        <h1 className="text-2xl font-normal text-gray-900 tracking-tight">
           Model Performance Arena
         </h1>
-        <p className="text-slate-600 dark:text-slate-400 text-lg">
+        <p className="text-gray-500 text-sm font-light">
           Compare, analyze, and optimize your ML models in real-time
         </p>
       </motion.div>
 
       {/* Quick Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Best Model */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="glass-card p-6 relative overflow-hidden"
+          className="bg-white border border-gray-200 rounded-sm p-6 relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <Trophy className="w-24 h-24 text-amber-500" />
-          </div>
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Best Model</p>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-2">
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">Best Model</p>
+              <h3 className="text-2xl font-normal text-gray-900 mt-2">
                 {bestModel?.model_name || 'N/A'}
               </h3>
-              <p className="text-emerald-600 font-semibold mt-1">
+              <p className="text-emerald-600 font-normal mt-1">
                 MASE: {bestModel?.metrics.mase.toFixed(4)} (lower is better)
               </p>
               {bestModel?.metrics.mase && bestModel.metrics.mase < 1.0 && (
-                <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">
+                <p className="text-xs text-emerald-600 mt-1">
                   ✓ Beats baseline forecast
                 </p>
               )}
             </div>
-            <div className="p-3 bg-amber-100 dark:bg-amber-900/20 rounded-xl">
-              <Medal className="w-8 h-8 text-amber-600" />
+            <div className="p-3 bg-amber-50 rounded-sm">
+              <Medal className="w-6 h-6 text-amber-600" />
             </div>
           </div>
         </motion.div>
@@ -556,28 +553,25 @@ export const ModelsPage: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass-card p-6 relative overflow-hidden"
+          className="bg-white border border-gray-200 rounded-sm p-6 relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <Crosshair className="w-24 h-24 text-primary" />
-          </div>
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Avg Accuracy</p>
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">Avg Accuracy</p>
               <motion.h3
                 key={avgAccuracy}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="text-4xl font-bold text-slate-900 dark:text-slate-100 mt-2"
+                className="text-4xl font-normal text-gray-900 mt-2"
               >
                 {avgAccuracy.toFixed(1)}%
               </motion.h3>
-              <p className="text-primary-600 font-semibold mt-1">
+              <p className="text-[#3A3A6C] font-normal mt-1">
                 Across {models.length} models
               </p>
             </div>
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-xl">
-              <Star className="w-8 h-8 text-primary-600" />
+            <div className="p-3 bg-[#3A3A6C]/10 rounded-sm">
+              <Star className="w-6 h-6 text-[#3A3A6C]" />
             </div>
           </div>
         </motion.div>
@@ -587,28 +581,25 @@ export const ModelsPage: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="glass-card p-6 relative overflow-hidden"
+          className="bg-white border border-gray-200 rounded-sm p-6 relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <Zap className="w-24 h-24 text-accent" />
-          </div>
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Total Predictions</p>
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">Total Predictions</p>
               <motion.h3
                 key={totalPredictions}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="text-4xl font-bold text-slate-900 dark:text-slate-100 mt-2"
+                className="text-4xl font-normal text-gray-900 mt-2"
               >
                 {totalPredictions.toLocaleString()}
               </motion.h3>
-              <p className="text-slate-600 dark:text-slate-400 font-medium mt-1">
+              <p className="text-gray-500 font-normal mt-1">
                 All time
               </p>
             </div>
-            <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-xl">
-              <TrendingUp className="w-8 h-8 text-accent" />
+            <div className="p-3 bg-[#81C1AC]/20 rounded-sm">
+              <TrendingUp className="w-6 h-6 text-[#81C1AC]" />
             </div>
           </div>
         </motion.div>
@@ -619,17 +610,17 @@ export const ModelsPage: FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="glass-card p-2"
+        className="bg-white border border-gray-200 rounded-sm p-2"
       >
         <div className="flex space-x-2">
           {(['performance', 'architecture', 'history'] as TabType[]).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-3 px-6 rounded-xl font-semibold capitalize transition-all duration-200 ${
+              className={`flex-1 py-3 px-6 rounded-sm font-normal capitalize transition-all duration-200 ${
                 activeTab === tab
-                  ? 'bg-gradient-to-r from-blue-600 to-accent text-white shadow-lg shadow-blue-500/50'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  ? 'bg-[#3A3A6C] text-white'
+                  : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
               {tab === 'performance' && <span className="flex items-center justify-center gap-2">

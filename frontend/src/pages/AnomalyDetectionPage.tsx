@@ -186,14 +186,14 @@ const AnomalyDetectionPage: FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+          <h1 className="text-2xl font-normal text-gray-900 tracking-tight">
             Anomaly Detection
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">
+          <p className="text-gray-500 text-sm font-light mt-1">
             Unusual predictions explained with economic context
           </p>
         </div>
@@ -204,19 +204,19 @@ const AnomalyDetectionPage: FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800"
+          className="bg-white border border-gray-200 rounded-sm p-5"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-primary-600 dark:text-blue-400">
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">
                 Total Anomalies
               </p>
-              <p className="text-3xl font-bold text-blue-900 dark:text-blue-100 mt-2">
+              <p className="text-3xl font-normal text-gray-900 mt-2">
                 {stats.total}
               </p>
             </div>
-            <div className="p-3 bg-primary rounded-lg">
-              <AlertTriangle className="w-6 h-6 text-white" />
+            <div className="p-3 bg-[#3A3A6C] rounded-sm">
+              <AlertTriangle className="w-5 h-5 text-white" />
             </div>
           </div>
         </motion.div>
@@ -225,19 +225,19 @@ const AnomalyDetectionPage: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-6 border border-green-200 dark:border-green-800"
+          className="bg-white border border-gray-200 rounded-sm p-5"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-green-600 dark:text-green-400">
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">
                 Sales Surges
               </p>
-              <p className="text-3xl font-bold text-green-900 dark:text-green-100 mt-2">
+              <p className="text-3xl font-normal text-green-600 mt-2">
                 {stats.surges}
               </p>
             </div>
-            <div className="p-3 bg-green-500 rounded-lg">
-              <TrendingUp className="w-6 h-6 text-white" />
+            <div className="p-3 bg-green-100 rounded-sm">
+              <TrendingUp className="w-5 h-5 text-green-600" />
             </div>
           </div>
         </motion.div>
@@ -246,19 +246,19 @@ const AnomalyDetectionPage: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-xl p-6 border border-red-200 dark:border-red-800"
+          className="bg-white border border-gray-200 rounded-sm p-5"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-red-600 dark:text-red-400">
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">
                 Sales Declines
               </p>
-              <p className="text-3xl font-bold text-red-900 dark:text-red-100 mt-2">
+              <p className="text-3xl font-normal text-red-600 mt-2">
                 {stats.declines}
               </p>
             </div>
-            <div className="p-3 bg-red-500 rounded-lg">
-              <TrendingDown className="w-6 h-6 text-white" />
+            <div className="p-3 bg-red-100 rounded-sm">
+              <TrendingDown className="w-5 h-5 text-red-600" />
             </div>
           </div>
         </motion.div>
@@ -267,30 +267,30 @@ const AnomalyDetectionPage: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl p-6 border border-orange-200 dark:border-orange-800"
+          className="bg-white border border-gray-200 rounded-sm p-5"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-orange-600 dark:text-orange-400">
+              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">
                 Severe Events
               </p>
-              <p className="text-3xl font-bold text-orange-900 dark:text-orange-100 mt-2">
+              <p className="text-3xl font-normal text-orange-600 mt-2">
                 {stats.severe}
               </p>
             </div>
-            <div className="p-3 bg-orange-500 rounded-lg">
-              <BarChart3 className="w-6 h-6 text-white" />
+            <div className="p-3 bg-orange-100 rounded-sm">
+              <BarChart3 className="w-5 h-5 text-orange-600" />
             </div>
           </div>
         </motion.div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+      <div className="bg-white border border-gray-200 rounded-sm p-4">
         <div className="flex flex-wrap gap-4 items-center">
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-slate-500" />
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <Filter className="w-4 h-4 text-gray-500" />
+            <span className="text-sm font-medium text-gray-700">
               Filters:
             </span>
           </div>
@@ -299,7 +299,7 @@ const AnomalyDetectionPage: FC = () => {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm"
+            className="px-3 py-2 border border-gray-200 rounded-sm bg-white text-gray-900 text-sm"
           >
             {categories.map((cat) => (
               <option key={cat.value} value={cat.value}>
@@ -312,7 +312,7 @@ const AnomalyDetectionPage: FC = () => {
           <select
             value={severityFilter}
             onChange={(e) => setSeverityFilter(e.target.value as any)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm"
+            className="px-3 py-2 border border-gray-200 rounded-sm bg-white text-gray-900 text-sm"
           >
             <option value="all">All Severities</option>
             <option value="moderate">Moderate (5-10%)</option>
@@ -323,7 +323,7 @@ const AnomalyDetectionPage: FC = () => {
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as any)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm"
+            className="px-3 py-2 border border-gray-200 rounded-sm bg-white text-gray-900 text-sm"
           >
             <option value="all">All Types</option>
             <option value="surge">Surges</option>
@@ -340,12 +340,12 @@ const AnomalyDetectionPage: FC = () => {
             <p className="text-slate-600 dark:text-slate-400 mt-4">Loading anomalies...</p>
           </div>
         ) : filteredAnomalies.length === 0 ? (
-          <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
-            <AlertTriangle className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+          <div className="text-center py-12 bg-white border border-gray-200 rounded-sm">
+            <AlertTriangle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-normal text-gray-900 mb-2">
               No Anomalies Found
             </h3>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-gray-500">
               No unusual predictions detected for the selected filters.
             </p>
           </div>
@@ -356,7 +356,7 @@ const AnomalyDetectionPage: FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className={`bg-white dark:bg-slate-800 rounded-xl p-6 border-l-4 ${
+              className={`bg-white border border-gray-200 rounded-sm p-6 border-l-2 ${
                 anomaly.type === 'surge'
                   ? 'border-green-500'
                   : 'border-red-500'
@@ -365,17 +365,17 @@ const AnomalyDetectionPage: FC = () => {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    <span className={`px-3 py-1 rounded-sm text-xs font-normal ${
                       anomaly.severity === 'severe'
-                        ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'
-                        : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                        ? 'bg-orange-100 text-orange-800'
+                        : 'bg-blue-100 text-blue-800'
                     }`}>
                       {anomaly.severity === 'severe' ? 'Severe' : 'Moderate'}
                     </span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    <span className={`px-3 py-1 rounded-sm text-xs font-normal ${
                       anomaly.type === 'surge'
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                        : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'
                     }`}>
                       {anomaly.type === 'surge' ? 'Sales Surge' : 'Sales Decline'}
                     </span>
@@ -383,29 +383,29 @@ const AnomalyDetectionPage: FC = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
                     <div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Date</p>
-                      <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                      <p className="text-xs text-gray-500 mb-1">Date</p>
+                      <p className="text-sm font-normal text-gray-900">
                         {anomaly.date}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Model</p>
-                      <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                      <p className="text-xs text-gray-500 mb-1">Model</p>
+                      <p className="text-sm font-normal text-gray-900">
                         {anomaly.model_name}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Predicted Value</p>
-                      <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                      <p className="text-xs text-gray-500 mb-1">Predicted Value</p>
+                      <p className="text-sm font-normal text-gray-900">
                         ${anomaly.predicted_value?.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                       </p>
                     </div>
                   </div>
 
-                  <div className={`flex items-center gap-2 text-lg font-semibold ${
+                  <div className={`flex items-center gap-2 text-lg font-normal ${
                     anomaly.type === 'surge'
-                      ? 'text-green-600 dark:text-green-400'
-                      : 'text-red-600 dark:text-red-400'
+                      ? 'text-green-600'
+                      : 'text-red-600'
                   }`}>
                     {anomaly.type === 'surge' ? (
                       <TrendingUp className="w-5 h-5" />
@@ -417,35 +417,35 @@ const AnomalyDetectionPage: FC = () => {
                         ? `${anomaly.change_percent > 0 ? '+' : ''}${anomaly.change_percent.toFixed(1)}%`
                         : 'N/A'}
                     </span>
-                    <span className="text-sm font-normal text-slate-500 dark:text-slate-400">
+                    <span className="text-sm font-normal text-gray-500">
                       from previous period
                     </span>
                   </div>
 
                   {/* Economic Context */}
                   {anomaly.economicContext && (
-                    <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+                    <div className="mt-4 pt-4 border-t border-gray-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                        <span className={`px-2 py-0.5 rounded text-xs font-normal ${
                           anomaly.economicContext.regime === 'crisis'
-                            ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+                            ? 'bg-red-100 text-red-800'
                             : anomaly.economicContext.regime === 'recession'
-                            ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'
+                            ? 'bg-orange-100 text-orange-800'
                             : anomaly.economicContext.regime === 'expansion'
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                            : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-blue-100 text-blue-800'
                         }`}>
                           {anomaly.economicContext.regime.charAt(0).toUpperCase() + anomaly.economicContext.regime.slice(1)}
                         </span>
-                        <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
+                        <span className="text-xs font-normal text-gray-600">
                           Economic Context
                         </span>
                       </div>
 
                       <div className="grid grid-cols-3 gap-2 mb-2 text-xs">
                         <div>
-                          <span className="text-slate-500 dark:text-slate-400">Unemployment: </span>
-                          <span className="font-semibold text-slate-900 dark:text-slate-100">
+                          <span className="text-gray-500">Unemployment: </span>
+                          <span className="font-normal text-gray-900">
                             {anomaly.economicContext.indicators?.unemployment != null ? `${anomaly.economicContext.indicators.unemployment}%` : 'N/A'}
                             {anomaly.economicContext.indicators?.unemploymentChange != null && anomaly.economicContext.indicators.unemploymentChange !== 0 && (
                               <span className={`ml-1 ${anomaly.economicContext.indicators.unemploymentChange > 0 ? 'text-red-600' : 'text-green-600'}`}>
@@ -455,8 +455,8 @@ const AnomalyDetectionPage: FC = () => {
                           </span>
                         </div>
                         <div>
-                          <span className="text-slate-500 dark:text-slate-400">Confidence: </span>
-                          <span className="font-semibold text-slate-900 dark:text-slate-100">
+                          <span className="text-gray-500">Confidence: </span>
+                          <span className="font-normal text-gray-900">
                             {anomaly.economicContext.indicators?.consumerConfidence != null ? anomaly.economicContext.indicators.consumerConfidence : 'N/A'}
                             {anomaly.economicContext.indicators?.confidenceChange != null && anomaly.economicContext.indicators.confidenceChange !== 0 && (
                               <span className={`ml-1 ${anomaly.economicContext.indicators.confidenceChange < 0 ? 'text-red-600' : 'text-green-600'}`}>
@@ -466,14 +466,14 @@ const AnomalyDetectionPage: FC = () => {
                           </span>
                         </div>
                         <div>
-                          <span className="text-slate-500 dark:text-slate-400">Fed Rate: </span>
-                          <span className="font-semibold text-slate-900 dark:text-slate-100">
+                          <span className="text-gray-500">Fed Rate: </span>
+                          <span className="font-normal text-gray-900">
                             {anomaly.economicContext.indicators?.fedRate != null ? `${anomaly.economicContext.indicators.fedRate}%` : 'N/A'}
                           </span>
                         </div>
                       </div>
 
-                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      <p className="text-xs text-gray-600 leading-relaxed">
                         {anomaly.economicContext.explanation}
                       </p>
                     </div>
@@ -486,14 +486,14 @@ const AnomalyDetectionPage: FC = () => {
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+      <div className="bg-blue-50 border border-blue-200 rounded-sm p-4">
         <div className="flex gap-3">
-          <AlertTriangle className="w-5 h-5 text-primary-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+          <AlertTriangle className="w-5 h-5 text-[#3A3A6C] flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+            <h4 className="font-normal text-blue-900 mb-1">
               About Anomaly Detection
             </h4>
-            <p className="text-sm text-blue-700 dark:text-blue-300">
+            <p className="text-sm text-blue-700">
               Anomalies are detected when predictions change by more than 5% from the previous period.
               Severity is classified as moderate (5-10%) or severe (&gt;10%). This helps identify unusual
               patterns that may require further investigation.
