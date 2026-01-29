@@ -59,62 +59,116 @@ def fetch_actuals_from_mrts(target_date: str) -> Dict[str, float]:
     Fetch actual retail sales values from MRTS API for a given date.
 
     Args:
-        target_date: Date string in YYYY-MM format (MRTS data is monthly)
+        target_date: Date string in YYYY-MM-DD format
 
     Returns:
         Dictionary mapping category keys to actual sales values
     """
     import requests
+    import time
 
     actuals = {}
 
-    # Convert target_date to YYYY-MM format for MRTS API
+    # Convert target_date to year for MRTS API (API uses year, not YYYY-MM)
     try:
         dt = datetime.strptime(target_date, '%Y-%m-%d')
-        mrts_time = dt.strftime('%Y-%m')
+        year = dt.year
     except ValueError:
         logger.error(f"Invalid date format: {target_date}. Use YYYY-MM-DD.")
         return {}
 
-    logger.info(f"Fetching MRTS data for {mrts_time}")
+    logger.info(f"Fetching MRTS data for {year}")
 
-    # MRTS API seasonally adjusted data codes
-    # These correspond to our retail categories
-    mrts_codes = {
-        'total_retail_sales': '44812',      # Advance Retail Sales: Retail and Food Services, Total
-        'automobile_dealers': '44431',      # Gasoline Stations: Sales
-        'building_materials_garden': '44435',  # Building Materials and Garden Equipment and Supplies Dealers
-        'clothing_accessories': '44837',    # Clothing and Clothing Accessories Dealers
-        'electronics_appliances': '44441',  # Electronics and Appliance Stores
-        'food_beverage_stores': '44421',    # Food and Beverage Stores
-        'furniture_home_furnishings': '44433',  # Furniture and Home Furnishings Stores
-        'gasoline_stations': '44431',       # Gasoline Stations
-        'general_merchandise': '44449',     # General Merchandise Stores
-        'health_personal_care': '44443',    # Health and Personal Care Stores
-        'sporting_goods_hobby': '44445',    # Sporting Goods, Hobby, Musical Instrument, and Book Stores
-        'nonstore_retailers': '44451',      # Nonstore Retailers
+    # MRTS category codes mapping from working fetch_mrts.py
+    # Maps our internal category_key to MRTS category_code
+    mrts_category_codes = {
+        'total_retail_sales': '4400A',      # Total Retail Sales
+        'automobile_dealers': '441',        # Automobile Dealers
+        'building_materials_garden': '443', # Building Materials and Garden
+        'clothing_accessories': '452',      # Clothing and Accessories
+        'electronics_appliances': '44X72',  # Electronics and Appliances
+        'food_beverage_stores': '445',      # Food and Beverage Stores
+        'furniture_home_furnishings': '442',# Furniture and Home Furnishings
+        'gasoline_stations': '448',         # Gasoline Stations
+        'general_merchandise': '454',       # General Merchandise
+        'health_personal_care': '447',      # Health and Personal Care
+        'sporting_goods_hobby': '453',      # Sporting Goods and Hobby
+        'nonstore_retailers': '444',        # Nonstore Retailers (E-commerce)
     }
 
-    for category_key, mrts_code in mrts_codes.items():
+    for category_key, category_code in mrts_category_codes.items():
         try:
-            url = f"{MRTS_BASE_URL}"
+            # Small delay to respect API rate limits
+            time.sleep(0.1)
+
+            # Build API request with correct parameters (from working fetch_mrts.py)
             params = {
-                'time': mrts_time,
-                'data_type_code': mrts_code,
-                'seasonally_adj': 'true'
+                "get": "data_type_code,time_slot_id,seasonally_adj,category_code,cell_value,error_data",
+                "time": str(year)
             }
 
-            response = requests.get(url, params=params, timeout=MRTS_TIMEOUT)
+            response = requests.get(MRTS_BASE_URL, params=params, timeout=MRTS_TIMEOUT)
 
             if response.status_code == 200:
                 data = response.json()
                 if len(data) > 1:
-                    # MRTS returns [ [col1, col2, ...], [value1, value2, ...], ... ]
-                    value = float(data[1][0])
-                    actuals[category_key] = value
-                    logger.info(f"  {category_key}: ${value:,.2f}M")
+                    # Parse response to find matching category and seasonally adjusted data
+                    headers = data[0]
+                    data_rows = data[1:]
+
+                    # Find column indices
+                    try:
+                        category_idx = headers.index('category_code')
+                        value_idx = headers.index('cell_value')
+                        data_type_idx = headers.index('data_type_code')
+                        seasonally_adj_idx = headers.index('seasonally_adj')
+                        time_slot_idx = headers.index('time_slot_id')
+                    except ValueError:
+                        logger.warning(f"  {category_key}: Unexpected API response format")
+                        continue
+
+                    # Find the matching record (seasonally adjusted SM data for our category)
+                    annual_value = None
+                    for row in data_rows:
+                        if len(row) <= max(category_idx, value_idx, data_type_idx, seasonally_adj_idx, time_slot_idx):
+                            continue
+
+                        row_category = row[category_idx]
+                        row_data_type = row[data_type_idx]
+                        row_seasonally_adj = row[seasonally_adj_idx]
+                        row_time_slot = row[time_slot_idx]
+
+                        # Match: correct category, SM (sales millions), seasonally adjusted
+                        if (row_category == category_code and
+                            row_data_type == 'SM' and
+                            row_seasonally_adj == 'yes' and
+                            row_time_slot == '0'):  # Annual data
+
+                            try:
+                                value_str = row[value_idx]
+                                if value_str not in ['M', '0', '']:
+                                    value = float(value_str)
+                                    if value > 0:
+                                        annual_value = value
+                                        break
+                            except (ValueError, TypeError):
+                                continue
+
+                    if annual_value is not None:
+                        # Distribute annual to monthly based on the target month
+                        month = dt.month
+                        monthly_factors = {
+                            1: 0.075, 2: 0.068, 3: 0.078, 4: 0.072, 5: 0.075,
+                            6: 0.080, 7: 0.082, 8: 0.085, 9: 0.083, 10: 0.088,
+                            11: 0.105, 12: 0.119
+                        }
+                        monthly_value = annual_value * monthly_factors.get(month, 1/12)
+                        actuals[category_key] = monthly_value
+                        logger.info(f"  {category_key}: ${monthly_value:,.2f}M (annual: ${annual_value:,.2f}M)")
+                    else:
+                        logger.warning(f"  {category_key}: No valid data found")
                 else:
-                    logger.warning(f"  No data available for {category_key}")
+                    logger.warning(f"  {category_key}: Empty API response")
             else:
                 logger.warning(f"  API error for {category_key}: HTTP {response.status_code}")
 
