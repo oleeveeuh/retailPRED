@@ -8,11 +8,20 @@ import numpy as np
 from pathlib import Path
 from typing import Tuple, Dict, Any, Optional, List
 import logging
+import sys
+
+# Add project root to path for config import
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+try:
+    from config import PROCESSED_DATA_DIR
+    DEFAULT_DATA_PATH = PROCESSED_DATA_DIR / "retail_total_sales_processed.csv"
+except ImportError:
+    DEFAULT_DATA_PATH = Path(__file__).parent.parent.parent / "project_root" / "data_processed" / "retail_total_sales_processed.csv"
 
 logger = logging.getLogger(__name__)
-
-# Default data path
-DEFAULT_DATA_PATH = Path(__file__).parent.parent.parent / "project_root" / "data_processed" / "retail_total_sales_processed.csv"
 
 # All 12 retail categories
 RETAIL_CATEGORIES = {
@@ -64,7 +73,11 @@ class RetailDataLoader:
             self.data_path = data_path
         else:
             # Get filename for category
-            data_dir = Path(__file__).parent.parent.parent / "project_root" / "data_processed"
+            try:
+                from config import PROCESSED_DATA_DIR
+                data_dir = PROCESSED_DATA_DIR
+            except ImportError:
+                data_dir = Path(__file__).parent.parent.parent / "project_root" / "data_processed"
             filename = RETAIL_CATEGORIES.get(category, RETAIL_CATEGORIES["total_retail_sales"])
             self.data_path = data_dir / filename
 

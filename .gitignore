@@ -107,3 +107,12 @@ htmlcov/
 
 # Claude settings
 .claude/
+*.pkl
+*.joblib
+__pycache__/
+*.pyc
+logs/*.log
+
+# Keep models/ directory structure but ignore .pkl files
+models/*.pkl
+!.gitkeep

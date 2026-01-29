@@ -9,6 +9,18 @@ import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, List, Dict, Any
+import sys
+
+# Add project root to path for config import
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+try:
+    from config import DATABASE_PATH
+    DEFAULT_DB_PATH = str(DATABASE_PATH)
+except ImportError:
+    DEFAULT_DB_PATH = "data/retailpred.db"
 
 logger = logging.getLogger(__name__)
 
@@ -16,14 +28,14 @@ logger = logging.getLogger(__name__)
 class RetailPREDDatabase:
     """Helper class for RetailPRED database operations"""
 
-    def __init__(self, db_path: str = "data/retailpred.db"):
+    def __init__(self, db_path: Optional[str] = None):
         """
         Initialize database connection
 
         Args:
-            db_path: Path to SQLite database file
+            db_path: Path to SQLite database file (defaults to centralized config)
         """
-        self.db_path = db_path
+        self.db_path = db_path if db_path is not None else DEFAULT_DB_PATH
 
     def get_connection(self) -> sqlite3.Connection:
         """
@@ -518,12 +530,12 @@ class RetailPREDDatabase:
 
 
 # Convenience instance for quick access
-def get_db(db_path: str = "data/retailpred.db") -> RetailPREDDatabase:
+def get_db(db_path: Optional[str] = None) -> RetailPREDDatabase:
     """
     Get a database instance
 
     Args:
-        db_path: Path to the database file
+        db_path: Path to the database file (defaults to centralized config)
 
     Returns:
         RetailPREDDatabase instance
