@@ -107,29 +107,10 @@ if AIRFLOW_AVAILABLE:
         'retailpred_weekly_validation',
         default_args=default_args,
         description='Weekly prediction validation and metrics calculation for RetailPRED',
-        schedule_interval='0 2 * * 1',  # 2 AM every Monday
+        schedule='0 2 * * 1',  # 2 AM every Monday
         catchup=False,
         tags=['retail', 'validation', 'weekly', 'retailpred'],
         max_active_runs=1,
-        doc_md="""
-        ## RetailPRED Weekly Validation DAG
-
-        This DAG runs every Monday at 2 AM to:
-        1. Fetch actual retail sales data from MRTS API
-        2. Update prediction_log table with actual values
-        3. Calculate validation metrics (MAPE, MAE) for all models
-        4. Detect anomalies (predictions with error > threshold)
-        5. Export metrics to JSON for dashboard consumption
-
-        **Database:** `{{ params.database_path }}`
-        **Output:** `{{ params.output_path }}`
-
-        **Local Testing:**
-        ```bash
-        cd /path/to/retailPRED
-        python weekly_validation.py --date 2025-01-06 --no-fetch
-        ```
-        """,
         params={
             'database_path': str(DATABASE_PATH),
             'output_path': str(VALIDATION_METRICS_PATH),
