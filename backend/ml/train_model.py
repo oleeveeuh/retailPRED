@@ -10,6 +10,20 @@ from pathlib import Path
 import time
 import numpy as np
 import pandas as pd
+import sys
+
+# Add project root to path for config import
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+try:
+    from config import BACKEND_MODELS_DIR
+    MODELS_DIR = BACKEND_MODELS_DIR
+except ImportError:
+    MODELS_DIR = Path(__file__).parent / "models"
+
+MODELS_DIR.mkdir(exist_ok=True)
 
 # ML models
 try:

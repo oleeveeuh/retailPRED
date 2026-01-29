@@ -486,14 +486,14 @@ const AnomalyDetectionPage: FC = () => {
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-sm p-4 !bg-[#eff6ff]">
+      <div className="border border-blue-200 rounded-sm p-4" style={{ backgroundColor: '#eff6ff' }}>
         <div className="flex gap-3">
           <AlertTriangle className="w-5 h-5 text-[#3A3A6C] flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <h4 className="font-normal text-[#1e3a8a] mb-1">
+            <h4 className="font-normal mb-1" style={{ color: '#1e3a8a' }}>
               About Anomaly Detection
             </h4>
-            <p className="text-sm text-[#1e40af]">
+            <p className="text-sm" style={{ color: '#1e40af' }}>
               Anomalies are detected when predictions change by more than 5% from the previous period.
               Severity is classified as moderate (5-10%) or severe (&gt;10%). This helps identify unusual
               patterns that may require further investigation.
