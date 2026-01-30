@@ -37,15 +37,12 @@ except ImportError:
 # Configuration
 # ============================================================================
 
-# Repository paths (use environment variable or default)
-# If running from dags/ directory, parent is repo root
-if Path(__file__).parent.name == "dags":
-    RETAILPRED_DIR = Path(__file__).parent.parent
-else:
-    RETAILPRED_DIR = Path(os.getenv(
-        "RETAILPRED_DIR",
-        "/home/oliau/retailPRED"
-    ))
+# Repository paths - use environment variable or default
+# On GCP VM, the DAG is in /home/oliau/airflow/dags/ but repo is at /home/oliau/retailPRED
+RETAILPRED_DIR = Path(os.getenv(
+    "RETAILPRED_DIR",
+    "/home/oliau/retailPRED"
+))
 
 # Add repository root to Python path for imports
 sys.path.insert(0, str(RETAILPRED_DIR))
