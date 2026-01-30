@@ -25,11 +25,13 @@ from datetime import datetime, timedelta
 try:
     from airflow import DAG
     from airflow.operators.python import PythonOperator
+    from airflow.operators.bash import BashOperator
     AIRFLOW_AVAILABLE = True
 except ImportError:
     AIRFLOW_AVAILABLE = False
     DAG = None
     PythonOperator = None
+    BashOperator = None
 
 # ============================================================================
 # Configuration
@@ -481,6 +483,31 @@ if AIRFLOW_AVAILABLE:
         trigger_rule='all_done',  # Run even if upstream tasks fail
     )
 
+    # Task 9: Push to GitHub
+    push_to_github_task = BashOperator(
+        task_id='push_to_github',
+        bash_command=f"""
+        cd {RETAILPRED_DIR}
+
+        # Configure git
+        git config user.name "Airflow Automation"
+        git config user.email "airflow@retailpred.com"
+
+        # Add updated files
+        git add data/retailpred.db data/validation_metrics.json
+
+        # Commit with timestamp
+        git commit -m "chore: weekly validation update $(date +%Y-%m-%d)" || echo "No changes to commit"
+
+        # Push to main branch
+        git push origin main || echo "Push failed - check SSH keys"
+
+        echo "✓ Git push complete"
+        """,
+        dag=dag,
+        trigger_rule='all_done',  # Run even if upstream tasks fail
+    )
+
     # ============================================================================
     # Task Dependencies
     # ============================================================================
@@ -498,6 +525,9 @@ if AIRFLOW_AVAILABLE:
     detect_anomalies_task >> export_metrics_task
     save_predictions_task >> export_metrics_task
     export_metrics_task >> summary_task
+
+    # Push to GitHub after summary
+    summary_task >> push_to_github_task
 
 # ============================================================================
 # Testing
