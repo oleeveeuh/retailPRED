@@ -77,7 +77,8 @@ try:
         update_predictions_with_actuals,
         calculate_metrics_for_week,
         find_anomalies,
-        export_metrics_for_dashboard
+        export_metrics_for_dashboard,
+        export_predictions_for_dashboard
     )
 except ImportError as e:
     raise ImportError(
@@ -472,7 +473,14 @@ if AIRFLOW_AVAILABLE:
         dag=dag,
     )
 
-    # Task 8: Print summary
+    # Task 8: Export predictions JSON for Vercel dashboard
+    export_predictions_json_task = PythonOperator(
+        task_id='export_predictions_json',
+        python_callable=lambda ti: export_predictions_for_dashboard(),
+        dag=dag,
+    )
+
+    # Task 9: Print summary
     summary_task = PythonOperator(
         task_id='validation_summary',
         python_callable=validation_summary,
@@ -483,7 +491,8 @@ if AIRFLOW_AVAILABLE:
         trigger_rule='all_done',  # Run even if upstream tasks fail
     )
 
-    # Task 9: Push to GitHub
+    # Task 10: Push to GitHub
+    # Push JSON exports for Vercel dashboard (NOT the database)
     push_to_github_task = BashOperator(
         task_id='push_to_github',
         bash_command=f"""
@@ -493,11 +502,12 @@ if AIRFLOW_AVAILABLE:
         git config user.name "Airflow Automation"
         git config user.email "airflow@retailpred.com"
 
-        # Add updated files
-        git add data/retailpred.db data/validation_metrics.json
+        # Add JSON exports for Vercel dashboard (not database)
+        git add data/validation_metrics.json
+        git add frontend/frontend/frontend/public/demo-data/predictions.json
 
         # Commit with timestamp
-        git commit -m "chore: weekly validation update $(date +%Y-%m-%d)" || echo "No changes to commit"
+        git commit -m "chore: weekly validation update $(date +%%Y-%%m-%%d)" || echo "No changes to commit"
 
         # Push to main branch
         git push origin main || echo "Push failed - check SSH keys"
@@ -521,10 +531,11 @@ if AIRFLOW_AVAILABLE:
     # Generate and save new predictions after validation starts
     get_target_date_task >> save_predictions_task
 
-    # Both workflows converge at export and summary
+    # Both workflows converge at export, then predictions JSON, then summary
     detect_anomalies_task >> export_metrics_task
     save_predictions_task >> export_metrics_task
-    export_metrics_task >> summary_task
+    export_metrics_task >> export_predictions_json_task
+    export_predictions_json_task >> summary_task
 
     # Push to GitHub after summary
     summary_task >> push_to_github_task

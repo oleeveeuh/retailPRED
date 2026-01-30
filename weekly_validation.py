@@ -377,6 +377,81 @@ def export_metrics_for_dashboard(metrics: Dict[str, Any], anomalies: list) -> st
     return str(VALIDATION_METRICS_PATH)
 
 
+def export_predictions_for_dashboard(limit: int = 5000) -> str:
+    """
+    Export predictions to JSON for Vercel dashboard consumption.
+
+    The dashboard expects format: {"data": [{id, model_name, prediction_date, ...}]}
+    This file is served statically by Vercel.
+
+    Args:
+        limit: Maximum number of predictions to export
+
+    Returns:
+        Path to exported predictions JSON file
+    """
+    import json
+    import sqlite3
+    from config import DATABASE_PATH, PROJECT_ROOT
+
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+
+    # Get validated predictions and recent predictions
+    cursor.execute("""
+        SELECT
+            model_name,
+            prediction_date,
+            predicted_value,
+            actual_value,
+            confidence_interval_lower,
+            confidence_interval_upper,
+            error_percentage,
+            is_validated,
+            created_at
+        FROM prediction_log
+        ORDER BY prediction_date DESC
+        LIMIT ?
+    """, (limit,))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    # Format to match dashboard expected structure
+    predictions_data = []
+    for i, row in enumerate(rows, start=1):
+        predictions_data.append({
+            "id": i,
+            "model_name": row[0],
+            "prediction_date": row[1],
+            "predicted_value": row[2],
+            "actual_value": row[3],
+            "confidence_interval_lower": row[4],
+            "confidence_interval_upper": row[5],
+            "shap_values": None,
+            "features": None,
+            "created_at": row[8]
+        })
+
+    output = {
+        "data": predictions_data,
+        "last_updated": datetime.now().isoformat(),
+        "total_predictions": len(predictions_data)
+    }
+
+    # Export to frontend demo-data directory
+    frontend_demo_path = PROJECT_ROOT / "frontend" / "frontend" / "frontend" / "public" / "demo-data" / "predictions.json"
+
+    # Ensure directory exists
+    frontend_demo_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(frontend_demo_path, 'w') as f:
+        json.dump(output, f, indent=2)
+
+    logger.info(f"Exported {len(predictions_data)} predictions to: {frontend_demo_path}")
+    return str(frontend_demo_path)
+
+
 def run_weekly_validation(target_date: Optional[str] = None,
                           fetch_actuals: bool = True,
                           anomaly_threshold: float = ANOMALY_THRESHOLD_DEFAULT) -> int:
