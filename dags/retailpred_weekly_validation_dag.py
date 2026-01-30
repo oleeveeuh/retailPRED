@@ -346,60 +346,13 @@ def validation_summary(ti, target_date: str, **context) -> None:
     logger.info("=" * 80)
 
 
-def generate_new_predictions(ti, target_date: str, **context) -> dict:
+def save_predictions_to_db(ti, target_date: str, **context) -> dict:
     """
-    Generate new rolling predictions using all trained models.
-
-    Args:
-        ti: TaskInstance for XCom data passing
-        target_date: Target date (used as reference, predictions start from next month)
-
-    Returns:
-        Summary of generated predictions
-    """
-    import logging
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
-
-    logger.info("=" * 80)
-    logger.info("GENERATING NEW ROLLING PREDICTIONS")
-    logger.info("=" * 80)
-
-    try:
-        # Import prediction generation module
-        from generate_rolling_predictions import generate_all_predictions
-
-        # Calculate start date (first of next month)
-        from datetime import datetime, timedelta
-        ref_date = datetime.strptime(target_date, '%Y-%m-%d')
-        start_date = (ref_date.replace(day=1) + timedelta(days=32)).replace(day=1)
-
-        # Generate 12 months of predictions
-        predictions, summary = generate_all_predictions(
-            start_date=start_date.strftime('%Y-%m-%d'),
-            months_ahead=12
-        )
-
-        logger.info(f"Generated {summary['total_predictions']} predictions")
-        logger.info(f"Categories: {summary['categories_processed']}, Failed: {summary['categories_failed']}")
-
-        # Pass predictions to next task via XCom
-        ti.xcom_push(key='new_predictions', value=predictions)
-        ti.xcom_push(key='generation_summary', value=summary)
-
-        return summary
-
-    except Exception as e:
-        logger.error(f"Failed to generate predictions: {e}")
-        raise
-
-
-def save_predictions_to_db(ti, **context) -> dict:
-    """
-    Save generated predictions to the database.
+    Generate and save predictions to the database.
 
     Args:
         ti: TaskInstance for XCom data retrieval
+        target_date: Target date reference
 
     Returns:
         Summary of saved predictions
@@ -408,25 +361,37 @@ def save_predictions_to_db(ti, **context) -> dict:
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
 
-    logger.info("Saving predictions to database")
+    logger.info("Generating and saving predictions to database")
 
     try:
-        # Pull predictions from XCom
-        predictions = ti.xcom_pull(task_ids='generate_new_predictions', key='new_predictions')
-
-        if not predictions:
-            logger.warning("No predictions to save")
-            return {"added": 0, "skipped": 0, "errors": 0}
-
-        # Import save module
+        # Import modules
+        from generate_rolling_predictions import generate_all_predictions
         from save_predictions_to_db import save_predictions
 
-        # Save predictions (force=False to skip duplicates)
+        # Calculate start date (first of next month)
+        from datetime import datetime, timedelta
+        ref_date = datetime.strptime(target_date, '%Y-%m-%d')
+        start_date = (ref_date.replace(day=1) + timedelta(days=32)).replace(day=1)
+
+        # Generate predictions
+        predictions, summary = generate_all_predictions(
+            start_date=start_date.strftime('%Y-%m-%d'),
+            months_ahead=12
+        )
+
+        logger.info(f"Generated {summary['total_predictions']} predictions")
+
+        # Save predictions to database (force=False to skip duplicates)
         added, skipped, errors = save_predictions(predictions, force=False)
 
         logger.info(f"Saved: {added} added, {skipped} skipped, {errors} errors")
 
-        return {"added": added, "skipped": skipped, "errors": errors}
+        return {
+            "generated": summary.get('total_predictions', 0),
+            "added": added,
+            "skipped": skipped,
+            "errors": errors
+        }
 
     except Exception as e:
         logger.error(f"Failed to save predictions: {e}")
@@ -487,31 +452,25 @@ if AIRFLOW_AVAILABLE:
         dag=dag,
     )
 
-    # Task 6: Generate new rolling predictions
-    generate_predictions_task = PythonOperator(
-        task_id='generate_new_predictions',
-        python_callable=generate_new_predictions,
+    # Task 6: Generate and save predictions to database
+    # (Combines generation and saving to avoid XCom data passing)
+    save_predictions_task = PythonOperator(
+        task_id='save_predictions_to_db',
+        python_callable=save_predictions_to_db,
         op_kwargs={
             'target_date': "{{ ti.xcom_pull(task_ids='get_target_date') }}",
         },
         dag=dag,
     )
 
-    # Task 7: Save predictions to database
-    save_predictions_task = PythonOperator(
-        task_id='save_predictions_to_db',
-        python_callable=save_predictions_to_db,
-        dag=dag,
-    )
-
-    # Task 8: Export metrics for dashboard
+    # Task 7: Export metrics for dashboard
     export_metrics_task = PythonOperator(
         task_id='export_metrics',
         python_callable=export_dashboard_metrics,
         dag=dag,
     )
 
-    # Task 9: Print summary
+    # Task 8: Print summary
     summary_task = PythonOperator(
         task_id='validation_summary',
         python_callable=validation_summary,
@@ -531,9 +490,9 @@ if AIRFLOW_AVAILABLE:
     update_predictions_task >> calculate_metrics_task
     calculate_metrics_task >> detect_anomalies_task
 
-    # Prediction generation workflow (tasks 6-7)
-    # Generate new predictions after validation
-    get_target_date_task >> generate_predictions_task >> save_predictions_task
+    # Prediction generation workflow (task 6)
+    # Generate and save new predictions after validation starts
+    get_target_date_task >> save_predictions_task
 
     # Both workflows converge at export and summary
     detect_anomalies_task >> export_metrics_task
