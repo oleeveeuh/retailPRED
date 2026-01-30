@@ -7,7 +7,7 @@ An end-to-end machine learning system for forecasting retail sales across multip
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue)](https://typescriptlang.org)
 [![React](https://img.shields.io/badge/React-19+-blue)](https://react.dev)
 
-**Live Demo:** https://retailpred.vercel.app
+**Live Demo:** retail-pred.vercel.app
 
 ---
 
