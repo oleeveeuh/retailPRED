@@ -38,10 +38,10 @@ except ImportError:
 # ============================================================================
 
 # Repository paths - use environment variable or default
-# On GCP VM, the DAG is in /home/oliau/airflow/dags/ but repo is at /home/oliau/retailPRED
+# On GCP VM, the DAG is in /home/oliau/airflow/dags/ but repo is at /home/oliau/retailpred
 RETAILPRED_DIR = Path(os.getenv(
     "RETAILPRED_DIR",
-    "/home/oliau/retailPRED"
+    "/home/oliau/retailpred"
 ))
 
 # Add repository root to Python path for imports
