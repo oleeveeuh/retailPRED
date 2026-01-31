@@ -381,7 +381,7 @@ def export_predictions_for_dashboard(limit: int = 5000) -> str:
     """
     Export predictions to JSON for Vercel dashboard consumption.
 
-    The dashboard expects format: {"data": [{id, model_name, prediction_date, ...}]}
+    The dashboard expects format: {"data": [{id, model_name, prediction_date, ...}], "metadata": {...}}
     This file is served statically by Vercel.
 
     Args:
@@ -396,6 +396,30 @@ def export_predictions_for_dashboard(limit: int = 5000) -> str:
 
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
+
+    # Get total count in database first
+    cursor.execute("SELECT COUNT(*) FROM prediction_log")
+    total_in_db = cursor.fetchone()[0]
+
+    # Get date range
+    cursor.execute("SELECT MIN(prediction_date), MAX(prediction_date) FROM prediction_log")
+    date_range = cursor.fetchone()
+
+    # Get all unique model names
+    cursor.execute("SELECT DISTINCT model_name FROM prediction_log ORDER BY model_name")
+    all_models = [row[0] for row in cursor.fetchall()]
+
+    # Get accuracy summary BEFORE fetching predictions
+    cursor.execute("""
+        SELECT
+            COUNT(*) as total,
+            SUM(CASE WHEN actual_value IS NOT NULL THEN 1 ELSE 0 END) as validated,
+            AVG(CASE WHEN error_percentage IS NOT NULL THEN error_percentage ELSE NULL END) as avg_error,
+            MIN(CASE WHEN error_percentage IS NOT NULL THEN error_percentage ELSE NULL END) as min_error,
+            MAX(CASE WHEN error_percentage IS NOT NULL THEN error_percentage ELSE NULL END) as max_error
+        FROM prediction_log
+    """)
+    accuracy_row = cursor.fetchone()
 
     # Get validated predictions and recent predictions
     cursor.execute("""
@@ -433,14 +457,38 @@ def export_predictions_for_dashboard(limit: int = 5000) -> str:
             "created_at": row[8]
         })
 
-    output = {
-        "data": predictions_data,
-        "last_updated": datetime.now().isoformat(),
-        "total_predictions": len(predictions_data)
+    # Build accuracy summary
+    accuracy_summary = {
+        "avg_error_percentage": round(accuracy_row[2], 2) if accuracy_row[2] else None,
+        "min_error_percentage": round(accuracy_row[3], 2) if accuracy_row[3] else None,
+        "max_error_percentage": round(accuracy_row[4], 2) if accuracy_row[4] else None,
+        "avg_accuracy": round(100 - accuracy_row[2], 2) if accuracy_row[2] else None,
+        "total_predictions": accuracy_row[0],
+        "validated_predictions": accuracy_row[1],
+        "validation_rate": round(accuracy_row[1] / accuracy_row[0] * 100, 1) if accuracy_row[0] > 0 else 0
     }
 
-    # Export to frontend demo-data directory
-    frontend_demo_path = PROJECT_ROOT / "frontend" / "frontend" / "frontend" / "public" / "demo-data" / "predictions.json"
+    # Build metadata with accurate counts
+    metadata = {
+        "export_timestamp": datetime.now().isoformat(),
+        "row_count": len(predictions_data),
+        "total_predictions_in_db": total_in_db,
+        "date_range": {
+            "start": date_range[0],
+            "end": date_range[1]
+        },
+        "models": all_models,
+        "accuracy_summary": accuracy_summary,
+        "note": f"All {total_in_db} predictions from database"
+    }
+
+    output = {
+        "data": predictions_data,
+        "metadata": metadata
+    }
+
+    # Export to frontend demo-data directory (correct path for Vercel)
+    frontend_demo_path = PROJECT_ROOT / "frontend" / "public" / "demo-data" / "predictions.json"
 
     # Ensure directory exists
     frontend_demo_path.parent.mkdir(parents=True, exist_ok=True)
@@ -449,6 +497,7 @@ def export_predictions_for_dashboard(limit: int = 5000) -> str:
         json.dump(output, f, indent=2)
 
     logger.info(f"Exported {len(predictions_data)} predictions to: {frontend_demo_path}")
+    logger.info(f"  Total in DB: {total_in_db}, Models: {len(all_models)}, Date range: {date_range}")
     return str(frontend_demo_path)
 
 

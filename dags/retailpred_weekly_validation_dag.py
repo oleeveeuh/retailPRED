@@ -501,7 +501,7 @@ if AIRFLOW_AVAILABLE:
 
         # Add JSON exports for Vercel dashboard (not database)
         git add data/validation_metrics.json
-        git add frontend/frontend/frontend/public/demo-data/predictions.json
+        git add frontend/public/demo-data/predictions.json
 
         # Commit with timestamp
         git commit -m "chore: weekly validation update $(date +%%Y-%%m-%%d)" || echo "No changes to commit"
