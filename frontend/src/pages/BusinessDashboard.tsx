@@ -91,7 +91,8 @@ export const BusinessDashboard: FC = () => {
     if (!statsData) return null;
 
     const predictions = statsData.predictions || [];
-    const validated = predictions.filter(p => p.is_validated && p.actual_value);
+    // Fix: check if actual_value is not null (not just truthy, since 0 is valid)
+    const validated = predictions.filter(p => p.actual_value !== null && p.actual_value !== undefined);
     const totalPredictions = statsData.total_count || 0;
 
     // Get active models count
