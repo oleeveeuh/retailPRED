@@ -1,7 +1,7 @@
 {
   "validation_metrics": {
     "target_date": "2026-02-06",
-    "generated_at": "2026-02-06T11:26:43.999939",
+    "generated_at": "2026-02-06T11:52:13.360557",
     "models": {
       "automobile_dealers_autoarima_model": {
         "total_predictions": 50,
@@ -1311,5 +1311,5 @@
       }
     ]
   },
-  "last_updated": "2026-02-06T11:26:49.805915"
+  "last_updated": "2026-02-06T11:52:19.106821"
 }
