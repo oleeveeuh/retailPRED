@@ -454,6 +454,8 @@ def export_predictions_for_dashboard(limit: int = 5000) -> str:
             "actual_value": row[3],
             "confidence_interval_lower": row[4],
             "confidence_interval_upper": row[5],
+            "error_percentage": row[6],
+            "is_validated": row[7],
             "shap_values": None,
             "features": None,
             "created_at": row[8]
