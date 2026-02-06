@@ -397,19 +397,19 @@ def export_predictions_for_dashboard(limit: int = 5000) -> str:
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
 
-    # Get total count in database first
-    cursor.execute("SELECT COUNT(*) FROM prediction_log")
+    # Get total count in database first (RF and LGBM only)
+    cursor.execute("SELECT COUNT(*) FROM prediction_log WHERE model_name LIKE '%randomforest%' OR model_name LIKE '%lgbm%'")
     total_in_db = cursor.fetchone()[0]
 
-    # Get date range
-    cursor.execute("SELECT MIN(prediction_date), MAX(prediction_date) FROM prediction_log")
+    # Get date range (RF and LGBM only)
+    cursor.execute("SELECT MIN(prediction_date), MAX(prediction_date) FROM prediction_log WHERE model_name LIKE '%randomforest%' OR model_name LIKE '%lgbm%'")
     date_range = cursor.fetchone()
 
-    # Get all unique model names
-    cursor.execute("SELECT DISTINCT model_name FROM prediction_log ORDER BY model_name")
+    # Filter to only RandomForest and LGBM models (the ones we use for dashboard)
+    cursor.execute("SELECT DISTINCT model_name FROM prediction_log WHERE model_name LIKE '%randomforest%' OR model_name LIKE '%lgbm%' ORDER BY model_name")
     all_models = [row[0] for row in cursor.fetchall()]
 
-    # Get accuracy summary BEFORE fetching predictions
+    # Get accuracy summary BEFORE fetching predictions (RF and LGBM only)
     cursor.execute("""
         SELECT
             COUNT(*) as total,
@@ -418,10 +418,11 @@ def export_predictions_for_dashboard(limit: int = 5000) -> str:
             MIN(CASE WHEN error_percentage IS NOT NULL THEN error_percentage ELSE NULL END) as min_error,
             MAX(CASE WHEN error_percentage IS NOT NULL THEN error_percentage ELSE NULL END) as max_error
         FROM prediction_log
+        WHERE model_name LIKE '%randomforest%' OR model_name LIKE '%lgbm%'
     """)
     accuracy_row = cursor.fetchone()
 
-    # Get validated predictions and recent predictions
+    # Get validated predictions and recent predictions (RF and LGBM only)
     cursor.execute("""
         SELECT
             model_name,
@@ -434,6 +435,7 @@ def export_predictions_for_dashboard(limit: int = 5000) -> str:
             is_validated,
             created_at
         FROM prediction_log
+        WHERE model_name LIKE '%randomforest%' OR model_name LIKE '%lgbm%'
         ORDER BY prediction_date DESC
         LIMIT ?
     """, (limit,))
