@@ -488,7 +488,7 @@ if AIRFLOW_AVAILABLE:
         trigger_rule='all_done',  # Run even if upstream tasks fail
     )
 
-    # Task 10: Push to GitHub
+    # Task 10: Pull and Push to GitHub
     # Push JSON exports for Vercel dashboard (NOT the database)
     push_to_github_task = BashOperator(
         task_id='push_to_github',
@@ -499,12 +499,17 @@ if AIRFLOW_AVAILABLE:
         git config user.name "Airflow Automation"
         git config user.email "airflow@retailpred.com"
 
+        # Pull latest changes first (to avoid conflicts)
+        echo "Pulling latest changes from remote..."
+        git pull origin main --rebase || echo "Pull failed or no remote changes"
+
         # Add JSON exports for Vercel dashboard (not database)
         git add data/validation_metrics.json
         git add frontend/public/demo-data/predictions.json
 
-        # Commit with timestamp
-        git commit -m "chore: weekly validation update $(date +%%Y-%%m-%%d)" || echo "No changes to commit"
+        # Commit with timestamp (use backticks for command substitution)
+        TIMESTAMP=$(date +%Y-%m-%d)
+        git commit -m "chore: weekly validation update $TIMESTAMP" || echo "No changes to commit"
 
         # Push to main branch
         git push origin main || echo "Push failed - check SSH keys"
