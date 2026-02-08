@@ -165,9 +165,16 @@ def get_target_date(**kwargs) -> str:
     logging.basicConfig(level=logging.INFO, force=True)
     logger = logging.getLogger(__name__)
 
-    print(f"LOG: Connecting to database...")
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
+    print(f"LOG: Connecting to database at: {DATABASE_PATH}")
+    try:
+        conn = sqlite3.connect(DATABASE_PATH, timeout=30)
+        cursor = conn.cursor()
+        print(f"LOG: Database connected successfully")
+    except Exception as e:
+        print(f"ERROR connecting to database: {e}")
+        import traceback
+        traceback.print_exc()
+        raise
 
     # Get current date
     current_date = datetime.now()
