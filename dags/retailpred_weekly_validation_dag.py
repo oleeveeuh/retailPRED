@@ -132,13 +132,18 @@ def get_target_date(**kwargs) -> str:
     Returns:
         Date string in YYYY-MM-DD format (first day of the target month)
     """
+    # FORCE RELOAD MARKER v4 - This function finds oldest unvalidated month
+    print("=" * 80)
+    print("GET_TARGET_DATE FUNCTION STARTING - v4")
+    print("=" * 80)
     import logging
     import sqlite3
     import requests
     from datetime import datetime
 
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO, force=True)
     logger = logging.getLogger(__name__)
+    print(f"LOG: Target date function v4 is executing")
 
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
