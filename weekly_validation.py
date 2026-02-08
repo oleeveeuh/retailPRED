@@ -200,10 +200,25 @@ def update_predictions_with_actuals(actuals: Dict[str, float], target_date: str)
     # Extract year-month from target_date
     target_year_month = target_date[:7]  # YYYY-MM
 
+    # Mapping from config category_key to model name patterns
+    # Model names use "and" instead of underscore for some categories
+    CATEGORY_KEY_TO_MODEL_PATTERN = {
+        'electronics_appliances': 'electronics_and_appliances',
+        'health_personal_care': 'health_and_personal_care',
+        'food_beverage_stores': 'food_and_beverage_stores',
+        'building_materials_garden': 'building_materials_and_garden',
+        'furniture_home_furnishings': 'furniture_and_home_furnishings',
+        'sporting_goods_hobby': 'sporting_goods_and_hobby',
+        'clothing_accessories': 'clothing_and_accessories',
+    }
+
     for category_key, actual_value in actuals.items():
         try:
+            # Get the pattern to match in model names
+            model_pattern = CATEGORY_KEY_TO_MODEL_PATTERN.get(category_key, category_key)
+
             # Find predictions for this category and month
-            # Match model names that contain the category
+            # Match model names that contain the category pattern
             cursor.execute("""
                 UPDATE prediction_log
                 SET actual_value = ?,
@@ -214,7 +229,7 @@ def update_predictions_with_actuals(actuals: Dict[str, float], target_date: str)
                 AND model_name LIKE ?
                 AND actual_value IS NULL
             """, (actual_value, actual_value, actual_value, actual_value,
-                  target_year_month, f'%{category_key}%'))
+                  target_year_month, f'%{model_pattern}%'))
 
             rows_updated = cursor.rowcount
             updated_count += rows_updated
