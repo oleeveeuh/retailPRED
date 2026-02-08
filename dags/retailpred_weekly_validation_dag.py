@@ -124,7 +124,7 @@ if AIRFLOW_AVAILABLE:
 # Task Functions
 # ============================================================================
 
-def get_target_date() -> str:
+def get_target_date(**kwargs) -> str:
     """
     Determine the target validation date.
     Finds the oldest month with unvalidated predictions that has Census data available.
@@ -132,9 +132,13 @@ def get_target_date() -> str:
     Returns:
         Date string in YYYY-MM-DD format (first day of the target month)
     """
+    import logging
     import sqlite3
     import requests
     from datetime import datetime
+
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
 
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
@@ -143,6 +147,8 @@ def get_target_date() -> str:
     current_date = datetime.now()
     current_year = current_date.year
     current_month = current_date.month
+
+    logger.info(f"get_target_date: Current date is {current_date.strftime('%Y-%m-%d')}")
 
     # Find all months with unvalidated predictions that are old enough for Census data
     # Census data is available 2 months after month end
@@ -157,6 +163,7 @@ def get_target_date() -> str:
     """)
 
     all_months = cursor.fetchall()
+    logger.info(f"get_target_date: Found {len(all_months)} unvalidated months")
     conn.close()
 
     # Find the first month that actually has Census data available
@@ -164,6 +171,7 @@ def get_target_date() -> str:
         # Check if month is old enough (at least 2 months old)
         if year < current_year or (year == current_year and month <= current_month - 2):
             month_str = f"{year}-{month:02d}"
+            logger.info(f"get_target_date: Checking {month_str} (old enough: True)")
 
             # Verify Census API actually has data for this month
             try:
@@ -176,15 +184,23 @@ def get_target_date() -> str:
 
                 # HTTP 200 with data means Census has this month available
                 if response.status_code == 200 and len(response.json()) > 1:
-                    return datetime(year, month, 1).strftime('%Y-%m-%d')
-            except Exception:
+                    result = datetime(year, month, 1).strftime('%Y-%m-%d')
+                    logger.info(f"get_target_date: Census data available for {month_str}, returning {result}")
+                    return result
+                else:
+                    logger.info(f"get_target_date: Census data NOT available for {month_str} (HTTP {response.status_code})")
+            except Exception as e:
+                logger.warning(f"get_target_date: Exception checking {month_str}: {e}")
                 continue
 
     # No valid month found, return 3 months ago as safe fallback
     if current_month > 3:
-        return datetime(current_year, current_month - 3, 1).strftime('%Y-%m-%d')
+        fallback = datetime(current_year, current_month - 3, 1).strftime('%Y-%m-%d')
     else:
-        return datetime(current_year - 1, 12 + current_month - 3, 1).strftime('%Y-%m-%d')
+        fallback = datetime(current_year - 1, 12 + current_month - 3, 1).strftime('%Y-%m-%d')
+
+    logger.warning(f"get_target_date: No valid month found, using fallback: {fallback}")
+    return fallback
 
 
 def fetch_mrts_actuals(ti, target_date: str, **context) -> dict:
