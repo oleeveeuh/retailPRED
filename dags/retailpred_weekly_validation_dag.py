@@ -56,6 +56,7 @@ try:
         DATABASE_PATH,
         VALIDATION_METRICS_PATH,
         MRTS_BASE_URL,
+        MRTS_API_KEY,
         MRTS_TIMEOUT,
         RETAIL_CATEGORIES,
         ANOMALY_THRESHOLD_DEFAULT,
@@ -123,16 +124,67 @@ if AIRFLOW_AVAILABLE:
 # Task Functions
 # ============================================================================
 
-def get_target_date(**context) -> str:
+def get_target_date() -> str:
     """
     Determine the target validation date.
-    Uses the logical date (ds) from Airflow context.
+    Finds the oldest month with unvalidated predictions that has Census data available.
 
     Returns:
-        Date string in YYYY-MM-DD format
+        Date string in YYYY-MM-DD format (first day of the target month)
     """
-    # ds is the logical date (execution_date) in YYYY-MM-DD format
-    return context['ds']
+    import sqlite3
+    import requests
+    from datetime import datetime
+
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+
+    # Get current date
+    current_date = datetime.now()
+    current_year = current_date.year
+    current_month = current_date.month
+
+    # Find all months with unvalidated predictions that are old enough for Census data
+    # Census data is available 2 months after month end
+    cursor.execute("""
+        SELECT DISTINCT
+            CAST(strftime('%Y', prediction_date) AS INTEGER) as year,
+            CAST(strftime('%m', prediction_date) AS INTEGER) as month
+        FROM prediction_log
+        WHERE actual_value IS NULL
+        AND (model_name LIKE '%randomforest%' OR model_name LIKE '%lgbm%')
+        ORDER BY year, month
+    """)
+
+    all_months = cursor.fetchall()
+    conn.close()
+
+    # Find the first month that actually has Census data available
+    for year, month in all_months:
+        # Check if month is old enough (at least 2 months old)
+        if year < current_year or (year == current_year and month <= current_month - 2):
+            month_str = f"{year}-{month:02d}"
+
+            # Verify Census API actually has data for this month
+            try:
+                params = {
+                    "get": "data_type_code,time_slot_id,seasonally_adj,category_code,cell_value",
+                    "time": month_str,
+                    "key": MRTS_API_KEY
+                }
+                response = requests.get(MRTS_BASE_URL, params=params, timeout=30)
+
+                # HTTP 200 with data means Census has this month available
+                if response.status_code == 200 and len(response.json()) > 1:
+                    return datetime(year, month, 1).strftime('%Y-%m-%d')
+            except Exception:
+                continue
+
+    # No valid month found, return 3 months ago as safe fallback
+    if current_month > 3:
+        return datetime(current_year, current_month - 3, 1).strftime('%Y-%m-%d')
+    else:
+        return datetime(current_year - 1, 12 + current_month - 3, 1).strftime('%Y-%m-%d')
 
 
 def fetch_mrts_actuals(ti, target_date: str, **context) -> dict:
