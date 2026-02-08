@@ -132,9 +132,9 @@ def get_target_date(**kwargs) -> str:
     Returns:
         Date string in YYYY-MM-DD format (first day of the target month)
     """
-    # FORCE RELOAD MARKER v7 - All imports local to function
+    # FORCE RELOAD MARKER v8 - Simplified logging setup
     print("=" * 80)
-    print("GET_TARGET_DATE FUNCTION STARTING - v7")
+    print("GET_TARGET_DATE FUNCTION STARTING - v8")
     print("=" * 80)
 
     import os
@@ -162,7 +162,6 @@ def get_target_date(**kwargs) -> str:
         traceback.print_exc()
         raise
 
-    logging.basicConfig(level=logging.INFO, force=True)
     logger = logging.getLogger(__name__)
 
     print(f"LOG: Connecting to database at: {DATABASE_PATH}")
