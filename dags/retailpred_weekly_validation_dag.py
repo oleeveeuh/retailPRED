@@ -132,19 +132,36 @@ def get_target_date(**kwargs) -> str:
     Returns:
         Date string in YYYY-MM-DD format (first day of the target month)
     """
-    # FORCE RELOAD MARKER v4 - This function finds oldest unvalidated month
+    # FORCE RELOAD MARKER v5 - All imports local to function
     print("=" * 80)
-    print("GET_TARGET_DATE FUNCTION STARTING - v4")
+    print("GET_TARGET_DATE FUNCTION STARTING - v5")
     print("=" * 80)
+
     import logging
     import sqlite3
     import requests
+    import sys
+    from pathlib import Path
     from datetime import datetime
 
     logging.basicConfig(level=logging.INFO, force=True)
     logger = logging.getLogger(__name__)
-    print(f"LOG: Target date function v4 is executing")
+    print(f"LOG: Imports loaded successfully")
 
+    # Import config values locally (needed for subprocess execution)
+    try:
+        # Add repo to path if not already there
+        repo_dir = Path(os.getenv("RETAILPRED_DIR", "/home/oliau/retailpred"))
+        if str(repo_dir) not in sys.path:
+            sys.path.insert(0, str(repo_dir))
+
+        from config import DATABASE_PATH, MRTS_BASE_URL, MRTS_API_KEY
+        print(f"LOG: Config loaded - DB: {DATABASE_PATH}")
+    except ImportError as e:
+        print(f"ERROR importing config: {e}")
+        raise
+
+    print(f"LOG: Connecting to database...")
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
 
