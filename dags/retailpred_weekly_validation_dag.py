@@ -132,11 +132,12 @@ def get_target_date(**kwargs) -> str:
     Returns:
         Date string in YYYY-MM-DD format (first day of the target month)
     """
-    # FORCE RELOAD MARKER v5 - All imports local to function
+    # FORCE RELOAD MARKER v6 - All imports local to function
     print("=" * 80)
-    print("GET_TARGET_DATE FUNCTION STARTING - v5")
+    print("GET_TARGET_DATE FUNCTION STARTING - v6")
     print("=" * 80)
 
+    import os
     import logging
     import sqlite3
     import requests
@@ -144,8 +145,6 @@ def get_target_date(**kwargs) -> str:
     from pathlib import Path
     from datetime import datetime
 
-    logging.basicConfig(level=logging.INFO, force=True)
-    logger = logging.getLogger(__name__)
     print(f"LOG: Imports loaded successfully")
 
     # Import config values locally (needed for subprocess execution)
@@ -157,9 +156,14 @@ def get_target_date(**kwargs) -> str:
 
         from config import DATABASE_PATH, MRTS_BASE_URL, MRTS_API_KEY
         print(f"LOG: Config loaded - DB: {DATABASE_PATH}")
-    except ImportError as e:
+    except Exception as e:
         print(f"ERROR importing config: {e}")
+        import traceback
+        traceback.print_exc()
         raise
+
+    logging.basicConfig(level=logging.INFO, force=True)
+    logger = logging.getLogger(__name__)
 
     print(f"LOG: Connecting to database...")
     conn = sqlite3.connect(DATABASE_PATH)
