@@ -34,9 +34,11 @@ try:
         DATABASE_PATH,
         VALIDATION_METRICS_PATH,
         MRTS_BASE_URL,
+        MRTS_API_KEY,
         MRTS_TIMEOUT,
         RETAIL_CATEGORIES,
-        ANOMALY_THRESHOLD_DEFAULT
+        ANOMALY_THRESHOLD_DEFAULT,
+        CENSUS_SCALING_FACTORS
     )
 except ImportError:
     print("ERROR: Could not import config. Please run from repository root.")
@@ -58,28 +60,32 @@ def fetch_actuals_from_mrts(target_date: str) -> Dict[str, float]:
     """
     Fetch actual retail sales values from MRTS API for a given date.
 
+    Uses real monthly data from the Census Bureau API (not annual estimates).
+    Data is available monthly with format YYYY-MM. The Census Bureau typically
+    releases data through the previous month.
+
     Args:
         target_date: Date string in YYYY-MM-DD format
 
     Returns:
-        Dictionary mapping category keys to actual sales values
+        Dictionary mapping category keys to actual sales values (in millions)
     """
     import requests
     import time
 
     actuals = {}
 
-    # Convert target_date to year for MRTS API (API uses year, not YYYY-MM)
+    # Convert target_date to YYYY-MM format for MRTS API
     try:
         dt = datetime.strptime(target_date, '%Y-%m-%d')
-        year = dt.year
+        month_str = dt.strftime('%Y-%m')
     except ValueError:
         logger.error(f"Invalid date format: {target_date}. Use YYYY-MM-DD.")
         return {}
 
-    logger.info(f"Fetching MRTS data for {year}")
+    logger.info(f"Fetching MRTS monthly data for {month_str}")
 
-    # MRTS category codes mapping from working fetch_mrts.py
+    # MRTS category codes mapping
     # Maps our internal category_key to MRTS category_code
     mrts_category_codes = {
         'total_retail_sales': '4400A',      # Total Retail Sales
@@ -96,85 +102,80 @@ def fetch_actuals_from_mrts(target_date: str) -> Dict[str, float]:
         'nonstore_retailers': '444',        # Nonstore Retailers (E-commerce)
     }
 
-    for category_key, category_code in mrts_category_codes.items():
+    # Build API request for specific month
+    params = {
+        "get": "data_type_code,time_slot_id,seasonally_adj,category_code,cell_value",
+        "time": month_str,
+        "key": MRTS_API_KEY
+    }
+
+    try:
+        response = requests.get(MRTS_BASE_URL, params=params, timeout=MRTS_TIMEOUT)
+
+        if response.status_code != 200:
+            logger.error(f"API error: HTTP {response.status_code}")
+            return actuals
+
+        data = response.json()
+        if len(data) <= 1:
+            logger.warning(f"No data available for {month_str}")
+            return actuals
+
+        # Parse response
+        headers = data[0]
+        data_rows = data[1:]
+
+        # Find column indices
         try:
-            # Small delay to respect API rate limits
-            time.sleep(0.1)
+            category_idx = headers.index('category_code')
+            value_idx = headers.index('cell_value')
+            data_type_idx = headers.index('data_type_code')
+            seasonally_adj_idx = headers.index('seasonally_adj')
+        except ValueError as e:
+            logger.error(f"Unexpected API response format: {e}")
+            return actuals
 
-            # Build API request with correct parameters (from working fetch_mrts.py)
-            params = {
-                "get": "data_type_code,time_slot_id,seasonally_adj,category_code,cell_value,error_data",
-                "time": str(year)
-            }
+        # Extract values for each category
+        for category_key, category_code in mrts_category_codes.items():
+            monthly_value = None
 
-            response = requests.get(MRTS_BASE_URL, params=params, timeout=MRTS_TIMEOUT)
+            for row in data_rows:
+                if len(row) <= max(category_idx, value_idx, data_type_idx, seasonally_adj_idx):
+                    continue
 
-            if response.status_code == 200:
-                data = response.json()
-                if len(data) > 1:
-                    # Parse response to find matching category and seasonally adjusted data
-                    headers = data[0]
-                    data_rows = data[1:]
+                row_category = row[category_idx]
+                row_data_type = row[data_type_idx]
+                row_seasonally_adj = row[seasonally_adj_idx]
 
-                    # Find column indices
+                # Match: correct category, SM (sales millions), seasonally adjusted
+                if (row_category == category_code and
+                    row_data_type == 'SM' and
+                    row_seasonally_adj == 'yes'):
+
                     try:
-                        category_idx = headers.index('category_code')
-                        value_idx = headers.index('cell_value')
-                        data_type_idx = headers.index('data_type_code')
-                        seasonally_adj_idx = headers.index('seasonally_adj')
-                        time_slot_idx = headers.index('time_slot_id')
-                    except ValueError:
-                        logger.warning(f"  {category_key}: Unexpected API response format")
+                        value_str = row[value_idx]
+                        if value_str and value_str not in ['M', '0', '']:
+                            value = float(value_str)
+                            if value > 0:
+                                # Apply category-specific scaling factor
+                                scaling_factor = CENSUS_SCALING_FACTORS.get(category_key, 70.0)
+                                monthly_value = value / scaling_factor
+                                break
+                    except (ValueError, TypeError):
                         continue
 
-                    # Find the matching record (seasonally adjusted SM data for our category)
-                    annual_value = None
-                    for row in data_rows:
-                        if len(row) <= max(category_idx, value_idx, data_type_idx, seasonally_adj_idx, time_slot_idx):
-                            continue
-
-                        row_category = row[category_idx]
-                        row_data_type = row[data_type_idx]
-                        row_seasonally_adj = row[seasonally_adj_idx]
-                        row_time_slot = row[time_slot_idx]
-
-                        # Match: correct category, SM (sales millions), seasonally adjusted
-                        if (row_category == category_code and
-                            row_data_type == 'SM' and
-                            row_seasonally_adj == 'yes' and
-                            row_time_slot == '0'):  # Annual data
-
-                            try:
-                                value_str = row[value_idx]
-                                if value_str not in ['M', '0', '']:
-                                    value = float(value_str)
-                                    if value > 0:
-                                        annual_value = value
-                                        break
-                            except (ValueError, TypeError):
-                                continue
-
-                    if annual_value is not None:
-                        # Distribute annual to monthly based on the target month
-                        month = dt.month
-                        monthly_factors = {
-                            1: 0.075, 2: 0.068, 3: 0.078, 4: 0.072, 5: 0.075,
-                            6: 0.080, 7: 0.082, 8: 0.085, 9: 0.083, 10: 0.088,
-                            11: 0.105, 12: 0.119
-                        }
-                        monthly_value = annual_value * monthly_factors.get(month, 1/12)
-                        actuals[category_key] = monthly_value
-                        logger.info(f"  {category_key}: ${monthly_value:,.2f}M (annual: ${annual_value:,.2f}M)")
-                    else:
-                        logger.warning(f"  {category_key}: No valid data found")
-                else:
-                    logger.warning(f"  {category_key}: Empty API response")
+            if monthly_value is not None:
+                actuals[category_key] = monthly_value
+                logger.info(f"  {category_key}: ${monthly_value:,.2f}M")
             else:
-                logger.warning(f"  API error for {category_key}: HTTP {response.status_code}")
+                logger.warning(f"  {category_key}: No valid data found")
 
-        except Exception as e:
-            logger.error(f"  Error fetching {category_key}: {e}")
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Request error: {e}")
+    except Exception as e:
+        logger.error(f"Error fetching data: {e}")
 
+    logger.info(f"Fetched {len(actuals)}/{len(mrts_category_codes)} category values")
     return actuals
 
 
@@ -184,7 +185,7 @@ def update_predictions_with_actuals(actuals: Dict[str, float], target_date: str)
 
     Args:
         actuals: Dictionary of category_key -> actual_value
-        target_date: Date string in YYYY-MM-DD format
+        target_date: Date string in YYYY-MM-DD format (used to extract year-month)
 
     Returns:
         Number of predictions updated
@@ -196,9 +197,12 @@ def update_predictions_with_actuals(actuals: Dict[str, float], target_date: str)
 
     updated_count = 0
 
+    # Extract year-month from target_date
+    target_year_month = target_date[:7]  # YYYY-MM
+
     for category_key, actual_value in actuals.items():
         try:
-            # Find predictions for this category and date
+            # Find predictions for this category and month
             # Match model names that contain the category
             cursor.execute("""
                 UPDATE prediction_log
@@ -206,11 +210,11 @@ def update_predictions_with_actuals(actuals: Dict[str, float], target_date: str)
                     error_absolute = ABS(predicted_value - ?),
                     error_percentage = ABS(predicted_value - ?) / ? * 100,
                     is_validated = 1
-                WHERE prediction_date = ?
+                WHERE strftime('%Y-%m', prediction_date) = ?
                 AND model_name LIKE ?
                 AND actual_value IS NULL
             """, (actual_value, actual_value, actual_value, actual_value,
-                  target_date, f'%{category_key}%'))
+                  target_year_month, f'%{category_key}%'))
 
             rows_updated = cursor.rowcount
             updated_count += rows_updated
