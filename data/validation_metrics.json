@@ -1,7 +1,7 @@
 {
   "validation_metrics": {
     "target_date": "2026-02-08",
-    "generated_at": "2026-02-08T01:45:54.808323",
+    "generated_at": "2026-02-08T06:45:27.885814",
     "models": {
       "automobile_dealers_autoarima_model": {
         "total_predictions": 43,
@@ -19,16 +19,16 @@
         }
       },
       "automobile_dealers_lgbm_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 10.0464,
+            "mean": 10.5128,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 1256.7312,
+            "mean": 1314.3452,
             "description": "Mean Absolute Error"
           }
         }
@@ -49,16 +49,16 @@
         }
       },
       "automobile_dealers_randomforest_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 8.6176,
+            "mean": 9.1218,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 1078.3838,
+            "mean": 1140.9948,
             "description": "Mean Absolute Error"
           }
         }
@@ -109,16 +109,16 @@
         }
       },
       "building_materials_garden_lgbm_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 8.3445,
+            "mean": 8.8983,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 86.3037,
+            "mean": 91.9962,
             "description": "Mean Absolute Error"
           }
         }
@@ -139,16 +139,16 @@
         }
       },
       "building_materials_garden_randomforest_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 10.1304,
+            "mean": 10.5148,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 105.0263,
+            "mean": 108.9521,
             "description": "Mean Absolute Error"
           }
         }
@@ -184,31 +184,31 @@
         }
       },
       "clothing_accessories_lgbm_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 5.5063,
+            "mean": 5.9203,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 37.7326,
+            "mean": 40.5659,
             "description": "Mean Absolute Error"
           }
         }
       },
       "clothing_accessories_randomforest_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 3.3514,
+            "mean": 3.3679,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 22.9755,
+            "mean": 23.0831,
             "description": "Mean Absolute Error"
           }
         }
@@ -224,6 +224,81 @@
           },
           "MAE": {
             "mean": 83.232,
+            "description": "Mean Absolute Error"
+          }
+        }
+      },
+      "electronics_and_appliances_lgbm_model": {
+        "total_predictions": 39,
+        "validated_predictions": 39,
+        "validation_rate": 1.0,
+        "metrics": {
+          "MAPE": {
+            "mean": 13.3891,
+            "description": "Mean Absolute Percentage Error"
+          },
+          "MAE": {
+            "mean": 8154.7455,
+            "description": "Mean Absolute Error"
+          }
+        }
+      },
+      "electronics_and_appliances_patchtst_model": {
+        "total_predictions": 43,
+        "validated_predictions": 43,
+        "validation_rate": 1.0,
+        "metrics": {
+          "MAPE": {
+            "mean": 14.3409,
+            "description": "Mean Absolute Percentage Error"
+          },
+          "MAE": {
+            "mean": 8743.7051,
+            "description": "Mean Absolute Error"
+          }
+        }
+      },
+      "electronics_and_appliances_randomforest_model": {
+        "total_predictions": 39,
+        "validated_predictions": 39,
+        "validation_rate": 1.0,
+        "metrics": {
+          "MAPE": {
+            "mean": 13.937,
+            "description": "Mean Absolute Percentage Error"
+          },
+          "MAE": {
+            "mean": 8488.918,
+            "description": "Mean Absolute Error"
+          }
+        }
+      },
+      "electronics_and_appliances_seasonalnaive_model": {
+        "total_predictions": 43,
+        "validated_predictions": 43,
+        "validation_rate": 1.0,
+        "metrics": {
+          "MAPE": {
+            "mean": 19.2868,
+            "description": "Mean Absolute Percentage Error"
+          },
+          "MAE": {
+            "mean": 11746.9573,
+            "description": "Mean Absolute Error"
+          }
+        }
+      },
+      "electronics_and_appliances_timesnet_model": {
+        "total_predictions": 43,
+        "validated_predictions": 43,
+        "validation_rate": 1.0,
+        "metrics": {
+          "MAPE": {
+            "mean": 14.4006,
+            "description": "Mean Absolute Percentage Error"
+          },
+          "MAE": {
+            "mean": 8779.7246,
             "description": "Mean Absolute Error"
           }
         }
@@ -244,16 +319,16 @@
         }
       },
       "food_beverage_stores_lgbm_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 7.3052,
+            "mean": 7.5773,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 541.0968,
+            "mean": 560.9706,
             "description": "Mean Absolute Error"
           }
         }
@@ -274,16 +349,16 @@
         }
       },
       "food_beverage_stores_randomforest_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 8.5654,
+            "mean": 9.3089,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 633.7685,
+            "mean": 688.6904,
             "description": "Mean Absolute Error"
           }
         }
@@ -334,16 +409,16 @@
         }
       },
       "furniture_home_furnishings_lgbm_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 12.8828,
+            "mean": 11.6518,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 125.1985,
+            "mean": 113.8755,
             "description": "Mean Absolute Error"
           }
         }
@@ -364,16 +439,16 @@
         }
       },
       "furniture_home_furnishings_randomforest_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 12.9969,
+            "mean": 11.812,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 126.3201,
+            "mean": 115.4377,
             "description": "Mean Absolute Error"
           }
         }
@@ -424,16 +499,16 @@
         }
       },
       "gasoline_stations_lgbm_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 6.1923,
+            "mean": 6.2167,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 305.1216,
+            "mean": 305.805,
             "description": "Mean Absolute Error"
           }
         }
@@ -454,16 +529,16 @@
         }
       },
       "gasoline_stations_randomforest_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 4.742,
+            "mean": 5.1879,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 230.3061,
+            "mean": 251.9002,
             "description": "Mean Absolute Error"
           }
         }
@@ -499,16 +574,16 @@
         }
       },
       "general_merchandise_lgbm_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 8.8515,
+            "mean": 9.1655,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 206.8212,
+            "mean": 213.8124,
             "description": "Mean Absolute Error"
           }
         }
@@ -529,16 +604,16 @@
         }
       },
       "general_merchandise_randomforest_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 10.2445,
+            "mean": 10.4615,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 239.5093,
+            "mean": 244.1055,
             "description": "Mean Absolute Error"
           }
         }
@@ -589,16 +664,16 @@
         }
       },
       "health_personal_care_lgbm_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 11.6691,
+            "mean": 11.2501,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 531.8515,
+            "mean": 511.3257,
             "description": "Mean Absolute Error"
           }
         }
@@ -619,16 +694,16 @@
         }
       },
       "health_personal_care_randomforest_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 11.8799,
+            "mean": 11.4114,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 541.461,
+            "mean": 518.6163,
             "description": "Mean Absolute Error"
           }
         }
@@ -664,16 +739,16 @@
         }
       },
       "sporting_goods_hobby_lgbm_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 15.5919,
+            "mean": 15.0983,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 194.2373,
+            "mean": 187.7591,
             "description": "Mean Absolute Error"
           }
         }
@@ -694,16 +769,16 @@
         }
       },
       "sporting_goods_hobby_randomforest_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 16.2909,
+            "mean": 15.7065,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 202.9841,
+            "mean": 195.3523,
             "description": "Mean Absolute Error"
           }
         }
@@ -754,16 +829,16 @@
         }
       },
       "total_retail_sales_lgbm_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 7.3895,
+            "mean": 7.6811,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 500.1102,
+            "mean": 519.3236,
             "description": "Mean Absolute Error"
           }
         }
@@ -784,16 +859,16 @@
         }
       },
       "total_retail_sales_randomforest_model": {
-        "total_predictions": 43,
-        "validated_predictions": 43,
+        "total_predictions": 39,
+        "validated_predictions": 39,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 9.0283,
+            "mean": 9.7755,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 609.8296,
+            "mean": 660.0747,
             "description": "Mean Absolute Error"
           }
         }
@@ -1236,5 +1311,5 @@
       }
     ]
   },
-  "last_updated": "2026-02-08T01:46:00.599743"
+  "last_updated": "2026-02-08T06:45:33.640735"
 }
