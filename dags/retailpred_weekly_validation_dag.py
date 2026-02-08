@@ -132,9 +132,9 @@ def get_target_date(**kwargs) -> str:
     Returns:
         Date string in YYYY-MM-DD format (first day of the target month)
     """
-    # FORCE RELOAD MARKER v6 - All imports local to function
+    # FORCE RELOAD MARKER v7 - All imports local to function
     print("=" * 80)
-    print("GET_TARGET_DATE FUNCTION STARTING - v6")
+    print("GET_TARGET_DATE FUNCTION STARTING - v7")
     print("=" * 80)
 
     import os
