@@ -66,6 +66,7 @@ FRED_BASE_URL = "https://api.stlouisfed.org/fred"
 
 # MRTS API (Monthly Retail Trade Survey)
 MRTS_BASE_URL = "https://api.census.gov/data/timeseries/eits/mrts"
+MRTS_API_KEY = os.getenv("MRTS_API_KEY", "779f2edd285f024750f49210b57c948bdae1e596")
 MRTS_TIMEOUT = 60
 
 # Yahoo Finance (for market data features)
@@ -111,6 +112,24 @@ ANOMALY_THRESHOLD_DEFAULT = 10.0
 
 # Validation export path
 VALIDATION_METRICS_PATH = PROJECT_ROOT / "data" / "validation_metrics.json"
+
+# Scaling factors for Census API data to match training data scale
+# Census API returns values in different units than training data
+# These factors were calculated by comparing training data to Census values
+CENSUS_SCALING_FACTORS = {
+    'total_retail_sales': 71.64,
+    'automobile_dealers': 11.04,
+    'building_materials_garden': 7.36,
+    'clothing_accessories': 112.22,
+    'electronics_appliances': 11.92,
+    'food_beverage_stores': 11.40,
+    'furniture_home_furnishings': 11.64,
+    'gasoline_stations': 5.37,
+    'general_merchandise': 53.60,
+    'health_personal_care': 11.36,
+    'nonstore_retailers': 71.64,  # Estimated
+    'sporting_goods_hobby': 11.92,
+}
 
 # ============================================================================
 # Logging Configuration

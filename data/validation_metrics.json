@@ -1,904 +1,829 @@
 {
   "validation_metrics": {
-    "target_date": "2026-02-06",
-    "generated_at": "2026-02-06T22:32:18.587202",
+    "target_date": "2025-09-15",
+    "generated_at": "2026-02-07T16:25:56.587714",
     "models": {
       "automobile_dealers_autoarima_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 38.0189,
+            "mean": 32.8209,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 4355.5454,
+            "mean": 4100.6275,
             "description": "Mean Absolute Error"
           }
         }
       },
       "automobile_dealers_lgbm_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 5.1623,
+            "mean": 11.2518,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 698.7337,
+            "mean": 1407.2525,
             "description": "Mean Absolute Error"
           }
         }
       },
       "automobile_dealers_patchtst_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 3.4095,
+            "mean": 7.1574,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 420.183,
+            "mean": 895.2756,
             "description": "Mean Absolute Error"
           }
         }
       },
       "automobile_dealers_randomforest_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 4.2243,
+            "mean": 9.3775,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 581.8397,
+            "mean": 1173.6308,
             "description": "Mean Absolute Error"
           }
         }
       },
       "automobile_dealers_seasonalnaive_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 20.11,
+            "mean": 9.2413,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 2473.4782,
+            "mean": 1155.8516,
             "description": "Mean Absolute Error"
           }
         }
       },
       "automobile_dealers_timesnet_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 3.5414,
+            "mean": 9.3332,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 431.6933,
+            "mean": 1167.4397,
             "description": "Mean Absolute Error"
           }
         }
       },
       "building_materials_garden_autoarima_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 21.3867,
+            "mean": 25.268,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 229.9673,
+            "mean": 262.3128,
             "description": "Mean Absolute Error"
           }
         }
       },
       "building_materials_garden_lgbm_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 2.6492,
+            "mean": 8.9831,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 28.0153,
+            "mean": 92.816,
             "description": "Mean Absolute Error"
           }
         }
       },
       "building_materials_garden_patchtst_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 33.7322,
+            "mean": 38.3764,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 347.4119,
+            "mean": 398.3522,
             "description": "Mean Absolute Error"
           }
         }
       },
       "building_materials_garden_randomforest_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 3.8072,
+            "mean": 10.8668,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 41.4681,
+            "mean": 112.5698,
             "description": "Mean Absolute Error"
           }
         }
       },
       "building_materials_garden_seasonalnaive_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 20.11,
+            "mean": 7.94,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 202.5186,
+            "mean": 82.8461,
             "description": "Mean Absolute Error"
           }
         }
       },
       "building_materials_garden_timesnet_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 35.9538,
+            "mean": 40.3414,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 370.1906,
+            "mean": 418.8586,
             "description": "Mean Absolute Error"
           }
         }
       },
       "clothing_accessories_lgbm_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 4.7641,
+            "mean": 5.7375,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 31.1524,
+            "mean": 39.2828,
             "description": "Mean Absolute Error"
           }
         }
       },
       "clothing_accessories_randomforest_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 9.5519,
+            "mean": 3.5059,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 66.0985,
+            "mean": 24.0206,
             "description": "Mean Absolute Error"
           }
         }
       },
       "clothing_accessories_seasonalnaive_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 20.11,
+            "mean": 9.4368,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 135.4086,
-            "description": "Mean Absolute Error"
-          }
-        }
-      },
-      "electronics_and_appliances_lgbm_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
-        "validation_rate": 1.0,
-        "metrics": {
-          "MAPE": {
-            "mean": 14.4636,
-            "description": "Mean Absolute Percentage Error"
-          },
-          "MAE": {
-            "mean": 9109.2116,
-            "description": "Mean Absolute Error"
-          }
-        }
-      },
-      "electronics_and_appliances_patchtst_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
-        "validation_rate": 1.0,
-        "metrics": {
-          "MAPE": {
-            "mean": 14.7735,
-            "description": "Mean Absolute Percentage Error"
-          },
-          "MAE": {
-            "mean": 9304.2371,
-            "description": "Mean Absolute Error"
-          }
-        }
-      },
-      "electronics_and_appliances_randomforest_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
-        "validation_rate": 1.0,
-        "metrics": {
-          "MAPE": {
-            "mean": 14.9915,
-            "description": "Mean Absolute Percentage Error"
-          },
-          "MAE": {
-            "mean": 9430.2369,
-            "description": "Mean Absolute Error"
-          }
-        }
-      },
-      "electronics_and_appliances_seasonalnaive_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
-        "validation_rate": 1.0,
-        "metrics": {
-          "MAPE": {
-            "mean": 20.3163,
-            "description": "Mean Absolute Percentage Error"
-          },
-          "MAE": {
-            "mean": 12885.7369,
-            "description": "Mean Absolute Error"
-          }
-        }
-      },
-      "electronics_and_appliances_timesnet_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
-        "validation_rate": 1.0,
-        "metrics": {
-          "MAPE": {
-            "mean": 14.838,
-            "description": "Mean Absolute Percentage Error"
-          },
-          "MAE": {
-            "mean": 9340.2305,
+            "mean": 64.6971,
             "description": "Mean Absolute Error"
           }
         }
       },
       "food_beverage_stores_autoarima_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 36.797,
+            "mean": 33.656,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 2538.3927,
+            "mean": 2494.9411,
             "description": "Mean Absolute Error"
           }
         }
       },
       "food_beverage_stores_lgbm_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 3.6456,
+            "mean": 7.9246,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 296.3582,
+            "mean": 586.5675,
             "description": "Mean Absolute Error"
           }
         }
       },
       "food_beverage_stores_patchtst_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 3.8246,
+            "mean": 7.0411,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 287.2299,
+            "mean": 520.8379,
             "description": "Mean Absolute Error"
           }
         }
       },
       "food_beverage_stores_randomforest_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 5.1653,
+            "mean": 9.6749,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 425.4082,
+            "mean": 715.6349,
             "description": "Mean Absolute Error"
           }
         }
       },
       "food_beverage_stores_seasonalnaive_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 20.11,
+            "mean": 10.9553,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 1490.0185,
+            "mean": 813.8443,
             "description": "Mean Absolute Error"
           }
         }
       },
       "food_beverage_stores_timesnet_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 4.1422,
+            "mean": 6.8641,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 306.9951,
+            "mean": 508.0244,
             "description": "Mean Absolute Error"
           }
         }
       },
       "furniture_home_furnishings_autoarima_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 39.658,
+            "mean": 39.0598,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 372.1768,
+            "mean": 384.3499,
             "description": "Mean Absolute Error"
           }
         }
       },
       "furniture_home_furnishings_lgbm_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 15.1739,
+            "mean": 9.5887,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 151.4124,
+            "mean": 93.8782,
             "description": "Mean Absolute Error"
           }
         }
       },
       "furniture_home_furnishings_patchtst_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 4.7782,
+            "mean": 9.7066,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 50.7649,
+            "mean": 95.8065,
             "description": "Mean Absolute Error"
           }
         }
       },
       "furniture_home_furnishings_randomforest_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 15.1956,
+            "mean": 9.7083,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 151.3973,
+            "mean": 95.0536,
             "description": "Mean Absolute Error"
           }
         }
       },
       "furniture_home_furnishings_seasonalnaive_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 20.3163,
+            "mean": 13.5281,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 203.8653,
+            "mean": 132.6212,
             "description": "Mean Absolute Error"
           }
         }
       },
       "furniture_home_furnishings_timesnet_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 4.3016,
+            "mean": 10.3703,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 43.4396,
+            "mean": 102.333,
             "description": "Mean Absolute Error"
           }
         }
       },
       "gasoline_stations_autoarima_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 32.5024,
+            "mean": 37.891,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 1552.7224,
+            "mean": 1859.0366,
             "description": "Mean Absolute Error"
           }
         }
       },
       "gasoline_stations_lgbm_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 12.7291,
+            "mean": 6.0143,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 562.4453,
+            "mean": 294.8115,
             "description": "Mean Absolute Error"
           }
         }
       },
       "gasoline_stations_patchtst_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 52.7426,
+            "mean": 56.8289,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 2461.2109,
+            "mean": 2787.0366,
             "description": "Mean Absolute Error"
           }
         }
       },
       "gasoline_stations_randomforest_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 8.8739,
+            "mean": 5.0542,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 404.5149,
+            "mean": 244.4882,
             "description": "Mean Absolute Error"
           }
         }
       },
       "gasoline_stations_seasonalnaive_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 20.11,
+            "mean": 5.229,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 925.9268,
+            "mean": 259.1808,
             "description": "Mean Absolute Error"
           }
         }
       },
       "gasoline_stations_timesnet_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 53.9538,
+            "mean": 57.8559,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 2517.5541,
+            "mean": 2837.5679,
             "description": "Mean Absolute Error"
           }
         }
       },
       "general_merchandise_lgbm_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 5.7274,
+            "mean": 9.8601,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 148.1153,
+            "mean": 230.0772,
             "description": "Mean Absolute Error"
           }
         }
       },
       "general_merchandise_patchtst_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 10.3821,
+            "mean": 11.8212,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 276.3201,
+            "mean": 276.1123,
             "description": "Mean Absolute Error"
           }
         }
       },
       "general_merchandise_randomforest_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 7.6306,
+            "mean": 11.191,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 196.4268,
+            "mean": 261.1563,
             "description": "Mean Absolute Error"
           }
         }
       },
       "general_merchandise_seasonalnaive_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 20.11,
+            "mean": 11.7855,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 474.3144,
+            "mean": 277.4462,
             "description": "Mean Absolute Error"
           }
         }
       },
       "general_merchandise_timesnet_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 11.7512,
+            "mean": 12.896,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 311.5622,
+            "mean": 301.746,
             "description": "Mean Absolute Error"
           }
         }
       },
       "health_personal_care_autoarima_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 43.3739,
+            "mean": 41.5603,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 1866.3514,
+            "mean": 1886.546,
             "description": "Mean Absolute Error"
           }
         }
       },
       "health_personal_care_lgbm_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 15.0049,
+            "mean": 9.2084,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 683.6509,
+            "mean": 417.7039,
             "description": "Mean Absolute Error"
           }
         }
       },
       "health_personal_care_patchtst_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 6.0319,
+            "mean": 8.1523,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 297.6881,
+            "mean": 372.9666,
             "description": "Mean Absolute Error"
           }
         }
       },
       "health_personal_care_randomforest_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 15.2341,
+            "mean": 9.4687,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 694.8734,
+            "mean": 429.5526,
             "description": "Mean Absolute Error"
           }
         }
       },
       "health_personal_care_seasonalnaive_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 20.3163,
+            "mean": 12.7193,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 932.0839,
+            "mean": 576.0786,
             "description": "Mean Absolute Error"
           }
         }
       },
       "health_personal_care_timesnet_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 5.8955,
+            "mean": 8.0612,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 281.8879,
+            "mean": 369.3723,
             "description": "Mean Absolute Error"
           }
         }
       },
       "sporting_goods_hobby_lgbm_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 13.9005,
+            "mean": 13.2411,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 179.9366,
+            "mean": 163.4799,
             "description": "Mean Absolute Error"
           }
         }
       },
       "sporting_goods_hobby_patchtst_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 14.2927,
+            "mean": 13.6276,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 185.0971,
+            "mean": 168.2293,
             "description": "Mean Absolute Error"
           }
         }
       },
       "sporting_goods_hobby_randomforest_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 14.4439,
+            "mean": 13.8856,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 187.072,
+            "mean": 171.5026,
             "description": "Mean Absolute Error"
           }
         }
       },
       "sporting_goods_hobby_seasonalnaive_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 20.3163,
+            "mean": 18.8718,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 266.9355,
+            "mean": 232.8048,
             "description": "Mean Absolute Error"
           }
         }
       },
       "sporting_goods_hobby_timesnet_model": {
-        "total_predictions": 49,
-        "validated_predictions": 49,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 14.2485,
+            "mean": 13.6432,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 184.5309,
+            "mean": 168.4299,
             "description": "Mean Absolute Error"
           }
         }
       },
       "total_retail_sales_autoarima_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 37.3722,
+            "mean": 32.8458,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 2333.3002,
+            "mean": 2226.5405,
             "description": "Mean Absolute Error"
           }
         }
       },
       "total_retail_sales_lgbm_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 4.6107,
+            "mean": 8.3711,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 333.7252,
+            "mean": 566.2742,
             "description": "Mean Absolute Error"
           }
         }
       },
       "total_retail_sales_patchtst_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 4.6862,
+            "mean": 11.6921,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 314.9856,
+            "mean": 790.5321,
             "description": "Mean Absolute Error"
           }
         }
       },
       "total_retail_sales_randomforest_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 4.5813,
+            "mean": 10.0932,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 335.6446,
+            "mean": 681.1818,
             "description": "Mean Absolute Error"
           }
         }
       },
       "total_retail_sales_seasonalnaive_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 20.11,
+            "mean": 9.7872,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 1348.2834,
+            "mean": 666.8144,
             "description": "Mean Absolute Error"
           }
         }
       },
       "total_retail_sales_timesnet_model": {
-        "total_predictions": 50,
-        "validated_predictions": 50,
+        "total_predictions": 37,
+        "validated_predictions": 37,
         "validation_rate": 1.0,
         "metrics": {
           "MAPE": {
-            "mean": 4.6841,
+            "mean": 11.5534,
             "description": "Mean Absolute Percentage Error"
           },
           "MAE": {
-            "mean": 316.9747,
+            "mean": 781.1604,
             "description": "Mean Absolute Error"
           }
         }
@@ -910,406 +835,406 @@
     "threshold": 10.0,
     "items": [
       {
-        "model_name": "health_personal_care_autoarima_model",
-        "prediction_date": "2025-02-02",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 3747.1507151004766,
-        "error_percentage": 71.5846290235429,
-        "error_absolute": 2682.3839383648697
-      },
-      {
-        "model_name": "health_personal_care_autoarima_model",
-        "prediction_date": "2025-02-09",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 3821.879552434835,
-        "error_percentage": 68.22965154311073,
-        "error_absolute": 2607.655101030511
-      },
-      {
-        "model_name": "health_personal_care_autoarima_model",
-        "prediction_date": "2025-01-26",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 3828.3770365469727,
-        "error_percentage": 67.94413382172276,
-        "error_absolute": 2601.1576169183736
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-08-03",
+        "predicted_value": 2064.359627637978,
+        "actual_value": 5054.003724394785,
+        "error_percentage": 59.15397494319844,
+        "error_absolute": 2989.6440967568074
       },
       {
         "model_name": "gasoline_stations_timesnet_model",
-        "prediction_date": "2025-11-30",
-        "predicted_value": 2068.739413635932,
-        "actual_value": 6413.323821782178,
-        "error_percentage": 67.74310059603647,
-        "error_absolute": 4344.584408146246
-      },
-      {
-        "model_name": "furniture_home_furnishings_autoarima_model",
-        "prediction_date": "2025-02-02",
-        "predicted_value": 1368.853465346535,
-        "actual_value": 819.5764988691101,
-        "error_percentage": 67.01960917969718,
-        "error_absolute": 549.2769664774248
+        "prediction_date": "2025-08-10",
+        "predicted_value": 2064.359627637978,
+        "actual_value": 5054.003724394785,
+        "error_percentage": 59.15397494319844,
+        "error_absolute": 2989.6440967568074
       },
       {
         "model_name": "gasoline_stations_timesnet_model",
-        "prediction_date": "2025-11-23",
-        "predicted_value": 2068.6491880173685,
-        "actual_value": 6234.622231023102,
-        "error_percentage": 66.81997543122054,
-        "error_absolute": 4165.973043005733
+        "prediction_date": "2025-08-17",
+        "predicted_value": 2064.359627637978,
+        "actual_value": 5054.003724394785,
+        "error_percentage": 59.15397494319844,
+        "error_absolute": 2989.6440967568074
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-08-24",
+        "predicted_value": 2064.359627637978,
+        "actual_value": 5054.003724394785,
+        "error_percentage": 59.15397494319844,
+        "error_absolute": 2989.6440967568074
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-08-31",
+        "predicted_value": 2064.393722226963,
+        "actual_value": 5054.003724394785,
+        "error_percentage": 59.15330033766105,
+        "error_absolute": 2989.6100021678226
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-07-06",
+        "predicted_value": 2063.5773363483186,
+        "actual_value": 5023.836126629422,
+        "error_percentage": 58.9242705308382,
+        "error_absolute": 2960.2587902811038
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-07-13",
+        "predicted_value": 2063.5773363483186,
+        "actual_value": 5023.836126629422,
+        "error_percentage": 58.9242705308382,
+        "error_absolute": 2960.2587902811038
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-07-20",
+        "predicted_value": 2063.5773363483186,
+        "actual_value": 5023.836126629422,
+        "error_percentage": 58.9242705308382,
+        "error_absolute": 2960.2587902811038
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-07-27",
+        "predicted_value": 2063.5773363483186,
+        "actual_value": 5023.836126629422,
+        "error_percentage": 58.9242705308382,
+        "error_absolute": 2960.2587902811038
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-09-07",
+        "predicted_value": 2064.259934170376,
+        "actual_value": 5013.221601489758,
+        "error_percentage": 58.82368468298014,
+        "error_absolute": 2948.961667319382
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-09-14",
+        "predicted_value": 2064.259934170376,
+        "actual_value": 5013.221601489758,
+        "error_percentage": 58.82368468298014,
+        "error_absolute": 2948.961667319382
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-06-08",
+        "predicted_value": 2064.6249986867574,
+        "actual_value": 4940.223463687151,
+        "error_percentage": 58.20786217743644,
+        "error_absolute": 2875.5984650003934
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-06-15",
+        "predicted_value": 2064.6249986867574,
+        "actual_value": 4940.223463687151,
+        "error_percentage": 58.20786217743644,
+        "error_absolute": 2875.5984650003934
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-06-22",
+        "predicted_value": 2064.663495147144,
+        "actual_value": 4940.223463687151,
+        "error_percentage": 58.20708293211141,
+        "error_absolute": 2875.5599685400066
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-06-29",
+        "predicted_value": 2064.753720765708,
+        "actual_value": 4940.223463687151,
+        "error_percentage": 58.20525658520166,
+        "error_absolute": 2875.469742921443
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-06-01",
+        "predicted_value": 2065.4072899764174,
+        "actual_value": 4940.223463687151,
+        "error_percentage": 58.192027037681925,
+        "error_absolute": 2874.8161737107334
       },
       {
         "model_name": "gasoline_stations_patchtst_model",
-        "prediction_date": "2025-11-30",
-        "predicted_value": 2170.6578438599495,
-        "actual_value": 6413.323821782178,
-        "error_percentage": 66.1539335267283,
-        "error_absolute": 4242.665977922228
-      },
-      {
-        "model_name": "automobile_dealers_autoarima_model",
-        "prediction_date": "2025-02-02",
-        "predicted_value": 16609.80792079208,
-        "actual_value": 10009.965607649638,
-        "error_percentage": 65.9327171722971,
-        "error_absolute": 6599.842313142441
-      },
-      {
-        "model_name": "gasoline_stations_timesnet_model",
-        "prediction_date": "2025-11-16",
-        "predicted_value": 2068.6491880173685,
-        "actual_value": 6055.920640264026,
-        "error_percentage": 65.84088017484714,
-        "error_absolute": 3987.271452246657
+        "prediction_date": "2025-08-31",
+        "predicted_value": 2129.5595746872455,
+        "actual_value": 5054.003724394785,
+        "error_percentage": 57.86390966812635,
+        "error_absolute": 2924.44414970754
       },
       {
         "model_name": "gasoline_stations_patchtst_model",
-        "prediction_date": "2025-11-23",
-        "predicted_value": 2170.681352049089,
-        "actual_value": 6234.622231023102,
-        "error_percentage": 65.18343419021559,
-        "error_absolute": 4063.9408789740132
-      },
-      {
-        "model_name": "total_retail_sales_autoarima_model",
-        "prediction_date": "2025-02-02",
-        "predicted_value": 9007.475247524751,
-        "actual_value": 5456.393487638428,
-        "error_percentage": 65.08111572094029,
-        "error_absolute": 3551.081759886323
-      },
-      {
-        "model_name": "gasoline_stations_timesnet_model",
-        "prediction_date": "2025-11-09",
-        "predicted_value": 2065.962423898958,
-        "actual_value": 5877.21904950495,
-        "error_percentage": 64.84795944300454,
-        "error_absolute": 3811.2566256059918
-      },
-      {
-        "model_name": "food_beverage_stores_autoarima_model",
-        "prediction_date": "2025-02-02",
-        "predicted_value": 9908.69405940594,
-        "actual_value": 6029.98387474824,
-        "error_percentage": 64.3237239969105,
-        "error_absolute": 3878.7101846576998
-      },
-      {
-        "model_name": "health_personal_care_autoarima_model",
-        "prediction_date": "2025-01-19",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 3914.84554820459,
-        "error_percentage": 64.23469519525767,
-        "error_absolute": 2514.689105260756
+        "prediction_date": "2025-08-03",
+        "predicted_value": 2129.583082876385,
+        "actual_value": 5054.003724394785,
+        "error_percentage": 57.86344452820123,
+        "error_absolute": 2924.4206415184003
       },
       {
         "model_name": "gasoline_stations_patchtst_model",
-        "prediction_date": "2025-11-16",
-        "predicted_value": 2170.681352049089,
-        "actual_value": 6055.920640264026,
-        "error_percentage": 64.15604693325592,
-        "error_absolute": 3885.2392882149366
-      },
-      {
-        "model_name": "gasoline_stations_timesnet_model",
-        "prediction_date": "2026-01-04",
-        "predicted_value": 2253.5991047753464,
-        "actual_value": 6242.315841584158,
-        "error_percentage": 63.898028200222825,
-        "error_absolute": 3988.7167368088117
-      },
-      {
-        "model_name": "furniture_home_furnishings_autoarima_model",
-        "prediction_date": "2025-02-09",
-        "predicted_value": 1368.853465346535,
-        "actual_value": 835.9211840775915,
-        "error_percentage": 63.75389108611229,
-        "error_absolute": 532.9322812689434
-      },
-      {
-        "model_name": "furniture_home_furnishings_autoarima_model",
-        "prediction_date": "2025-01-26",
-        "predicted_value": 1368.853465346535,
-        "actual_value": 837.3423132728019,
-        "error_percentage": 63.475969581656834,
-        "error_absolute": 531.511152073733
-      },
-      {
-        "model_name": "gasoline_stations_timesnet_model",
-        "prediction_date": "2025-12-07",
-        "predicted_value": 2067.4132224861364,
-        "actual_value": 5618.084257425742,
-        "error_percentage": 63.20074374534631,
-        "error_absolute": 3550.6710349396058
+        "prediction_date": "2025-08-10",
+        "predicted_value": 2129.583082876385,
+        "actual_value": 5054.003724394785,
+        "error_percentage": 57.86344452820123,
+        "error_absolute": 2924.4206415184003
       },
       {
         "model_name": "gasoline_stations_patchtst_model",
-        "prediction_date": "2025-11-09",
-        "predicted_value": 2164.039275336778,
-        "actual_value": 5877.21904950495,
-        "error_percentage": 63.1791965364065,
-        "error_absolute": 3713.179774168172
+        "prediction_date": "2025-08-17",
+        "predicted_value": 2129.583082876385,
+        "actual_value": 5054.003724394785,
+        "error_percentage": 57.86344452820123,
+        "error_absolute": 2924.4206415184003
       },
       {
         "model_name": "gasoline_stations_patchtst_model",
-        "prediction_date": "2026-01-04",
-        "predicted_value": 2310.7213327498444,
-        "actual_value": 6242.315841584158,
-        "error_percentage": 62.98294749261303,
-        "error_absolute": 3931.5945088343137
+        "prediction_date": "2025-08-24",
+        "predicted_value": 2129.583082876385,
+        "actual_value": 5054.003724394785,
+        "error_percentage": 57.86344452820123,
+        "error_absolute": 2924.4206415184003
       },
       {
-        "model_name": "automobile_dealers_autoarima_model",
-        "prediction_date": "2025-02-09",
-        "predicted_value": 16609.80792079208,
-        "actual_value": 10209.592777328753,
-        "error_percentage": 62.68825097186309,
-        "error_absolute": 6400.215143463325
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-07-20",
+        "predicted_value": 2128.2327047597464,
+        "actual_value": 5023.836126629422,
+        "error_percentage": 57.637298448514194,
+        "error_absolute": 2895.603421869676
       },
       {
-        "model_name": "health_personal_care_autoarima_model",
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-07-27",
+        "predicted_value": 2128.2327047597464,
+        "actual_value": 5023.836126629422,
+        "error_percentage": 57.637298448514194,
+        "error_absolute": 2895.603421869676
+      },
+      {
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-07-06",
+        "predicted_value": 2128.2475142376197,
+        "actual_value": 5023.836126629422,
+        "error_percentage": 57.6370036642597,
+        "error_absolute": 2895.5886123918026
+      },
+      {
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-07-13",
+        "predicted_value": 2128.2475142376197,
+        "actual_value": 5023.836126629422,
+        "error_percentage": 57.6370036642597,
+        "error_absolute": 2895.5886123918026
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-05-04",
+        "predicted_value": 2065.3694831021944,
+        "actual_value": 4870.763500931099,
+        "error_percentage": 57.59659686397468,
+        "error_absolute": 2805.3940178289045
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-05-11",
+        "predicted_value": 2065.3694831021944,
+        "actual_value": 4870.763500931099,
+        "error_percentage": 57.59659686397468,
+        "error_absolute": 2805.3940178289045
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-05-18",
+        "predicted_value": 2065.3694831021944,
+        "actual_value": 4870.763500931099,
+        "error_percentage": 57.59659686397468,
+        "error_absolute": 2805.3940178289045
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-05-25",
+        "predicted_value": 2065.3694831021944,
+        "actual_value": 4870.763500931099,
+        "error_percentage": 57.59659686397468,
+        "error_absolute": 2805.3940178289045
+      },
+      {
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-09-07",
+        "predicted_value": 2129.583082876385,
+        "actual_value": 5013.221601489758,
+        "error_percentage": 57.52066730416333,
+        "error_absolute": 2883.6385186133725
+      },
+      {
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-09-14",
+        "predicted_value": 2129.583082876385,
+        "actual_value": 5013.221601489758,
+        "error_percentage": 57.52066730416333,
+        "error_absolute": 2883.6385186133725
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
         "prediction_date": "2025-04-06",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 3952.8486645526295,
-        "error_percentage": 62.65572499944807,
-        "error_absolute": 2476.6859889127168
-      },
-      {
-        "model_name": "health_personal_care_autoarima_model",
-        "prediction_date": "2025-02-16",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 3958.640973934128,
-        "error_percentage": 62.41772607808339,
-        "error_absolute": 2470.8936795312184
-      },
-      {
-        "model_name": "automobile_dealers_autoarima_model",
-        "prediction_date": "2025-01-26",
-        "predicted_value": 16609.80792079208,
-        "actual_value": 10226.949856732215,
-        "error_percentage": 62.41213806139767,
-        "error_absolute": 6382.858064059863
-      },
-      {
-        "model_name": "total_retail_sales_autoarima_model",
-        "prediction_date": "2025-02-09",
-        "predicted_value": 9007.475247524751,
-        "actual_value": 5565.209484744393,
-        "error_percentage": 61.853300800450896,
-        "error_absolute": 3442.2657627803583
-      },
-      {
-        "model_name": "gasoline_stations_patchtst_model",
-        "prediction_date": "2025-12-07",
-        "predicted_value": 2157.404829174304,
-        "actual_value": 5618.084257425742,
-        "error_percentage": 61.59892357739386,
-        "error_absolute": 3460.6794282514384
-      },
-      {
-        "model_name": "total_retail_sales_autoarima_model",
-        "prediction_date": "2025-01-26",
-        "predicted_value": 9007.475247524751,
-        "actual_value": 5574.670761509331,
-        "error_percentage": 61.578604959261085,
-        "error_absolute": 3432.8044860154205
+        "predicted_value": 2065.3694831021944,
+        "actual_value": 4845.437616387337,
+        "error_percentage": 57.37496493367108,
+        "error_absolute": 2780.0681332851423
       },
       {
         "model_name": "gasoline_stations_timesnet_model",
-        "prediction_date": "2025-11-02",
-        "predicted_value": 2190.7016631589177,
-        "actual_value": 5689.821454852397,
-        "error_percentage": 61.49788388708064,
-        "error_absolute": 3499.11979169348
-      },
-      {
-        "model_name": "health_personal_care_autoarima_model",
         "prediction_date": "2025-04-13",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 3989.162055162659,
-        "error_percentage": 61.17506796040813,
-        "error_absolute": 2440.3725983026875
-      },
-      {
-        "model_name": "health_personal_care_autoarima_model",
-        "prediction_date": "2025-03-30",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 3989.348190902039,
-        "error_percentage": 61.16754782453411,
-        "error_absolute": 2440.1864625633075
-      },
-      {
-        "model_name": "food_beverage_stores_autoarima_model",
-        "prediction_date": "2025-02-09",
-        "predicted_value": 9908.69405940594,
-        "actual_value": 6150.238894726208,
-        "error_percentage": 61.11071828277228,
-        "error_absolute": 3758.4551646797318
-      },
-      {
-        "model_name": "food_beverage_stores_autoarima_model",
-        "prediction_date": "2025-01-26",
-        "predicted_value": 9908.69405940594,
-        "actual_value": 6160.694765706986,
-        "error_percentage": 60.83728274537814,
-        "error_absolute": 3747.999293698954
-      },
-      {
-        "model_name": "health_personal_care_autoarima_model",
-        "prediction_date": "2025-01-12",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 4001.314059862207,
-        "error_percentage": 60.685578719124365,
-        "error_absolute": 2428.220593603139
-      },
-      {
-        "model_name": "gasoline_stations_patchtst_model",
-        "prediction_date": "2025-11-02",
-        "predicted_value": 2263.705067054276,
-        "actual_value": 5689.821454852397,
-        "error_percentage": 60.21483125573715,
-        "error_absolute": 3426.1163877981217
+        "predicted_value": 2065.3694831021944,
+        "actual_value": 4845.437616387337,
+        "error_percentage": 57.37496493367108,
+        "error_absolute": 2780.0681332851423
       },
       {
         "model_name": "gasoline_stations_timesnet_model",
-        "prediction_date": "2025-10-26",
-        "predicted_value": 2186.353985732032,
-        "actual_value": 5480.561371538075,
-        "error_percentage": 60.10711608682414,
-        "error_absolute": 3294.207385806043
-      },
-      {
-        "model_name": "furniture_home_furnishings_autoarima_model",
-        "prediction_date": "2025-01-19",
-        "predicted_value": 1368.853465346535,
-        "actual_value": 856.254699092029,
-        "error_percentage": 59.865220803118305,
-        "error_absolute": 512.5987662545059
-      },
-      {
-        "model_name": "health_personal_care_autoarima_model",
         "prediction_date": "2025-04-20",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 4027.4552531824606,
-        "error_percentage": 59.64260927241386,
-        "error_absolute": 2402.0794002828857
-      },
-      {
-        "model_name": "gasoline_stations_patchtst_model",
-        "prediction_date": "2025-10-26",
-        "predicted_value": 2228.903235966167,
-        "actual_value": 5480.561371538075,
-        "error_percentage": 59.33074944571642,
-        "error_absolute": 3251.658135571908
-      },
-      {
-        "model_name": "automobile_dealers_autoarima_model",
-        "prediction_date": "2025-01-19",
-        "predicted_value": 16609.80792079208,
-        "actual_value": 10457.937850983255,
-        "error_percentage": 58.824886487774855,
-        "error_absolute": 6151.870069808823
+        "predicted_value": 2065.3694831021944,
+        "actual_value": 4845.437616387337,
+        "error_percentage": 57.37496493367108,
+        "error_absolute": 2780.0681332851423
       },
       {
         "model_name": "gasoline_stations_timesnet_model",
-        "prediction_date": "2025-10-19",
-        "predicted_value": 2186.032846246637,
-        "actual_value": 5270.56641465529,
-        "error_percentage": 58.5237586576269,
-        "error_absolute": 3084.533568408653
-      },
-      {
-        "model_name": "furniture_home_furnishings_autoarima_model",
-        "prediction_date": "2025-04-06",
-        "predicted_value": 1368.853465346535,
-        "actual_value": 864.566737600949,
-        "error_percentage": 58.32825920866188,
-        "error_absolute": 504.28672774558595
-      },
-      {
-        "model_name": "health_personal_care_autoarima_model",
-        "prediction_date": "2025-03-23",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 4063.4640580371392,
-        "error_percentage": 58.227919864149534,
-        "error_absolute": 2366.070595428207
-      },
-      {
-        "model_name": "health_personal_care_autoarima_model",
         "prediction_date": "2025-04-27",
-        "predicted_value": 6429.534653465346,
-        "actual_value": 4065.748451202263,
-        "error_percentage": 58.13901746819299,
-        "error_absolute": 2363.7862022630834
-      },
-      {
-        "model_name": "furniture_home_furnishings_autoarima_model",
-        "prediction_date": "2025-02-16",
-        "predicted_value": 1368.853465346535,
-        "actual_value": 865.833631036573,
-        "error_percentage": 58.096592263566684,
-        "error_absolute": 503.0198343099619
-      },
-      {
-        "model_name": "total_retail_sales_autoarima_model",
-        "prediction_date": "2025-01-19",
-        "predicted_value": 9007.475247524751,
-        "actual_value": 5700.58142263996,
-        "error_percentage": 58.009763911898595,
-        "error_absolute": 3306.8938248847917
-      },
-      {
-        "model_name": "gasoline_stations_patchtst_model",
-        "prediction_date": "2025-10-19",
-        "predicted_value": 2228.903235966167,
-        "actual_value": 5270.56641465529,
-        "error_percentage": 57.71036619946066,
-        "error_absolute": 3041.663178689123
+        "predicted_value": 2065.3694831021944,
+        "actual_value": 4845.437616387337,
+        "error_percentage": 57.37496493367108,
+        "error_absolute": 2780.0681332851423
       },
       {
         "model_name": "gasoline_stations_timesnet_model",
-        "prediction_date": "2025-10-05",
-        "predicted_value": 2067.057535162697,
-        "actual_value": 4858.442951780201,
-        "error_percentage": 57.45432115424873,
-        "error_absolute": 2791.385416617504
+        "prediction_date": "2025-03-02",
+        "predicted_value": 2064.7857714773845,
+        "actual_value": 4835.381750465549,
+        "error_percentage": 57.29839177064794,
+        "error_absolute": 2770.5959789881645
       },
       {
-        "model_name": "automobile_dealers_autoarima_model",
-        "prediction_date": "2025-04-06",
-        "predicted_value": 16609.80792079208,
-        "actual_value": 10559.457623351735,
-        "error_percentage": 57.29792678039215,
-        "error_absolute": 6050.350297440344
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-03-16",
+        "predicted_value": 2064.7857714773845,
+        "actual_value": 4835.381750465549,
+        "error_percentage": 57.29839177064794,
+        "error_absolute": 2770.5959789881645
       },
       {
-        "model_name": "food_beverage_stores_autoarima_model",
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-03-30",
+        "predicted_value": 2064.875997095948,
+        "actual_value": 4835.381750465549,
+        "error_percentage": 57.2965258245196,
+        "error_absolute": 2770.505753369601
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-03-09",
+        "predicted_value": 2065.9612501182833,
+        "actual_value": 4835.381750465549,
+        "error_percentage": 57.274081825713694,
+        "error_absolute": 2769.4205003472657
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-03-23",
+        "predicted_value": 2065.9612501182833,
+        "actual_value": 4835.381750465549,
+        "error_percentage": 57.274081825713694,
+        "error_absolute": 2769.4205003472657
+      },
+      {
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-06-29",
+        "predicted_value": 2115.0277365062175,
+        "actual_value": 4940.223463687151,
+        "error_percentage": 57.187609992693325,
+        "error_absolute": 2825.1957271809333
+      },
+      {
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-06-01",
+        "predicted_value": 2115.051244695357,
+        "actual_value": 4940.223463687151,
+        "error_percentage": 57.1871341399447,
+        "error_absolute": 2825.1722189917937
+      },
+      {
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-06-08",
+        "predicted_value": 2115.051244695357,
+        "actual_value": 4940.223463687151,
+        "error_percentage": 57.1871341399447,
+        "error_absolute": 2825.1722189917937
+      },
+      {
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-06-15",
+        "predicted_value": 2115.051244695357,
+        "actual_value": 4940.223463687151,
+        "error_percentage": 57.1871341399447,
+        "error_absolute": 2825.1722189917937
+      },
+      {
+        "model_name": "gasoline_stations_patchtst_model",
+        "prediction_date": "2025-06-22",
+        "predicted_value": 2115.051244695357,
+        "actual_value": 4940.223463687151,
+        "error_percentage": 57.1871341399447,
+        "error_absolute": 2825.1722189917937
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-01-12",
+        "predicted_value": 2067.7322018075383,
+        "actual_value": 4788.454376163873,
+        "error_percentage": 56.81837938980136,
+        "error_absolute": 2720.722174356335
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-01-05",
+        "predicted_value": 2067.862829031735,
+        "actual_value": 4788.454376163873,
+        "error_percentage": 56.81565142762535,
+        "error_absolute": 2720.591547132138
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
         "prediction_date": "2025-01-19",
-        "predicted_value": 9908.69405940594,
-        "actual_value": 6299.841485604782,
-        "error_percentage": 57.28481553133842,
-        "error_absolute": 3608.8525738011576
+        "predicted_value": 2068.494767776699,
+        "actual_value": 4788.454376163873,
+        "error_percentage": 56.8024542935332,
+        "error_absolute": 2719.9596083871743
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-01-26",
+        "predicted_value": 2068.999811212247,
+        "actual_value": 4788.454376163873,
+        "error_percentage": 56.79190718593075,
+        "error_absolute": 2719.4545649516263
+      },
+      {
+        "model_name": "gasoline_stations_timesnet_model",
+        "prediction_date": "2025-02-23",
+        "predicted_value": 2067.3192891358,
+        "actual_value": 4781.378026070764,
+        "error_percentage": 56.76310724934084,
+        "error_absolute": 2714.0587369349637
       }
     ]
   },
-  "last_updated": "2026-02-06T22:32:25.228756"
+  "last_updated": "2026-02-07T16:25:56.590741"
 }
