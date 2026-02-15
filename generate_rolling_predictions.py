@@ -78,6 +78,20 @@ FILENAME_TO_NAICS = {
     "electronics_and_appliance_stores": "4431",
 }
 
+# Category key to actual CSV filename mapping
+CATEGORY_TO_CSV_FILENAME = {
+    "total_retail_sales": "total_sales",
+    "automobile_dealers": "automobile_dealers",
+    "furniture_home_furnishings": "furniture_and_home_furnishings_stores",
+    "building_materials_garden": "building_material_and_garden_equipment",
+    "food_beverage_stores": "food_and_beverage_stores",
+    "health_personal_care": "health_and_personal_care_stores",
+    "gasoline_stations": "gasoline_stations",
+    "clothing_accessories": "clothing_and_clothing_accessories_stores",
+    "sporting_goods_hobby": "sporting_goods_hobby_and_musical_instrument_stores",
+    "general_merchandise": "general_merchandise_stores",
+}
+
 # Model type classifications
 SKLEARN_MODELS = ["randomforest", "lgbm"]
 NEURAL_FORECAST_MODELS = ["patchtst", "timesnet"]
@@ -221,7 +235,9 @@ def load_multi_resolution_csv(category_key: str) -> Optional[pd.DataFrame]:
     Returns:
         DataFrame with features or None if not found
     """
-    csv_path = Path(__file__).parent.parent / "project_root" / "data_multi_resolution" / f"retail_{category_key}_multi_resolution.csv"
+    # Map category_key to actual CSV filename
+    csv_filename = CATEGORY_TO_CSV_FILENAME.get(category_key, category_key)
+    csv_path = Path(__file__).parent.parent / "project_root" / "data_multi_resolution" / f"retail_{csv_filename}_multi_resolution.csv"
 
     if not csv_path.exists():
         logger.warning(f"CSV not found: {csv_path}")
