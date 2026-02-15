@@ -63,6 +63,21 @@ NAICS_TO_CATEGORY = {
     "454": "general_merchandise",
 }
 
+# Reverse mapping: descriptive filename prefix -> NAICS code
+FILENAME_TO_NAICS = {
+    "total_sales": "4400",
+    "automobile_dealers": "441",
+    "furniture_and_home_furnishings_stores": "442",
+    "building_material_and_garden_equipment": "443",
+    "food_and_beverage_stores": "445",
+    "health_and_personal_care_stores": "447",
+    "gasoline_stations": "448",
+    "clothing_and_clothing_accessories_stores": "452",
+    "sporting_goods_hobby_and_musical_instrument_stores": "453",
+    "general_merchandise_stores": "454",
+    "electronics_and_appliance_stores": "4431",
+}
+
 # Model type classifications
 SKLEARN_MODELS = ["randomforest", "lgbm"]
 NEURAL_FORECAST_MODELS = ["patchtst", "timesnet"]
@@ -78,28 +93,75 @@ def discover_trained_models() -> Dict[str, Dict[str, Path]]:
     """
     Discover all trained models in backend/ml/models/
 
+    Supports two model file naming conventions:
+    1. Flat structure: "category_modeltype_model.pkl" (e.g., "total_sales_LGBM_model.pkl")
+    2. NAICS subdirectories: "4400/lgbm_model.pkl"
+
     Returns:
         Dictionary mapping naics_code -> {model_type -> model_path}
     """
     models = {}
 
-    for naics_dir in BACKEND_MODELS_DIR.iterdir():
-        if not naics_dir.is_dir() or naics_dir.name == "backup_original_20260111_142530":
+    # First, check for flat file structure (category_modeltype_model.pkl)
+    for model_file in BACKEND_MODELS_DIR.glob("*.pkl"):
+        filename = model_file.stem  # e.g., "total_sales_LGBM_model"
+
+        # Parse: extract category prefix and model type
+        # Pattern: {category}_{model_type}_model
+        parts = filename.rsplit("_model", 1)
+        if len(parts) != 2 or parts[1] != "":
             continue
 
-        naics_code = naics_dir.name
-        if naics_code not in NAICS_TO_CATEGORY:
-            logger.warning(f"Unknown NAICS code: {naics_code}")
+        prefix = parts[0]  # e.g., "total_sales_LGBM"
+
+        # Find model type at the end
+        model_type = None
+        for mt in ALL_MODEL_TYPES:
+            if prefix.lower().endswith(mt.lower()):
+                model_type = mt
+                # Extract category by removing model type suffix
+                category_prefix = prefix[: -len(mt)].rstrip("_").lower()
+                break
+
+        if model_type is None:
             continue
 
-        models[naics_code] = {}
+        # Map category prefix to NAICS code
+        # Try exact match first, then partial match
+        naics_code = None
+        for fname, naics in FILENAME_TO_NAICS.items():
+            if category_prefix == fname.lower() or category_prefix.replace("_and_", "_").replace("_", "") == fname.lower().replace("_", ""):
+                naics_code = naics
+                break
 
-        for model_file in naics_dir.glob("*.pkl"):
-            model_name = model_file.stem  # e.g., "lgbm_model"
-            model_type = model_name.replace("_model", "").lower()  # e.g., "lgbm"
+        if naics_code is None:
+            logger.warning(f"Could not map '{category_prefix}' to NAICS code (file: {model_file.name})")
+            continue
 
-            if model_type in ALL_MODEL_TYPES:
-                models[naics_code][model_type] = model_file
+        if naics_code not in models:
+            models[naics_code] = {}
+
+        models[naics_code][model_type] = model_file
+
+    # Fallback: check for NAICS subdirectory structure (old format)
+    if not models:
+        for naics_dir in BACKEND_MODELS_DIR.iterdir():
+            if not naics_dir.is_dir() or naics_dir.name.startswith("."):
+                continue
+
+            naics_code = naics_dir.name
+            if naics_code not in NAICS_TO_CATEGORY:
+                logger.warning(f"Unknown NAICS code: {naics_code}")
+                continue
+
+            models[naics_code] = {}
+
+            for model_file in naics_dir.glob("*.pkl"):
+                model_name = model_file.stem  # e.g., "lgbm_model"
+                model_type = model_name.replace("_model", "").lower()  # e.g., "lgbm"
+
+                if model_type in ALL_MODEL_TYPES:
+                    models[naics_code][model_type] = model_file
 
     logger.info(f"Discovered models for {len(models)} NAICS codes")
     for naics, model_types in models.items():

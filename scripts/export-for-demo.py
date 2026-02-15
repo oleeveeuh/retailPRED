@@ -82,10 +82,11 @@ def export_predictions(conn: sqlite3.Connection) -> Dict[str, Any]:
         logger.warning("  ⚠ prediction_log table not found")
         return {"data": [], "metadata": {"error": "Table not found"}}
 
-    # Get ALL predictions (not just 100) for full validation display
+    # Get ONLY LGBM and RandomForest predictions (working models with SHAP values)
+    # Use rowid instead of id since id column is NULL
     cursor.execute("""
         SELECT
-            id,
+            rowid as id,
             model_name,
             prediction_date,
             predicted_value,
@@ -96,9 +97,9 @@ def export_predictions(conn: sqlite3.Connection) -> Dict[str, Any]:
             features,
             created_at,
             error_percentage,
-            error_absolute,
-            confidence_score
+            error_absolute
         FROM prediction_log
+        WHERE model_name LIKE '%lgbm%' OR model_name LIKE '%randomforest%'
         ORDER BY prediction_date DESC, created_at DESC
     """)
 
@@ -584,16 +585,14 @@ def create_summary_stats(conn: sqlite3.Connection, predictions_data: Dict, econo
         },
         "models_available": {
             "models": [
-                "TimesNet",
-                "PatchTST",
-                "AutoARIMA",
-                "SeasonalNaive",
                 "LGBM",
                 "RandomForest"
             ],
-            "with_shap": ["LGBM", "RandomForest"],
-            "without_shap": ["AutoARIMA", "SeasonalNaive", "TimesNet", "PatchTST"],
-            "total_count": 6
+            "with_shap": [
+                "LGBM",
+                "RandomForest"
+            ],
+            "total_count": 2
         }
     }
 
