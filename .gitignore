@@ -48,19 +48,27 @@ env/
 *.db
 *.sqlite
 *.sqlite3
+*.db-shm
+*.db-wal
 data/db/retailpred.db
 
-# ML models (trained models, can be large)
-backend/ml/models/*.pkl
-backend/ml/models/*.joblib
+# Runtime/debugging directories
+data/validation_metrics.json
+models/latest_metrics.json
+models/model_latest.pkl
+models/backend_ml
+
+# ML models - track deployment models in NAICS subdirectories, ignore training outputs
+# Ignore training output models (descriptive names like Total_Retail_Sales/)
 backend/ml/models/*_explainer.pkl
 backend/ml/models/*_features.pkl
 backend/ml/models/*_metadata.json
+# Note: backend/ml/models/4400/, 4411/, etc. are TRACKED for deployment
 
 # Training outputs
 project_root/outputs/
-project_root/training_outputs/
-training_outputs/
+training_outputs/models/
+training_outputs/*.log
 *.log
 
 # Node
@@ -107,12 +115,6 @@ htmlcov/
 
 # Claude settings
 .claude/
-*.pkl
-*.joblib
-__pycache__/
-*.pyc
-logs/*.log
 
-# Keep models/ directory structure but ignore .pkl files
-models/*.pkl
-!.gitkeep
+# Logs
+logs/*.log

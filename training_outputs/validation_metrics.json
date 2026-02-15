@@ -1,0 +1,349 @@
+{
+  "generated_at": "2026-02-14T18:24:13.679932",
+  "description": "Validation metrics for all models on 2025 actual data",
+  "total_models": 6,
+  "models": {
+    "Lgbm": {
+      "avg_mape": 9.76,
+      "categories": 11,
+      "total_samples": 429,
+      "breakdown": [
+        {
+          "category": "clothing_accessories",
+          "avg_mape": 5.92,
+          "sample_count": 39
+        },
+        {
+          "category": "gasoline_stations",
+          "avg_mape": 6.22,
+          "sample_count": 39
+        },
+        {
+          "category": "food_beverage_stores",
+          "avg_mape": 7.58,
+          "sample_count": 39
+        },
+        {
+          "category": "total_retail_sales",
+          "avg_mape": 7.68,
+          "sample_count": 39
+        },
+        {
+          "category": "building_materials_garden",
+          "avg_mape": 8.9,
+          "sample_count": 39
+        },
+        {
+          "category": "general_merchandise",
+          "avg_mape": 9.17,
+          "sample_count": 39
+        },
+        {
+          "category": "automobile_dealers",
+          "avg_mape": 10.51,
+          "sample_count": 39
+        },
+        {
+          "category": "health_personal_care",
+          "avg_mape": 11.25,
+          "sample_count": 39
+        },
+        {
+          "category": "furniture_home_furnishings",
+          "avg_mape": 11.65,
+          "sample_count": 39
+        },
+        {
+          "category": "electronics_and_appliances",
+          "avg_mape": 13.39,
+          "sample_count": 39
+        },
+        {
+          "category": "sporting_goods_hobby",
+          "avg_mape": 15.1,
+          "sample_count": 39
+        }
+      ]
+    },
+    "Randomforest": {
+      "avg_mape": 10.06,
+      "categories": 11,
+      "total_samples": 429,
+      "breakdown": [
+        {
+          "category": "clothing_accessories",
+          "avg_mape": 3.37,
+          "sample_count": 39
+        },
+        {
+          "category": "gasoline_stations",
+          "avg_mape": 5.19,
+          "sample_count": 39
+        },
+        {
+          "category": "automobile_dealers",
+          "avg_mape": 9.12,
+          "sample_count": 39
+        },
+        {
+          "category": "food_beverage_stores",
+          "avg_mape": 9.31,
+          "sample_count": 39
+        },
+        {
+          "category": "total_retail_sales",
+          "avg_mape": 9.78,
+          "sample_count": 39
+        },
+        {
+          "category": "general_merchandise",
+          "avg_mape": 10.46,
+          "sample_count": 39
+        },
+        {
+          "category": "building_materials_garden",
+          "avg_mape": 10.51,
+          "sample_count": 39
+        },
+        {
+          "category": "health_personal_care",
+          "avg_mape": 11.41,
+          "sample_count": 39
+        },
+        {
+          "category": "furniture_home_furnishings",
+          "avg_mape": 11.81,
+          "sample_count": 39
+        },
+        {
+          "category": "electronics_and_appliances",
+          "avg_mape": 13.94,
+          "sample_count": 39
+        },
+        {
+          "category": "sporting_goods_hobby",
+          "avg_mape": 15.71,
+          "sample_count": 39
+        }
+      ]
+    },
+    "Seasonalnaive": {
+      "avg_mape": 14.11,
+      "categories": 11,
+      "total_samples": 473,
+      "breakdown": [
+        {
+          "category": "gasoline_stations",
+          "avg_mape": 7.29,
+          "sample_count": 43
+        },
+        {
+          "category": "building_materials_garden",
+          "avg_mape": 10.56,
+          "sample_count": 43
+        },
+        {
+          "category": "automobile_dealers",
+          "avg_mape": 12.09,
+          "sample_count": 43
+        },
+        {
+          "category": "clothing_accessories",
+          "avg_mape": 12.11,
+          "sample_count": 43
+        },
+        {
+          "category": "total_retail_sales",
+          "avg_mape": 12.35,
+          "sample_count": 43
+        },
+        {
+          "category": "food_beverage_stores",
+          "avg_mape": 13.69,
+          "sample_count": 43
+        },
+        {
+          "category": "general_merchandise",
+          "avg_mape": 14.17,
+          "sample_count": 43
+        },
+        {
+          "category": "health_personal_care",
+          "avg_mape": 15.36,
+          "sample_count": 43
+        },
+        {
+          "category": "furniture_home_furnishings",
+          "avg_mape": 17.01,
+          "sample_count": 43
+        },
+        {
+          "category": "electronics_and_appliances",
+          "avg_mape": 19.29,
+          "sample_count": 43
+        },
+        {
+          "category": "sporting_goods_hobby",
+          "avg_mape": 21.3,
+          "sample_count": 43
+        }
+      ]
+    },
+    "Patchtst": {
+      "avg_mape": 17.89,
+      "categories": 10,
+      "total_samples": 430,
+      "breakdown": [
+        {
+          "category": "food_beverage_stores",
+          "avg_mape": 6.91,
+          "sample_count": 43
+        },
+        {
+          "category": "automobile_dealers",
+          "avg_mape": 7.2,
+          "sample_count": 43
+        },
+        {
+          "category": "health_personal_care",
+          "avg_mape": 7.28,
+          "sample_count": 43
+        },
+        {
+          "category": "furniture_home_furnishings",
+          "avg_mape": 9.28,
+          "sample_count": 43
+        },
+        {
+          "category": "total_retail_sales",
+          "avg_mape": 10.72,
+          "sample_count": 43
+        },
+        {
+          "category": "general_merchandise",
+          "avg_mape": 11.72,
+          "sample_count": 43
+        },
+        {
+          "category": "electronics_and_appliances",
+          "avg_mape": 14.34,
+          "sample_count": 43
+        },
+        {
+          "category": "sporting_goods_hobby",
+          "avg_mape": 16.08,
+          "sample_count": 43
+        },
+        {
+          "category": "building_materials_garden",
+          "avg_mape": 38.57,
+          "sample_count": 43
+        },
+        {
+          "category": "gasoline_stations",
+          "avg_mape": 56.84,
+          "sample_count": 43
+        }
+      ]
+    },
+    "Timesnet": {
+      "avg_mape": 18.61,
+      "categories": 10,
+      "total_samples": 430,
+      "breakdown": [
+        {
+          "category": "food_beverage_stores",
+          "avg_mape": 6.92,
+          "sample_count": 43
+        },
+        {
+          "category": "health_personal_care",
+          "avg_mape": 7.34,
+          "sample_count": 43
+        },
+        {
+          "category": "automobile_dealers",
+          "avg_mape": 9.28,
+          "sample_count": 43
+        },
+        {
+          "category": "furniture_home_furnishings",
+          "avg_mape": 9.95,
+          "sample_count": 43
+        },
+        {
+          "category": "total_retail_sales",
+          "avg_mape": 10.5,
+          "sample_count": 43
+        },
+        {
+          "category": "general_merchandise",
+          "avg_mape": 13.04,
+          "sample_count": 43
+        },
+        {
+          "category": "electronics_and_appliances",
+          "avg_mape": 14.4,
+          "sample_count": 43
+        },
+        {
+          "category": "sporting_goods_hobby",
+          "avg_mape": 16.03,
+          "sample_count": 43
+        },
+        {
+          "category": "building_materials_garden",
+          "avg_mape": 40.73,
+          "sample_count": 43
+        },
+        {
+          "category": "gasoline_stations",
+          "avg_mape": 57.87,
+          "sample_count": 43
+        }
+      ]
+    },
+    "Autoarima": {
+      "avg_mape": 34.75,
+      "categories": 7,
+      "total_samples": 301,
+      "breakdown": [
+        {
+          "category": "building_materials_garden",
+          "avg_mape": 25.36,
+          "sample_count": 43
+        },
+        {
+          "category": "total_retail_sales",
+          "avg_mape": 32.54,
+          "sample_count": 43
+        },
+        {
+          "category": "automobile_dealers",
+          "avg_mape": 32.82,
+          "sample_count": 43
+        },
+        {
+          "category": "food_beverage_stores",
+          "avg_mape": 33.5,
+          "sample_count": 43
+        },
+        {
+          "category": "gasoline_stations",
+          "avg_mape": 38.15,
+          "sample_count": 43
+        },
+        {
+          "category": "furniture_home_furnishings",
+          "avg_mape": 39.6,
+          "sample_count": 43
+        },
+        {
+          "category": "health_personal_care",
+          "avg_mape": 41.27,
+          "sample_count": 43
+        }
+      ]
+    }
+  }
+}

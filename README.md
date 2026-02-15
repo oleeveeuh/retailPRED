@@ -39,9 +39,9 @@ RetailPRED is an end-to-end retail forecasting platform that combines multi-reso
 | Rank | Model | Avg MAPE | Avg MASE | vs Baseline | Status |
 |------|-------|----------|----------|-------------|--------|
 | **1** | **LGBM** | **8.53%** | **0.952** | **95% better than naive** | BEST |
-| **2** | **PatchTST** | **11.15%** | **1.233** | **77% better than naive** | Excellent |
-| **3** | **RandomForest** | **11.46%** | **1.224** | **76% better than naive** | Excellent |
-| **4** | **TimesNet** | **12.02%** | **1.326** | **73% better than naive** | Good |
+| **2** | **PatchTST** | **11.15%** | **1.233** | **77% better than naive** | Good (not in production) |
+| **3** | **RandomForest** | **11.46%** | **1.224** | **76% better than naive** | Good |
+| **4** | **TimesNet** | **12.02%** | **1.326** | **73% better than naive** | Good (not in production) |
 | **5** | **SeasonalNaive** | **19.37%** | **2.090** | Baseline (2x naive) | Baseline reference |
 | **6** | **AutoARIMA** | **37.58%** | **3.682** | **Poor** | Not recommended |
 
@@ -88,7 +88,7 @@ RetailPRED is an end-to-end retail forecasting platform that combines multi-reso
 - **Production Accuracy**: 9.12% average MAPE (90.88% accuracy)
 - **Prediction Frequency**: Weekly (aggregated from daily data)
 
-**Note:** PatchTST, TimesNet, and AutoARIMA models have been excluded from production due to training issues (scale mismatches and poor performance). Only LGBM and RandomForest are deployed.
+**Note:** Only LGBM and RandomForest are deployed to production. I initially experimented with PatchTST and TimesNet, but ultimately decided to focus on the tree-based models since they were simpler, faster, had SHAP explainability built in, and worked reliably across all categories. AutoARIMA performed poorly across all categories.
 
 ---
 
@@ -96,19 +96,19 @@ RetailPRED is an end-to-end retail forecasting platform that combines multi-reso
 
 ### Overview
 
-A total of **6 model types** were tested across 11 retail categories with 73 time-series features. Only **2 models (LGBM and RandomForest)** met production standards with excellent accuracy.
+I tested **6 different model types** across 11 retail categories using 73 time-series features. In the end, only **2 models (LGBM and RandomForest)** worked well enough to deploy to production.
 
 ### All Models Tested
 
 | # | Model Type | Status | Reason for Exclusion/Inclusion |
 |---|------------|--------|--------------------------------|
-| 1 | **LGBM** | **PRODUCTION** | Excellent accuracy (8.85% MAPE), reliable across all categories |
-| 2 | **RandomForest** | **PRODUCTION** | Excellent accuracy (9.39% MAPE), robust performance |
-| 3 | SeasonalNaive | Excluded | Baseline model (19.37% MAPE) - used for comparison only |
-| 4 | PatchTST | Excluded | **Scale mismatch bug** - predicted 6-13x actual values in 1 category |
-| 5 | TimesNet | Excluded | **Scale mismatch bug** - predicted 6-13x actual values in 1 category |
-| 6 | AutoARIMA | Excluded | Poor performance (35%+ MAPE across all categories) |
-| 7 | AutoETS | Removed | Catastrophic performance (39-420% MAPE) - completely unusable |
+| 1 | **LGBM** | **PRODUCTION** | Great accuracy (8.85% MAPE), worked reliably on all categories |
+| 2 | **RandomForest** | **PRODUCTION** | Good accuracy (9.39% MAPE), consistent across the board |
+| 3 | SeasonalNaive | Excluded | Just a baseline (19.37% MAPE) - useful for comparison only |
+| 4 | PatchTST | Not in production | Experimented with this one, but went with tree-based models for simplicity and explainability |
+| 5 | TimesNet | Not in production | Same as above - good results, but tree models were the better fit for this project |
+| 6 | AutoARIMA | Excluded | Just didn't work well (35%+ error across all categories) |
+| 7 | AutoETS | Removed | Completely failed (39-420% error - yikes) |
 
 ### Detailed Results
 
@@ -116,83 +116,78 @@ A total of **6 model types** were tested across 11 retail categories with 73 tim
 
 **LGBM (LightGBM)**
 - **Accuracy**: 8.85% MAPE (91.15% accurate)
-- **Status**: Best model across all 11 categories
-- **SHAP Support**: Yes - excellent explainability
+- **Status**: Best overall model
+- **SHAP Support**: Yes - I can explain predictions with SHAP values
 - **Training Time**: ~1 second per category
-- **Verdict**: **PRODUCTION READY**
+- **Verdict**: This is the one I'd recommend
 
 **RandomForest**
 - **Accuracy**: 9.39% MAPE (90.61% accurate)
-- **Status**: Consistent performance across all categories
-- **SHAP Support**: Yes - excellent explainability
+- **Status**: Solid performance everywhere
+- **SHAP Support**: Yes - also has SHAP explainability
 - **Training Time**: ~1-2 seconds per category
-- **Verdict**: **PRODUCTION READY**
+- **Verdict**: Good alternative to LGBM
 
 #### Baseline Model (Not Deployed)
 
 **SeasonalNaive**
 - **Accuracy**: 19.37% MAPE (80.63% accurate)
-- **Status**: Simple baseline using 52-week lag
+- **Status**: Simple approach - just uses the same week from last year
 - **SHAP Support**: No
-- **Verdict**: Used for comparison only - not accurate enough for production
+- **Verdict**: Kept it around for comparison, but not accurate enough
 
-#### Models with Training Issues (Not Deployed)
+#### Experimental Models (Not Deployed)
 
 **PatchTST (Patch Time Series Transformer)**
-- **Accuracy**: 11.15% MAPE (on 10/11 categories)
-- **Issue**: **Scale mismatch bug** on Clothing category
-  - Predicted 4,200-4,500 when actuals were ~600-700 (6-7x too high)
-  - Root cause: Trained with outdated code before 73-feature standardization
-  - Only 1 of 11 categories affected, but model excluded for consistency
-- **Verdict**: **EXCLUDED** - needs retraining with corrected code
+- **Accuracy**: 11.15% MAPE
+- **Status**: Interesting architecture, but I decided not to pursue it further
+- **Reason**: The tree-based models (LGBM, RandomForest) gave me better accuracy, built-in SHAP explainability, faster training, and were simpler overall
+- **Verdict**: Cool to experiment with, but not the right fit for this project
 
 **TimesNet (Temporal 2D Convolution)**
-- **Accuracy**: 12.02% MAPE (on 10/11 categories)
-- **Issue**: **Scale mismatch bug** on Clothing category
-  - Predicted 3,900-5,000 when actuals were ~600-700 (6-8x too high)
-  - Root cause: Trained with outdated code before 73-feature standardization
-  - Only 1 of 11 categories affected, but model excluded for consistency
-- **Verdict**: **EXCLUDED** - needs retraining with corrected code
+- **Accuracy**: 12.02% MAPE
+- **Status**: Same story as PatchTST
+- **Reason**: Good results, but I valued the explainability and simplicity of the tree-based models more
+- **Verdict**: Learned a lot from experimenting with it, but sticking with LGBM/RandomForest
 
-#### Poor Performance Models (Not Deployed)
+#### Models That Just Didn't Work (Not Deployed)
 
 **AutoARIMA**
-- **Accuracy**: 35.55% MAPE across 7 categories (64% accurate)
-- **Issue**: Poor performance on retail sales data
-  - MAPE ranged from 21% to 44% across categories
-  - Could not handle the non-stationary nature of retail sales
-  - Missing on 4 categories (training failures)
-- **Verdict**: **EXCLUDED** - not suitable for this use case
+- **Accuracy**: 35.55% MAPE (only 64% accurate)
+- **Issue**: Couldn't handle retail sales patterns
+  - Error ranged from 21% to 44% across categories
+  - Failed to train on 4 categories entirely
+- **Verdict**: Not the right tool for this job
 
 **AutoETS (Exponential Smoothing)**
 - **Accuracy**: 39-420% MAPE (completely unusable)
-- **Issue**: Catastrophic failure
-  - Could not handle 28% distribution shift between training (2015-2024) and validation (2025)
-  - Predictions were completely wrong (sometimes 4x actual values)
-  - **REMOVED** from system entirely
-- **Verdict**: **REMOVED** - fundamentally unsuitable for retail forecasting
+- **Issue**: Total disaster
+  - 2025 sales were 28% higher than the training data average, and it just couldn't handle that shift
+  - Sometimes predicted 4x the actual value
+  - **REMOVED** from the system
+- **Verdict**: Definitely not using exponential smoothing for this
 
-### Key Learnings
+### What I Learned
 
-1. **Tree-based models excel** at retail sales forecasting with proper feature engineering
-   - LGBM and RandomForest both achieved <10% MAPE
-   - SHAP values provide excellent explainability
-   - Fast training and inference
+1. **Tree-based models work really well for this**
+   - Both LGBM and RandomForest got under 10% error
+   - SHAP values let me explain what's driving predictions
+   - Fast to train and run
 
-2. **Statistical models struggle** with non-stationary retail data
-   - AutoARIMA couldn't handle trends and seasonality changes
-   - AutoETS completely failed with distribution shifts
-   - Better suited for stationary time series
+2. **Statistical models struggled with this data**
+   - AutoARIMA couldn't handle the changing trends and seasonality
+   - AutoETS completely fell apart when the data distribution shifted
+   - These might work better for more stable time series
 
-3. **Deep learning proxies** showed promise but had implementation issues
-   - PatchTST and TimesNet worked on 10/11 categories
-   - Scale mismatch bugs on 1 category (Clothing) excluded them from production
-   - Would need retraining with corrected code to be viable
+3. **Simplicity and explainability matter**
+   - I experimented with PatchTST and TimesNet, which were interesting
+   - But ultimately I went with the simpler tree-based models that had built-in SHAP support
+   - For a production system, being able to explain predictions was important to me
 
-4. **Feature engineering quality matters more than model complexity**
-   - 73 well-engineered time-series features (excluding 'year') outperformed complex models
-   - Proper train/test split (pre-2025 train, 2025 validate) critical for accuracy
-   - Data leakage prevention (excluding 'year') essential for generalization
+4. **Feature engineering matters more than fancy models**
+   - 73 well-engineered time-series features (without the 'year' column to prevent data leakage)
+   - Proper time-based train/test split was crucial
+   - Excluding 'year' was a big fix - models were cheating by learning that "2024 = certain sales range"
 
 ---
 
@@ -1586,26 +1581,20 @@ docker run -p 80:80 retailpred-frontend
 
 ## Project Background
 
-This project was completed as part of a machine learning portfolio to demonstrate:
-
-- **Full-stack ML engineering**: From data collection to production deployment
-- **Time series forecasting**: Using both statistical and machine learning approaches
-- **Model interpretability**: Implementing SHAP values for interpretability
-- **Production deployment**: Static site deployment with Vercel
-- **Interactive visualization**: Real-time forecast exploration with React
+I built this project to get some hands-on experience with time series forecasting and to practice full-stack ML engineering. It uses retail sales data from the U.S. Census Bureau and tries a bunch of different forecasting approaches to see what works best.
 
 ## Key Learnings
 
-Through this project, I gained experience with:
+Working on this project taught me a lot:
 
-- **Data engineering**: Building multi-resolution datasets from MRTS data
-- **Feature engineering**: Creating 73 time-series features from retail sales data (excluding 'year' to prevent leakage)
-- **Model selection**: Comparing 7 algorithms (LightGBM, Random Forest, AutoARIMA, AutoETS, Seasonal Naive, PatchTST, TimesNet)
-- **Model interpretation**: Understanding why SHAP only works with tree-based models
-- **Simplicity vs complexity**: Learning that 73 well-engineered features (excluding 'year') outperform 74 features with data leakage
-- **Data quality**: Discovering that clean, pre-processed CSV files perform better than on-the-fly feature computation
-- **Frontend development**: Building responsive React applications with TypeScript
-- **Deployment strategies**: Implementing zero-backend deployment with static data
+- **Data engineering**: I built multi-resolution datasets from the MRTS data, which was more involved than I expected
+- **Feature engineering**: Created 73 time-series features from the sales data - learned the hard way that excluding 'year' was important to prevent data leakage
+- **Model selection**: Tested 7 different algorithms (LightGBM, Random Forest, AutoARIMA, AutoETS, Seasonal Naive, PatchTST, TimesNet) - some worked great, others didn't
+- **Model interpretation**: SHAP values are really cool, but they only work with tree-based models - had to learn why the hard way
+- **Simplicity vs complexity**: Found that well-engineered features beat fancy models
+- **Data quality**: Pre-processed CSV files performed way better than computing features on the fly
+- **Frontend development**: Built a React app with TypeScript - definitely learned a lot about frontend development
+- **Deployment**: Got it working with static data on Vercel and also set up Docker for full-stack deployment
 
 ## Technologies Used
 
