@@ -14,7 +14,13 @@ from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
-# Model directory - use training_outputs/models where all 7 model types exist
+# Model directories
+# BACKEND_MODELS_DIR holds the current model set (flat layout, produced the
+# logged predictions behind training_outputs/validation_metrics.json):
+#   backend/ml/models/{category_key}_{ModelType}_model.pkl
+# MODELS_DIR is the legacy per-category layout kept as a fallback:
+#   training_outputs/models/{Display_Name}/{ModelType}_model.pkl
+BACKEND_MODELS_DIR = Path(__file__).parent / "models"
 MODELS_DIR = Path(__file__).parent.parent.parent / "training_outputs" / "models"
 
 # Category mappings to display names
@@ -58,14 +64,20 @@ def get_model_file_path(category: str, model_type: str) -> Path:
     Returns:
         Path to model file
     """
-    # Map category key to display name
+    # Preferred: flat layout in backend/ml/models, e.g.
+    # backend/ml/models/total_sales_LGBM_model.pkl
+    backend_path = BACKEND_MODELS_DIR / f"{category}_{model_type}_model.pkl"
+    if backend_path.exists():
+        return backend_path
+
+    # Fallback: legacy per-category layout, e.g.
+    # training_outputs/models/Total_Retail_Sales/LGBM_model.pkl
     display_name = CATEGORY_KEY_TO_DISPLAY.get(category, category.replace("_", " ").replace(" ", "_"))
+    legacy_path = MODELS_DIR / display_name / f"{model_type}_model.pkl"
+    if legacy_path.exists():
+        return legacy_path
 
-    # Model files are named: {ModelType}_model.pkl
-    # e.g., training_outputs/models/Total_Retail_Sales/LGBM_model.pkl
-    model_filename = f"{model_type}_model.pkl"
-
-    return MODELS_DIR / display_name / model_filename
+    return backend_path
 
 
 def get_best_model_for_category(category: str) -> str:

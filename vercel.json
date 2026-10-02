@@ -9,5 +9,7 @@
         }
       ]
     }
-  ]
+  ],
+  "buildCommand": "cd frontend && bash vercel-build.sh",
+  "outputDirectory": "frontend/dist"
 }

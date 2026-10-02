@@ -44,13 +44,15 @@ except ImportError:
     print("ERROR: Could not import config. Please run from repository root.")
     sys.exit(2)
 
-# Setup logging
+# Setup logging (create logs/ first so the FileHandler works on a clean clone)
+_logs_dir = Path(__file__).parent / 'logs'
+_logs_dir.mkdir(exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler(Path(__file__).parent / 'logs' / 'weekly_validation.log')
+        logging.FileHandler(_logs_dir / 'weekly_validation.log')
     ]
 )
 logger = logging.getLogger(__name__)

@@ -15,9 +15,10 @@ if str(app_path) not in sys.path:
     sys.path.insert(0, str(app_path))
 
 # Import lightweight categories module (fast!)
-from ml.categories import get_available_categories, RETAIL_CATEGORIES
+from ml.categories import get_available_categories, get_category_display_name, RETAIL_CATEGORIES
 
 # Import heavy modules only when needed
+from ml.inference import get_model_name_for_category, get_predictor
 from ml.multi_resolution_inference import (
     get_available_models_for_category,
     generate_forecast,

@@ -45,7 +45,7 @@ echo "Installing Python dependencies..."
 pip install -q -r requirements.txt
 
 echo "Running database migration..."
-python -m db.migrations apply ../data/db/schema.sql
+python -m db.migrations --schema-path ../data/db/schema.sql --db-path ../data/retailpred.db
 
 cd ..
 

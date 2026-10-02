@@ -29,13 +29,15 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from config import DATABASE_PATH
 
-# Setup logging
+# Setup logging (repo-root logs/ directory)
+_logs_dir = Path(__file__).parent / 'logs'
+_logs_dir.mkdir(exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler(Path(__file__).parent.parent / 'logs' / 'save_predictions.log')
+        logging.FileHandler(_logs_dir / 'save_predictions.log')
     ]
 )
 logger = logging.getLogger(__name__)

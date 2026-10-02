@@ -1,5 +1,6 @@
-# Dockerfile for RetailPRED - Production deployment
-# Builds full-stack ML application with React/TypeScript frontend and FastAPI backend
+# Dockerfile for RetailPRED — FastAPI backend image
+# (The React frontend has its own image: frontend/Dockerfile, orchestrated
+#  by docker-compose.yml. This image serves the API only.)
 
 FROM python:3.11-slim
 

@@ -7,19 +7,16 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      # Mount SQLite database file - path must match code's relative path calculation
-      # Code does: Path(__file__).parent.parent.parent / "data" / "retailpred.db"
-      # which resolves to /data/retailpred.db from /app/api/
+      # SQLite database - the backend resolves it at <repo>/data/retailpred.db,
+      # mapped to /data inside the container
       - ./data:/data
-      # Mount models directory (optional - for development)
+      # Trained serving models (flat layout read by the inference modules)
       - ./backend/ml/models:/app/ml/models
-      # Mount trained models for multi-resolution inference
-      - ./project_root/models_multi_resolution:/project_root/models_multi_resolution
-      # Mount new training outputs
+      # Feature CSVs used to build inference features
+      - ./project_root/data_multi_resolution:/project_root/data_multi_resolution:ro
+      # Legacy/auxiliary training outputs
       - ./training_outputs:/training_outputs
     environment:
-      - DATABASE_PATH=/app/data/retailpred.db
-      - MODEL_PATH=/app/ml/models
       - LOG_LEVEL=INFO
     networks:
       - retailpred-network
@@ -58,7 +55,3 @@ services:
 networks:
   retailpred-network:
     driver: bridge
-
-volumes:
-  retailpred-db:
-    driver: local

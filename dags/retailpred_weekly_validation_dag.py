@@ -603,8 +603,8 @@ if AIRFLOW_AVAILABLE:
         echo "Pulling latest changes from remote..."
         git pull origin main --rebase || echo "Pull failed or no remote changes"
 
-        # Add JSON exports for Vercel dashboard (not database)
-        git add data/validation_metrics.json
+        # Add the demo-data export for the Vercel dashboard (not the database;
+        # data/validation_metrics.json is git-ignored and stays local-only)
         git add frontend/public/demo-data/predictions.json
 
         # Commit with timestamp (use backticks for command substitution)
