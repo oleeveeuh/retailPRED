@@ -348,7 +348,7 @@ class DemoDataService {
       }));
     } else {
       // Old dictionary format
-      shapArray = Object.entries(prediction.shap_values)
+      shapArray = Object.entries(prediction.shap_values as Record<string, number>)
         .map(([feature, value]) => ({
           feature,
           value: value, // Preserve the sign

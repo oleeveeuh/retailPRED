@@ -58,12 +58,16 @@ models/latest_metrics.json
 models/model_latest.pkl
 models/backend_ml
 
-# ML models - track deployment models in NAICS subdirectories, ignore training outputs
-# Ignore training output models (descriptive names like Total_Retail_Sales/)
+# ML models - track the 22 serving models (flat layout), ignore auxiliary files
 backend/ml/models/*_explainer.pkl
 backend/ml/models/*_features.pkl
 backend/ml/models/*_metadata.json
-# Note: backend/ml/models/4400/, 4411/, etc. are TRACKED for deployment
+
+# Unvalidated forward forecasts (regenerate with generate_rolling_predictions.py)
+predictions.csv
+
+# Local Airflow home (created when AIRFLOW_HOME is not set)
+.airflow/
 
 # Training outputs
 project_root/outputs/
@@ -118,3 +122,7 @@ htmlcov/
 
 # Logs
 logs/*.log
+
+# Local test/dev virtualenvs
+.venv*/
+venv/

@@ -382,7 +382,8 @@ export const ValidationPage: FC = () => {
       toast.loading('Fetching actual values and validating predictions...', { id: 'auto-validate' });
 
       // @ts-ignore
-      const results = await predictionsApi.autoValidate({
+      // autoValidate's API return type is not modeled; treat as untyped rows
+      const results: any[] = await predictionsApi.autoValidate({
         category_id: '4400', // Total Retail Sales
         days_back: 90,
       });

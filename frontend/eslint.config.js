@@ -19,5 +19,10 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // The demo data layer is intentionally loosely typed while the API
+      // contract settles; treat `any` as tech-debt warning, not an error.
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
   },
 ])

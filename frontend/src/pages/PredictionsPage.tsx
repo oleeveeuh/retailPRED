@@ -630,9 +630,10 @@ export const PredictionsPage: FC = () => {
               </div>
 
               {/* Anomaly Explanation */}
-              {forecastResults && forecastResults.length > 1 && (() => {
-                const latest = forecastResults[forecastResults.length - 1];
-                const previous = forecastResults[forecastResults.length - 2];
+              {predictionMutation.data?.forecasts && predictionMutation.data.forecasts.length > 1 && (() => {
+                const forecasts = predictionMutation.data.forecasts;
+                const latest = forecasts[forecasts.length - 1];
+                const previous = forecasts[forecasts.length - 2];
                 const change = previous && previous.predicted_value
                   ? ((latest.predicted_value - previous.predicted_value) / previous.predicted_value) * 100
                   : 0;
