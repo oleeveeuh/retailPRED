@@ -601,7 +601,7 @@ async def get_prediction_history(
 
             history_items.append(
                 PredictionHistoryItem(
-                    id=pred["id"],
+                    id=pred.get("id"),
                     model_name=pred["model_name"],
                     store_id=pred.get("store_id"),
                     product_id=pred.get("product_id"),

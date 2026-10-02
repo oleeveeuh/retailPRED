@@ -201,8 +201,13 @@ class PredictionHistoryFilter(BaseModel):
 
 
 class PredictionHistoryItem(BaseModel):
-    """Single prediction history item"""
-    id: int
+    """Single prediction history item
+
+    `id`/`created_at` are optional because the legacy prediction_log table
+    defines `id INT` (not INTEGER PRIMARY KEY) and older backfill scripts
+    inserted rows with NULL ids.
+    """
+    id: Optional[int] = None
     model_name: str
     store_id: Optional[int]
     product_id: Optional[int]
@@ -215,7 +220,7 @@ class PredictionHistoryItem(BaseModel):
     error_percentage: Optional[float] = None
     error_absolute: Optional[float] = None
     shap_values: Optional[Dict[str, float]] = None
-    created_at: str
+    created_at: Optional[str] = None
 
 
 class PredictionHistoryResponse(BaseModel):
