@@ -1,6 +1,6 @@
 {
   "export_timestamp": "2026-01-14T15:46:05.361876",
-  "database_path": "/Users/olivialiau/retailPRED/data/retailpred.db",
+  "database_path": "data/retailpred.db",
   "predictions": {
     "total_count": 4100,
     "by_year": {

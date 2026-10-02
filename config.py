@@ -66,7 +66,9 @@ FRED_BASE_URL = "https://api.stlouisfed.org/fred"
 
 # MRTS API (Monthly Retail Trade Survey)
 MRTS_BASE_URL = "https://api.census.gov/data/timeseries/eits/mrts"
-MRTS_API_KEY = os.getenv("MRTS_API_KEY", "REMOVED")
+# Census API key must be provided via the MRTS_API_KEY environment variable
+# (free key: https://api.census.gov/data/key_signup.html). Never hardcode it.
+MRTS_API_KEY = os.getenv("MRTS_API_KEY", "")
 MRTS_TIMEOUT = 60
 
 # Yahoo Finance (for market data features)
@@ -96,8 +98,8 @@ RETAIL_CATEGORIES = {
 # Airflow Configuration
 # ============================================================================
 
-# Airflow home directory
-AIRFLOW_HOME = os.getenv("AIRFLOW_HOME", "/home/oliau/airflow")
+# Airflow home directory (override via environment on deployment hosts)
+AIRFLOW_HOME = os.getenv("AIRFLOW_HOME", str(PROJECT_ROOT / ".airflow"))
 AIRFLOW_DAGS_FOLDER = os.getenv("AIRFLOW_DAGS_FOLDER", PROJECT_ROOT / "dags")
 
 # Default_conn_id for SQLite

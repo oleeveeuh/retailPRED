@@ -25,12 +25,16 @@ class ModelLoader:
         """
         if models_dir is None:
             # Auto-detect models directory
-            # Try multiple possible paths
+            # Try multiple possible paths, relative to this file:
+            #   backend/services/ -> backend/training_outputs/models
+            #   backend/services/ -> ../ml/models (flat layout used by inference)
+            repo_root = Path(__file__).resolve().parent.parent.parent
             possible_paths = [
-                "../../training_outputs/models",
-                "../training_outputs/models",
-                "/Users/olivialiau/retailPRED/training_outputs/models",
-                "./training_outputs/models",
+                repo_root / "backend" / "training_outputs" / "models",
+                repo_root / "training_outputs" / "models",
+                Path("../../training_outputs/models"),
+                Path("../training_outputs/models"),
+                Path("./training_outputs/models"),
             ]
 
             for path in possible_paths:

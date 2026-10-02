@@ -18,11 +18,15 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Database path
-DB_PATH = "/Users/olivialiau/retailPRED/data/retailpred.db"
+# Paths are resolved relative to this script (scripts/) so the export works
+# from any clone. Override via environment if needed.
+import os
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DB_PATH = os.getenv("RETAILPRED_DB", str(REPO_ROOT / "data" / "retailpred.db"))
 
 # Output directory
-OUTPUT_DIR = Path("/Users/olivialiau/retailPRED/frontend/public/demo-data")
+OUTPUT_DIR = Path(os.getenv("RETAILPRED_DEMO_DIR", REPO_ROOT / "frontend" / "public" / "demo-data"))
 
 
 def inspect_database_schema(conn: sqlite3.Connection) -> None:
@@ -564,7 +568,9 @@ def create_summary_stats(conn: sqlite3.Connection, predictions_data: Dict, econo
 
     summary = {
         "export_timestamp": datetime.now().isoformat(),
-        "database_path": DB_PATH,
+        # intentionally generic: exporting the local absolute path would leak
+        # the developer's username into the deployed demo data
+        "database_path": "data/retailpred.db",
         "predictions": {
             "total_count": total,
             "by_year": year_counts,

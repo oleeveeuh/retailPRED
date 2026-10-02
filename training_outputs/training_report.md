@@ -90,7 +90,7 @@ Generated: 2026-01-04T22:07:44.596747
 
 Individual model performance plots have been generated for each successful model:
 
-### Visualizations Location: `/Users/olivialiau/retailPRED/training_outputs/visualizations/`
+### Visualizations Location: `training_outputs/visualizations/`
 
 For each category, you'll find:
 - **Individual model plots**: Actual vs Predicted line graphs for each model
@@ -100,7 +100,7 @@ For each category, you'll find:
 
 ### Example File Structure:
 ```
-/Users/olivialiau/retailPRED/training_outputs/visualizations/
+training_outputs/visualizations/
  Health_Personal_Care/
     Health_Personal_Care_TimesNet_performance.html
     Health_Personal_Care_TimesNet_performance.png
