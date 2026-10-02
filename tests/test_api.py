@@ -7,6 +7,7 @@ Skipped automatically when the backend dependencies are not installed.
 import pytest
 
 fastapi = pytest.importorskip("fastapi")
+pytest.importorskip("httpx")  # starlette TestClient dependency
 from fastapi.testclient import TestClient  # noqa: E402
 
 from main import app  # noqa: E402  (backend/main.py, path set up by conftest)
