@@ -13,6 +13,7 @@ MONTHLY_COLUMNS = (
     "series_id",
     "observation_time",
     "value",
+    "release_time",
     "vintage_time",
     "ingested_at",
     "source",
@@ -22,10 +23,13 @@ MONTHLY_KEY = ("series_id", "observation_time", "vintage_time")
 
 def validate_monthly_observations(frame: pd.DataFrame) -> pd.DataFrame:
     """Validate and normalize the canonical observation table."""
-    missing = set(MONTHLY_COLUMNS).difference(frame.columns)
+    result = frame.copy()
+    if "release_time" not in result.columns:
+        result["release_time"] = pd.NaT
+    missing = set(MONTHLY_COLUMNS).difference(result.columns)
     if missing:
         raise ValueError(f"monthly observations are missing columns: {sorted(missing)}")
-    result = frame.loc[:, MONTHLY_COLUMNS].copy()
+    result = result.loc[:, MONTHLY_COLUMNS].copy()
     result["series_id"] = result["series_id"].astype("string")
     result["source"] = result["source"].astype("string")
     result["observation_time"] = pd.to_datetime(
@@ -34,12 +38,19 @@ def validate_monthly_observations(frame: pd.DataFrame) -> pd.DataFrame:
     result["vintage_time"] = pd.to_datetime(
         result["vintage_time"], format="mixed", utc=True, errors="raise"
     )
+    release_was_present = result["release_time"].notna()
+    result["release_time"] = pd.to_datetime(
+        result["release_time"], format="mixed", utc=True, errors="coerce"
+    )
+    if (release_was_present & result["release_time"].isna()).any():
+        raise ValueError("release_time contains an invalid timestamp")
     result["ingested_at"] = pd.to_datetime(
         result["ingested_at"], format="mixed", utc=True, errors="raise"
     )
     result["value"] = pd.to_numeric(result["value"], errors="raise").astype(float)
 
-    if result[list(MONTHLY_COLUMNS)].isna().any().any():
+    required_non_null = [column for column in MONTHLY_COLUMNS if column != "release_time"]
+    if result[required_non_null].isna().any().any():
         raise ValueError("canonical monthly observations cannot contain nulls")
     if not np.isfinite(result["value"]).all():
         raise ValueError("monthly observation values must be finite")
@@ -52,6 +63,9 @@ def validate_monthly_observations(frame: pd.DataFrame) -> pd.DataFrame:
         raise ValueError("duplicate series/month/vintage keys are not allowed")
     if (result["ingested_at"] < result["vintage_time"]).any():
         raise ValueError("ingested_at cannot precede vintage_time")
+    released = result["release_time"].notna()
+    if (result.loc[released, "ingested_at"] < result.loc[released, "release_time"]).any():
+        raise ValueError("ingested_at cannot precede release_time")
     return result.sort_values(list(MONTHLY_KEY), ignore_index=True)
 
 

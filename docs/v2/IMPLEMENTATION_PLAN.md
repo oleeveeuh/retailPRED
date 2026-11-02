@@ -112,6 +112,8 @@ Status: complete (2026-11-02)
 
 ## Milestone 2: Versioned data platform
 
+Status: in progress (local contract foundation started 2026-11-02)
+
 ### Work
 
 - Implement incremental Census MRTS, MARTS/release, FRED/ALFRED, and M5 ingestion.

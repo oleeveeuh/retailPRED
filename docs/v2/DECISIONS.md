@@ -55,3 +55,15 @@ Decisions are recorded before implementation so later changes can distinguish de
 - Status: accepted
 - Decision: lag the target by at least one period before calculating rolling statistics, differences, or percentage changes for a forecast row.
 - Reason: features for month *t* must remain unchanged when `y[t]` or any future value changes.
+
+## D010: Share logical contracts across local Parquet and Databricks Delta
+
+- Status: accepted
+- Decision: define table grain, keys, nullability, schema versions, merge behavior, and quality gates independently of the storage engine.
+- Reason: local reproducibility and cloud portfolio evidence should exercise the same data semantics rather than maintain two pipelines.
+
+## D011: Reject unreviewed schema evolution
+
+- Status: accepted
+- Decision: additive or breaking source columns fail the current table contract until a deliberate schema-version change is implemented and tested.
+- Reason: permissive automatic evolution can silently alter training and reporting inputs.

@@ -8,11 +8,12 @@ Last updated: 2026-11-02
 - Implementation plan: accepted for execution.
 - Milestone 0: complete and committed locally on `v2-rebuild`; not pushed.
 - Milestone 1: complete; native-monthly foundation is the default documented and tested path.
+- Milestone 2: in progress; local bronze/silver/gold contracts and idempotent MRTS ingestion are implemented.
 
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 52 tests passed with no skips.
+- Full Python 3.11 environment: 64 tests passed with no skips at this checkpoint.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
 - Frontend production build: passed; the existing large-chunk warning remains recorded debt.
@@ -31,7 +32,17 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Begin Milestone 2 with local bronze/silver/gold contracts and idempotent MRTS ingestion before adding Databricks-specific implementations.
+Add release/MARTS and FRED/ALFRED adapters to the shared contracts, then implement the equivalent declared-schema Delta tables and merges on Databricks.
+
+## Milestone 2 evidence to date
+
+- Shared versioned table specifications declare bronze, silver, and gold grains, keys, columns, and nullability.
+- Exact Census extract replays are idempotent across bronze and silver.
+- Later revisions coexist and point-in-time gold snapshots select only eligible vintages.
+- Unknown schema changes and immutable-key conflicts fail closed.
+- Local Parquet reads verify manifest schema version, row count, and SHA-256.
+- Quality gates cover schema, nullability, uniqueness, registered-series relationships, value ranges, freshness, continuity, and generic hierarchy reconciliation.
+- The architecture and Databricks parity contract are documented in `docs/architecture/data_platform.md`.
 
 ## Milestone 1 evidence to date
 

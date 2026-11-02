@@ -48,6 +48,7 @@ def test_monthly_csv_round_trip_preserves_contract(tmp_path) -> None:
         "series_id",
         "observation_time",
         "value",
+        "release_time",
         "vintage_time",
         "ingested_at",
         "source",
@@ -69,3 +70,9 @@ def test_contract_rejects_non_month_start_and_duplicate_vintage_keys() -> None:
     duplicate = pd.concat([_observations(), _observations().iloc[[0]]], ignore_index=True)
     with pytest.raises(ValueError, match="duplicate"):
         validate_monthly_observations(duplicate)
+
+
+def test_contract_rejects_malformed_release_timestamp() -> None:
+    malformed = _observations().assign(release_time="not-a-timestamp")
+    with pytest.raises(ValueError, match="release_time contains an invalid"):
+        validate_monthly_observations(malformed)

@@ -26,13 +26,16 @@ class Observation(Contract):
     series_id: str
     observation_time: date
     value: float
+    release_time: datetime | None = None
     vintage_time: datetime
     ingested_at: datetime
     source: str
 
-    @field_validator("vintage_time", "ingested_at")
+    @field_validator("release_time", "vintage_time", "ingested_at")
     @classmethod
-    def timestamp_must_have_timezone(cls, value: datetime) -> datetime:
+    def timestamp_must_have_timezone(cls, value: datetime | None) -> datetime | None:
+        if value is None:
+            return value
         if value.tzinfo is None or value.utcoffset() is None:
             raise ValueError("timestamps must be timezone-aware")
         return value
@@ -41,6 +44,8 @@ class Observation(Contract):
     def ingestion_cannot_precede_vintage(self) -> "Observation":
         if self.ingested_at < self.vintage_time:
             raise ValueError("ingested_at cannot precede vintage_time")
+        if self.release_time is not None and self.ingested_at < self.release_time:
+            raise ValueError("ingested_at cannot precede release_time")
         return self
 
 
