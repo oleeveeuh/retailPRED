@@ -9,6 +9,7 @@ RetailPRED uses the same logical table specifications in local tests and the eve
 ```mermaid
 flowchart LR
     API[Census MRTS extract] --> B[Bronze: immutable source rows]
+    FRED[FRED/ALFRED vintage] --> B
     B --> Q1[Source/schema checks]
     Q1 --> S[Silver: versioned monthly observations]
     S --> Q2[Key/range/relationship/freshness checks]
@@ -33,6 +34,13 @@ flowchart LR
 - Key: (`series_id`, `observation_time`, `vintage_time`).
 - Values: native-monthly, seasonally adjusted MRTS sales in millions of U.S. dollars.
 - Behavior: revisions coexist as new vintages. No update-in-place erases a prior value.
+
+### Economic vintages `fred_extract_rows` → `economic_observations`
+
+- FRED requests declare the same date for `realtime_start` and `realtime_end`, request untransformed monthly values, and record that date as the vintage being reconstructed. The response real-time interval must contain that requested date. See the official [series observations API](https://fred.stlouisfed.org/docs/api/fred/series_observations.html).
+- Missing source values (`.`) remain visible in bronze but are not promoted as numeric silver facts.
+- Grain and merge behavior mirror MRTS: raw extract rows are immutable, while silver keeps one series/month/vintage value.
+- The adapter uses the documented FRED `output_type=1` real-time-period response. It does not treat today's latest values as historically available.
 
 ### Gold `monthly_series`
 

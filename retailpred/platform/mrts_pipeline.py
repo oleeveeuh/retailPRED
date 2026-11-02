@@ -4,35 +4,15 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass
-from datetime import datetime
 from typing import Any
 
 import pandas as pd
 
 from forecasting.registry import MRTS_BY_CODE
+from retailpred.platform.context import ExtractContext
 from retailpred.platform.local_store import LocalTableStore
 from retailpred.platform.quality import validate_silver_monthly
 from retailpred.platform.specs import BRONZE_MRTS, SILVER_MONTHLY
-
-
-@dataclass(frozen=True)
-class ExtractContext:
-    extract_id: str
-    source_url: str
-    vintage_time: datetime
-    ingested_at: datetime
-    release_time: datetime | None = None
-
-    def __post_init__(self) -> None:
-        for field in ("vintage_time", "ingested_at", "release_time"):
-            value = getattr(self, field)
-            if value is not None and (value.tzinfo is None or value.utcoffset() is None):
-                raise ValueError(f"{field} must be timezone-aware")
-        if self.ingested_at < self.vintage_time:
-            raise ValueError("ingested_at cannot precede vintage_time")
-        if self.release_time is not None and self.ingested_at < self.release_time:
-            raise ValueError("ingested_at cannot precede release_time")
 
 
 def bronze_from_api_payload(

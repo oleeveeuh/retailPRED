@@ -67,6 +67,44 @@ SILVER_MONTHLY = TableSpec(
 )
 
 
+BRONZE_FRED = TableSpec(
+    name="fred_extract_rows",
+    layer="bronze",
+    schema_version=1,
+    columns=(
+        "source_record_id",
+        "extract_id",
+        "series_id",
+        "source_url",
+        "observation_date",
+        "raw_value",
+        "realtime_start",
+        "realtime_end",
+        "vintage_time",
+        "ingested_at",
+    ),
+    key=("source_record_id",),
+)
+
+
+SILVER_ECONOMIC = TableSpec(
+    name="economic_observations",
+    layer="silver",
+    schema_version=1,
+    columns=(
+        "series_id",
+        "observation_time",
+        "value",
+        "release_time",
+        "vintage_time",
+        "ingested_at",
+        "source",
+    ),
+    key=("series_id", "observation_time", "vintage_time"),
+    nullable=("release_time",),
+)
+
+
 GOLD_MONTHLY = TableSpec(
     name="monthly_series",
     layer="gold",

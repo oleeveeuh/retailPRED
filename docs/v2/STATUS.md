@@ -8,12 +8,12 @@ Last updated: 2026-11-02
 - Implementation plan: accepted for execution.
 - Milestone 0: complete and committed locally on `v2-rebuild`; not pushed.
 - Milestone 1: complete; native-monthly foundation is the default documented and tested path.
-- Milestone 2: in progress; local bronze/silver/gold contracts and idempotent MRTS ingestion are implemented.
+- Milestone 2: in progress; local bronze/silver/gold contracts plus idempotent MRTS and FRED/ALFRED vintage ingestion are implemented.
 
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 64 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 69 tests passed with no skips at this checkpoint.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
 - Frontend production build: passed; the existing large-chunk warning remains recorded debt.
@@ -32,12 +32,13 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Add release/MARTS and FRED/ALFRED adapters to the shared contracts, then implement the equivalent declared-schema Delta tables and merges on Databricks.
+Add Census release/MARTS and M5 adapters to the shared contracts, then implement the equivalent declared-schema Delta tables and merges on Databricks.
 
 ## Milestone 2 evidence to date
 
 - Shared versioned table specifications declare bronze, silver, and gold grains, keys, columns, and nullability.
 - Exact Census extract replays are idempotent across bronze and silver.
+- FRED/ALFRED requests declare an explicit real-time date; revised economic values coexist and obey the same as-of selection rules.
 - Later revisions coexist and point-in-time gold snapshots select only eligible vintages.
 - Unknown schema changes and immutable-key conflicts fail closed.
 - Local Parquet reads verify manifest schema version, row count, and SHA-256.
