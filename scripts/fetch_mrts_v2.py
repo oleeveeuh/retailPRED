@@ -10,6 +10,7 @@ from pathlib import Path
 import pandas as pd
 
 from forecasting.data.mrts import MRTSClient
+from forecasting.data.monthly_dataset import write_monthly_csv
 from forecasting.registry import MRTS_SERIES, get_series
 
 
@@ -38,8 +39,7 @@ def main() -> None:
     result = pd.concat(frames, ignore_index=True).sort_values(
         ["series_id", "observation_time", "vintage_time"], ignore_index=True
     )
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    result.to_csv(args.output, index=False)
+    write_monthly_csv(result, args.output)
     print(f"Wrote {len(result):,} independent monthly observations to {args.output}")
 
 

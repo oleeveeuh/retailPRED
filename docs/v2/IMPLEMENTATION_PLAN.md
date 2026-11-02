@@ -1,6 +1,6 @@
 # RetailPRED v2 Implementation Plan
 
-Status: proposed
+Status: accepted and in execution
 
 Source audit: [`AUDIT.md`](AUDIT.md)
 
@@ -88,6 +88,8 @@ Random Forest, AutoARIMA, AutoETS, PatchTST, and TimesNet will be removed from t
 - No existing published result is lost before replacement metrics exist.
 
 ## Milestone 1: Correct monthly forecasting foundation
+
+Status: complete (2026-11-02)
 
 ### Work
 

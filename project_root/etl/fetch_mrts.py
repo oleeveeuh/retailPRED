@@ -1,9 +1,9 @@
 
-"""
-MRTS Data Fetcher
+"""Legacy v1 MRTS fetcher.
 
-This module fetches Monthly Retail Trade Survey (MRTS) data
-from U.S. Census Bureau API for retail time-series forecasting.
+Use ``python -m scripts.fetch_mrts_v2`` for all new work. This module remains
+only to explain the preserved v1 pipeline and never substitutes generated data
+when a Census request fails.
 """
 
 import pandas as pd
@@ -16,7 +16,10 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config.config import load_config
+try:
+    from project_root.config.config import load_config
+except ModuleNotFoundError:  # Support direct execution from project_root/etl.
+    from config.config import load_config
 
 class MRTSFetcher:
     def __init__(self):
@@ -193,85 +196,18 @@ class MRTSFetcher:
                 combined_data['series_name'] = metadata['name']
                 combined_data['category'] = metadata['category']
                 combined_data['unit'] = metadata['unit']
-                combined_data['frequency'] = 'Annual (API Limitation)'
+                combined_data['frequency'] = 'Monthly'
                 combined_data['data_source'] = 'MRTS'
 
                 print(f"Successfully fetched {len(combined_data)} observations for {series_id}")
                 return combined_data
             else:
-                print(f"No API data found for series {series_id}, generating sample data for testing")
-                # Generate realistic sample data for testing purposes
-                return self._generate_sample_data(series_id, category_code, start_year, end_year)
+                raise RuntimeError(f"No Census observations found for series {series_id}")
 
         except Exception as e:
-            print(f"Error fetching data for {series_id}: {e}")
-            return self._generate_sample_data(series_id, category_code, start_year, end_year)
-
-    def _generate_sample_data(self, series_id: str, category_code: str, start_year: int, end_year: int) -> pd.DataFrame:
-        """Generate realistic sample data when API is unavailable"""
-        print(f"Generating realistic sample data for {series_id} ({start_year}-{end_year})")
-
-        sample_data = []
-
-        for year in range(start_year, end_year + 1):
-            for month in range(1, 13):
-                # Generate realistic electronics sales data with seasonality
-                if series_id == "MRTSSM44X72USS":  # Electronics and Appliances
-                    base_sales = 8000 + (year - 2015) * 200  # Growth trend
-                    # Holiday season boost (Nov-Dec)
-                    seasonal_factor = 1.8 if month in [11, 12] else 1.0
-                    # Back-to-school boost (Aug-Sep)
-                    if month in [8, 9]:
-                        seasonal_factor *= 1.3
-                    # Summer slowdown (Jun-Jul)
-                    if month in [6, 7]:
-                        seasonal_factor *= 0.9
-                elif "4400" in category_code:  # Total retail
-                    base_sales = 450000 + (year - 2015) * 10000
-                    seasonal_factor = 1.4 if month in [11, 12] else 1.0
-                elif "444" in category_code:  # E-commerce (was 456)
-                    base_sales = 65000 + (year - 2015) * 8000
-                    seasonal_factor = 1.6 if month in [11, 12] else 1.0
-                elif "446" in category_code:  # Miscellaneous (was 455)
-                    base_sales = 25000 + (year - 2015) * 1000
-                    seasonal_factor = 1.2 if month in [11, 12] else 1.0
-                else:  # Other retail categories
-                    base_sales = 15000 + (year - 2015) * 500
-                    seasonal_factor = 1.3 if month in [11, 12] else 1.0
-
-                # Add some random variation
-                random_factor = 1 + (np.random.random() - 0.5) * 0.15
-                monthly_sales = base_sales * seasonal_factor * random_factor
-
-                sample_data.append({
-                    'date': datetime(year, month, 1),
-                    'value': monthly_sales,
-                    'period': f"M{month:02d}",
-                    'year': year,
-                    'category_code': category_code,
-                    'seasonally_adj': 'NSA',
-                    'data_type': 'SM'  # Sales, Millions
-                })
-
-        sample_df = pd.DataFrame(sample_data)
-
-        # Add series metadata
-        if series_id in self.series_info:
-            metadata = self.series_info[series_id]
-        elif series_id in self.additional_series:
-            metadata = self.additional_series[series_id]
-        else:
-            metadata = {"name": series_id, "category": "Unknown", "unit": "Millions of Dollars"}
-
-        sample_df['series_id'] = series_id
-        sample_df['series_name'] = metadata['name']
-        sample_df['category'] = metadata['category']
-        sample_df['unit'] = metadata['unit']
-        sample_df['frequency'] = 'Monthly'
-        sample_df['data_source'] = 'MRTS (Sample Data)'
-
-        print(f"Generated {len(sample_df)} realistic sample observations for {series_id}")
-        return sample_df
+            raise RuntimeError(
+                f"Census fetch failed for {series_id}; synthetic fallback is disabled"
+            ) from e
 
     def _parse_mrts_response(self, response_data: list, series_id: str, year: int, target_category_code: str) -> pd.DataFrame:
         """

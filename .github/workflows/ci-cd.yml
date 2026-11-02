@@ -40,9 +40,13 @@ jobs:
           python -m pip install pip==25.3
           pip install -r requirements-dev.lock
 
-      - name: Run tests
+      - name: Run Milestone 1 temporal-integrity tests
+        working-directory: .
+        run: pytest -v tests/v2
+
+      - name: Run remaining Python test suite
         working-directory: .   # pytest.ini selects tests/
-        run: pytest -v
+        run: pytest -v --ignore=tests/v2
 
   frontend-checks:
     name: Frontend checks (Node 20)

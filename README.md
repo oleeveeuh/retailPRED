@@ -1,8 +1,8 @@
 # RetailPRED
 
-> **v2 rebuild in progress:** the original undergrad implementation is preserved as `v1-undergrad`. Its published metrics are historical evidence, not the v2 benchmark. The v2 branch is rebuilding evaluation at native monthly frequency with leakage-safe features and rolling-origin backtests; see [`docs/v2/STATUS.md`](docs/v2/STATUS.md).
+> **v2 rebuild active:** Milestone 1—the leakage-safe native-monthly foundation—is complete. The original undergrad implementation is preserved as `v1-undergrad`; its published metrics are historical evidence, not the v2 benchmark. See [`docs/v2/STATUS.md`](docs/v2/STATUS.md).
 
-Retail sales forecasting for 11 U.S. retail categories — from raw Census data through feature engineering, model training, explainability, validation, and an interactive dashboard.
+Leakage-safe monthly forecasting for 11 U.S. retail categories, with versioned Census ingestion, rolling-origin evaluation, and an auditable path from a simple baseline to modern global models.
 
 [![Live demo](https://img.shields.io/badge/demo-retail--pred.vercel.app-brightgreen)](https://retail-pred.vercel.app)
 [![Python](https://img.shields.io/badge/Python-3.11-blue)](https://www.python.org)
@@ -11,16 +11,21 @@ Retail sales forecasting for 11 U.S. retail categories — from raw Census data 
 
 ## Problem
 
-Monthly retail sales series published by the U.S. Census Bureau's [Monthly Retail Trade Survey (MRTS)](https://www.census.gov/retail/mrts.html) lag by several weeks. RetailPRED explores whether machine-learning models trained on that history — plus engineered lag, rolling, and calendar features — can produce useful weekly forecasts per category, and makes every forecast inspectable: confidence intervals, SHAP feature attributions, and continuous back-testing against published actuals.
+Monthly retail sales series published by the U.S. Census Bureau's [Monthly Retail Trade Survey (MRTS)](https://www.census.gov/retail/mrts.html) are revised and released after the observation month. RetailPRED v2 asks a narrower, testable question: how accurately can each category be forecast at its native monthly frequency using only information available before the forecasted month?
 
-## What's in the box
+The original project expanded monthly totals into synthetic weekly/daily targets. That made the apparent dataset larger without adding independent observations and introduced same-row target leakage in rolling features. v2 preserves that work as historical evidence while replacing its data and evaluation foundation.
 
-- **Gradient-boosted forecasting models** — LightGBM and RandomForest per category (22 trained models), selected over statistical baselines after evaluating AutoARIMA, AutoETS, SeasonalNaive, and (in an earlier pipeline iteration) PatchTST/TimesNet.
-- **73 time-series features per category** — lags, rolling statistics, rate-of-change, momentum, year-over-year, and cyclical calendar encodings. The `year` column is deliberately excluded from training.
-- **SHAP explainability** — per-prediction feature attributions for both tree models, surfaced in the UI.
-- **Continuous validation** — an Airflow-scheduled job backfills published Census actuals onto logged weekly predictions and recomputes MAPE per model/category.
-- **FastAPI backend** — forecasts, model metadata, SHAP explanations, scenario analysis, CSV exports.
-- **React 19 + TypeScript dashboard** — [runs as a static demo](https://retail-pred.vercel.app) on pre-generated JSON, or against the live backend in development.
+## Current v2 foundation
+
+- **Canonical monthly contracts** for series, observations, releases, forecasts, and actuals.
+- **Native-monthly Census ingestion** with explicit errors—failed requests never become generated retail data.
+- **Point-in-time dataset selection** across observation and vintage timestamps.
+- **Causal features** whose rolling, difference, and change calculations are shifted before aggregation.
+- **Rolling-origin evaluation** with expanding or sliding windows and recorded origin, horizon, cutoff, vintage, model version, and actual source.
+- **Point and probabilistic metrics:** WAPE, MAE, RMSSE, bias, pinball loss, weighted interval score, coverage, and interval width.
+- **Measured Seasonal Naive baseline:** 5,324 category/origin/horizon rows on the Census 2026 revision vintage; mean category WAPE 6.35%.
+
+See the [Milestone 1 baseline](docs/v2/M1_BASELINE.md), [leakage report](docs/v2/LEAKAGE_REPORT.md), and [implementation status](docs/v2/STATUS.md).
 
 ## Architecture
 
@@ -31,54 +36,50 @@ flowchart LR
         FRED[FRED / market data<br/>economic indicators]
     end
 
-    subgraph etl [ETL - project_root/etl]
-        BUILD[Dataset builder<br/>multi-resolution CSVs,<br/>73 features per category]
+    subgraph foundation [v2 monthly foundation]
+        INGEST[Validated ingestion<br/>observation + vintage time]
+        FEATURES[Causal monthly features<br/>shift then aggregate]
+        BACKTEST[Rolling-origin folds<br/>complete provenance]
     end
 
-    subgraph train [Training]
-        TRAIN[train scripts<br/>backend/ml/train_*.py]
-        MODELS[(Model store<br/>backend/ml/models/*.pkl)]
-        METRICS[(training_outputs/<br/>validation_metrics.json)]
+    subgraph models [Model progression]
+        SNAIVE[Seasonal Naive<br/>measured baseline]
+        LGBM[Global LightGBM<br/>next milestone]
+        MODERN[NHITS + Chronos-2<br/>challengers]
     end
 
-    subgraph serve [Serving]
-        API[FastAPI backend<br/>/api/predict, SHAP, scenarios]
-        DB[(SQLite<br/>prediction_log)]
-        UI[React dashboard<br/>Vercel static demo]
+    subgraph evidence [Governed outputs]
+        METRICS[WAPE / MAE / RMSSE<br/>bias + interval metrics]
+        REPORTS[Fold evidence<br/>leakage + baseline reports]
     end
 
-    subgraph ops [Scheduled operations - Airflow]
-        DAG[Weekly validation DAG<br/>backfill actuals, recompute MAPE]
-    end
-
-    MRTS --> BUILD
-    FRED --> BUILD
-    BUILD --> TRAIN --> MODELS
-    API --> MODELS
-    API --> DB
-    DAG --> MRTS
-    DAG --> DB
-    DB --> METRICS
-    UI -->|demo mode: static JSON| API
-    UI -->|dev mode: REST| API
+    MRTS --> INGEST
+    FRED -. Milestone 2 vintages .-> INGEST
+    INGEST --> FEATURES --> BACKTEST
+    BACKTEST --> SNAIVE --> METRICS
+    BACKTEST --> LGBM
+    BACKTEST --> MODERN
+    METRICS --> REPORTS
 ```
 
 ## Dataset
 
 | | |
 |---|---|
-| **Source** | U.S. Census Bureau MRTS (via [Census API](https://api.census.gov/data/timeseries/eits/mrts)), plus FRED and market data for indicators |
+| **Source** | U.S. Census Bureau MRTS [time-series API](https://api.census.gov/data/timeseries/eits/mrts) and named annual-revision workbooks |
 | **Scope** | 11 retail categories (auto dealers, building materials, clothing, electronics, food & beverage, furniture, gasoline stations, general merchandise, health & personal care, sporting goods, total retail sales) |
-| **Granularity** | Monthly official figures, expanded to weekly/daily "multi-resolution" series used for feature engineering (`project_root/data_multi_resolution/`, ~457–5,815 rows per category) |
-| **History** | 2015 → 2025 |
-| **Split** | Chronological: models train on pre-2025 rows; 2025 is used for out-of-sample validation via backfilled actuals (no random splitting) |
+| **Granularity** | One independent seasonally adjusted value per category/month |
+| **Measured baseline history** | January 2010 → December 2025 from the Census 2026 revision workbook |
+| **Evaluation** | Monthly rolling origins, minimum 60-month training window, horizons 1/3/6/12 months |
+| **Generated data policy** | Raw/canonical downloads and fold-level outputs live under ignored `data/v2/`; tracked reports contain source URL, checksum, and declared aggregates |
 
-## Methodology and its honest limits
+## Integrity guarantees and limits
 
-- **Temporal ordering** — training data never includes the evaluation year; features at prediction time are computed only from past observations.
-- **`year` excluded** — dropping the raw year column removed an obvious shortcut the early models used.
-- **Known caveat: rolling features are inclusive.** The `rolling_mean_*` / `pct_change_*` features in the training CSVs are computed with pandas' default (inclusive) windows, so the current observation leaks into those columns at training time. This inflates training-split metrics (the old in-sample report showed unrealistically low error). The **published results below do not come from those numbers** — they come from 2025 predictions logged by the models and compared against independently published Census actuals, which the inclusive-window issue does not inflate the same way. Details and the exact feature list: [docs/methodology.md](docs/methodology.md).
-- **Actuals are approximations.** Census publishes *monthly* category totals; the validation job scales them into forecast units (per-category factors in `config.py`) and applies the same monthly value to every weekly prediction in that month. So "samples" below are validated weekly rows, not independent monthly observations.
+- Target-derived features at month *t* depend only on values through *t-1*.
+- Duplicate series/month/vintage keys, missing months, non-month-start timestamps, naive provenance timestamps, and non-finite values fail validation.
+- Backtests never random-split time series and always record their data vintage and actual source.
+- The current baseline uses revised Census history. It is not yet a true real-time-vintage backtest; historical release reconstruction is Milestone 2.
+- The React/FastAPI product surface still serves preserved v1 artifacts and is not yet connected to the v2 forecasting modules.
 
 ## v1 historical results (not the v2 benchmark)
 
@@ -109,6 +110,12 @@ Sample diagnostic generated by the training pipeline (Total Retail Sales, LGBM �
 
 ```
 retailPRED/
+├── forecasting/                # v2 contracts, ingestion, features, models, evaluation
+│   ├── data/                   #   Census API/workbook + canonical vintage-aware dataset
+│   ├── features/               #   leakage-safe native-monthly features
+│   ├── models/                 #   Seasonal Naive baseline
+│   └── evaluation/             #   rolling origins + point/probabilistic metrics
+├── scripts/                    # v2 ingestion and baseline entry points
 ├── backend/                    # FastAPI service
 │   ├── api/                    #   routes, schemas, scenario/category/export endpoints
 │   ├── ml/                     #   inference, feature computation, training scripts
@@ -117,10 +124,10 @@ retailPRED/
 │   └── db/                     #   SQLite helpers + schema migrations
 ├── frontend/                   # React 19 + TypeScript + Vite dashboard
 │   └── public/demo-data/       # pre-generated JSON for the static demo
-├── project_root/               # training pipeline
-│   ├── etl/                    #   MRTS/FRED fetchers, dataset builders
-│   └── data_multi_resolution/  #   feature CSVs per category (tracked)
-├── data/                       # runtime SQLite DB (not tracked; initialize locally)
+├── project_root/               # preserved v1 training pipeline
+│   ├── etl/                    #   legacy-only fetchers/builders
+│   └── data_multi_resolution/  #   frozen v1 evidence; never v2 input
+├── data/                       # ignored v2 generated data + runtime SQLite DB
 ├── training_outputs/           # validation metrics, training report, diagnostics
 ├── dags/                       # Airflow DAG: weekly validation loop
 ├── tests/                      # pytest suite (see "Verify")
@@ -161,18 +168,25 @@ make setup                  # first run: locked Python dependencies + npm ci
 make verify                 # backend tests + frontend type-check/lint/build
 ```
 
-### Retrain
+### Reproduce the v2 monthly foundation
 
 ```bash
-pip install -r requirements.txt
-python backend/ml/train_73_features.py       # LGBM + RandomForest, 11 categories
-python backend/ml/train_statistical_models.py  # SeasonalNaive / AutoARIMA baselines
-python train.py --category total_sales       # single category end-to-end
+make milestone1-check
+
+# Optional live API ingestion; requires CENSUS_API_KEY
+make fetch-mrts END_YEAR=2025
+
+# Reproduce the measured baseline from a downloaded Census revision workbook
+make baseline-mrts \
+  WORKBOOK=/absolute/path/to/benchsales26.xlsx \
+  VINTAGE_TIME=2026-11-02T00:00:00+00:00
 ```
 
-Training reads the tracked feature CSVs; no external downloads required.
+The historical v1 model scripts remain in `backend/ml/` and `train.py`, but are not valid v2 retraining paths because they consume the frozen interpolated feature CSVs.
 
-### Example API call
+### Preserved v1 demo API
+
+The current API and dashboard still serve v1 model artifacts. This example is retained for the historical demo and is not a v2 forecast contract.
 
 ```bash
 curl "http://localhost:8000/api/predict?category=total_sales&model_name=LGBM&weeks_ahead=4&start_date=2026-01-05"
@@ -202,6 +216,7 @@ None are required to run or test the project. Optional, for data-fetching script
 
 | Variable | Used by |
 |---|---|
+| `CENSUS_API_KEY` | v2 native-monthly ingestion (`make fetch-mrts`) |
 | `MRTS_API_KEY` | `weekly_validation.py`, `backfill_actuals.py` ([free Census key](https://api.census.gov/data/key_signup.html)) |
 | `FRED_API_KEY` | `project_root/etl/fetch_fred.py` |
 | `RETAILPRED_DIR` | Airflow DAG (path to repo on the runner) |
@@ -210,25 +225,25 @@ Copy [`project_root/.env.example`](project_root/.env.example) to `project_root/.
 
 ## Limitations
 
-- **Weekly "actuals" are unit-scaled monthly Census values** replicated across the weeks of each month (per-category scaling factors in `config.py`); validation therefore overstates the number of independent observations.
-- **Inclusive rolling windows** in the training features (see [Methodology](#methodology-and-its-honest-limits)) make training-time metrics optimistic; trust the 2025 backfill table above instead.
-- **No neural models ship here** — PatchTST/TimesNet results predate the current repository contents (see results note).
-- **Single-series, single-country data** — 11 correlated aggregate series, ~130 monthly observations each. No store/SKU-level signal.
-- **Frontend demo mode is hard-wired** to static JSON; API mode requires running the backend locally.
-- **Unvalidated forward forecasts** for 2026 exist in the demo data; they carry no error measurements.
+- **Revision-vintage baseline:** the current v2 benchmark uses a 2026 revised history, not the values known at each historical forecast origin.
+- **Small macro dataset:** 11 correlated national aggregate series are insufficient evidence for store/SKU demand behavior; M5 will be a separate operational use case.
+- **Baseline only:** global LightGBM, NHITS, and Chronos-2 are planned but have not yet earned measured v2 results.
+- **Serving integration pending:** the dashboard and API still expose preserved v1 artifacts and must not be described as the v2 model surface.
+- **Historical v1 caveats:** weekly-replicated actuals, inclusive rolling windows, and heuristic neural-model labels apply to the frozen table above, not to v2.
 
 ## Future work
 
-- Rebuild rolling/`pct_change` features with shifted windows and re-baseline all metrics.
-- Reinstate PatchTST/TimesNet training (Nixtla `neuralforecast`) as first-class tracked artifacts.
-- Probability intervals from quantile models instead of the current scaled heuristic.
-- Walk-forward backtesting at monthly resolution against raw MRTS values (no weekly replication).
-- Deploy the FastAPI service behind the demo frontend.
+- Build bronze/silver/gold Delta tables and point-in-time source vintages.
+- Add a global LightGBM champion and compare it on the exact Seasonal Naive folds.
+- Evaluate NHITS and Chronos-2 only after the classical baseline and data contracts are stable.
+- Add calibrated P10/P50/P90 forecasts and hierarchy-aware M5 evaluation.
+- Replace the v1 serving path with model-registry-backed v2 forecasts and provenance.
 
 ## Data and model-artifact policy
 
-- **Tracked:** trained models (`backend/ml/models/`), feature CSVs (`project_root/data_multi_resolution/`), validation metrics, training diagnostics, and demo JSON — everything needed to reproduce the published numbers from a clean clone.
-- **Not tracked:** the SQLite database (`data/retailpred.db`, ~55 MB — initialize via `db.migrations`), logs, and `.env`. `predictions.csv` at the repo root (if present locally) is an unvalidated forward forecast, regenerated by `generate_rolling_predictions.py`.
+- **v2 tracked:** contracts, tests, source/checksum manifests, methodology, and aggregate result reports.
+- **v2 not tracked:** downloaded source data, canonical tables, fold-level predictions, trained weights, SQLite databases, logs, and `.env` files.
+- **v1 historical evidence:** trained models, multi-resolution CSVs, validation metrics, diagnostics, and demo JSON remain tracked until their v2 replacements exist.
 - **History note:** an earlier commit accidentally published `project_root/.env`; those credentials were rotated and the file removed from history. Report any residual secret you find per the security policy.
 
 ## License

@@ -1,8 +1,8 @@
-"""
-Multi-Resolution Time Series Dataset Builder
+"""Legacy v1 multi-resolution dataset builder.
 
-Creates features at multiple temporal granularities (daily, weekly, monthly, yearly)
-to improve model accuracy by capturing patterns at different time scales.
+This file is preserved to make the undergrad implementation auditable. It
+interpolates monthly targets and is prohibited for v2 training or evaluation.
+Use ``forecasting.features.monthly`` for new work.
 
 Data Sources:
 - Yahoo Finance: Daily data (already has daily frequency)
@@ -17,6 +17,7 @@ Approach:
 
 import pandas as pd
 import numpy as np
+import argparse
 from pathlib import Path
 from typing import Dict, List, Tuple
 import warnings
@@ -352,7 +353,19 @@ class MultiResolutionBuilder:
 
 
 def main():
-    """Main execution"""
+    """Run the preserved builder only after explicitly acknowledging v1 behavior."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--allow-legacy-v1",
+        action="store_true",
+        help="Acknowledge that this creates interpolated targets unsuitable for v2.",
+    )
+    args = parser.parse_args()
+    if not args.allow_legacy_v1:
+        parser.error(
+            "v2 prohibits interpolated targets; use forecasting.features.monthly "
+            "or pass --allow-legacy-v1 to reproduce the historical pipeline"
+        )
 
     print("\n" + "="*60)
     print("MULTI-RESOLUTION TIME SERIES FEATURE BUILDER")

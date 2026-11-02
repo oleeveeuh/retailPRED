@@ -7,12 +7,12 @@ Last updated: 2026-11-02
 - Repository audit: complete.
 - Implementation plan: accepted for execution.
 - Milestone 0: complete and committed locally on `v2-rebuild`; not pushed.
-- Milestone 1: core foundation complete; integration cleanup remains before the milestone is closed.
+- Milestone 1: complete; native-monthly foundation is the default documented and tested path.
 
-## Baseline verification
+## Quality verification
 
-- Git worktree: clean at `605d962` on `main`.
-- Full Python 3.11 environment: 27 passed, 0 skipped.
+- Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
+- Full Python 3.11 environment: 52 tests passed with no skips.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
 - Frontend production build: passed; the existing large-chunk warning remains recorded debt.
@@ -31,7 +31,7 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Retire the v1 builder from the default workflow and add the Milestone 1 components to the full repository quality gate.
+Begin Milestone 2 with local bronze/silver/gold contracts and idempotent MRTS ingestion before adding Databricks-specific implementations.
 
 ## Milestone 1 evidence to date
 
@@ -44,3 +44,6 @@ Retire the v1 builder from the default workflow and add the Milestone 1 componen
 - Seasonal Naive is deterministic at a 12-month period.
 - The measured integrity comparison is in `LEAKAGE_REPORT.md`.
 - The first measured v2 baseline is in `M1_BASELINE.md`: 5,324 native-monthly fold rows on the Census 2026 revision vintage.
+- The canonical CSV boundary validates series/month/vintage uniqueness and supports as-of selection.
+- CI runs the temporal-integrity suite explicitly before the full Python suite.
+- The v1 interpolating builder requires an explicit legacy flag, and the old fetcher can no longer generate fallback observations.
