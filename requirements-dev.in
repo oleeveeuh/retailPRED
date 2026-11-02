@@ -1,0 +1,9 @@
+# Complete local and CI verification environment for RetailPRED v2.
+# Compile this file with `make lock` after deliberately changing dependencies.
+-r requirements.txt
+-r backend/requirements.txt
+
+httpx==0.28.1
+pytest==8.4.2
+pip-tools==7.5.2
+

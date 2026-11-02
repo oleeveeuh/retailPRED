@@ -1,14 +1,12 @@
 """Model discovery and file-layout checks.
 
 The serving code resolves models from the flat `backend/ml/models/` layout
-first, then the legacy per-category layout. These tests verify both the
-artifact set and (when pandas/joblib are installed) the resolution logic.
+first, then the legacy per-category layout. The complete verification
+environment must exercise both the artifact set and resolution logic.
 """
 
 import sys
 from pathlib import Path
-
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 MODELS_DIR = REPO_ROOT / "backend" / "ml" / "models"
@@ -55,7 +53,6 @@ def test_expected_categories_present():
 
 def test_flat_path_resolution_matches_disk():
     """The inference resolver must find the tracked flat-layout models."""
-    pytest.importorskip("pandas")
     from ml.multi_resolution_inference import get_model_file_path
 
     path = get_model_file_path("total_sales", "LGBM")
@@ -64,7 +61,6 @@ def test_flat_path_resolution_matches_disk():
 
 
 def test_resolver_falls_back_when_missing():
-    pytest.importorskip("pandas")
     from ml import multi_resolution_inference as mri
 
     # a category that exists nowhere must resolve to the flat (preferred)

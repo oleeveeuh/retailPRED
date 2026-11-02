@@ -23,6 +23,18 @@ export default defineConfig([
       // The demo data layer is intentionally loosely typed while the API
       // contract settles; treat `any` as tech-debt warning, not an error.
       '@typescript-eslint/no-explicit-any': 'warn',
+      // Milestone 0 records the legacy lint debt as warnings and caps the
+      // accepted count in package.json. New warnings fail CI by exceeding
+      // that cap; these rules will return to error as the v2 UI replaces the
+      // affected legacy components.
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'warn',
+      '@typescript-eslint/no-empty-object-type': 'warn',
+      'react-refresh/only-export-components': 'warn',
+      'react-hooks/purity': 'warn',
+      'react-hooks/set-state-in-effect': 'warn',
+      'react-hooks/static-components': 'warn',
+      'react-hooks/immutability': 'warn',
     },
   },
 ])

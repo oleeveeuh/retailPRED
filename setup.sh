@@ -12,11 +12,11 @@ echo ""
 
 # Check Python
 echo "📦 Checking Python installation..."
-if ! command -v python3 &> /dev/null; then
-    echo "❌ Python 3 is not installed. Please install Python 3.9 or higher."
+if ! command -v python3.11 &> /dev/null; then
+    echo "❌ Python 3.11 is required."
     exit 1
 fi
-PYTHON_VERSION=$(python3 --version | cut -d' ' -f2 | cut -d'.' -f1,2)
+PYTHON_VERSION=$(python3.11 --version | cut -d' ' -f2)
 echo "✅ Python $PYTHON_VERSION found"
 
 # Check Node.js
@@ -28,26 +28,23 @@ fi
 NODE_VERSION=$(node --version)
 echo "✅ Node $NODE_VERSION found"
 
-# Backend setup
+# Python setup
 echo ""
-echo "🔧 Setting up backend..."
-cd backend
-
-if [ ! -d "venv" ]; then
+echo "🔧 Setting up Python environment..."
+if [ ! -d ".venv-v2" ]; then
     echo "Creating Python virtual environment..."
-    python3 -m venv venv
+    python3.11 -m venv .venv-v2
 fi
 
 echo "Activating virtual environment..."
-source venv/bin/activate
+source .venv-v2/bin/activate
 
 echo "Installing Python dependencies..."
-pip install -q -r requirements.txt
+python -m pip install pip==25.3
+python -m pip install -r requirements-dev.lock
 
 echo "Running database migration..."
-python -m db.migrations --schema-path ../data/db/schema.sql --db-path ../data/retailpred.db
-
-cd ..
+python -m backend.db.migrations --schema-path data/db/schema.sql --db-path data/retailpred.db
 
 # Frontend setup
 echo ""
@@ -60,14 +57,14 @@ if [ ! -f ".env" ]; then
 fi
 
 echo "Installing Node dependencies..."
-npm install
+NPM_CONFIG_CACHE=/tmp/retailpred-npm-cache npm ci
 
 cd ..
 
 # Root setup
 echo ""
 echo "🔧 Setting up root dependencies..."
-npm install
+NPM_CONFIG_CACHE=/tmp/retailpred-npm-cache npm ci
 
 echo ""
 echo "================================"

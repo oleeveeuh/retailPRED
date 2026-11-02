@@ -1,16 +1,15 @@
 """API smoke tests.
 
-Run against the FastAPI app with TestClient — no server, no real requests.
-Skipped automatically when the backend dependencies are not installed.
+Run against the FastAPI app with TestClient — no server and no real requests.
+Missing backend dependencies are setup failures, not skipped product coverage.
 """
 
 import pytest
 
-fastapi = pytest.importorskip("fastapi")
-pytest.importorskip("httpx")  # starlette TestClient dependency
 from fastapi.testclient import TestClient  # noqa: E402
 
 from main import app  # noqa: E402  (backend/main.py, path set up by conftest)
+from api.routes import normalize_model_metrics  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -47,6 +46,24 @@ def test_predictions_history_empty_or_valid(client):
 def test_models_endpoint(client):
     resp = client.get("/api/models?active_only=true")
     assert resp.status_code == 200
+
+
+def test_legacy_aggregate_metrics_are_normalized():
+    metrics = normalize_model_metrics(
+        {
+            "MAPE": {"mean": 7.5},
+            "RMSE": {"mean": 12.25},
+            "MAE": {"mean": 8.0},
+            "MASE": {"mean": 1.1},
+        }
+    )
+    assert metrics == {
+        "rmse": 12.25,
+        "mae": 8.0,
+        "r2": 0.0,
+        "mape": 7.5,
+        "training_samples": 0,
+    }
 
 
 def test_scenario_list(client):

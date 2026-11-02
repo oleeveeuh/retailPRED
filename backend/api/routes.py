@@ -5,7 +5,7 @@ Provides endpoints for predictions, data refresh, model management, and validati
 
 from fastapi import APIRouter, HTTPException, Query, Depends
 from fastapi.responses import JSONResponse
-from typing import Optional, List
+from typing import Any, Dict, Optional, List
 from datetime import datetime, timedelta
 import logging
 import sys
@@ -73,6 +73,39 @@ def calculate_error_percentage(predicted: float, actual: float) -> float:
     if actual == 0:
         return 0.0
     return round(abs((actual - predicted) / actual) * 100, 2)
+
+
+def normalize_model_metrics(metrics: Dict[str, Any]) -> Dict[str, Any]:
+    """Normalize legacy metric payloads to the public API schema.
+
+    Older training paths stored either lowercase scalar metrics or uppercase
+    aggregate objects such as ``{"RMSE": {"mean": 1.2}}``. The endpoint
+    must describe those records without failing, while making absent legacy
+    values explicit as zero rather than inventing performance.
+    """
+
+    def scalar(name: str, default: float = 0.0) -> float:
+        value = metrics.get(name.lower(), metrics.get(name.upper(), default))
+        if isinstance(value, dict):
+            value = value.get("mean", default)
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return default
+
+    samples = metrics.get("training_samples", 0)
+    try:
+        training_samples = int(samples)
+    except (TypeError, ValueError):
+        training_samples = 0
+
+    return {
+        "rmse": max(0.0, scalar("rmse")),
+        "mae": max(0.0, scalar("mae")),
+        "r2": min(1.0, max(0.0, scalar("r2"))),
+        "mape": max(0.0, scalar("mape")),
+        "training_samples": max(0, training_samples),
+    }
 
 
 def generate_forecast_dates(
@@ -521,7 +554,7 @@ async def get_models(
         # Convert to response models
         models = []
         for m in models_data[:100]:  # Limit to 100
-            metrics = m["metrics"]
+            metrics = normalize_model_metrics(m.get("metrics") or {})
             models.append(
                 ModelInfo(
                     id=m["id"],

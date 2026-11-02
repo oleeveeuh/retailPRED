@@ -127,7 +127,7 @@ retailPRED/
 
 ## Quick start
 
-**Prerequisites:** Python 3.11, Node.js 20, Git. No API keys are needed to run the backend, frontend, or tests — only the optional data-fetching scripts use them.
+**Prerequisites:** Python 3.11, Node.js 20, Git. No API keys are needed to run the backend, frontend, or tests — only the optional data-fetching scripts use them. Python 3.11 is pinned in `.python-version`; `requirements-dev.lock` is the complete local/CI verification environment.
 
 ```bash
 git clone https://github.com/oleeveeuh/retailPRED.git
@@ -155,8 +155,8 @@ The pre-trained models are committed, so `/api/predict` works immediately. The d
 ### Verify
 
 ```bash
-pytest                      # unit + smoke tests (backend tests auto-skip if deps missing)
-cd frontend && npm run type-check && npm run lint && npm run build
+make setup                  # first run: locked Python dependencies + npm ci
+make verify                 # backend tests + frontend type-check/lint/build
 ```
 
 ### Retrain

@@ -2,7 +2,7 @@ name: RetailPRED CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, v2-rebuild]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -37,10 +37,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r backend/requirements.txt
-          pip install -r requirements.txt
-          pip install pytest httpx
+          python -m pip install pip==25.3
+          pip install -r requirements-dev.lock
 
       - name: Run tests
         working-directory: .   # pytest.ini selects tests/
@@ -70,10 +68,6 @@ jobs:
         run: npm run type-check
 
       - name: Lint
-        # Advisory: ~105 pre-existing lint findings (unused vars, @ts-ignore,
-        # hook deps) across legacy components. Type-check and build are the
-        # blocking frontend gates; lint debt is tracked for cleanup.
-        continue-on-error: true
         run: npm run lint
 
       - name: Build
