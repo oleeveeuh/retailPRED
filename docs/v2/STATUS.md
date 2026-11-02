@@ -7,7 +7,7 @@ Last updated: 2026-11-02
 - Repository audit: complete.
 - Implementation plan: accepted for execution.
 - Milestone 0: complete and committed locally on `v2-rebuild`; not pushed.
-- Active milestone: Milestone 0 verification complete.
+- Milestone 1: core foundation complete; integration cleanup remains before the milestone is closed.
 
 ## Baseline verification
 
@@ -31,4 +31,16 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Begin Milestone 1 by defining canonical monthly series/observation/forecast contracts and temporal-integrity tests before replacing the data builder.
+Retire the v1 builder from the default workflow and add the Milestone 1 components to the full repository quality gate.
+
+## Milestone 1 evidence to date
+
+- Canonical immutable contracts cover series, observations, releases, forecasts, and actuals.
+- The Census parser selects independent monthly sales rows using `time_slot_id`; missing credentials and invalid responses fail explicitly.
+- One 11-category registry replaces the inconsistent v1 mappings.
+- Lag, rolling, difference, and change features are shifted before target-derived calculation.
+- Expanding and sliding rolling-origin backtests record complete provenance.
+- Point and probabilistic metric definitions are implemented and unit-tested.
+- Seasonal Naive is deterministic at a 12-month period.
+- The measured integrity comparison is in `LEAKAGE_REPORT.md`.
+- The first measured v2 baseline is in `M1_BASELINE.md`: 5,324 native-monthly fold rows on the Census 2026 revision vintage.

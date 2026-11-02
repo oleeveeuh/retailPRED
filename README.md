@@ -1,5 +1,7 @@
 # RetailPRED
 
+> **v2 rebuild in progress:** the original undergrad implementation is preserved as `v1-undergrad`. Its published metrics are historical evidence, not the v2 benchmark. The v2 branch is rebuilding evaluation at native monthly frequency with leakage-safe features and rolling-origin backtests; see [`docs/v2/STATUS.md`](docs/v2/STATUS.md).
+
 Retail sales forecasting for 11 U.S. retail categories — from raw Census data through feature engineering, model training, explainability, validation, and an interactive dashboard.
 
 [![Live demo](https://img.shields.io/badge/demo-retail--pred.vercel.app-brightgreen)](https://retail-pred.vercel.app)
@@ -78,9 +80,9 @@ flowchart LR
 - **Known caveat: rolling features are inclusive.** The `rolling_mean_*` / `pct_change_*` features in the training CSVs are computed with pandas' default (inclusive) windows, so the current observation leaks into those columns at training time. This inflates training-split metrics (the old in-sample report showed unrealistically low error). The **published results below do not come from those numbers** — they come from 2025 predictions logged by the models and compared against independently published Census actuals, which the inclusive-window issue does not inflate the same way. Details and the exact feature list: [docs/methodology.md](docs/methodology.md).
 - **Actuals are approximations.** Census publishes *monthly* category totals; the validation job scales them into forecast units (per-category factors in `config.py`) and applies the same monthly value to every weekly prediction in that month. So "samples" below are validated weekly rows, not independent monthly observations.
 
-## Results (authoritative)
+## v1 historical results (not the v2 benchmark)
 
-From [`training_outputs/validation_metrics.json`](training_outputs/validation_metrics.json), generated 2026-02-14 by comparing logged weekly predictions against published Census actuals:
+The frozen v1 snapshot below comes from [`training_outputs/validation_metrics.json`](training_outputs/validation_metrics.json), generated 2026-02-14 by comparing logged weekly predictions against published Census actuals. It is retained to show the starting point, but must not be quoted as authoritative v2 performance because the rows are pseudo-replicated and the training features contain the leakage documented above.
 
 **Evaluation window:** weekly predictions dated 2025-01-05 → 2025-10-26 (the weeks with backfilled actuals). Trained on pre-2025 data only.
 

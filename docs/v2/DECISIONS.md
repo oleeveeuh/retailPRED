@@ -43,3 +43,15 @@ Decisions are recorded before implementation so later changes can distinguish de
 - Status: proposed
 - Decision: prefer Databricks Workflows for the lakehouse pipeline unless a demonstrated portability requirement justifies Airflow.
 - Reason: maintaining two orchestrators would add complexity without improving the portfolio evidence.
+
+## D008: Use native monthly MRTS observations
+
+- Status: accepted
+- Decision: preserve one row per Census category/month and prohibit interpolation of the forecasting target to weekly or daily frequency.
+- Reason: interpolation creates pseudo-observations and makes sample counts and error estimates misleading.
+
+## D009: Shift before every target-derived feature
+
+- Status: accepted
+- Decision: lag the target by at least one period before calculating rolling statistics, differences, or percentage changes for a forecast row.
+- Reason: features for month *t* must remain unchanged when `y[t]` or any future value changes.

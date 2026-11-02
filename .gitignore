@@ -54,6 +54,7 @@ data/db/retailpred.db
 
 # Runtime/debugging directories
 data/validation_metrics.json
+data/v2/
 models/latest_metrics.json
 models/model_latest.pkl
 models/backend_ml

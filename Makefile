@@ -4,7 +4,7 @@ VENV_PYTHON := $(VENV)/bin/python
 VENV_PIP := $(VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup lock test frontend-check verify clean-generated
+.PHONY: setup lock test fetch-mrts baseline-mrts frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -20,6 +20,15 @@ lock:
 
 test:
 	$(VENV_PYTHON) -m pytest
+
+fetch-mrts:
+	@test -n "$(END_YEAR)" || (echo "END_YEAR is required, e.g. make fetch-mrts END_YEAR=2025" && exit 1)
+	$(VENV_PYTHON) -m scripts.fetch_mrts_v2 --end-year $(END_YEAR)
+
+baseline-mrts:
+	@test -n "$(WORKBOOK)" || (echo "WORKBOOK is required" && exit 1)
+	@test -n "$(VINTAGE_TIME)" || (echo "VINTAGE_TIME is required, including a UTC offset" && exit 1)
+	$(VENV_PYTHON) -m scripts.run_mrts_baseline "$(WORKBOOK)" --vintage-time "$(VINTAGE_TIME)"
 
 frontend-check:
 	cd frontend && npm run type-check
