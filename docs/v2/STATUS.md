@@ -9,12 +9,14 @@ Last updated: 2026-11-03
 - Milestone 0: complete and committed locally on `v2-rebuild`; not pushed.
 - Milestone 1: complete; native-monthly foundation is the default documented and tested path.
 - Milestone 2: platform foundation complete; local and Databricks contracts cover MRTS, Census releases, FRED/ALFRED vintages, M5 operational demand, and the dbt analytics boundary.
-- Milestone 3: in progress; the common protocol, global LightGBM challenger, balanced-panel evaluator, promotion policy, and MLflow adapter are implemented.
+- Milestone 3: locally complete except for a credential-dependent durable remote MLflow run; the common protocol, controlled model suite, evaluator, promotion policy, and local tracking proof are implemented.
+- Milestone 4: modeling substantially complete; M5 point, stability, reconciliation, neural, foundation-model, and probabilistic gates are measured. MRTS regime-aware analysis remains.
+- Full-roadmap completion estimate: approximately 60%. Data-science/modeling completion estimate: approximately 90%. Serving, governed BI, deployment/observability, and portfolio delivery remain the largest blocks.
 
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 117 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 120 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
@@ -34,7 +36,7 @@ Last updated: 2026-11-03
 
 ## Next checkpoint
 
-Retain bottom-up global LightGBM as the M5 point champion. The task-trained NHITS and zero-shot Chronos-2 gates are now closed without promotion; proceed to probabilistic M5 evaluation or the serving milestone. A durable remote MLflow run remains pending workspace credentials.
+Retain bottom-up global LightGBM as the M5 point champion. The neural, foundation-model, reconciliation, and first probabilistic gates are closed without promotion. Complete MRTS regime analysis, then move to the serving and governed analytics milestone. A durable remote MLflow run remains pending workspace credentials.
 
 ## Milestone 3 evidence to date
 
@@ -65,6 +67,7 @@ Retain bottom-up global LightGBM as the M5 point champion. The task-trained NHIT
 - On a predeclared 600-series revenue-stratified subset, NHITS improves Seasonal Naive by 7.98% but trails subset-trained LightGBM by 10.58%. The full-scale neural benchmark is rejected; see `M4_M5_NHITS_FEASIBILITY.md`.
 - On the identical predeclared subset, zero-shot Chronos-2 scores 0.928768, improving subset-trained LightGBM by 3.11% and Seasonal Naive by 19.37%. It clears the accuracy and runtime gates and advances to the complete hierarchy benchmark; see `M4_M5_CHRONOS2_FEASIBILITY.md`.
 - On the complete official hierarchy, zero-shot Chronos-2 scores 1.937468 WRMSSE and is rejected. It improves the item/state and item/store levels but underforecasts total units by 32.3%, causing severe aggregate-level error. The failure is accuracy rather than runtime; see `M4_M5_CHRONOS2.md`.
+- Training-only scaled conformal M5 intervals achieve 80.38% official-weighted coverage against an 80% target and pass every hierarchy-level range, but high-volume bottom coverage is 69.38% and horizon coverage is unstable. The interval policy fails its predeclared segment gate and is not promoted; see `M4_M5_PROBABILISTIC.md`.
 
 ## Milestone 2 evidence to date
 
