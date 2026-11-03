@@ -6,6 +6,43 @@ import numpy as np
 import pandas as pd
 
 
+def foundation_model_gate(
+    *,
+    seasonal_naive_score: float,
+    incumbent_score: float,
+    challenger_score: float,
+    full_scale_runtime_hours: float,
+    minimum_naive_improvement: float = 0.05,
+    maximum_full_scale_runtime_hours: float = 2.0,
+) -> dict[str, float | bool]:
+    """Apply the predeclared subset gate for a foundation-model challenger."""
+    scores = (seasonal_naive_score, incumbent_score, challenger_score)
+    if not all(np.isfinite(score) and score > 0 for score in scores):
+        raise ValueError("model scores must be finite and positive")
+    if not np.isfinite(full_scale_runtime_hours) or full_scale_runtime_hours < 0:
+        raise ValueError("full-scale runtime must be finite and non-negative")
+    improvement_vs_naive = (
+        seasonal_naive_score - challenger_score
+    ) / seasonal_naive_score
+    improvement_vs_incumbent = (incumbent_score - challenger_score) / incumbent_score
+    return {
+        "improvement_vs_seasonal_naive": float(improvement_vs_naive),
+        "improvement_vs_incumbent": float(improvement_vs_incumbent),
+        "passes_accuracy": bool(
+            improvement_vs_naive >= minimum_naive_improvement
+            and improvement_vs_incumbent > 0
+        ),
+        "passes_runtime": bool(
+            full_scale_runtime_hours <= maximum_full_scale_runtime_hours
+        ),
+        "full_scale_recommended": bool(
+            improvement_vs_naive >= minimum_naive_improvement
+            and improvement_vs_incumbent > 0
+            and full_scale_runtime_hours <= maximum_full_scale_runtime_hours
+        ),
+    }
+
+
 def select_revenue_stratified_series(
     bottom: pd.DataFrame,
     recent_revenue: pd.Series,

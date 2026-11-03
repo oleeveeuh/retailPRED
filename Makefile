@@ -8,9 +8,12 @@ EXPERIMENT_PIP := $(EXPERIMENT_VENV)/bin/pip
 NEURAL_VENV ?= .venv-neural
 NEURAL_PYTHON := $(NEURAL_VENV)/bin/python
 NEURAL_PIP := $(NEURAL_VENV)/bin/pip
+FOUNDATION_VENV ?= .venv-foundation
+FOUNDATION_PYTHON := $(FOUNDATION_VENV)/bin/python
+FOUNDATION_PIP := $(FOUNDATION_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup setup-experiment setup-neural lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 frontend-check verify clean-generated
+.PHONY: setup setup-experiment setup-neural setup-foundation lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -29,6 +32,11 @@ setup-neural:
 	$(PYTHON) -m venv $(NEURAL_VENV)
 	$(NEURAL_PIP) install pip==26.2.1
 	$(NEURAL_PIP) install -r requirements-neural.txt
+
+setup-foundation:
+	$(PYTHON) -m venv $(FOUNDATION_VENV)
+	$(FOUNDATION_PIP) install pip==26.2.1
+	$(FOUNDATION_PIP) install -r requirements-foundation.txt
 
 lock:
 	$(PYTHON) -m venv $(VENV)
@@ -92,6 +100,9 @@ rolling-reconcile-m5:
 
 feasibility-nhits-m5:
 	$(NEURAL_PYTHON) -m scripts.run_m5_nhits_feasibility data/v2/source/m5
+
+feasibility-chronos-m5:
+	$(VENV_PYTHON) -m scripts.run_m5_chronos_feasibility data/v2/source/m5 --foundation-python $(FOUNDATION_PYTHON)
 
 frontend-check:
 	cd frontend && npm run type-check
