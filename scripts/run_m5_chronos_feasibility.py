@@ -69,6 +69,10 @@ def _peak_memory_mb() -> float:
     return usage / (1024 * 1024) if platform.system() == "Darwin" else usage / 1024
 
 
+def _absolute_without_resolving_symlinks(path: Path) -> Path:
+    return path if path.is_absolute() else Path.cwd() / path
+
+
 def _build_lightgbm_training(
     builder: M5DirectFeatureBuilder, values: np.ndarray
 ) -> tuple[pd.DataFrame, np.ndarray]:
@@ -188,7 +192,7 @@ def main() -> None:
     )
     subprocess.run(
         [
-            str(args.foundation_python.resolve()),
+            str(_absolute_without_resolving_symlinks(args.foundation_python)),
             "-m",
             "scripts.predict_chronos_subset",
             str(context_path),
