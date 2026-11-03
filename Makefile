@@ -11,9 +11,12 @@ NEURAL_PIP := $(NEURAL_VENV)/bin/pip
 FOUNDATION_VENV ?= .venv-foundation
 FOUNDATION_PYTHON := $(FOUNDATION_VENV)/bin/python
 FOUNDATION_PIP := $(FOUNDATION_VENV)/bin/pip
+TABLEAU_VENV ?= .venv-tableau
+TABLEAU_PYTHON := $(TABLEAU_VENV)/bin/python
+TABLEAU_PIP := $(TABLEAU_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup setup-experiment setup-neural setup-foundation lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 bi-extracts frontend-check verify clean-generated
+.PHONY: setup setup-experiment setup-neural setup-foundation setup-tableau lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 bi-extracts tableau-workbook frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -37,6 +40,11 @@ setup-foundation:
 	$(PYTHON) -m venv $(FOUNDATION_VENV)
 	$(FOUNDATION_PIP) install pip==26.2.1
 	$(FOUNDATION_PIP) install -r requirements-foundation.txt
+
+setup-tableau:
+	$(PYTHON) -m venv $(TABLEAU_VENV)
+	$(TABLEAU_PIP) install pip==26.2.1
+	$(TABLEAU_PIP) install -r requirements-tableau.txt
 
 lock:
 	$(PYTHON) -m venv $(VENV)
@@ -116,6 +124,10 @@ probabilistic-m5:
 bi-extracts:
 	@test -n "$(AS_OF_DATE)" || (echo "AS_OF_DATE is required, e.g. make bi-extracts AS_OF_DATE=2026-11-03" && exit 1)
 	$(VENV_PYTHON) -m scripts.build_bi_extracts --as-of-date "$(AS_OF_DATE)"
+
+tableau-workbook:
+	@test -x "$(TABLEAU_PYTHON)" || (echo "Run make setup-tableau first" && exit 1)
+	$(TABLEAU_PYTHON) scripts/build_tableau_workbook.py
 
 frontend-check:
 	cd frontend && npm run type-check

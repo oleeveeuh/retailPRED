@@ -2,7 +2,7 @@
 
 Date: 2026-11-03
 
-Status: backend contract and primary React forecast surface implemented
+Status: local Milestone 5 serving and analytics scope complete
 
 ## Outcome
 
@@ -88,10 +88,19 @@ Random model metrics were removed from the demo model list. Type-check, lint,
 and production build pass; the legacy warning count falls from the frozen cap
 of 215 to 194.
 
-## Remaining Milestone 5 work
+## Tableau workbook
 
-- Build the Tableau workbook from the now-governed local extracts and capture
-  selected dashboard screenshots.
+The local `bi/tableau/retailpred_v2.twb` workbook now packages five governed
+views over a reproducible Hyper extract: model scorecard, M5 hierarchy,
+uncertainty audit, MRTS regime accuracy, and data status. A structural test
+guards the source and sheet contract, and `scripts/build_tableau_workbook.py`
+fails on CSV schema drift before replacing the artifacts. Publishing remains a
+separate portfolio-release action because Tableau Public would upload the
+evaluation evidence.
+
+Tableau Public 2026.3 opened all five sheets and rendered the expected governed
+row counts: 6 scorecard, 12 hierarchy, 47 uncertainty, 3 regime, and 2 status
+marks.
 
 ## Legacy API isolation
 

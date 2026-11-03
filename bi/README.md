@@ -64,7 +64,10 @@ key, and SHA-256 for every CSV. Build-time contracts reject schema drift, empty
 tables, null or duplicate keys, and invalid non-negative metrics before any
 file is published.
 
-## Recommended Tableau workbook
+## Tableau workbook
+
+The tracked local workbook is `bi/tableau/retailpred_v2.twb`, backed by the
+adjacent `retailpred_v2.hyper` extract. Its five governed views are:
 
 1. **Model scorecard** — model performance, baseline comparison, decision
    status, evaluation dates, and dataset filter.
@@ -80,3 +83,6 @@ file is published.
 Tableau calculations must format stored decimal rates as percentages; they must
 not recompute WAPE or WRMSSE from differently filtered data. React and Tableau
 therefore display the same governed metric values and decision semantics.
+
+See `bi/tableau/README.md` for the view contract, deterministic rebuild command,
+and the explicit boundary between a local artifact and public publishing.
