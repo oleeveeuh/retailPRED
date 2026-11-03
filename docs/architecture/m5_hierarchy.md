@@ -35,6 +35,12 @@ These counts and grains follow the competition paper's hierarchy table ([M5 Accu
 
 For the complete dataset the expected matrix shape is 42,840 × 30,490 with 365,880 nonzero memberships. Construction validates required identifiers, nulls, duplicate bottom series, duplicate node IDs, and—when requested—the official node counts.
 
+For scalable measured reconciliation, `M5UpperHierarchy` also constructs the
+level 1–9 system over 70 store/department groups. Independent forecasts for its
+154 nodes are projected with nonnegative diagonal-variance weighted least
+squares. Reconciled store/department totals are then disaggregated through the
+item/store champion and the full hierarchy is rebuilt bottom-up.
+
 ## Reconciliation methods
 
 ### Bottom-up
