@@ -156,7 +156,7 @@ Status: in progress (global LightGBM development benchmark measured 2026-11-02)
 
 ## Milestone 4: Hierarchical and probabilistic forecasting
 
-Status: in progress (M5 LightGBM remains champion; WLS fails its strict stability gate; bounded NHITS stops before full scale; zero-shot Chronos-2 passes its bounded gate and advances)
+Status: in progress (M5 LightGBM remains champion; WLS fails its strict stability gate; NHITS stops at its bounded gate; Chronos-2 passes the bounded gate but fails the official hierarchy benchmark)
 
 ### Work
 

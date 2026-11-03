@@ -255,7 +255,7 @@ Copy [`project_root/.env.example`](project_root/.env.example) to `project_root/.
 
 - **Revision-vintage baseline:** the current v2 benchmark uses a 2026 revised history, not the values known at each historical forecast origin.
 - **Small macro dataset:** 11 correlated national aggregate series are insufficient evidence for store/SKU demand behavior; M5 will be a separate operational use case.
-- **Development benchmark:** global LightGBM has measured revised-history results, but no model has earned final promotion on untouched point-in-time evidence; NHITS and Chronos-2 remain unevaluated.
+- **Development benchmark:** global LightGBM has measured revised-history results, but no model has earned final promotion on untouched point-in-time evidence. On M5, NHITS stops at its bounded gate and zero-shot Chronos-2 fails the complete official hierarchy benchmark despite improving the two lowest levels.
 - **Serving integration pending:** the dashboard and API still expose preserved v1 artifacts and must not be described as the v2 model surface.
 - **Historical v1 caveats:** weekly-replicated actuals, inclusive rolling windows, and heuristic neural-model labels apply to the frozen table above, not to v2.
 

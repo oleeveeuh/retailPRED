@@ -34,7 +34,7 @@ Last updated: 2026-11-03
 
 ## Next checkpoint
 
-Retain bottom-up global LightGBM as the M5 point champion and advance zero-shot Chronos-2 from its passed subset gate to the complete official M5 WRMSSE benchmark. A durable remote MLflow run remains pending workspace credentials.
+Retain bottom-up global LightGBM as the M5 point champion. The task-trained NHITS and zero-shot Chronos-2 gates are now closed without promotion; proceed to probabilistic M5 evaluation or the serving milestone. A durable remote MLflow run remains pending workspace credentials.
 
 ## Milestone 3 evidence to date
 
@@ -64,6 +64,7 @@ Retain bottom-up global LightGBM as the M5 point champion and advance zero-shot 
 - The reconciliation audit improves four of five windows and mean WRMSSE by 4.79%, but its -1.82% worst fold fails the strict all-fold gate. Bottom-up LightGBM remains champion; see `M4_M5_RECONCILIATION_STABILITY.md`.
 - On a predeclared 600-series revenue-stratified subset, NHITS improves Seasonal Naive by 7.98% but trails subset-trained LightGBM by 10.58%. The full-scale neural benchmark is rejected; see `M4_M5_NHITS_FEASIBILITY.md`.
 - On the identical predeclared subset, zero-shot Chronos-2 scores 0.928768, improving subset-trained LightGBM by 3.11% and Seasonal Naive by 19.37%. It clears the accuracy and runtime gates and advances to the complete hierarchy benchmark; see `M4_M5_CHRONOS2_FEASIBILITY.md`.
+- On the complete official hierarchy, zero-shot Chronos-2 scores 1.937468 WRMSSE and is rejected. It improves the item/state and item/store levels but underforecasts total units by 32.3%, causing severe aggregate-level error. The failure is accuracy rather than runtime; see `M4_M5_CHRONOS2.md`.
 
 ## Milestone 2 evidence to date
 
