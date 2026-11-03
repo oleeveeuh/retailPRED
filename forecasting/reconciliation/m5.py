@@ -180,6 +180,171 @@ class M5Hierarchy:
         return max(errors, default=0.0)
 
 
+@dataclass(frozen=True)
+class M5UpperHierarchy:
+    """Levels 1–9 reconciled over the 70 store/department groups."""
+
+    full_hierarchy: M5Hierarchy
+    groups: pd.DataFrame
+    nodes: pd.DataFrame
+    summing_matrix: sparse.csr_matrix
+    bottom_group_index: np.ndarray
+
+    @classmethod
+    def from_hierarchy(cls, hierarchy: M5Hierarchy) -> "M5UpperHierarchy":
+        metadata = hierarchy.bottom.copy()
+        consistency = metadata.groupby(["store_id", "dept_id"], observed=True).agg(
+            state_count=("state_id", "nunique"),
+            category_count=("cat_id", "nunique"),
+        )
+        if (consistency != 1).any().any():
+            raise ValueError("store/department groups must map to one state and category")
+        groups = (
+            metadata.groupby(["store_id", "dept_id"], as_index=False, observed=True)
+            .agg(state_id=("state_id", "first"), cat_id=("cat_id", "first"))
+            .sort_values(["store_id", "dept_id"], ignore_index=True)
+        )
+        level9 = M5_LEVELS[8]
+        groups["group_id"] = [
+            _node_id(level9, (row.store_id, row.dept_id))
+            for row in groups.itertuples(index=False)
+        ]
+        group_lookup = {
+            (row.store_id, row.dept_id): index
+            for index, row in enumerate(groups.itertuples(index=False))
+        }
+        bottom_group_index = np.array(
+            [
+                group_lookup[(row.store_id, row.dept_id)]
+                for row in metadata.itertuples(index=False)
+            ],
+            dtype=np.int32,
+        )
+
+        row_indices: list[int] = []
+        column_indices: list[int] = []
+        records: list[dict[str, object]] = []
+        row_index = 0
+        for level in M5_LEVELS[:9]:
+            if not level.group_columns:
+                level_groups = [((), groups.index.to_numpy())]
+            else:
+                grouper: str | list[str] = (
+                    level.group_columns[0]
+                    if len(level.group_columns) == 1
+                    else list(level.group_columns)
+                )
+                level_groups = [
+                    (
+                        key if isinstance(key, tuple) else (key,),
+                        group.index.to_numpy(),
+                    )
+                    for key, group in groups.groupby(grouper, sort=True, observed=True)
+                ]
+            for values, members in level_groups:
+                records.append(
+                    {
+                        "node_id": _node_id(level, values),
+                        "level": level.level,
+                        "level_name": level.name,
+                        "member_count": len(members),
+                    }
+                )
+                row_indices.extend([row_index] * len(members))
+                column_indices.extend(members.tolist())
+                row_index += 1
+        matrix = sparse.coo_matrix(
+            (
+                np.ones(len(row_indices), dtype=np.float64),
+                (row_indices, column_indices),
+            ),
+            shape=(len(records), len(groups)),
+        ).tocsr()
+        nodes = pd.DataFrame.from_records(records)
+        expected_nodes = hierarchy.nodes.loc[
+            hierarchy.nodes["level"] <= 9, "node_id"
+        ].tolist()
+        if nodes["node_id"].tolist() != expected_nodes:
+            raise ValueError("upper hierarchy does not align with the full M5 hierarchy")
+        return cls(
+            full_hierarchy=hierarchy,
+            groups=groups,
+            nodes=nodes,
+            summing_matrix=matrix,
+            bottom_group_index=bottom_group_index,
+        )
+
+    def reconcile(
+        self, base_forecasts: np.ndarray, variances: pd.Series
+    ) -> np.ndarray:
+        """Project incoherent level 1–9 forecasts onto the 70-group hierarchy."""
+        base = np.asarray(base_forecasts, dtype=np.float64)
+        if base.ndim != 2 or base.shape[0] != len(self.nodes):
+            raise ValueError("upper base forecasts must have node-by-horizon shape")
+        variance = variances.reindex(self.nodes["node_id"])
+        if variance.isna().any() or (variance <= 0).any():
+            raise ValueError("every upper node requires a positive variance")
+        inverse_scale = 1.0 / np.sqrt(variance.to_numpy(dtype=float))
+        weighted_s = sparse.diags(inverse_scale) @ self.summing_matrix
+        reconciled = np.empty_like(base)
+        for horizon in range(base.shape[1]):
+            solution = lsq_linear(
+                weighted_s,
+                inverse_scale * base[:, horizon],
+                bounds=(0.0, np.inf),
+                lsmr_tol="auto",
+            )
+            if not solution.success:
+                raise RuntimeError(f"upper reconciliation failed: {solution.message}")
+            reconciled[:, horizon] = self.summing_matrix @ solution.x
+        return reconciled
+
+    def disaggregate_to_bottom(
+        self,
+        reconciled_upper: np.ndarray,
+        bottom_forecast: np.ndarray,
+        *,
+        fallback_shares: np.ndarray | None = None,
+    ) -> np.ndarray:
+        """Scale item/store forecasts within level-9 groups, then aggregate fully."""
+        upper = np.asarray(reconciled_upper, dtype=np.float64)
+        bottom = np.asarray(bottom_forecast, dtype=np.float64)
+        if upper.ndim != 2 or upper.shape[0] != len(self.nodes):
+            raise ValueError("reconciled upper forecast has invalid shape")
+        if bottom.shape != (len(self.full_hierarchy.bottom), upper.shape[1]):
+            raise ValueError("bottom forecast has invalid shape")
+        if (bottom < 0).any() or not np.isfinite(bottom).all():
+            raise ValueError("bottom forecasts must be finite and non-negative")
+        level9_targets = upper[self.nodes["level"].to_numpy() == 9]
+        adjusted = np.zeros_like(bottom)
+        fallback = (
+            np.ones(len(bottom), dtype=np.float64)
+            if fallback_shares is None
+            else np.asarray(fallback_shares, dtype=np.float64)
+        )
+        if fallback.shape != (len(bottom),) or (fallback < 0).any():
+            raise ValueError("fallback shares must be a non-negative bottom vector")
+        for horizon in range(bottom.shape[1]):
+            group_totals = np.bincount(
+                self.bottom_group_index,
+                weights=bottom[:, horizon],
+                minlength=len(self.groups),
+            )
+            positive = group_totals > 0
+            factors = np.zeros(len(self.groups), dtype=np.float64)
+            factors[positive] = level9_targets[positive, horizon] / group_totals[positive]
+            adjusted[:, horizon] = bottom[:, horizon] * factors[self.bottom_group_index]
+            for group_index in np.flatnonzero(~positive & (level9_targets[:, horizon] > 0)):
+                members = self.bottom_group_index == group_index
+                shares = fallback[members]
+                if shares.sum() <= 0:
+                    shares = np.ones(members.sum(), dtype=np.float64)
+                adjusted[members, horizon] = (
+                    level9_targets[group_index, horizon] * shares / shares.sum()
+                )
+        return self.full_hierarchy.summing_matrix @ adjusted
+
+
 class WeightedLeastSquaresReconciler:
     """Diagonal-variance MinT-style projection solved in sparse form."""
 

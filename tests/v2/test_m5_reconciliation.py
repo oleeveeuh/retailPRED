@@ -4,6 +4,7 @@ import pytest
 
 from forecasting.reconciliation.m5 import (
     M5Hierarchy,
+    M5UpperHierarchy,
     M5_LEVELS,
     WeightedLeastSquaresReconciler,
     m5_revenue_weights,
@@ -58,6 +59,22 @@ def test_weighted_reconciliation_projects_incoherent_nonnegative_forecasts() -> 
     reconciled = WeightedLeastSquaresReconciler(hierarchy).reconcile(base, variances)
     assert hierarchy.coherence_error(reconciled) < 1e-8
     assert (reconciled["prediction"] >= 0).all()
+
+
+def test_upper_reconciliation_scales_bottom_to_coherent_store_departments() -> None:
+    hierarchy = M5Hierarchy.from_bottom(_bottom())
+    upper = M5UpperHierarchy.from_hierarchy(hierarchy)
+    bottom = np.array([[1.0], [2.0], [3.0], [4.0]])
+    base = upper.summing_matrix @ np.array([[1.5], [2.5], [3.5], [4.5]])
+    base[0, 0] = 30.0
+    reconciled = upper.reconcile(
+        base, pd.Series(1.0, index=upper.nodes["node_id"])
+    )
+    full = upper.disaggregate_to_bottom(reconciled, bottom)
+    np.testing.assert_allclose(
+        full[: len(upper.nodes)], reconciled, rtol=1e-8, atol=1e-8
+    )
+    assert (full >= 0).all()
 
 
 def test_m5_revenue_weights_allocate_one_twelfth_to_each_level() -> None:
