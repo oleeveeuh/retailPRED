@@ -4,7 +4,7 @@ VENV_PYTHON := $(VENV)/bin/python
 VENV_PIP := $(VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts frontend-check verify clean-generated
+.PHONY: setup lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -38,6 +38,11 @@ baseline-mrts:
 	@test -n "$(WORKBOOK)" || (echo "WORKBOOK is required" && exit 1)
 	@test -n "$(VINTAGE_TIME)" || (echo "VINTAGE_TIME is required, including a UTC offset" && exit 1)
 	$(VENV_PYTHON) -m scripts.run_mrts_baseline "$(WORKBOOK)" --vintage-time "$(VINTAGE_TIME)"
+
+benchmark-mrts:
+	@test -n "$(WORKBOOK)" || (echo "WORKBOOK is required" && exit 1)
+	@test -n "$(VINTAGE_TIME)" || (echo "VINTAGE_TIME is required, including a UTC offset" && exit 1)
+	$(VENV_PYTHON) -m scripts.run_mrts_lightgbm "$(WORKBOOK)" --vintage-time "$(VINTAGE_TIME)"
 
 frontend-check:
 	cd frontend && npm run type-check
