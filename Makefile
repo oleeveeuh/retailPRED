@@ -13,7 +13,7 @@ FOUNDATION_PYTHON := $(FOUNDATION_VENV)/bin/python
 FOUNDATION_PIP := $(FOUNDATION_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup setup-experiment setup-neural setup-foundation lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 frontend-check verify clean-generated
+.PHONY: setup setup-experiment setup-neural setup-foundation lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 bi-extracts frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -112,6 +112,10 @@ benchmark-chronos-m5:
 
 probabilistic-m5:
 	$(VENV_PYTHON) -m scripts.run_m5_probabilistic data/v2/source/m5
+
+bi-extracts:
+	@test -n "$(AS_OF_DATE)" || (echo "AS_OF_DATE is required, e.g. make bi-extracts AS_OF_DATE=2026-11-03" && exit 1)
+	$(VENV_PYTHON) -m scripts.build_bi_extracts --as-of-date "$(AS_OF_DATE)"
 
 frontend-check:
 	cd frontend && npm run type-check
