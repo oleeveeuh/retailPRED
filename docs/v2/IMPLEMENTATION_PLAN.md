@@ -156,7 +156,7 @@ Status: in progress (global LightGBM development benchmark measured 2026-11-02)
 
 ## Milestone 4: Hierarchical and probabilistic forecasting
 
-Status: in progress (M5 source, Seasonal Naive, and global LightGBM measured; rolling-origin stability and meaningful aggregate reconciliation next)
+Status: in progress (M5 LightGBM promoted after five-fold stability audit; independently modeled aggregate reconciliation next)
 
 ### Work
 
