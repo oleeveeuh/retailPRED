@@ -4,6 +4,7 @@ import pytest
 
 from forecasting.evaluation.m5_backtest import (
     hierarchy_rmsse_scales,
+    m5_rolling_folds,
     score_hierarchical_forecast,
     seasonal_naive_bottom_forecast,
 )
@@ -60,3 +61,21 @@ def test_score_reports_equal_level_contributions() -> None:
     )
     assert result.overall_wrmsse == pytest.approx(1.0)
     assert result.by_level["wrmsse_contribution"].sum() == pytest.approx(1.0)
+
+
+def test_rolling_folds_keep_training_validation_and_evaluation_disjoint() -> None:
+    folds = m5_rolling_folds(
+        final_origin_index=1_912, fold_count=3, step=28, training_windows=2
+    )
+    assert [fold.evaluation_origin_index for fold in folds] == [1_856, 1_884, 1_912]
+    for fold in folds:
+        assert fold.validation_origin_index + 28 == fold.evaluation_origin_index
+        assert fold.training_origin_indices[-1] + 28 == fold.validation_origin_index
+        assert all(
+            right - left == 28
+            for left, right in zip(
+                fold.training_origin_indices,
+                fold.training_origin_indices[1:],
+                strict=False,
+            )
+        )

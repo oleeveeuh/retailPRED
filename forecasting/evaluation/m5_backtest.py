@@ -18,6 +18,46 @@ class M5BenchmarkResult:
     per_series: pd.DataFrame
 
 
+@dataclass(frozen=True)
+class M5RollingFold:
+    evaluation_origin_index: int
+    validation_origin_index: int
+    training_origin_indices: tuple[int, ...]
+
+
+def m5_rolling_folds(
+    *,
+    final_origin_index: int = 1_912,
+    fold_count: int = 5,
+    step: int = 28,
+    training_windows: int = 6,
+) -> tuple[M5RollingFold, ...]:
+    """Declare nested, non-overlapping 28-day M5 train/validation/evaluation folds."""
+    if fold_count < 1 or step < 1 or training_windows < 1:
+        raise ValueError("fold count, step, and training windows must be positive")
+    evaluation_origins = tuple(
+        final_origin_index - step * offset
+        for offset in reversed(range(fold_count))
+    )
+    folds: list[M5RollingFold] = []
+    for evaluation_origin in evaluation_origins:
+        validation_origin = evaluation_origin - step
+        training_origins = tuple(
+            validation_origin - step * offset
+            for offset in range(training_windows, 0, -1)
+        )
+        if training_origins[0] < 363:
+            raise ValueError("rolling fold does not contain 364 days of feature history")
+        folds.append(
+            M5RollingFold(
+                evaluation_origin_index=evaluation_origin,
+                validation_origin_index=validation_origin,
+                training_origin_indices=training_origins,
+            )
+        )
+    return tuple(folds)
+
+
 def hierarchy_rmsse_scales(
     hierarchy: M5Hierarchy,
     bottom_history: np.ndarray,
