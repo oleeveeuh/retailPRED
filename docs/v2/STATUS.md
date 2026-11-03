@@ -11,12 +11,12 @@ Last updated: 2026-11-03
 - Milestone 2: platform foundation complete; local and Databricks contracts cover MRTS, Census releases, FRED/ALFRED vintages, M5 operational demand, and the dbt analytics boundary.
 - Milestone 3: locally complete except for a credential-dependent durable remote MLflow run; the common protocol, controlled model suite, evaluator, promotion policy, and local tracking proof are implemented.
 - Milestone 4: complete; M5 point, stability, reconciliation, neural, foundation-model, and probabilistic gates are measured, and MRTS regime behavior is documented.
-- Full-roadmap completion estimate: approximately 75%. Data-science/modeling completion: complete for the accepted local scope. Milestone 5 is approximately 65% complete; remaining legacy isolation, a Tableau workbook, deployment/observability, and portfolio delivery remain.
+- Full-roadmap completion estimate: approximately 80%. Data-science/modeling completion: complete for the accepted local scope. Milestone 5 is approximately 80% complete; a Tableau workbook and selected dashboard captures remain before its local deliverables are complete. Deployment/observability and portfolio delivery follow in later milestones.
 
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 136 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 141 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes with 194 warnings, below the frozen 215-warning legacy cap.
@@ -36,11 +36,13 @@ Last updated: 2026-11-03
 
 ## Next checkpoint
 
-The fail-closed `/api/v2`, primary React forecast surface, and Tableau-ready BI extracts now share governed evidence and decision semantics. Next isolate remaining legacy mock/scenario surfaces and assemble the Tableau workbook. A durable remote MLflow run remains pending workspace credentials.
+The fail-closed `/api/v2`, primary React forecast surface, and Tableau-ready BI extracts now share governed evidence and decision semantics. Legacy mock, mutation, training, export, and scenario routes are absent by default and available only behind an explicit archival flag. Next assemble the Tableau workbook and capture selected dashboard views. A durable remote MLflow run remains pending workspace credentials.
 
 ## Milestone 5 evidence to date
 
 - The API reads frozen model decisions rather than discovering legacy files or auto-selecting retired algorithms.
+- The default app mounts only v2 routes; preserved v1 routes require `RETAILPRED_ENABLE_LEGACY_API=true`, are excluded from default OpenAPI, and are covered by isolation tests.
+- `/api/v2/health` distinguishes a healthy service from unavailable production models and historical-only data.
 - Production inference is explicitly unavailable until each dataset satisfies its recorded serving requirement.
 - One deterministic historical M5 fixture proves the success contract without claiming live inference.
 - Every successful point includes origin, horizon, target date, model version/status, data cutoff/status, demo label, code revision, source hash, and evidence reference.

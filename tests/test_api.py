@@ -1,54 +1,72 @@
-"""API smoke tests.
-
-Run against the FastAPI app with TestClient — no server and no real requests.
-Missing backend dependencies are setup failures, not skipped product coverage.
-"""
+"""Default API surface and isolated legacy utility tests."""
 
 import pytest
+from fastapi.testclient import TestClient
 
-from fastapi.testclient import TestClient  # noqa: E402
-
-from main import app  # noqa: E402  (backend/main.py, path set up by conftest)
-from api.routes import normalize_model_metrics  # noqa: E402
+from api.routes import normalize_model_metrics
+from main import LEGACY_API_ENABLED, app
 
 
 @pytest.fixture(scope="module")
 def client():
-    with TestClient(app) as c:
-        yield c
+    with TestClient(app) as test_client:
+        yield test_client
 
 
-def test_health(client):
-    resp = client.get("/api/health")
-    assert resp.status_code == 200
-    assert resp.json()["status"] == "healthy"
+def test_v2_health_distinguishes_service_model_and_data_state(client: TestClient) -> None:
+    response = client.get("/api/v2/health")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["status"] == "restricted"
+    assert body["components"]["service"]["status"] == "healthy"
+    assert body["components"]["models"]["status"] == "production_unavailable"
+    assert body["components"]["data"]["status"] == "historical_only"
 
 
-def test_categories_list(client):
-    resp = client.get("/api/categories/list")
-    assert resp.status_code == 200
-    body = resp.json()
-    assert body["total_count"] == 11
-    keys = {c["key"] for c in body["categories"]}
-    assert "total_sales" in keys
+def test_root_advertises_only_v2_contract_by_default(client: TestClient) -> None:
+    response = client.get("/")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["legacy_api_enabled"] is False
+    assert set(body["endpoints"]) == {
+        "health",
+        "v2_models",
+        "v2_demo_catalog",
+        "v2_forecasts",
+    }
 
 
-def test_predictions_history_empty_or_valid(client):
-    """Works whether the local DB is populated or freshly initialized."""
-    resp = client.get("/api/predictions/history?limit=5")
-    assert resp.status_code == 200
-    body = resp.json()
-    assert "predictions" in body
-    assert "total_count" in body
-    assert isinstance(body["predictions"], list)
+@pytest.mark.parametrize(
+    "path",
+    [
+        "/api/predict",
+        "/api/categories/list",
+        "/api/models",
+        "/api/predictions/history",
+        "/api/predictions/validate",
+        "/api/train",
+        "/api/scenarios/list",
+        "/api/counterfactual",
+    ],
+)
+def test_legacy_routes_are_not_mounted_by_default(
+    client: TestClient, path: str
+) -> None:
+    assert LEGACY_API_ENABLED is False
+    assert client.get(path).status_code == 404
 
 
-def test_models_endpoint(client):
-    resp = client.get("/api/models?active_only=true")
-    assert resp.status_code == 200
+def test_default_openapi_excludes_legacy_mutation_and_mock_routes(
+    client: TestClient,
+) -> None:
+    paths = set(client.get("/openapi.json").json()["paths"])
+    assert "/api/v2/forecasts" in paths
+    assert "/api/predict" not in paths
+    assert "/api/predictions/validate" not in paths
+    assert "/api/scenarios/analyze" not in paths
 
 
-def test_legacy_aggregate_metrics_are_normalized():
+def test_legacy_aggregate_metrics_are_normalized_without_inventing_values() -> None:
     metrics = normalize_model_metrics(
         {
             "MAPE": {"mean": 7.5},
@@ -64,16 +82,3 @@ def test_legacy_aggregate_metrics_are_normalized():
         "mape": 7.5,
         "training_samples": 0,
     }
-
-
-def test_scenario_list(client):
-    resp = client.get("/api/scenarios/list")
-    assert resp.status_code == 200
-    scenarios = resp.json()
-    assert isinstance(scenarios, (list, dict))
-
-
-def test_predict_requires_params(client):
-    """Missing required params must 422, not 500."""
-    resp = client.get("/api/predict")
-    assert resp.status_code == 422

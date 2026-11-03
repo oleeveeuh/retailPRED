@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Literal
 
@@ -94,6 +94,26 @@ async def list_model_portfolio() -> dict[str, object]:
         record["uncertainty_available"] = False
         models.append(record)
     return {"contract_version": "2.0", "models": models}
+
+
+@router.get("/health")
+async def v2_health() -> dict[str, object]:
+    """Separate service health from model availability and data freshness."""
+    return {
+        "status": "restricted",
+        "checked_at": datetime.now(timezone.utc).isoformat(),
+        "components": {
+            "service": {"status": "healthy"},
+            "models": {
+                "status": "production_unavailable",
+                "message": "No frozen portfolio decision authorizes live production inference.",
+            },
+            "data": {
+                "status": "historical_only",
+                "message": "The published M5 fixture ends at the 2016 evaluation cutoff.",
+            },
+        },
+    }
 
 
 @router.get("/demo-catalog")

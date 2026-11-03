@@ -12,6 +12,8 @@ confidence bands, or fall back to mock predictions.
 
 Implemented resources:
 
+- `GET /api/v2/health`: service health separated from production-model and
+  data-availability state.
 - `GET /api/v2/models`: frozen MRTS and M5 model decisions, serving modes,
   uncertainty status, measured metric, cutoff, and evidence references.
 - `GET /api/v2/demo-catalog`: the exact deterministic historical fixtures that
@@ -88,9 +90,18 @@ of 215 to 194.
 
 ## Remaining Milestone 5 work
 
-- Retire or isolate legacy mutation, manual validation, and mock scenario routes.
 - Build the Tableau workbook from the now-governed local extracts and capture
   selected dashboard screenshots.
+
+## Legacy API isolation
+
+The default FastAPI application mounts only `/api/v2` routes. Preserved v1
+prediction, mutation, training, export, and scenario modules are not imported,
+do not appear in OpenAPI, and return 404 under the default configuration.
+`RETAILPRED_ENABLE_LEGACY_API=true` is an explicit archival compatibility
+switch, not a production setting. The source remains available for historical
+comparison while the deployed contract fails closed. See
+`M5_LEGACY_ISOLATION.md` for the route boundary and verification evidence.
 
 ## Governed BI boundary
 

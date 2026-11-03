@@ -259,8 +259,9 @@ Copy [`project_root/.env.example`](project_root/.env.example) to `project_root/.
 - **Uncertainty benchmark:** training-only M5 conformal intervals achieve 80.38% overall coverage but fail the declared high-volume segment gate and remain unavailable for production serving.
 - **Regime evidence:** MRTS LightGBM improves aggregate WAPE before, during, and after the COVID disruption, but does not beat Seasonal Naive in every category; it remains a development challenger rather than a production claim.
 - **Fail-closed serving:** `/api/v2` exposes the frozen model portfolio and a provenance-complete deterministic historical demo; production, stale-data, retired-model, and uncalibrated-uncertainty requests return typed unavailable states.
+- **Legacy isolation:** the default service mounts only `/api/v2`; preserved v1 mock, mutation, training, export, and scenario routes require the explicit archival-only `RETAILPRED_ENABLE_LEGACY_API=true` switch.
 - **Governed BI:** reproducible Tableau-ready extracts publish the same model decisions, hierarchy metrics, uncertainty failures, regime results, and freshness labels as the API and React surface.
-- **Serving integration pending:** the dashboard and API still expose preserved v1 artifacts and must not be described as the v2 model surface.
+- **Serving integration boundary:** secondary legacy dashboard pages still contain preserved v1-era demonstrations and must not be described as the governed v2 model surface.
 - **Historical v1 caveats:** weekly-replicated actuals, inclusive rolling windows, and heuristic neural-model labels apply to the frozen table above, not to v2.
 
 ## Future work
@@ -269,7 +270,7 @@ Copy [`project_root/.env.example`](project_root/.env.example) to `project_root/.
 - Run the global LightGBM experiment against a configured MLflow server and real-time vintages.
 - Evaluate NHITS and Chronos-2 only after the classical baseline and data contracts are stable.
 - Add calibrated P10/P50/P90 forecasts and hierarchy-aware M5 evaluation.
-- Replace the v1 serving path with model-registry-backed v2 forecasts and provenance.
+- Build a production inference path only after a portfolio decision, current data contract, and uncertainty policy pass their promotion gates.
 
 ## Data and model-artifact policy
 
