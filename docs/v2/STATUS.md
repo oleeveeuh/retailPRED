@@ -1,6 +1,6 @@
 # RetailPRED v2 Status
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## Current state
 
@@ -14,7 +14,7 @@ Last updated: 2026-11-02
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 116 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 117 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
@@ -34,7 +34,7 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Retain bottom-up global LightGBM as the M5 point champion and run the predeclared zero-shot foundation-model feasibility gate without tuning against prior evaluation windows. A durable remote MLflow run remains pending workspace credentials.
+Retain bottom-up global LightGBM as the M5 point champion and advance zero-shot Chronos-2 from its passed subset gate to the complete official M5 WRMSSE benchmark. A durable remote MLflow run remains pending workspace credentials.
 
 ## Milestone 3 evidence to date
 
@@ -63,6 +63,7 @@ Retain bottom-up global LightGBM as the M5 point champion and run the predeclare
 - Reconciliation remains a challenger after its complete training-only blend and variance procedure failed the strict rolling-origin gate.
 - The reconciliation audit improves four of five windows and mean WRMSSE by 4.79%, but its -1.82% worst fold fails the strict all-fold gate. Bottom-up LightGBM remains champion; see `M4_M5_RECONCILIATION_STABILITY.md`.
 - On a predeclared 600-series revenue-stratified subset, NHITS improves Seasonal Naive by 7.98% but trails subset-trained LightGBM by 10.58%. The full-scale neural benchmark is rejected; see `M4_M5_NHITS_FEASIBILITY.md`.
+- On the identical predeclared subset, zero-shot Chronos-2 scores 0.928768, improving subset-trained LightGBM by 3.11% and Seasonal Naive by 19.37%. It clears the accuracy and runtime gates and advances to the complete hierarchy benchmark; see `M4_M5_CHRONOS2_FEASIBILITY.md`.
 
 ## Milestone 2 evidence to date
 
