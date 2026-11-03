@@ -71,7 +71,6 @@ def log_backtest_run(
         )
         dataset = mlflow.data.from_pandas(
             folds,
-            source=f"retailpred://{data_version}",
             name="rolling_origin_folds",
         )
         mlflow.log_input(dataset, context="evaluation")
