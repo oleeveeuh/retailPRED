@@ -156,7 +156,7 @@ Status: in progress (global LightGBM development benchmark measured 2026-11-02)
 
 ## Milestone 4: Hierarchical and probabilistic forecasting
 
-Status: in progress (first native-quantile and conformal development benchmark measured 2026-11-02; no interval method promoted)
+Status: in progress (probabilistic development benchmark measured; 12-level M5 hierarchy and reconciliation contracts implemented; real M5 benchmark pending source files)
 
 ### Work
 

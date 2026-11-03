@@ -28,9 +28,10 @@ The original project expanded monthly totals into synthetic weekly/daily targets
 - **Measured uncertainty, without a false win:** native 80% intervals cover 86.0% of disjoint 2022–2025 targets; fixed conformal calibration over-corrects to 92.4% and worsens interval score, so neither interval method is promoted.
 - **Versioned platform foundation:** immutable MRTS and FRED/ALFRED extracts, versioned silver observations, as-of gold snapshots, idempotent merges, and fail-closed quality gates.
 - **Separate M5 operational contract:** native daily item/store units, weekly prices, calendar events, SNAP flags, and retail hierarchy—without pretending they are MRTS features.
+- **Sparse 12-level M5 hierarchy:** all 42,840 official nodes, exact bottom-up aggregation, nonnegative weighted reconciliation, coherence checks, revenue weights, and WRMSSE contracts; real-data metrics await the licensed files.
 - **Databricks + dbt analytics layer:** declared-schema Delta tables, immutable merge safeguards, bundle-managed bootstrap deployment, tested warehouse models, and a Tableau-ready reporting boundary.
 
-See the [Milestone 1 baseline](docs/v2/M1_BASELINE.md), [LightGBM development benchmark](docs/v2/M3_LIGHTGBM.md), [probabilistic benchmark](docs/v2/M3_PROBABILISTIC.md), [leakage report](docs/v2/LEAKAGE_REPORT.md), [data-platform architecture](docs/architecture/data_platform.md), and [implementation status](docs/v2/STATUS.md).
+See the [Milestone 1 baseline](docs/v2/M1_BASELINE.md), [LightGBM development benchmark](docs/v2/M3_LIGHTGBM.md), [probabilistic benchmark](docs/v2/M3_PROBABILISTIC.md), [M5 hierarchy design](docs/architecture/m5_hierarchy.md), [leakage report](docs/v2/LEAKAGE_REPORT.md), [data-platform architecture](docs/architecture/data_platform.md), and [implementation status](docs/v2/STATUS.md).
 
 ## Architecture
 

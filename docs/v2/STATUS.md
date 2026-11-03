@@ -14,7 +14,7 @@ Last updated: 2026-11-02
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 94 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 100 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
@@ -34,7 +34,7 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Move the validated MLflow run to a durable workspace when credentials are available, then predeclare a new protocol for rolling/origin-local interval calibration before deciding whether NHITS has enough data to justify an MRTS experiment or should remain M5-only.
+Ingest the licensed M5 source files, validate the official 42,840-node hierarchy, and measure bottom-up versus weighted reconciliation with WRMSSE. A durable remote MLflow run remains pending workspace credentials.
 
 ## Milestone 3 evidence to date
 
@@ -46,6 +46,15 @@ Move the validated MLflow run to a durable workspace when credentials are availa
 - The numerical promotion gate passes, but final champion status remains blocked on untouched, point-in-time evidence. See `M3_LIGHTGBM.md`.
 - MLflow tracking records the data hash, Git revision, parameters, metrics, runtime metadata, dataset, and artifacts. A complete local SQLite run finished and was read back through the client; see `MLFLOW_RUN.md`. No durable remote run is claimed.
 - Native P10–P90 intervals achieve 86.0% coverage on a disjoint 2022–2025 target evaluation partition, versus an 80% target; fixed conformal calibration over-corrects to 92.4%, widens intervals, and worsens WIS, so neither method is promoted. See `M3_PROBABILISTIC.md`.
+
+## Milestone 4 evidence to date
+
+- The official 12-level M5 hierarchy is generated from bottom product/store metadata as a sparse summing matrix.
+- Bottom-up forecasts are exactly coherent, and incomplete bottom panels fail closed.
+- A nonnegative diagonal-variance weighted least-squares reconciler provides a scalable MinT-style challenger without claiming full covariance MinT.
+- Revenue weights allocate equal total weight to each level and then weight nodes by recent dollar sales.
+- WRMSSE requires fixed positive training scales and weights and rejects duplicate evaluation rows.
+- The real-data benchmark is pending the locally supplied, accepted-license M5 files; no synthetic accuracy result is presented as measured performance.
 
 ## Milestone 2 evidence to date
 

@@ -67,6 +67,8 @@ M5 is a distinct daily store/item use case, not an upsampled version of MRTS. Th
 - Gold `m5_demand` joins sales, calendar, and price provenance while retaining item, department, category, store, and state identifiers.
 - Missing prices remain explicit nulls; they are not imputed during ingestion.
 
+The downstream forecasting hierarchy is implemented separately from ingestion. It builds the official 12 M5 aggregation levels as a sparse summing matrix, supports exact bottom-up forecasts and diagonal-variance weighted reconciliation, and evaluates coherence plus revenue-weighted RMSSE. See `docs/architecture/m5_hierarchy.md`.
+
 ## Merge and schema policies
 
 - Exact release replays are idempotent.
