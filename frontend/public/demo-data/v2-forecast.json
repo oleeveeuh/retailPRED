@@ -1,0 +1,26 @@
+{
+  "contract_version": "2.0",
+  "dataset": "m5",
+  "use_case": "operational_demand",
+  "series_id": "FOODS_1_001_CA_1_evaluation",
+  "forecast_origin": "2016-04-24",
+  "data_cutoff": "2016-04-24",
+  "model_name": "m5_global_lightgbm",
+  "model_version": "1.0.0",
+  "model_status": "promoted_point_champion",
+  "mode": "offline_demo",
+  "data_status": "historical_evaluation_fixture",
+  "uncertainty_status": "research_only_failed_segment_gate",
+  "is_demo": true,
+  "points": [
+    {"horizon": 1, "target_time": "2016-04-25", "prediction": 1.0428473275297618, "lower": null, "upper": null, "evaluation_actual": 2.0},
+    {"horizon": 2, "target_time": "2016-04-26", "prediction": 0.9913422700689135, "lower": null, "upper": null, "evaluation_actual": 0.0},
+    {"horizon": 3, "target_time": "2016-04-27", "prediction": 0.9913422700689135, "lower": null, "upper": null, "evaluation_actual": 0.0},
+    {"horizon": 4, "target_time": "2016-04-28", "prediction": 0.9913422700689135, "lower": null, "upper": null, "evaluation_actual": 0.0}
+  ],
+  "provenance": {
+    "code_revision": "18617afa1ad91ade00c9bb4040dcd640984d3640",
+    "source_sha256": "4b4a47c44c38380d2a9168216fea8c9ff2f31b1ddb772f8a0995952a038b8aa0",
+    "evidence": "docs/v2/M4_M5_LIGHTGBM.md"
+  }
+}
