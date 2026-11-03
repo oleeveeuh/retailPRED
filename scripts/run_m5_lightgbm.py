@@ -86,8 +86,10 @@ def main() -> None:
     del sales, ordered
 
     training_origins = tuple(
-        VALIDATION_ORIGIN_INDEX - 28 * offset
-        for offset in range(1, args.training_windows + 1)
+        sorted(
+            VALIDATION_ORIGIN_INDEX - 28 * offset
+            for offset in range(1, args.training_windows + 1)
+        )
     )
     feature_origins = (*training_origins, VALIDATION_ORIGIN_INDEX, TRAIN_END_INDEX)
     required_indices = set(feature_origins)
