@@ -63,7 +63,7 @@ Other limitations:
 - This is revised Census history, not a real-time-vintage backtest.
 - The 11 national aggregates are a small panel and do not establish store/SKU performance.
 - No economic covariates are included yet; unreleased observations are explicitly excluded by the covariate contract.
-- Quantile adapters exist, but calibration evidence belongs to Milestone 4 and is not claimed here.
+- Quantile and conformal calibration evidence is reported separately in `M3_PROBABILISTIC.md`; neither interval method is promoted for serving.
 - MLflow logging is implemented, but this local run was not linked to a configured tracking server, so no run ID is claimed.
 
 ## Reproduce

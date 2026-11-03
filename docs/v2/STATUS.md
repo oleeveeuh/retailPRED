@@ -14,7 +14,7 @@ Last updated: 2026-11-02
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 88 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 93 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
@@ -34,7 +34,7 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Run the experiment through a configured MLflow server, then add calibrated probabilistic evaluation before deciding whether NHITS has enough data to justify an MRTS experiment or should remain M5-only.
+Run the experiment through a configured MLflow server, then predeclare a new protocol for rolling/origin-local interval calibration before deciding whether NHITS has enough data to justify an MRTS experiment or should remain M5-only.
 
 ## Milestone 3 evidence to date
 
@@ -45,6 +45,7 @@ Run the experiment through a configured MLflow server, then add calibrated proba
 - On the same 5,324 revised-history folds, LightGBM reduces mean category WAPE from 6.35% to 4.49% and improves all 11 categories.
 - The numerical promotion gate passes, but final champion status remains blocked on untouched, point-in-time evidence. See `M3_LIGHTGBM.md`.
 - Optional MLflow tracking records the data hash, Git revision, parameters, metrics, runtime metadata, dataset, and artifacts; no remote run ID is claimed yet.
+- Native P10–P90 intervals achieve 86.0% coverage on a disjoint 2022–2025 target evaluation partition, versus an 80% target; fixed conformal calibration over-corrects to 92.4%, widens intervals, and worsens WIS, so neither method is promoted. See `M3_PROBABILISTIC.md`.
 
 ## Milestone 2 evidence to date
 

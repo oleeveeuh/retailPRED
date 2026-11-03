@@ -25,11 +25,12 @@ The original project expanded monthly totals into synthetic weekly/daily targets
 - **Point and probabilistic metrics:** WAPE, MAE, RMSSE, bias, pinball loss, weighted interval score, coverage, and interval width.
 - **Measured Seasonal Naive baseline:** 5,324 category/origin/horizon rows on the Census 2026 revision vintage; mean category WAPE 6.35%.
 - **Measured global LightGBM challenger:** the same 5,324 folds, with mean category WAPE 4.49% and improvements in all 11 categories; final promotion awaits untouched point-in-time evidence.
+- **Measured uncertainty, without a false win:** native 80% intervals cover 86.0% of disjoint 2022–2025 targets; fixed conformal calibration over-corrects to 92.4% and worsens interval score, so neither interval method is promoted.
 - **Versioned platform foundation:** immutable MRTS and FRED/ALFRED extracts, versioned silver observations, as-of gold snapshots, idempotent merges, and fail-closed quality gates.
 - **Separate M5 operational contract:** native daily item/store units, weekly prices, calendar events, SNAP flags, and retail hierarchy—without pretending they are MRTS features.
 - **Databricks + dbt analytics layer:** declared-schema Delta tables, immutable merge safeguards, bundle-managed bootstrap deployment, tested warehouse models, and a Tableau-ready reporting boundary.
 
-See the [Milestone 1 baseline](docs/v2/M1_BASELINE.md), [LightGBM development benchmark](docs/v2/M3_LIGHTGBM.md), [leakage report](docs/v2/LEAKAGE_REPORT.md), [data-platform architecture](docs/architecture/data_platform.md), and [implementation status](docs/v2/STATUS.md).
+See the [Milestone 1 baseline](docs/v2/M1_BASELINE.md), [LightGBM development benchmark](docs/v2/M3_LIGHTGBM.md), [probabilistic benchmark](docs/v2/M3_PROBABILISTIC.md), [leakage report](docs/v2/LEAKAGE_REPORT.md), [data-platform architecture](docs/architecture/data_platform.md), and [implementation status](docs/v2/STATUS.md).
 
 ## Architecture
 
@@ -192,6 +193,11 @@ make baseline-mrts \
 
 # Compare LightGBM and Seasonal Naive on identical folds
 make benchmark-mrts \
+  WORKBOOK=/absolute/path/to/benchsales26.xlsx \
+  VINTAGE_TIME=2026-11-02T00:00:00+00:00
+
+# Evaluate native and conformalized P10/P50/P90 forecasts
+make probabilistic-mrts \
   WORKBOOK=/absolute/path/to/benchsales26.xlsx \
   VINTAGE_TIME=2026-11-02T00:00:00+00:00
 ```
