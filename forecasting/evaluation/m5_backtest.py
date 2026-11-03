@@ -89,8 +89,10 @@ def score_hierarchical_forecast(
     """Score node-by-horizon matrices using the fixed M5 WRMSSE contract."""
     actual_values = np.asarray(actual, dtype=np.float64)
     predicted_values = np.asarray(prediction, dtype=np.float64)
+    if actual_values.ndim != 2:
+        raise ValueError("actual and prediction must share node-by-horizon shape")
     expected_shape = (len(hierarchy.nodes), actual_values.shape[1])
-    if actual_values.ndim != 2 or predicted_values.shape != expected_shape:
+    if actual_values.shape != expected_shape or predicted_values.shape != expected_shape:
         raise ValueError("actual and prediction must share node-by-horizon shape")
     if not np.isfinite(actual_values).all() or not np.isfinite(predicted_values).all():
         raise ValueError("actual and prediction values must be finite")
@@ -166,7 +168,11 @@ def recent_bottom_revenue(
     revenue = np.zeros(len(bottom), dtype=np.float64)
     for offset, week in enumerate(day_weeks.astype(int)):
         lookup = pd.MultiIndex.from_arrays(
-            [pair_index.get_level_values(0), pair_index.get_level_values(1), np.full(len(bottom), week)],
+            [
+                pair_index.get_level_values(0),
+                pair_index.get_level_values(1),
+                np.full(len(bottom), week),
+            ],
             names=["store_id", "item_id", "wm_yr_wk"],
         )
         day_prices = indexed_prices.reindex(lookup).to_numpy(dtype=np.float64)

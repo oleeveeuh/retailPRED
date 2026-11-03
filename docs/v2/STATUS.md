@@ -14,7 +14,7 @@ Last updated: 2026-11-02
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 101 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 104 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
@@ -34,7 +34,7 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Measure the fixed-horizon M5 Seasonal Naive baseline and bottom-up WRMSSE at all 12 levels, then compare weighted reconciliation on the identical folds. A durable remote MLflow run remains pending workspace credentials.
+Train and measure the global M5 LightGBM challenger on the frozen Seasonal Naive evaluation contract, then compare bottom-up and weighted reconciliation on identical forecasts. A durable remote MLflow run remains pending workspace credentials.
 
 ## Milestone 3 evidence to date
 
@@ -55,7 +55,8 @@ Measure the fixed-horizon M5 Seasonal Naive baseline and bottom-up WRMSSE at all
 - Revenue weights allocate equal total weight to each level and then weight nodes by recent dollar sales.
 - WRMSSE requires fixed positive training scales and weights and rejects duplicate evaluation rows.
 - The accepted-license M5 files are now supplied locally. A memory-bounded gate verified their hashes, 30,490 bottom series, 1,941 observed days, 6,841,121 price rows, and the official 42,840-node hierarchy; see `M4_M5_SOURCE.md`.
-- The real-data accuracy benchmark remains pending; source validation is not presented as model performance.
+- The leakage-safe weekly Seasonal Naive baseline scores 0.869701 WRMSSE on `d_1914`–`d_1941`, reproducing the public M5 validation benchmark. Training scales and revenue weights end at `d_1913`; see `M4_M5_BASELINE.md`.
+- Level WRMSSE ranges from 0.751430 at total to 1.100402 at item/store, establishing the frozen comparison target for global LightGBM.
 
 ## Milestone 2 evidence to date
 
