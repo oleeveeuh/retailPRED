@@ -64,7 +64,7 @@ Other limitations:
 - The 11 national aggregates are a small panel and do not establish store/SKU performance.
 - No economic covariates are included yet; unreleased observations are explicitly excluded by the covariate contract.
 - Quantile and conformal calibration evidence is reported separately in `M3_PROBABILISTIC.md`; neither interval method is promoted for serving.
-- MLflow logging is implemented, but this local run was not linked to a configured tracking server, so no run ID is claimed.
+- MLflow logging has been validated end to end against a local SQLite backend; the verified run manifest is recorded in `MLFLOW_RUN.md`. A durable remote run still requires a configured workspace.
 
 ## Reproduce
 

@@ -200,6 +200,13 @@ make benchmark-mrts \
 make probabilistic-mrts \
   WORKBOOK=/absolute/path/to/benchsales26.xlsx \
   VINTAGE_TIME=2026-11-02T00:00:00+00:00
+
+# Optional: reproduce the tracked run in a separate MLflow environment
+make setup-experiment
+make track-mrts \
+  WORKBOOK=/absolute/path/to/benchsales26.xlsx \
+  VINTAGE_TIME=2026-11-02T00:00:00+00:00 \
+  TRACKING_URI=sqlite:////absolute/path/to/retailpred.mlflow.db
 ```
 
 The historical v1 model scripts remain in `backend/ml/` and `train.py`, but are not valid v2 retraining paths because they consume the frozen interpolated feature CSVs.

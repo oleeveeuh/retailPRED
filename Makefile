@@ -2,9 +2,12 @@ PYTHON ?= python3.11
 VENV ?= .venv-v2
 VENV_PYTHON := $(VENV)/bin/python
 VENV_PIP := $(VENV)/bin/pip
+EXPERIMENT_VENV ?= .venv-experiment
+EXPERIMENT_PYTHON := $(EXPERIMENT_VENV)/bin/python
+EXPERIMENT_PIP := $(EXPERIMENT_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts probabilistic-mrts frontend-check verify clean-generated
+.PHONY: setup setup-experiment lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -12,6 +15,12 @@ setup:
 	$(VENV_PIP) install -r requirements-dev.lock
 	NPM_CONFIG_CACHE=$(NPM_CACHE) npm ci
 	cd frontend && NPM_CONFIG_CACHE=$(NPM_CACHE) npm ci
+
+setup-experiment:
+	$(PYTHON) -m venv $(EXPERIMENT_VENV)
+	$(EXPERIMENT_PIP) install pip==25.3
+	$(EXPERIMENT_PIP) install -r requirements-dev.lock
+	$(EXPERIMENT_PIP) install -r requirements-experiment.txt
 
 lock:
 	$(PYTHON) -m venv $(VENV)
@@ -43,6 +52,12 @@ benchmark-mrts:
 	@test -n "$(WORKBOOK)" || (echo "WORKBOOK is required" && exit 1)
 	@test -n "$(VINTAGE_TIME)" || (echo "VINTAGE_TIME is required, including a UTC offset" && exit 1)
 	$(VENV_PYTHON) -m scripts.run_mrts_lightgbm "$(WORKBOOK)" --vintage-time "$(VINTAGE_TIME)"
+
+track-mrts:
+	@test -n "$(WORKBOOK)" || (echo "WORKBOOK is required" && exit 1)
+	@test -n "$(VINTAGE_TIME)" || (echo "VINTAGE_TIME is required, including a UTC offset" && exit 1)
+	@test -n "$(TRACKING_URI)" || (echo "TRACKING_URI is required" && exit 1)
+	MPLCONFIGDIR=/tmp/retailpred-matplotlib MLFLOW_DISABLE_AGENT_HINT=1 $(EXPERIMENT_PYTHON) -m scripts.run_mrts_lightgbm "$(WORKBOOK)" --vintage-time "$(VINTAGE_TIME)" --tracking-uri "$(TRACKING_URI)"
 
 probabilistic-mrts:
 	@test -n "$(WORKBOOK)" || (echo "WORKBOOK is required" && exit 1)
