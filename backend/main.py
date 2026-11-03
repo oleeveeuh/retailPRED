@@ -20,6 +20,7 @@ from api.category_routes import router as category_router
 from api.export import router as export_router
 from api.scenario_routes import router as scenario_router
 from api.training_metrics import router as training_metrics_router
+from api.v2_forecasts import router as v2_forecast_router
 
 # Configure logging
 logging.basicConfig(
@@ -74,6 +75,7 @@ app.include_router(category_router)
 app.include_router(export_router, prefix="/api/export", tags=["export"])
 app.include_router(scenario_router)
 app.include_router(training_metrics_router)
+app.include_router(v2_forecast_router)
 
 
 # Root endpoint
@@ -95,7 +97,9 @@ async def root():
             "validation": "/api/predictions/validate",
             "shap": "/api/shap-explain",
             "training": "/api/train",
-            "health": "/api/health"
+            "health": "/api/health",
+            "v2_models": "/api/v2/models",
+            "v2_forecasts": "/api/v2/forecasts",
         }
     }
 
