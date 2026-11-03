@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable, Sequence
 from datetime import datetime
 
+import numpy as np
 import pandas as pd
 
 from forecasting.features.monthly import validate_monthly_panel
@@ -136,4 +137,81 @@ def rolling_origin_panel_backtest(
                         "actual_source": actual_source,
                     }
                 )
+    return pd.DataFrame.from_records(records)
+
+
+def rolling_origin_panel_quantile_backtest(
+    frame: pd.DataFrame,
+    model_factory: Callable[[], Forecaster],
+    *,
+    quantiles: tuple[float, ...] = (0.1, 0.5, 0.9),
+    horizons: Sequence[int] = (1, 3, 6, 12),
+    min_train_size: int = 36,
+    step: int = 1,
+    data_vintage: datetime,
+    actual_source: str,
+    origin_start: str | pd.Timestamp | None = None,
+) -> pd.DataFrame:
+    """Evaluate native quantiles from a global model on a balanced panel."""
+    if data_vintage.tzinfo is None or data_vintage.utcoffset() is None:
+        raise ValueError("data_vintage must be timezone-aware")
+    if not quantiles or any(not 0 < quantile < 1 for quantile in quantiles):
+        raise ValueError("quantiles must be strictly between zero and one")
+    if any(float(quantile * 100).is_integer() is False for quantile in quantiles):
+        raise ValueError("quantiles must map to whole percentiles")
+    clean = validate_monthly_panel(frame)
+    requested = sorted(set(horizons))
+    calendars = clean.groupby("series_id")["observation_time"].apply(tuple)
+    if calendars.empty or any(calendar != calendars.iloc[0] for calendar in calendars):
+        raise ValueError("panel backtest requires identical monthly calendars")
+    times = pd.DatetimeIndex(calendars.iloc[0])
+    max_horizon = requested[-1]
+    if len(times) < min_train_size + max_horizon:
+        raise ValueError("panel is too short for the requested training window and horizon")
+    earliest_origin = None if origin_start is None else pd.Timestamp(origin_start)
+    indexed = clean.set_index(["series_id", "observation_time"])
+    records: list[dict[str, object]] = []
+    for cutoff_index in range(min_train_size - 1, len(times) - max_horizon, step):
+        origin = times[cutoff_index]
+        if earliest_origin is not None and origin < earliest_origin:
+            continue
+        training = clean[clean["observation_time"] <= origin]
+        model = model_factory().fit(training)
+        point = model.predict(max_horizon).set_index(["series_id", "horizon"])
+        native = model.predict_quantiles(max_horizon, quantiles)
+        pivoted = native.pivot(
+            index=["series_id", "horizon", "target_time"],
+            columns="quantile",
+            values="prediction",
+        )
+        for series_id in sorted(clean["series_id"].astype(str).unique()):
+            for horizon in requested:
+                target_time = times[cutoff_index + horizon]
+                point_row = point.loc[(series_id, horizon)]
+                quantile_row = pivoted.loc[(series_id, horizon, target_time)]
+                values = np.sort(
+                    [float(quantile_row.loc[quantile]) for quantile in quantiles]
+                )
+                record: dict[str, object] = {
+                    "series_id": series_id,
+                    "forecast_origin": origin,
+                    "target_time": target_time,
+                    "horizon": horizon,
+                    "training_cutoff": origin,
+                    "data_vintage": data_vintage,
+                    "model_name": model.name,
+                    "model_version": model.version,
+                    "prediction": float(point_row["prediction"]),
+                    "actual": float(indexed.loc[(series_id, target_time), "value"]),
+                    "actual_source": actual_source,
+                }
+                record.update(
+                    {
+                        f"q_{int(quantile * 100):02d}": value
+                        for quantile, value in zip(quantiles, values, strict=True)
+                    }
+                )
+                records.append(record)
+    if not records:
+        raise ValueError("origin_start excluded every eligible forecast origin")
     return pd.DataFrame.from_records(records)

@@ -5,7 +5,10 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from forecasting.evaluation.backtest import rolling_origin_panel_backtest
+from forecasting.evaluation.backtest import (
+    rolling_origin_panel_backtest,
+    rolling_origin_panel_quantile_backtest,
+)
 from forecasting.models.base import Forecaster
 from forecasting.models.global_lightgbm import GlobalLightGBM
 
@@ -82,3 +85,19 @@ def test_global_lightgbm_rejects_unbalanced_panel() -> None:
     panel = _panel().drop(index=[0])
     with pytest.raises(ValueError, match="balanced"):
         _model().fit(panel)
+
+
+def test_quantile_panel_backtest_returns_non_crossing_percentiles() -> None:
+    folds = rolling_origin_panel_quantile_backtest(
+        _panel(),
+        lambda: _model(quantiles=(0.1, 0.5, 0.9)),
+        quantiles=(0.1, 0.5, 0.9),
+        horizons=(1, 3),
+        min_train_size=24,
+        step=12,
+        data_vintage=datetime(2026, 1, 1, tzinfo=timezone.utc),
+        actual_source="fixture",
+    )
+    assert {"q_10", "q_50", "q_90"}.issubset(folds.columns)
+    assert (folds["q_10"] <= folds["q_50"]).all()
+    assert (folds["q_50"] <= folds["q_90"]).all()
