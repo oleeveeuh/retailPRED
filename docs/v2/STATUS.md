@@ -10,13 +10,13 @@ Last updated: 2026-11-03
 - Milestone 1: complete; native-monthly foundation is the default documented and tested path.
 - Milestone 2: platform foundation complete; local and Databricks contracts cover MRTS, Census releases, FRED/ALFRED vintages, M5 operational demand, and the dbt analytics boundary.
 - Milestone 3: locally complete except for a credential-dependent durable remote MLflow run; the common protocol, controlled model suite, evaluator, promotion policy, and local tracking proof are implemented.
-- Milestone 4: modeling substantially complete; M5 point, stability, reconciliation, neural, foundation-model, and probabilistic gates are measured. MRTS regime-aware analysis remains.
-- Full-roadmap completion estimate: approximately 60%. Data-science/modeling completion estimate: approximately 90%. Serving, governed BI, deployment/observability, and portfolio delivery remain the largest blocks.
+- Milestone 4: complete; M5 point, stability, reconciliation, neural, foundation-model, and probabilistic gates are measured, and MRTS regime behavior is documented.
+- Full-roadmap completion estimate: approximately 65%. Data-science/modeling completion: complete for the accepted local scope. Serving, governed BI, deployment/observability, and portfolio delivery remain the largest blocks.
 
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 120 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 125 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
@@ -36,7 +36,7 @@ Last updated: 2026-11-03
 
 ## Next checkpoint
 
-Retain bottom-up global LightGBM as the M5 point champion. The neural, foundation-model, reconciliation, and first probabilistic gates are closed without promotion. Complete MRTS regime analysis, then move to the serving and governed analytics milestone. A durable remote MLflow run remains pending workspace credentials.
+Model selection is frozen for the serving handoff. M5 global LightGBM is the promoted offline point champion; MRTS global LightGBM remains a development challenger pending point-in-time validation; uncertainty is unavailable for production in both use cases. Begin the unified serving contract and governed analytics work. A durable remote MLflow run remains pending workspace credentials.
 
 ## Milestone 3 evidence to date
 
@@ -48,6 +48,7 @@ Retain bottom-up global LightGBM as the M5 point champion. The neural, foundatio
 - The numerical promotion gate passes, but final champion status remains blocked on untouched, point-in-time evidence. See `M3_LIGHTGBM.md`.
 - MLflow tracking records the data hash, Git revision, parameters, metrics, runtime metadata, dataset, and artifacts. A complete local SQLite run finished and was read back through the client; see `MLFLOW_RUN.md`. No durable remote run is claimed.
 - Native P10–P90 intervals achieve 86.0% coverage on a disjoint 2022–2025 target evaluation partition, versus an 80% target; fixed conformal calibration over-corrects to 92.4%, widens intervals, and worsens WIS, so neither method is promoted. See `M3_PROBABILISTIC.md`.
+- Regime analysis shows LightGBM improves aggregate WAPE by 60.39% pre-COVID, 24.52% during disruption, and 42.26% post-disruption, but fails the strict all-category gate in the latter two regimes. It remains a development challenger; see `M3_MRTS_REGIMES.md`.
 
 ## Milestone 4 evidence to date
 

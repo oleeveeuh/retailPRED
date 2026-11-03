@@ -135,7 +135,7 @@ Status: platform foundation complete (2026-11-02)
 
 ## Milestone 3: Unified experiment and model pipeline
 
-Status: in progress (global LightGBM development benchmark measured 2026-11-02)
+Status: locally complete (2026-11-03); durable remote MLflow evidence remains credential-dependent
 
 ### Work
 
@@ -156,7 +156,7 @@ Status: in progress (global LightGBM development benchmark measured 2026-11-02)
 
 ## Milestone 4: Hierarchical and probabilistic forecasting
 
-Status: in progress (M5 model, reconciliation, and uncertainty gates are measured; MRTS regime-aware analysis remains)
+Status: complete (2026-11-03); no probabilistic method earned serving promotion
 
 ### Work
 
@@ -175,6 +175,8 @@ Status: in progress (M5 model, reconciliation, and uncertainty gates are measure
 - Results identify where reconciliation or foundation models hurt as well as help.
 
 ## Milestone 5: Serving and user-facing analytics
+
+Status: in progress; frozen model-portfolio decisions now define the serving boundary
 
 ### Work
 
