@@ -7,7 +7,7 @@ EXPERIMENT_PYTHON := $(EXPERIMENT_VENV)/bin/python
 EXPERIMENT_PIP := $(EXPERIMENT_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup setup-experiment lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts frontend-check verify clean-generated
+.PHONY: setup setup-experiment lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts validate-m5 frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -63,6 +63,9 @@ probabilistic-mrts:
 	@test -n "$(WORKBOOK)" || (echo "WORKBOOK is required" && exit 1)
 	@test -n "$(VINTAGE_TIME)" || (echo "VINTAGE_TIME is required, including a UTC offset" && exit 1)
 	$(VENV_PYTHON) -m scripts.run_mrts_probabilistic "$(WORKBOOK)" --vintage-time "$(VINTAGE_TIME)"
+
+validate-m5:
+	$(VENV_PYTHON) -m scripts.validate_m5_sources data/v2/source/m5
 
 frontend-check:
 	cd frontend && npm run type-check

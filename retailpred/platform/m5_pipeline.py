@@ -27,6 +27,15 @@ M5_CALENDAR_COLUMNS = tuple(
 )
 
 
+def file_sha256(path: str | Path, *, chunk_size: int = 1024 * 1024) -> str:
+    """Hash a source file without reading the entire artifact into memory."""
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        while chunk := handle.read(chunk_size):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 @dataclass(frozen=True)
 class M5SourceIds:
     calendar: str
@@ -45,7 +54,7 @@ def source_file_record(
     source_path = Path(path)
     if ingested_at.tzinfo is None or ingested_at.utcoffset() is None:
         raise ValueError("ingested_at must be timezone-aware")
-    digest = hashlib.sha256(source_path.read_bytes()).hexdigest()
+    digest = file_sha256(source_path)
     result = pd.DataFrame(
         [
             {

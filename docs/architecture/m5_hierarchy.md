@@ -62,12 +62,14 @@ This is deliberately described as diagonal-variance MinT-style reconciliation, n
 
 The official M5 results paper emphasizes that the competition evaluates 42,840 hierarchical series and that higher-level forecasts must align with the bottom level ([International Journal of Forecasting](https://doi.org/10.1016/j.ijforecast.2021.11.013)).
 
-## Remaining evidence gate
+## Source evidence gate
 
-No real M5 accuracy result is claimed yet. The repository does not contain the competition files, and RetailPRED will not silently download or republish them. A measured benchmark requires the owner to provide the accepted-license files locally:
+The owner-provided competition files are retained locally and are not committed or republished:
 
 - `sales_train_evaluation.csv`
 - `calendar.csv`
 - `sell_prices.csv`
 
-Once available, the next run will validate the official 42,840-node shape, compare unreconciled and bottom-up forecasts, fit reconciliation variances using training residuals only, and report WRMSSE by all 12 levels.
+The source gate now passes: 30,490 bottom series produce the official 42,840-node shape, and the calendar, 1,941 sales days, and 6,841,121 weekly price rows pass their structural checks. See `docs/v2/M4_M5_SOURCE.md` for hashes and measured evidence.
+
+No real M5 accuracy result is claimed yet. The next run will compare Seasonal Naive and bottom-up forecasts, fit reconciliation variances using training residuals only, and report WRMSSE by all 12 levels.

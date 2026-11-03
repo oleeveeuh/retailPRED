@@ -5,6 +5,7 @@ import pytest
 
 from retailpred.platform.m5_pipeline import (
     build_m5_gold,
+    file_sha256,
     ingest_m5_frames,
     M5SourceIds,
     normalize_m5_calendar,
@@ -101,6 +102,14 @@ def test_source_file_registration_is_content_addressed(tmp_path) -> None:
     )
     assert record.iloc[0]["source_file_id"] == record.iloc[0]["sha256"]
     assert record.iloc[0]["size_bytes"] == source.stat().st_size
+
+
+def test_file_sha256_streams_the_same_content_digest(tmp_path) -> None:
+    source = tmp_path / "source.csv"
+    source.write_bytes(b"abcdef" * 10)
+    assert file_sha256(source, chunk_size=7) == (
+        "00a3ed72821848242ab25d78d8a36ca3672347a65b02b03d3f09501ce16e38f3"
+    )
 
 
 def test_m5_replay_is_idempotent_across_all_layers(tmp_path) -> None:

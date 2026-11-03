@@ -14,7 +14,7 @@ Last updated: 2026-11-02
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 100 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 101 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
@@ -34,7 +34,7 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Ingest the licensed M5 source files, validate the official 42,840-node hierarchy, and measure bottom-up versus weighted reconciliation with WRMSSE. A durable remote MLflow run remains pending workspace credentials.
+Measure the fixed-horizon M5 Seasonal Naive baseline and bottom-up WRMSSE at all 12 levels, then compare weighted reconciliation on the identical folds. A durable remote MLflow run remains pending workspace credentials.
 
 ## Milestone 3 evidence to date
 
@@ -54,7 +54,8 @@ Ingest the licensed M5 source files, validate the official 42,840-node hierarchy
 - A nonnegative diagonal-variance weighted least-squares reconciler provides a scalable MinT-style challenger without claiming full covariance MinT.
 - Revenue weights allocate equal total weight to each level and then weight nodes by recent dollar sales.
 - WRMSSE requires fixed positive training scales and weights and rejects duplicate evaluation rows.
-- The real-data benchmark is pending the locally supplied, accepted-license M5 files; no synthetic accuracy result is presented as measured performance.
+- The accepted-license M5 files are now supplied locally. A memory-bounded gate verified their hashes, 30,490 bottom series, 1,941 observed days, 6,841,121 price rows, and the official 42,840-node hierarchy; see `M4_M5_SOURCE.md`.
+- The real-data accuracy benchmark remains pending; source validation is not presented as model performance.
 
 ## Milestone 2 evidence to date
 
