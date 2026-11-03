@@ -1,0 +1,12 @@
+resources:
+  jobs:
+    platform_bootstrap:
+      name: retailpred-platform-bootstrap
+      tasks:
+        - task_key: create_declared_delta_tables
+          existing_cluster_id: ${var.cluster_id}
+          spark_python_task:
+            python_file: ../jobs/bootstrap_tables.py
+            parameters:
+              - --catalog
+              - ${var.catalog}

@@ -8,12 +8,13 @@ Last updated: 2026-11-02
 - Implementation plan: accepted for execution.
 - Milestone 0: complete and committed locally on `v2-rebuild`; not pushed.
 - Milestone 1: complete; native-monthly foundation is the default documented and tested path.
-- Milestone 2: in progress; local contracts now cover MRTS, Census releases, FRED/ALFRED vintages, and M5 operational demand.
+- Milestone 2: platform foundation complete; local and Databricks contracts cover MRTS, Census releases, FRED/ALFRED vintages, M5 operational demand, and the dbt analytics boundary.
 
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 75 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 80 tests passed with no skips at this checkpoint.
+- dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
 - Frontend production build: passed; the existing large-chunk warning remains recorded debt.
@@ -32,7 +33,7 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Implement the equivalent declared-schema Delta tables and merge jobs for Databricks, then add dbt staging/fact/dimension/reporting models over the gold contracts.
+Begin Milestone 3 modeling with the global LightGBM challenger, retaining Seasonal Naive as the required benchmark and the rolling-origin evaluation contract as the acceptance gate.
 
 ## Milestone 2 evidence to date
 
@@ -46,6 +47,10 @@ Implement the equivalent declared-schema Delta tables and merge jobs for Databri
 - Local Parquet reads verify manifest schema version, row count, and SHA-256.
 - Quality gates cover schema, nullability, uniqueness, registered-series relationships, value ranges, freshness, continuity, and generic hierarchy reconciliation.
 - The architecture and Databricks parity contract are documented in `docs/architecture/data_platform.md`.
+- Databricks Delta DDL and immutable merge predicates are generated from the shared table specifications.
+- A Declarative Automation Bundle provides development/production targets and a platform bootstrap job without committed workspace secrets.
+- dbt staging, dimension, fact, and reporting models expose governed monthly and M5 grains for Tableau-ready analysis.
+- CI parses the dbt graph; source freshness and composite-grain tests are declared for connected-workspace execution.
 
 ## Milestone 1 evidence to date
 

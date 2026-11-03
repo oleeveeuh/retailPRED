@@ -1,0 +1,19 @@
+bundle:
+  name: retailpred
+
+include:
+  - databricks/resources/*.yml
+
+variables:
+  cluster_id:
+    description: Existing Databricks cluster ID used by the bootstrap task.
+  catalog:
+    description: Unity Catalog catalog for RetailPRED tables.
+    default: retailpred
+
+targets:
+  dev:
+    default: true
+    mode: development
+  prod:
+    mode: production

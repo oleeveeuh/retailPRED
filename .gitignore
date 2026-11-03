@@ -127,3 +127,8 @@ logs/*.log
 # Local test/dev virtualenvs
 .venv*/
 venv/
+
+# dbt local state and compiled artifacts
+warehouse/.user.yml
+warehouse/target/
+warehouse/logs/

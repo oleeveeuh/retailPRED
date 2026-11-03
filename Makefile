@@ -4,7 +4,7 @@ VENV_PYTHON := $(VENV)/bin/python
 VENV_PIP := $(VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup lock test milestone1-check platform-check fetch-mrts baseline-mrts frontend-check verify clean-generated
+.PHONY: setup lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -27,6 +27,9 @@ milestone1-check:
 platform-check:
 	$(VENV_PYTHON) -m pytest tests/platform
 
+warehouse-check:
+	.venv-dbt/bin/dbt parse --project-dir warehouse --profiles-dir warehouse
+
 fetch-mrts:
 	@test -n "$(END_YEAR)" || (echo "END_YEAR is required, e.g. make fetch-mrts END_YEAR=2025" && exit 1)
 	$(VENV_PYTHON) -m scripts.fetch_mrts_v2 --end-year $(END_YEAR)
@@ -44,5 +47,5 @@ frontend-check:
 verify: test frontend-check
 
 clean-generated:
-	rm -rf frontend/dist .pytest_cache
+	rm -rf frontend/dist .pytest_cache warehouse/target warehouse/logs warehouse/.user.yml
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +
