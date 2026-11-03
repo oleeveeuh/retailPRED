@@ -57,6 +57,7 @@ data/validation_metrics.json
 data/v2/
 mlruns/
 mlartifacts/
+*.mlflow.db
 models/latest_metrics.json
 models/model_latest.pkl
 models/backend_ml

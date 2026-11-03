@@ -25,7 +25,7 @@ from forecasting.models.global_lightgbm import GlobalLightGBM
 from forecasting.models.seasonal_naive import SeasonalNaive
 from forecasting.registry import MRTS_SERIES
 from forecasting.promotion import PromotionPolicy
-from forecasting.tracking.mlflow import log_backtest_run
+from forecasting.tracking.mlflow import log_artifact_to_run, log_backtest_run
 
 
 def parse_args() -> argparse.Namespace:
@@ -146,7 +146,7 @@ def main() -> None:
     args.summary.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
     if args.tracking_uri:
         model_metadata = GlobalLightGBM(n_estimators=args.n_estimators).metadata()
-        summary["mlflow_run_id"] = log_backtest_run(
+        summary["mlflow"] = log_backtest_run(
             challenger,
             experiment_name=args.experiment_name,
             run_name="global-lightgbm",
@@ -155,9 +155,15 @@ def main() -> None:
             code_revision=summary["code_revision"],
             model_metadata=model_metadata,
             runtime_metadata=runtime,
-            artifacts=(args.output, args.summary),
+            artifacts=(args.output,),
         )
         args.summary.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
+        log_artifact_to_run(
+            run_id=summary["mlflow"]["run_id"],
+            tracking_uri=args.tracking_uri,
+            artifact=args.summary,
+            artifact_path="evidence",
+        )
     print(json.dumps(summary, indent=2, sort_keys=True))
 
 

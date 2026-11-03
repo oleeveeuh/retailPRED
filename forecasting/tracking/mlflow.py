@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -22,7 +23,7 @@ def log_backtest_run(
     model_metadata: dict[str, Any],
     runtime_metadata: dict[str, Any],
     artifacts: tuple[Path, ...] = (),
-) -> str:
+) -> dict[str, str]:
     """Log immutable inputs, parameters, metrics, runtime, and artifacts."""
     try:
         import mlflow
@@ -61,12 +62,33 @@ def log_backtest_run(
             name="rolling_origin_folds",
         )
         mlflow.log_input(dataset, context="evaluation")
-        metadata_path = Path("data/v2/experiment_runtime.json")
-        metadata_path.parent.mkdir(parents=True, exist_ok=True)
-        metadata_path.write_text(
-            json.dumps(runtime_metadata, indent=2, sort_keys=True) + "\n"
-        )
-        mlflow.log_artifact(str(metadata_path), artifact_path="metadata")
+        with tempfile.TemporaryDirectory(prefix="retailpred-mlflow-") as directory:
+            metadata_path = Path(directory) / "experiment_runtime.json"
+            metadata_path.write_text(
+                json.dumps(runtime_metadata, indent=2, sort_keys=True) + "\n"
+            )
+            mlflow.log_artifact(str(metadata_path), artifact_path="metadata")
         for artifact in artifacts:
             mlflow.log_artifact(str(artifact), artifact_path="evidence")
-        return run.info.run_id
+        return {
+            "run_id": run.info.run_id,
+            "experiment_id": run.info.experiment_id,
+            "artifact_uri": run.info.artifact_uri,
+            "tracking_uri": tracking_uri,
+        }
+
+
+def log_artifact_to_run(
+    *, run_id: str, tracking_uri: str, artifact: Path, artifact_path: str
+) -> None:
+    """Attach an artifact created after the fluent run context has closed."""
+    try:
+        import mlflow
+    except ImportError as error:
+        raise RuntimeError(
+            "MLflow tracking requires: pip install -r requirements-experiment.txt"
+        ) from error
+    mlflow.set_tracking_uri(tracking_uri)
+    mlflow.MlflowClient().log_artifact(
+        run_id, str(artifact), artifact_path=artifact_path
+    )
