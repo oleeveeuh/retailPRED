@@ -8,6 +8,7 @@ from forecasting.reconciliation.m5 import (
     M5_LEVELS,
     WeightedLeastSquaresReconciler,
     m5_revenue_weights,
+    reconcile_m5_upper_forecasts,
     weighted_rmsse,
 )
 
@@ -75,6 +76,28 @@ def test_upper_reconciliation_scales_bottom_to_coherent_store_departments() -> N
         full[: len(upper.nodes)], reconciled, rtol=1e-8, atol=1e-8
     )
     assert (full >= 0).all()
+
+
+def test_validation_weighted_upper_reconciliation_returns_full_coherence() -> None:
+    hierarchy = M5Hierarchy.from_bottom(_bottom())
+    upper = M5UpperHierarchy.from_hierarchy(hierarchy)
+    bottom_validation = np.array([[1.0], [2.0], [3.0], [4.0]])
+    bottom_evaluation = np.array([[2.0], [3.0], [4.0], [5.0]])
+    upper_actual = (upper.summing_matrix @ bottom_validation) * 0.95
+    aggregate_validation = upper_actual * 1.05
+    aggregate_evaluation = (upper.summing_matrix @ bottom_evaluation) * 1.05
+    result = reconcile_m5_upper_forecasts(
+        upper,
+        bottom_validation_forecast=bottom_validation,
+        bottom_evaluation_forecast=bottom_evaluation,
+        aggregate_validation_forecast=aggregate_validation,
+        aggregate_evaluation_forecast=aggregate_evaluation,
+        upper_validation_actual=upper_actual,
+        fallback_shares=np.ones(4),
+    )
+    assert result.base_coherence_max_abs > 0
+    assert result.reconciled_coherence_max_abs < 1e-8
+    assert result.reconciled.shape == (len(hierarchy.nodes), 1)
 
 
 def test_m5_revenue_weights_allocate_one_twelfth_to_each_level() -> None:

@@ -345,6 +345,108 @@ class M5UpperHierarchy:
         return self.full_hierarchy.summing_matrix @ adjusted
 
 
+@dataclass(frozen=True)
+class M5ReconciliationResult:
+    bottom_up: np.ndarray
+    incoherent_base: np.ndarray
+    reconciled: np.ndarray
+    aggregate_blend_weights: pd.Series
+    residual_variances: pd.Series
+    base_coherence_max_abs: float
+    reconciled_coherence_max_abs: float
+
+
+def reconcile_m5_upper_forecasts(
+    upper: M5UpperHierarchy,
+    *,
+    bottom_validation_forecast: np.ndarray,
+    bottom_evaluation_forecast: np.ndarray,
+    aggregate_validation_forecast: np.ndarray,
+    aggregate_evaluation_forecast: np.ndarray,
+    upper_validation_actual: np.ndarray,
+    fallback_shares: np.ndarray,
+) -> M5ReconciliationResult:
+    """Fit level blends and WLS variances on validation, then reconcile evaluation."""
+    hierarchy = upper.full_hierarchy
+    bottom_validation = np.asarray(bottom_validation_forecast, dtype=np.float64)
+    bottom_evaluation = np.asarray(bottom_evaluation_forecast, dtype=np.float64)
+    aggregate_validation = np.asarray(aggregate_validation_forecast, dtype=np.float64)
+    aggregate_evaluation = np.asarray(aggregate_evaluation_forecast, dtype=np.float64)
+    validation_actual = np.asarray(upper_validation_actual, dtype=np.float64)
+    horizon = bottom_evaluation.shape[1]
+    if bottom_validation.shape != (len(hierarchy.bottom), horizon):
+        raise ValueError("bottom validation forecast has invalid shape")
+    if bottom_evaluation.shape != (len(hierarchy.bottom), horizon):
+        raise ValueError("bottom evaluation forecast has invalid shape")
+    upper_shape = (len(upper.nodes), horizon)
+    if any(
+        values.shape != upper_shape
+        for values in (aggregate_validation, aggregate_evaluation, validation_actual)
+    ):
+        raise ValueError("aggregate forecasts and validation actuals must align")
+
+    bottom_up_validation = hierarchy.summing_matrix @ bottom_validation
+    bottom_up_evaluation = hierarchy.summing_matrix @ bottom_evaluation
+    upper_count = len(upper.nodes)
+    upper_bottom_up_validation = bottom_up_validation[:upper_count]
+    upper_bottom_up_evaluation = bottom_up_evaluation[:upper_count]
+    level_values = upper.nodes["level"].to_numpy()
+    blend_weights = np.empty(upper_count, dtype=np.float64)
+    for level in range(1, 10):
+        mask = level_values == level
+        aggregate_mse = np.mean(
+            (aggregate_validation[mask] - validation_actual[mask]) ** 2
+        )
+        bottom_up_mse = np.mean(
+            (upper_bottom_up_validation[mask] - validation_actual[mask]) ** 2
+        )
+        denominator = aggregate_mse + bottom_up_mse
+        blend_weights[mask] = bottom_up_mse / denominator if denominator > 0 else 0.5
+    validation_base = (
+        blend_weights[:, None] * aggregate_validation
+        + (1.0 - blend_weights[:, None]) * upper_bottom_up_validation
+    )
+    evaluation_base = (
+        blend_weights[:, None] * aggregate_evaluation
+        + (1.0 - blend_weights[:, None]) * upper_bottom_up_evaluation
+    )
+    residual_variance = np.mean((validation_base - validation_actual) ** 2, axis=1)
+    for level in range(1, 10):
+        mask = level_values == level
+        level_median = float(np.median(residual_variance[mask]))
+        residual_variance[mask] = (
+            0.5 * residual_variance[mask] + 0.5 * level_median
+        )
+    floor = max(float(np.median(residual_variance)) * 1e-6, 1e-6)
+    residual_variance = np.maximum(residual_variance, floor)
+    variances = pd.Series(residual_variance, index=upper.nodes["node_id"])
+    reconciled_upper = upper.reconcile(evaluation_base, variances)
+    reconciled_full = upper.disaggregate_to_bottom(
+        reconciled_upper,
+        bottom_evaluation,
+        fallback_shares=fallback_shares,
+    )
+    incoherent_full = bottom_up_evaluation.copy()
+    incoherent_full[:upper_count] = evaluation_base
+    bottom_mask = hierarchy.nodes["level"].to_numpy() == 12
+    coherent_check = hierarchy.summing_matrix @ reconciled_full[bottom_mask]
+    return M5ReconciliationResult(
+        bottom_up=bottom_up_evaluation,
+        incoherent_base=incoherent_full,
+        reconciled=reconciled_full,
+        aggregate_blend_weights=pd.Series(
+            blend_weights, index=upper.nodes["node_id"], name="aggregate_blend_weight"
+        ),
+        residual_variances=variances,
+        base_coherence_max_abs=float(
+            np.max(np.abs(incoherent_full - bottom_up_evaluation))
+        ),
+        reconciled_coherence_max_abs=float(
+            np.max(np.abs(reconciled_full - coherent_check))
+        ),
+    )
+
+
 class WeightedLeastSquaresReconciler:
     """Diagonal-variance MinT-style projection solved in sparse form."""
 

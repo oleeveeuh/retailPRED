@@ -7,7 +7,7 @@ EXPERIMENT_PYTHON := $(EXPERIMENT_VENV)/bin/python
 EXPERIMENT_PIP := $(EXPERIMENT_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup setup-experiment lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 frontend-check verify clean-generated
+.PHONY: setup setup-experiment lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -78,6 +78,9 @@ rolling-m5:
 
 reconcile-m5:
 	$(VENV_PYTHON) -m scripts.run_m5_reconciliation data/v2/source/m5
+
+rolling-reconcile-m5:
+	$(VENV_PYTHON) -m scripts.run_m5_rolling_reconciliation data/v2/source/m5
 
 frontend-check:
 	cd frontend && npm run type-check
