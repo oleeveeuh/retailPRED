@@ -25,6 +25,7 @@ The original project expanded monthly totals into synthetic weekly/daily targets
 - **Point and probabilistic metrics:** WAPE, MAE, RMSSE, bias, pinball loss, weighted interval score, coverage, and interval width.
 - **Measured Seasonal Naive baseline:** 5,324 category/origin/horizon rows on the Census 2026 revision vintage; mean category WAPE 6.35%.
 - **Versioned platform foundation:** immutable MRTS and FRED/ALFRED extracts, versioned silver observations, as-of gold snapshots, idempotent merges, and fail-closed quality gates.
+- **Separate M5 operational contract:** native daily item/store units, weekly prices, calendar events, SNAP flags, and retail hierarchy—without pretending they are MRTS features.
 
 See the [Milestone 1 baseline](docs/v2/M1_BASELINE.md), [leakage report](docs/v2/LEAKAGE_REPORT.md), [data-platform architecture](docs/architecture/data_platform.md), and [implementation status](docs/v2/STATUS.md).
 

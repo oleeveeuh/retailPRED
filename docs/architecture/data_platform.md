@@ -49,6 +49,24 @@ flowchart LR
 - Adds governed series name, Census category code, unit, and seasonal-adjustment metadata.
 - Consumers: forecasting datasets and BI. Training must not read bronze or bypass silver quality checks.
 
+### Census release catalog `retail_releases`
+
+- Grain: one actual product release for an observation month.
+- Distinguishes advance MARTS values, revised MRTS values, and annual revisions.
+- Stores the timezone-aware publication time so observations can be joined only after they became available.
+- Future scheduled dates are not mislabeled as completed releases. The normalized catalog is sourced from Census [retail release schedules](https://www.census.gov/retail/release_schedule.html) and historical release files.
+
+### M5 operational demand
+
+M5 is a distinct daily store/item use case, not an upsampled version of MRTS. The source contract follows the official [M5 competition data](https://www.kaggle.com/competitions/m5-forecasting-accuracy/data): daily wide sales, a day/date calendar, and store/item weekly prices.
+
+- Bronze `source_files` registers each local competition file by SHA-256, size, source URL, and license scope. The competition data itself is never committed.
+- Silver `m5_daily_sales` melts `d_1…d_n` to one item/store/day fact and requires finite, non-negative whole-unit sales.
+- Silver `m5_calendar` governs day/date/week relationships, events, and state SNAP flags.
+- Silver `m5_weekly_prices` requires one positive price per store/item/week.
+- Gold `m5_demand` joins sales, calendar, and price provenance while retaining item, department, category, store, and state identifiers.
+- Missing prices remain explicit nulls; they are not imputed during ingestion.
+
 ## Merge and schema policies
 
 - Exact release replays are idempotent.
@@ -69,6 +87,7 @@ flowchart LR
 | Freshness against declared as-of threshold | Silver | Stop downstream training |
 | Monthly continuity | Gold | Stop snapshot publication |
 | Parent/child reconciliation | Hierarchical gold tables | Stop publication outside tolerance |
+| M5 calendar, price, and hierarchy relationships | M5 silver/gold | Stop publication |
 | Manifest hash and row count | Local storage | Stop read |
 
 ## Point-in-time behavior
@@ -79,4 +98,4 @@ An as-of query filters out vintages later than the requested timestamp, then sel
 
 The local reference implementation writes Parquet plus integrity manifests under ignored `data/v2/lakehouse/`. Databricks will map bronze, silver, and gold to Delta tables but reuse the logical specifications and fixture-driven contract tests. `scripts/run_local_mrts_pipeline.py` is the local orchestration reference; Databricks Workflows remains the selected production orchestrator unless a real portability requirement changes decision D007.
 
-An SCD2 category dimension is intentionally deferred. The registry currently has no implemented, evidence-backed category-history change requiring SCD2 semantics.
+An SCD2 category dimension is intentionally deferred. Neither the current Census registry nor the fixed M5 competition hierarchy has an implemented, evidence-backed category-history change requiring SCD2 semantics.

@@ -124,3 +124,135 @@ GOLD_MONTHLY = TableSpec(
     key=("series_id", "observation_time"),
     nullable=("release_time",),
 )
+
+
+RETAIL_RELEASES = TableSpec(
+    name="retail_releases",
+    layer="silver",
+    schema_version=1,
+    columns=(
+        "release_id",
+        "product",
+        "observation_month",
+        "release_time",
+        "release_kind",
+        "source_url",
+        "ingested_at",
+    ),
+    key=("release_id",),
+)
+
+
+BRONZE_SOURCE_FILES = TableSpec(
+    name="source_files",
+    layer="bronze",
+    schema_version=1,
+    columns=(
+        "source_file_id",
+        "dataset",
+        "filename",
+        "sha256",
+        "size_bytes",
+        "source_url",
+        "license_scope",
+        "ingested_at",
+    ),
+    key=("source_file_id",),
+)
+
+
+SILVER_M5_CALENDAR = TableSpec(
+    name="m5_calendar",
+    layer="silver",
+    schema_version=1,
+    columns=(
+        "d",
+        "date",
+        "wm_yr_wk",
+        "weekday",
+        "wday",
+        "month",
+        "year",
+        "event_name_1",
+        "event_type_1",
+        "event_name_2",
+        "event_type_2",
+        "snap_CA",
+        "snap_TX",
+        "snap_WI",
+        "source_file_id",
+    ),
+    key=("d",),
+    nullable=("event_name_1", "event_type_1", "event_name_2", "event_type_2"),
+)
+
+
+SILVER_M5_SALES = TableSpec(
+    name="m5_daily_sales",
+    layer="silver",
+    schema_version=1,
+    columns=(
+        "series_id",
+        "date",
+        "d",
+        "units",
+        "item_id",
+        "dept_id",
+        "cat_id",
+        "store_id",
+        "state_id",
+        "source_file_id",
+    ),
+    key=("series_id", "date"),
+)
+
+
+SILVER_M5_PRICES = TableSpec(
+    name="m5_weekly_prices",
+    layer="silver",
+    schema_version=1,
+    columns=("store_id", "item_id", "wm_yr_wk", "sell_price", "source_file_id"),
+    key=("store_id", "item_id", "wm_yr_wk"),
+)
+
+
+GOLD_M5_DEMAND = TableSpec(
+    name="m5_demand",
+    layer="gold",
+    schema_version=1,
+    columns=(
+        "series_id",
+        "date",
+        "units",
+        "sell_price",
+        "item_id",
+        "dept_id",
+        "cat_id",
+        "store_id",
+        "state_id",
+        "wm_yr_wk",
+        "weekday",
+        "wday",
+        "month",
+        "year",
+        "event_name_1",
+        "event_type_1",
+        "event_name_2",
+        "event_type_2",
+        "snap_CA",
+        "snap_TX",
+        "snap_WI",
+        "sales_source_file_id",
+        "calendar_source_file_id",
+        "price_source_file_id",
+    ),
+    key=("series_id", "date"),
+    nullable=(
+        "sell_price",
+        "event_name_1",
+        "event_type_1",
+        "event_name_2",
+        "event_type_2",
+        "price_source_file_id",
+    ),
+)
