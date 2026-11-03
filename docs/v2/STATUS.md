@@ -14,7 +14,7 @@ Last updated: 2026-11-02
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 113 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 114 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
@@ -34,7 +34,7 @@ Last updated: 2026-11-02
 
 ## Next checkpoint
 
-Run the full aggregate-model and weighted-reconciliation pipeline across earlier M5 rolling origins before deciding whether to replace the bottom-up LightGBM champion. A durable remote MLflow run remains pending workspace credentials.
+Retain bottom-up global LightGBM as the M5 point champion and begin the next predeclared model-suite gate without retuning reconciliation on its evaluation folds. A durable remote MLflow run remains pending workspace credentials.
 
 ## Milestone 3 evidence to date
 
@@ -60,7 +60,8 @@ Run the full aggregate-model and weighted-reconciliation pipeline across earlier
 - A direct pooled-horizon global LightGBM scores 0.813301 WRMSSE, a 6.48% overall improvement, with 15.21–23.37% gains across item, item/state, and item/store levels; see `M4_M5_LIGHTGBM.md`.
 - LightGBM beats Seasonal Naive in all five rolling windows: worst improvement 6.27%, median 10.96%, and mean 13.77%. It is promoted as the current M5 point champion; see `M4_M5_STABILITY.md`.
 - Independent level 1–9 forecasts plus nonnegative diagonal-variance WLS score 0.768502 WRMSSE, improving the bottom-up champion by 5.51% and every hierarchy level while restoring exact coherence; see `M4_M5_RECONCILIATION.md`.
-- Reconciliation remains a challenger until its complete training-only blend and variance procedure passes the rolling-origin gate.
+- Reconciliation remains a challenger after its complete training-only blend and variance procedure failed the strict rolling-origin gate.
+- The reconciliation audit improves four of five windows and mean WRMSSE by 4.79%, but its -1.82% worst fold fails the strict all-fold gate. Bottom-up LightGBM remains champion; see `M4_M5_RECONCILIATION_STABILITY.md`.
 
 ## Milestone 2 evidence to date
 

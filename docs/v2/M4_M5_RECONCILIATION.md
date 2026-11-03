@@ -1,7 +1,7 @@
 # M5 hierarchy-aware reconciliation challenger
 
 Date: 2026-11-02  
-Status: measured challenger; rolling-origin promotion gate pending
+Status: measured challenger; strict rolling-origin promotion gate not passed
 
 ## Result
 
@@ -69,6 +69,7 @@ Runtime: 28.72 seconds.
 
 ## Promotion decision
 
-The one-window result passes numerical, coherence, and per-level gates, but it is
-not promoted yet. The next checkpoint repeats the entire aggregate-model,
-variance-estimation, and reconciliation process across earlier rolling origins.
+The one-window result passes numerical, coherence, and per-level gates. The
+subsequent rolling audit improves four of five windows but regresses by 1.82% in
+the earliest fold, so it does not pass the all-fold promotion standard. See
+`docs/v2/M4_M5_RECONCILIATION_STABILITY.md`.
