@@ -11,15 +11,15 @@ Last updated: 2026-11-03
 - Milestone 2: platform foundation complete; local and Databricks contracts cover MRTS, Census releases, FRED/ALFRED vintages, M5 operational demand, and the dbt analytics boundary.
 - Milestone 3: locally complete except for a credential-dependent durable remote MLflow run; the common protocol, controlled model suite, evaluator, promotion policy, and local tracking proof are implemented.
 - Milestone 4: complete; M5 point, stability, reconciliation, neural, foundation-model, and probabilistic gates are measured, and MRTS regime behavior is documented.
-- Full-roadmap completion estimate: approximately 65%. Data-science/modeling completion: complete for the accepted local scope. Serving, governed BI, deployment/observability, and portfolio delivery remain the largest blocks.
+- Full-roadmap completion estimate: approximately 70%. Data-science/modeling completion: complete for the accepted local scope. Milestone 5 is approximately 45% complete; governed BI, remaining legacy isolation, deployment/observability, and portfolio delivery remain.
 
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 133 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 134 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
-- Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
+- Frontend lint: blocking gate passes with 194 warnings, below the frozen 215-warning legacy cap.
 - Frontend production build: passed; the existing large-chunk warning remains recorded debt.
 - Production npm dependency audit: 0 known vulnerabilities for root and frontend dependencies; remaining audit findings are development-tool transitive dependencies requiring later breaking upgrades.
 - API compatibility fix: `/api/models` now normalizes both legacy metric payload formats.
@@ -36,7 +36,7 @@ Last updated: 2026-11-03
 
 ## Next checkpoint
 
-The fail-closed `/api/v2` model portfolio, demo catalog, and forecast contract are implemented with deterministic historical evidence and typed unavailable states. Next migrate the React forecast surface away from simulated predictions, then publish governed BI extracts. A durable remote MLflow run remains pending workspace credentials.
+The fail-closed `/api/v2` contract and primary React forecast surface now share deterministic historical evidence, explicit demo labeling, and typed unavailable states. Next isolate remaining legacy mock/scenario surfaces and publish governed BI extracts. A durable remote MLflow run remains pending workspace credentials.
 
 ## Milestone 5 evidence to date
 
@@ -45,6 +45,8 @@ The fail-closed `/api/v2` model portfolio, demo catalog, and forecast contract a
 - One deterministic historical M5 fixture proves the success contract without claiming live inference.
 - Every successful point includes origin, horizon, target date, model version/status, data cutoff/status, demo label, code revision, source hash, and evidence reference.
 - Contract tests cover successful demo inference plus unavailable, stale-data, incompatible-model, and uncalibrated-uncertainty responses; see `M5_SERVING_CONTRACT.md`.
+- The React forecast page now consumes the v2 contract, exposes only the frozen M5 model and fixture, reports provenance, compares evaluation actuals, and removes randomized predictions, retired model choices, invented confidence bands, and unsupported explanations.
+- A parity test keeps backend and hosted static fixtures identical.
 
 ## Milestone 3 evidence to date
 

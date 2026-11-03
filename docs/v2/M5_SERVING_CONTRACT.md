@@ -2,7 +2,7 @@
 
 Date: 2026-11-03
 
-Status: backend foundation implemented
+Status: backend contract and primary React forecast surface implemented
 
 ## Outcome
 
@@ -62,11 +62,32 @@ explicit demo labeling, production unavailability, stale-data rejection,
 retired/incompatible model rejection, uncalibrated uncertainty rejection, and
 MRTS demo unavailability. The complete Python suite passes with no skips.
 
+## React forecast surface
+
+The primary forecast page now consumes the same v2 contract. In hosted demo
+mode it reads a static copy of the backend fixture; a parity test prevents the
+two copies from drifting. With a backend configured it calls
+`POST /api/v2/forecasts` directly.
+
+The page:
+
+- permanently displays a historical-offline-demo warning;
+- exposes only the measured M5 LightGBM decision;
+- fixes the series and origin to the cataloged fixture;
+- limits the horizon to the four evidence-backed points;
+- reports unit demand rather than incorrectly formatting M5 values as dollars;
+- compares forecast with realized evaluation actuals;
+- displays model status, data cutoff, code revision, evidence, and uncertainty
+  status;
+- omits confidence bands and SHAP claims that are not available under the v2
+  contract.
+
+Random model metrics were removed from the demo model list. Type-check, lint,
+and production build pass; the legacy warning count falls from the frozen cap
+of 215 to 194.
+
 ## Remaining Milestone 5 work
 
-- Migrate the React forecast page from the legacy API and simulated prediction
-  generator to `/api/v2`.
-- Add a permanent visible historical-demo banner and unavailable-state panels.
 - Retire or isolate legacy mutation, manual validation, and mock scenario routes.
 - Publish governed Tableau-ready forecast, accuracy, uncertainty, hierarchy,
   and freshness extracts from the same contracts.
