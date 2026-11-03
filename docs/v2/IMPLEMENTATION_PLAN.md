@@ -112,7 +112,7 @@ Status: complete (2026-11-02)
 
 ## Milestone 2: Versioned data platform
 
-Status: in progress (local contract foundation started 2026-11-02)
+Status: platform foundation complete (2026-11-02)
 
 ### Work
 
@@ -134,6 +134,8 @@ Status: in progress (local contract foundation started 2026-11-02)
 - The local/sample pipeline and Databricks pipeline use the same logical contracts.
 
 ## Milestone 3: Unified experiment and model pipeline
+
+Status: in progress (global LightGBM development benchmark measured 2026-11-02)
 
 ### Work
 
@@ -252,4 +254,4 @@ Implementation can proceed locally through Milestone 1 without external accounts
 
 ## Immediate next action
 
-Execute Milestone 0, then begin Milestone 1 with the canonical monthly data and evaluation contracts. Do not begin Spark, MLflow, or neural-model integration until the temporal-integrity suite and monthly Seasonal Naive baseline are green.
+Connect the implemented experiment adapter to a configured MLflow server and add calibrated probabilistic evaluation. Treat the measured LightGBM result as development evidence until point-in-time vintages and untouched evaluation support final promotion.

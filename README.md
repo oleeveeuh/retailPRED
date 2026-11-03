@@ -24,11 +24,12 @@ The original project expanded monthly totals into synthetic weekly/daily targets
 - **Rolling-origin evaluation** with expanding or sliding windows and recorded origin, horizon, cutoff, vintage, model version, and actual source.
 - **Point and probabilistic metrics:** WAPE, MAE, RMSSE, bias, pinball loss, weighted interval score, coverage, and interval width.
 - **Measured Seasonal Naive baseline:** 5,324 category/origin/horizon rows on the Census 2026 revision vintage; mean category WAPE 6.35%.
+- **Measured global LightGBM challenger:** the same 5,324 folds, with mean category WAPE 4.49% and improvements in all 11 categories; final promotion awaits untouched point-in-time evidence.
 - **Versioned platform foundation:** immutable MRTS and FRED/ALFRED extracts, versioned silver observations, as-of gold snapshots, idempotent merges, and fail-closed quality gates.
 - **Separate M5 operational contract:** native daily item/store units, weekly prices, calendar events, SNAP flags, and retail hierarchy—without pretending they are MRTS features.
 - **Databricks + dbt analytics layer:** declared-schema Delta tables, immutable merge safeguards, bundle-managed bootstrap deployment, tested warehouse models, and a Tableau-ready reporting boundary.
 
-See the [Milestone 1 baseline](docs/v2/M1_BASELINE.md), [leakage report](docs/v2/LEAKAGE_REPORT.md), [data-platform architecture](docs/architecture/data_platform.md), and [implementation status](docs/v2/STATUS.md).
+See the [Milestone 1 baseline](docs/v2/M1_BASELINE.md), [LightGBM development benchmark](docs/v2/M3_LIGHTGBM.md), [leakage report](docs/v2/LEAKAGE_REPORT.md), [data-platform architecture](docs/architecture/data_platform.md), and [implementation status](docs/v2/STATUS.md).
 
 ## Architecture
 
@@ -47,7 +48,7 @@ flowchart LR
 
     subgraph models [Model progression]
         SNAIVE[Seasonal Naive<br/>measured baseline]
-        LGBM[Global LightGBM<br/>next milestone]
+        LGBM[Global LightGBM<br/>measured challenger]
         MODERN[NHITS + Chronos-2<br/>challengers]
     end
 
@@ -188,6 +189,11 @@ make fetch-mrts END_YEAR=2025
 make baseline-mrts \
   WORKBOOK=/absolute/path/to/benchsales26.xlsx \
   VINTAGE_TIME=2026-11-02T00:00:00+00:00
+
+# Compare LightGBM and Seasonal Naive on identical folds
+make benchmark-mrts \
+  WORKBOOK=/absolute/path/to/benchsales26.xlsx \
+  VINTAGE_TIME=2026-11-02T00:00:00+00:00
 ```
 
 The historical v1 model scripts remain in `backend/ml/` and `train.py`, but are not valid v2 retraining paths because they consume the frozen interpolated feature CSVs.
@@ -235,14 +241,14 @@ Copy [`project_root/.env.example`](project_root/.env.example) to `project_root/.
 
 - **Revision-vintage baseline:** the current v2 benchmark uses a 2026 revised history, not the values known at each historical forecast origin.
 - **Small macro dataset:** 11 correlated national aggregate series are insufficient evidence for store/SKU demand behavior; M5 will be a separate operational use case.
-- **Baseline only:** global LightGBM, NHITS, and Chronos-2 are planned but have not yet earned measured v2 results.
+- **Development benchmark:** global LightGBM has measured revised-history results, but no model has earned final promotion on untouched point-in-time evidence; NHITS and Chronos-2 remain unevaluated.
 - **Serving integration pending:** the dashboard and API still expose preserved v1 artifacts and must not be described as the v2 model surface.
 - **Historical v1 caveats:** weekly-replicated actuals, inclusive rolling windows, and heuristic neural-model labels apply to the frozen table above, not to v2.
 
 ## Future work
 
 - Execute the Delta/bootstrap and dbt projects in a configured Databricks workspace, then connect the reporting schema to Tableau.
-- Add a global LightGBM champion and compare it on the exact Seasonal Naive folds.
+- Run the global LightGBM experiment against a configured MLflow server and real-time vintages.
 - Evaluate NHITS and Chronos-2 only after the classical baseline and data contracts are stable.
 - Add calibrated P10/P50/P90 forecasts and hierarchy-aware M5 evaluation.
 - Replace the v1 serving path with model-registry-backed v2 forecasts and provenance.
