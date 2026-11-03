@@ -51,3 +51,23 @@ def test_temporal_split_is_disjoint_by_target_time() -> None:
         temporal_calibration_split(
             frame, calibration_end="2022-01-01", evaluation_start="2022-01-01"
         )
+
+
+def test_multiplicative_calibration_can_contract_overwide_intervals() -> None:
+    calibration = pd.DataFrame(
+        {
+            "series_id": ["a"] * 5,
+            "horizon": [1] * 5,
+            "actual": [100.0] * 5,
+            "q_10": [80.0] * 5,
+            "q_90": [120.0] * 5,
+        }
+    )
+    calibrator = ConformalIntervalCalibrator(
+        alpha=0.2, group_columns=("series_id", "horizon")
+    ).fit(calibration, lower_column="q_10", upper_column="q_90")
+    assert calibrator.adjustments[("a", 1)] < 0
+    result = calibrator.transform(
+        calibration, lower_column="q_10", upper_column="q_90"
+    )
+    assert (result["upper_calibrated"] - result["lower_calibrated"]).mean() < 40

@@ -72,7 +72,10 @@ class ConformalIntervalCalibrator:
                 scores = np.maximum(lower - actual, actual - upper)
             rank = min(len(scores), int(np.ceil((len(scores) + 1) * (1 - self.alpha))))
             adjustment = float(np.sort(scores)[rank - 1])
-            self.adjustments[key] = max(0.0, adjustment)
+            # Split conformal scores may be negative when native intervals are
+            # overly conservative; retaining the sign allows calibrated
+            # intervals to contract as well as expand.
+            self.adjustments[key] = adjustment
         return self
 
     def transform(
@@ -101,6 +104,8 @@ class ConformalIntervalCalibrator:
         else:
             result[output_lower] = result[lower_column] - corrections
             result[output_upper] = result[upper_column] + corrections
+        if (result[output_lower] > result[output_upper]).any():
+            raise ValueError("conformal adjustment produced crossing intervals")
         return result
 
 

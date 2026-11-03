@@ -129,7 +129,9 @@ def main() -> None:
         evaluation_start=args.evaluation_start,
     )
     calibrator = ConformalIntervalCalibrator(
-        alpha=0.2, group_columns=("horizon",), method="multiplicative"
+        alpha=0.2,
+        group_columns=("series_id", "horizon"),
+        method="multiplicative",
     ).fit(calibration, lower_column="q_10", upper_column="q_90")
     evaluated = calibrator.transform(
         evaluation,
@@ -158,9 +160,10 @@ def main() -> None:
         "calibration": {
             "target_end": args.calibration_end,
             "rows": len(calibration),
-            "method": "multiplicative_cqr_by_horizon",
+            "method": "multiplicative_cqr_by_series_and_horizon",
             "adjustments": {
-                str(key[0]): value for key, value in calibrator.adjustments.items()
+                f"{key[0]}|h{key[1]}": value
+                for key, value in calibrator.adjustments.items()
             },
         },
         "evaluation": {
