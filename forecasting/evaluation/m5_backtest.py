@@ -63,6 +63,7 @@ def hierarchy_rmsse_scales(
     bottom_history: np.ndarray,
     *,
     block_size: int = 64,
+    require_positive: bool = True,
 ) -> pd.Series:
     """Compute naive-one MSE scales after each node's first non-zero sale."""
     history = np.asarray(bottom_history, dtype=np.float64)
@@ -96,7 +97,7 @@ def hierarchy_rmsse_scales(
         out=np.full(node_count, np.nan, dtype=np.float64),
         where=difference_counts > 0,
     )
-    if not np.isfinite(scales).all() or (scales <= 0).any():
+    if require_positive and (not np.isfinite(scales).all() or (scales <= 0).any()):
         invalid = hierarchy.nodes.loc[
             ~np.isfinite(scales) | (scales <= 0), "node_id"
         ].tolist()
@@ -139,21 +140,32 @@ def score_hierarchical_forecast(
     node_ids = hierarchy.nodes["node_id"]
     aligned_scales = scales.reindex(node_ids)
     aligned_weights = weights.reindex(node_ids)
-    if aligned_scales.isna().any() or (aligned_scales <= 0).any():
-        raise ValueError("every node requires a positive scale")
     if aligned_weights.isna().any() or (aligned_weights < 0).any():
         raise ValueError("every node requires a non-negative weight")
     if not np.isclose(aligned_weights.sum(), 1.0):
         raise ValueError("M5 weights must sum to one across all levels")
+    invalid_scale = aligned_scales.isna() | (aligned_scales <= 0)
+    if (aligned_weights[invalid_scale] > 0).any():
+        raise ValueError("every positively weighted node requires a positive scale")
 
     rmse = np.sqrt(np.mean((actual_values - predicted_values) ** 2, axis=1))
-    rmsse = rmse / np.sqrt(aligned_scales.to_numpy())
+    scale_values = aligned_scales.to_numpy(dtype=float)
+    rmsse = np.divide(
+        rmse,
+        np.sqrt(scale_values),
+        out=np.full_like(rmse, np.nan),
+        where=np.isfinite(scale_values) & (scale_values > 0),
+    )
     per_series = hierarchy.nodes[["node_id", "level", "level_name"]].copy()
     per_series["scale"] = aligned_scales.to_numpy()
     per_series["weight"] = aligned_weights.to_numpy()
     per_series["rmse"] = rmse
     per_series["rmsse"] = rmsse
-    per_series["weighted_rmsse"] = per_series["weight"] * per_series["rmsse"]
+    per_series["weighted_rmsse"] = np.where(
+        per_series["weight"] == 0,
+        0.0,
+        per_series["weight"] * per_series["rmsse"],
+    )
     by_level = (
         per_series.groupby(["level", "level_name"], as_index=False)
         .agg(

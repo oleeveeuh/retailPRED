@@ -156,7 +156,9 @@ def main() -> None:
             :,
             fold.evaluation_origin_index + 1 : fold.evaluation_origin_index + 29,
         ]
-        scales = hierarchy_rmsse_scales(hierarchy, history)
+        scales = hierarchy_rmsse_scales(
+            hierarchy, history, require_positive=False
+        )
         weight_start = fold.evaluation_origin_index - 27
         weight_days = [_day(index) for index in range(weight_start, fold.evaluation_origin_index + 1)]
         revenue = recent_bottom_revenue(

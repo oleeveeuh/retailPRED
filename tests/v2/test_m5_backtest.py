@@ -79,3 +79,32 @@ def test_rolling_folds_keep_training_validation_and_evaluation_disjoint() -> Non
                 strict=False,
             )
         )
+
+
+def test_zero_weight_prelaunch_node_may_have_undefined_scale() -> None:
+    hierarchy = _hierarchy()
+    node_count = len(hierarchy.nodes)
+    actual = np.ones((node_count, 2))
+    prediction = np.zeros((node_count, 2))
+    scales = pd.Series(1.0, index=hierarchy.nodes["node_id"])
+    weights = pd.Series(1.0 / (node_count - 1), index=hierarchy.nodes["node_id"])
+    scales.iloc[-1] = np.nan
+    weights.iloc[-1] = 0.0
+    result = score_hierarchical_forecast(
+        hierarchy,
+        actual=actual,
+        prediction=prediction,
+        scales=scales,
+        weights=weights,
+    )
+    assert result.overall_wrmsse == pytest.approx(1.0)
+    weights.iloc[-1] = 0.01
+    weights.iloc[0] -= 0.01
+    with pytest.raises(ValueError, match="positively weighted"):
+        score_hierarchical_forecast(
+            hierarchy,
+            actual=actual,
+            prediction=prediction,
+            scales=scales,
+            weights=weights,
+        )
