@@ -25,7 +25,11 @@ from forecasting.models.global_lightgbm import GlobalLightGBM
 from forecasting.models.seasonal_naive import SeasonalNaive
 from forecasting.registry import MRTS_SERIES
 from forecasting.promotion import PromotionPolicy
-from forecasting.tracking.mlflow import log_artifact_to_run, log_backtest_run
+from forecasting.tracking.mlflow import (
+    log_artifact_to_run,
+    log_backtest_run,
+    prepare_tracking,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -71,6 +75,11 @@ def _metrics(folds: pd.DataFrame) -> dict[str, float | int]:
 
 def main() -> None:
     args = parse_args()
+    if args.tracking_uri:
+        prepare_tracking(
+            tracking_uri=args.tracking_uri,
+            experiment_name=args.experiment_name,
+        )
     vintage = datetime.fromisoformat(args.vintage_time)
     if vintage.tzinfo is None or vintage.utcoffset() is None:
         raise ValueError("--vintage-time must include a UTC offset")

@@ -12,6 +12,18 @@ import pandas as pd
 from forecasting.evaluation.metrics import bias, mae, wape
 
 
+def prepare_tracking(*, tracking_uri: str, experiment_name: str) -> None:
+    """Fail fast on missing dependencies or an invalid tracking backend."""
+    try:
+        import mlflow
+    except ImportError as error:
+        raise RuntimeError(
+            "MLflow tracking requires: pip install -r requirements-experiment.txt"
+        ) from error
+    mlflow.set_tracking_uri(tracking_uri)
+    mlflow.set_experiment(experiment_name)
+
+
 def log_backtest_run(
     folds: pd.DataFrame,
     *,
@@ -35,9 +47,10 @@ def log_backtest_run(
     required = {"actual", "prediction"}
     if missing := required.difference(folds.columns):
         raise ValueError(f"fold data is missing columns: {sorted(missing)}")
-    mlflow.set_tracking_uri(tracking_uri)
-    mlflow.set_experiment(experiment_name)
-    with mlflow.start_run(run_name=run_name, log_system_metrics=True) as run:
+    prepare_tracking(tracking_uri=tracking_uri, experiment_name=experiment_name)
+    # Runtime/hardware metadata is logged explicitly below. MLflow's optional
+    # system monitor requires psutil and is deliberately not a core dependency.
+    with mlflow.start_run(run_name=run_name, log_system_metrics=False) as run:
         mlflow.set_tags(
             {
                 "data_version": data_version,

@@ -4,7 +4,11 @@ from types import SimpleNamespace
 
 import pandas as pd
 
-from forecasting.tracking.mlflow import log_artifact_to_run, log_backtest_run
+from forecasting.tracking.mlflow import (
+    log_artifact_to_run,
+    log_backtest_run,
+    prepare_tracking,
+)
 
 
 class _Run:
@@ -45,6 +49,9 @@ def test_mlflow_boundary_returns_portable_run_manifest(
         MlflowClient=lambda: client,
     )
     monkeypatch.setitem(sys.modules, "mlflow", fake)
+    prepare_tracking(
+        tracking_uri="sqlite:///test.mlflow.db", experiment_name="retailpred-test"
+    )
     folds = pd.DataFrame({"actual": [10.0, 20.0], "prediction": [11.0, 19.0]})
     runtime = tmp_path / "runtime.json"
     manifest = log_backtest_run(
