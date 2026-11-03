@@ -13,7 +13,7 @@ FOUNDATION_PYTHON := $(FOUNDATION_VENV)/bin/python
 FOUNDATION_PIP := $(FOUNDATION_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup setup-experiment setup-neural setup-foundation lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 frontend-check verify clean-generated
+.PHONY: setup setup-experiment setup-neural setup-foundation lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -79,6 +79,9 @@ probabilistic-mrts:
 	@test -n "$(WORKBOOK)" || (echo "WORKBOOK is required" && exit 1)
 	@test -n "$(VINTAGE_TIME)" || (echo "VINTAGE_TIME is required, including a UTC offset" && exit 1)
 	$(VENV_PYTHON) -m scripts.run_mrts_probabilistic "$(WORKBOOK)" --vintage-time "$(VINTAGE_TIME)"
+
+regime-mrts:
+	$(VENV_PYTHON) -m scripts.analyze_mrts_regimes data/v2/mrts_model_folds.csv
 
 validate-m5:
 	$(VENV_PYTHON) -m scripts.validate_m5_sources data/v2/source/m5
