@@ -176,7 +176,7 @@ Status: complete (2026-11-03); no probabilistic method earned serving promotion
 
 ## Milestone 5: Serving and user-facing analytics
 
-Status: in progress; frozen portfolio, fail-closed `/api/v2` contract, and primary React forecast migration implemented
+Status: in progress; frozen portfolio, fail-closed `/api/v2`, primary React migration, and governed Tableau-ready extracts implemented
 
 ### Work
 

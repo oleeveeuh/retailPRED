@@ -89,5 +89,14 @@ of 215 to 194.
 ## Remaining Milestone 5 work
 
 - Retire or isolate legacy mutation, manual validation, and mock scenario routes.
-- Publish governed Tableau-ready forecast, accuracy, uncertainty, hierarchy,
-  and freshness extracts from the same contracts.
+- Build the Tableau workbook from the now-governed local extracts and capture
+  selected dashboard screenshots.
+
+## Governed BI boundary
+
+`make bi-extracts AS_OF_DATE=...` now produces contract-validated model
+performance, M5 hierarchy, M5 uncertainty, MRTS regime, and data-status CSVs
+plus an integrity manifest. The measured local build contains 6 performance
+rows, 12 hierarchy rows, 47 uncertainty rows, 3 regime rows, and 2 freshness
+rows. See `bi/README.md` for grains, fields, and the recommended Tableau
+workbook.
