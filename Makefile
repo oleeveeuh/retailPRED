@@ -13,7 +13,7 @@ FOUNDATION_PYTHON := $(FOUNDATION_VENV)/bin/python
 FOUNDATION_PIP := $(FOUNDATION_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup setup-experiment setup-neural setup-foundation lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 frontend-check verify clean-generated
+.PHONY: setup setup-experiment setup-neural setup-foundation lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 frontend-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -103,6 +103,9 @@ feasibility-nhits-m5:
 
 feasibility-chronos-m5:
 	$(VENV_PYTHON) -m scripts.run_m5_chronos_feasibility data/v2/source/m5 --foundation-python $(FOUNDATION_PYTHON)
+
+benchmark-chronos-m5:
+	$(VENV_PYTHON) -m scripts.run_m5_chronos_benchmark data/v2/source/m5 --foundation-python $(FOUNDATION_PYTHON)
 
 frontend-check:
 	cd frontend && npm run type-check
