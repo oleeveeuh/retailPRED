@@ -24,6 +24,7 @@ class V2ForecastRequest(BaseModel):
     horizon: int = Field(ge=1, le=28)
     requested_model: str | None = None
     mode: Literal["production", "offline_demo"] = "production"
+    freshness_requirement: Literal["current", "historical_allowed"] = "current"
     quantiles: list[float] = Field(default_factory=list)
 
 
@@ -157,6 +158,13 @@ async def create_forecast(request: V2ForecastRequest) -> V2ForecastResponse:
             dataset=request.dataset,
             message="No evidence-backed offline fixture exists for this dataset.",
             required_action="Complete point-in-time validation and publish a governed fixture.",
+        )
+    if request.freshness_requirement == "current":
+        raise _unavailable(
+            code="stale_data",
+            dataset=request.dataset,
+            message="The offline fixture is historical and cannot satisfy a current-data request.",
+            required_action="Use historical_allowed only for an explicitly labeled offline demonstration.",
         )
 
     fixture = next(

@@ -55,4 +55,15 @@ This inventory freezes the intended disposition of the v1 FastAPI surface before
 - Training and ingestion are operational workflows, not unauthenticated serving endpoints.
 - Forecast responses include dataset, series, forecast origin, horizon, target timestamp, quantiles, model name/version, data cutoff, and experiment/run identifiers.
 - Unavailable data, models, or explanations return explicit typed errors; they never fall back to random or hard-coded values.
+
+## Implemented v2 boundary
+
+| Route | Status | Contract |
+|---|---|---|
+| `GET /api/v2/models` | Implemented | Frozen model portfolio; no filesystem discovery or retired model menu. |
+| `GET /api/v2/demo-catalog` | Implemented | Explicitly historical deterministic fixtures only. |
+| `POST /api/v2/forecasts` | Implemented | Provenance-complete point forecasts with typed unavailable, stale, incompatible-model, and uncertainty errors. |
+
+The original routes remain mounted temporarily for frontend migration and
+compatibility tests. They are legacy surfaces, not the v2 serving contract.
 - V1 routes remain read-only during migration and are removed only after the frontend and exports use v2 contracts.

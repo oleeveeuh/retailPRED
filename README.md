@@ -258,6 +258,7 @@ Copy [`project_root/.env.example`](project_root/.env.example) to `project_root/.
 - **Development benchmark:** global LightGBM has measured revised-history results, but no model has earned final promotion on untouched point-in-time evidence. On M5, NHITS stops at its bounded gate and zero-shot Chronos-2 fails the complete official hierarchy benchmark despite improving the two lowest levels.
 - **Uncertainty benchmark:** training-only M5 conformal intervals achieve 80.38% overall coverage but fail the declared high-volume segment gate and remain unavailable for production serving.
 - **Regime evidence:** MRTS LightGBM improves aggregate WAPE before, during, and after the COVID disruption, but does not beat Seasonal Naive in every category; it remains a development challenger rather than a production claim.
+- **Fail-closed serving:** `/api/v2` exposes the frozen model portfolio and a provenance-complete deterministic historical demo; production, stale-data, retired-model, and uncalibrated-uncertainty requests return typed unavailable states.
 - **Serving integration pending:** the dashboard and API still expose preserved v1 artifacts and must not be described as the v2 model surface.
 - **Historical v1 caveats:** weekly-replicated actuals, inclusive rolling windows, and heuristic neural-model labels apply to the frozen table above, not to v2.
 

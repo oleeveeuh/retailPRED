@@ -16,7 +16,7 @@ Last updated: 2026-11-03
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 125 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 133 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
 - Frontend type-check: passed.
 - Frontend lint: blocking gate passes at the frozen 215-warning legacy cap.
@@ -36,7 +36,15 @@ Last updated: 2026-11-03
 
 ## Next checkpoint
 
-Model selection is frozen for the serving handoff. M5 global LightGBM is the promoted offline point champion; MRTS global LightGBM remains a development challenger pending point-in-time validation; uncertainty is unavailable for production in both use cases. Begin the unified serving contract and governed analytics work. A durable remote MLflow run remains pending workspace credentials.
+The fail-closed `/api/v2` model portfolio, demo catalog, and forecast contract are implemented with deterministic historical evidence and typed unavailable states. Next migrate the React forecast surface away from simulated predictions, then publish governed BI extracts. A durable remote MLflow run remains pending workspace credentials.
+
+## Milestone 5 evidence to date
+
+- The API reads frozen model decisions rather than discovering legacy files or auto-selecting retired algorithms.
+- Production inference is explicitly unavailable until each dataset satisfies its recorded serving requirement.
+- One deterministic historical M5 fixture proves the success contract without claiming live inference.
+- Every successful point includes origin, horizon, target date, model version/status, data cutoff/status, demo label, code revision, source hash, and evidence reference.
+- Contract tests cover successful demo inference plus unavailable, stale-data, incompatible-model, and uncalibrated-uncertainty responses; see `M5_SERVING_CONTRACT.md`.
 
 ## Milestone 3 evidence to date
 

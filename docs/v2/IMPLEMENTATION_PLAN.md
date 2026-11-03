@@ -176,7 +176,7 @@ Status: complete (2026-11-03); no probabilistic method earned serving promotion
 
 ## Milestone 5: Serving and user-facing analytics
 
-Status: in progress; frozen model-portfolio decisions now define the serving boundary
+Status: in progress; frozen portfolio and fail-closed `/api/v2` forecast contract implemented
 
 ### Work
 

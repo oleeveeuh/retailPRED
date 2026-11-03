@@ -38,6 +38,7 @@ def test_v2_offline_demo_is_deterministic_and_labeled(client: TestClient) -> Non
         "horizon": 2,
         "requested_model": "m5_global_lightgbm",
         "mode": "offline_demo",
+        "freshness_requirement": "historical_allowed",
     }
     first = client.post("/api/v2/forecasts", json=request)
     second = client.post("/api/v2/forecasts", json=request)
@@ -96,6 +97,16 @@ def test_v2_offline_demo_is_deterministic_and_labeled(client: TestClient) -> Non
                 "quantiles": [0.1, 0.9],
             },
             "uncertainty_unavailable",
+        ),
+        (
+            {
+                "dataset": "m5",
+                "series_id": "FOODS_1_001_CA_1_evaluation",
+                "forecast_origin": "2016-04-24",
+                "horizon": 1,
+                "mode": "offline_demo",
+            },
+            "stale_data",
         ),
     ],
 )
