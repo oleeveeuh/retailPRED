@@ -17,7 +17,10 @@ from forecasting.contracts import (
 
 
 MRTS_API_URL = "https://api.census.gov/data/timeseries/eits/mrts"
-MRTS_FIELDS = "data_type_code,time_slot_id,seasonally_adj,category_code,cell_value,error_data"
+# The current API schema no longer accepts error_data as a gettable field
+# (verified live 2026-11: requesting it returns an HTML error page), so the
+# GET list mirrors the observed working response exactly.
+MRTS_FIELDS = "data_type_code,time_slot_id,seasonally_adj,category_code,cell_value"
 
 
 class MRTSError(RuntimeError):
@@ -134,7 +137,13 @@ class MRTSClient:
             try:
                 payload = response.json()
             except requests.JSONDecodeError as exc:
-                raise MRTSResponseError("Census returned a non-JSON response") from exc
+                raise MRTSResponseError(
+                    "Census returned a non-JSON response "
+                    f"(HTTP {response.status_code}, {len(response.content)} bytes, "
+                    f"content-type={response.headers.get('Content-Type', 'unknown')}); "
+                    "this usually means the GET field list names a variable the "
+                    "API no longer serves"
+                ) from exc
             self._year_payloads[year] = (payload, requested_at)
         payload, requested_at = self._year_payloads[year]
         return parse_mrts_response(payload, series, year=year, vintage_time=requested_at)

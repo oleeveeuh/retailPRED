@@ -8,9 +8,10 @@ report the observed values so the next diagnosis is self-contained.
 
 from datetime import datetime, timezone
 
+import pandas as pd
 import pytest
 
-from forecasting.data.mrts import parse_mrts_response
+from forecasting.data.mrts import MRTS_FIELDS, MRTSClient, MRTSResponseError, parse_mrts_response
 from forecasting.registry import get_series
 
 HEADER = [
@@ -134,3 +135,42 @@ def test_period_year_mismatch_with_requested_year_is_dropped() -> None:
             vintage_time=VINTAGE,
         )
     assert "time samples=['2011-01'" in str(excinfo.value)
+
+
+def test_get_field_list_matches_the_observed_working_schema() -> None:
+    # Requesting a variable the API no longer serves (error_data was removed
+    # live) returns an HTML page instead of JSON. Guard the field list.
+    fields = MRTS_FIELDS.split(",")
+    assert "error_data" not in fields
+    assert set(fields) == {
+        "data_type_code",
+        "time_slot_id",
+        "seasonally_adj",
+        "category_code",
+        "cell_value",
+    }
+
+
+class _HTMLResponse:
+    status_code = 200
+    content = b"<html><title>Bad Request</title></html>"
+    headers = {"Content-Type": "text/html"}
+
+    def json(self):
+        import requests
+
+        raise requests.exceptions.JSONDecodeError("Expecting value", "<html>", 0)
+
+
+class _HTMLSession:
+    def get(self, url, params=None, timeout=None):
+        return _HTMLResponse()
+
+
+def test_non_json_response_failure_names_the_schema_cause() -> None:
+    client = MRTSClient(api_key="key", session=_HTMLSession())
+    with pytest.raises(MRTSResponseError) as excinfo:
+        client.fetch_year(get_series("retail_total"), year=2010)
+    message = str(excinfo.value)
+    assert "content-type=text/html" in message
+    assert "GET field list" in message
