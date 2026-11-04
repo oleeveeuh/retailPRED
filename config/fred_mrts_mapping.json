@@ -1,0 +1,14 @@
+{
+  "_instructions": "Map each MRTS series_id to its seasonally adjusted monthly FRED series (ALFRED-compatible vintages). Complete every empty entry with the FRED series ID before running `make fetch-alfred-mrts`; browse the Monthly Retail Trade release on FRED or use the fetch script's --release-id discover mode to list candidates. Champion promotion requires all 11 entries filled. Keys starting with '_' are ignored.",
+  "retail_total": "RSAFS",
+  "motor_vehicle_and_parts": "",
+  "furniture_and_home_furnishings": "",
+  "electronics_and_appliances": "",
+  "building_material_and_garden": "",
+  "food_and_beverage": "",
+  "health_and_personal_care": "",
+  "gasoline_stations": "",
+  "clothing_and_accessories": "",
+  "sporting_goods_and_hobby": "",
+  "general_merchandise": ""
+}

@@ -47,6 +47,7 @@ The more complex model did not automatically win. NHITS failed its bounded M5 fe
 - FastAPI `/api/v2` routes that return typed unavailable states for unapproved production, stale-data, incompatible-model, and uncalibrated-uncertainty requests.
 - A React evidence page backed by a deterministic 2016 M5 fixture. It is explicitly historical and is not a current forecast.
 - Five governed Tableau views backed by an aggregate-only Hyper extract and checked against the same frozen model decisions.
+- A live-loop foundation implemented locally: ALFRED vintage pulls behind a fail-closed series mapping, the predeclared point-in-time promotion gate ([M3_VINTAGE_BACKTEST.md](docs/v2/M3_VINTAGE_BACKTEST.md)), scheduled Census ingestion that refuses scoring until the portfolio authorizes it, a versioned public snapshot contract for the frontend, immutable realized-error tracking, and an optional governed live BI extract. No workspace run, vintage pull, or snapshot publish has executed yet.
 
 ## System boundary
 
@@ -151,6 +152,7 @@ project_root/         preserved undergraduate pipeline; never a v2 input
 - MLflow was proven against a local SQLite tracking store, not a durable shared server.
 - The Tableau workbook was opened and checked locally; it has not been published to Tableau Public.
 - The hosted frontend is static. There is no deployed v2 backend, automated retraining, drift monitor, rollback exercise, or production SLA.
+- The live-loop foundation is code-complete and unexecuted: until the vintage gate promotes the MRTS champion and a scheduled job publishes snapshots, the frontend intentionally shows only the historical fixture.
 - Secondary v1 UI and model code remains in Git history for provenance. It contains simulations and must not be described as v2 functionality.
 - Forty-two legacy pickle files total about 402 MB in the working tree and materially bloat clone size. Removing them safely requires a planned history rewrite; see the publication audit.
 

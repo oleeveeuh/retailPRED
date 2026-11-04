@@ -12,11 +12,12 @@ Last updated: 2026-11-03
 - Milestone 3: locally complete except for a credential-dependent durable remote MLflow run; the common protocol, controlled model suite, evaluator, promotion policy, and local tracking proof are implemented.
 - Milestone 4: complete; M5 point, stability, reconciliation, neural, foundation-model, and probabilistic gates are measured, and MRTS regime behavior is documented.
 - Data-science/modeling completion: complete for the accepted local scope. Milestone 5 is complete for its local scope, including the governed Tableau workbook. Milestone 6 publication/reproducibility audit is in progress; external deployment and observability remain blocked on a selected target.
+- Live-loop foundation (Milestone 6.5): implemented locally on `v2-live-loop` — Delta synchronization, the ALFRED vintage promotion gate, scheduled ingestion with fail-closed scoring, the public snapshot contract, the frontend snapshot panel, realized-error monitoring, and a governed BI live extract. Every external execution (workspace run, ALFRED pull, snapshot publish) awaits owner credentials and is not claimed.
 
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
-- Full Python 3.11 environment: 143 tests passed with no skips at this checkpoint.
+- Full Python 3.11 environment: 173 tests passed with no skips at this checkpoint.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources; re-verified from a clean throwaway venv against `warehouse/requirements.txt` only.
 - Frontend type-check: passed.
 - Publication frontend lint: strict zero-warning gate passes. Full preserved frontend lint passes with 193 warnings, below the frozen 215-warning legacy cap; this remains explicit legacy debt rather than a repository-wide clean-lint claim.
@@ -36,7 +37,19 @@ Last updated: 2026-11-03
 
 ## Next checkpoint
 
-The fail-closed `/api/v2`, publication-only React forecast route, and five-view local Tableau workbook share governed evidence and decision semantics. The publication audit removed unsupported live-demo claims, corrected the README, isolated legacy frontend routes, replaced placeholder deployment language, added a minimal v2 container contract verified by a serving-only local smoke test, added a CI container smoke job, and upgraded the frontend path from end-of-life Node 20 to Node 24 LTS. Next complete verification and review the release diff before pushing `v2-rebuild`. Public hosting, Tableau publication, remote MLflow, Databricks execution, monitoring, and rollback remain unclaimed.
+The fail-closed `/api/v2`, publication-only React forecast route, and five-view local Tableau workbook share governed evidence and decision semantics. The publication audit removed unsupported live-demo claims, corrected the README, isolated legacy frontend routes, replaced placeholder deployment language, added a minimal v2 container contract verified by a serving-only local smoke test, added a CI container smoke job, and upgraded the frontend path from end-of-life Node 20 to Node 24 LTS. The live-loop foundation is implemented locally on `v2-live-loop`; the release state on `v2-rebuild` is ready for its first push, and the live loop executes after that in order: Java plus the local Delta proof, Databricks workspace deployment, FRED key plus series mapping plus ALFRED fetch plus the vintage backtest, secret scope plus unpausing the scheduled ingest, then a snapshot host plus `VITE_LATEST_SNAPSHOT_URL`. Public hosting, Tableau publication, remote MLflow, Databricks execution, monitoring, and rollback remain unclaimed.
+
+## Live-loop foundation evidence to date (implemented, awaiting execution)
+
+- `retailpred/platform/delta_sync.py` plans and executes local-store-to-Delta synchronization — immutable merge for bronze/silver, snapshot replace for gold — with the plan computed before any Spark call. `make setup-spark` plus `make spark-check` proves the full path in a local delta-spark session once a Java 17 runtime is installed.
+- Two new declared gold tables (`forecasts`, `realized_errors`) generate their Delta DDL from the shared specifications; the bootstrap job creates them with the rest of the catalog.
+- `scripts/fetch_alfred_mrts.py` pulls monthly ALFRED vintages behind a fail-closed FRED series mapping (`config/fred_mrts_mapping.json`, including a release-discovery mode); `forecasting/evaluation/vintage.py` trains on exactly what was knowable at each origin, excludes and records ragged origins, and scores against latest revisions. `docs/v2/M3_VINTAGE_BACKTEST.md` predeclares the champion promotion gate before any measured run exists.
+- `retailpred/live_loop` pulls the latest Census release into versioned silver and refuses scoring unless the frozen portfolio authorizes it; the refusal, with its required action, is a recorded outcome. The Databricks job is declared paused with a two-task schedule (ingest, then realized errors) and reads the Census key from a secret scope.
+- `retailpred/platform/snapshot.py` defines the fail-closed public snapshot contract (`is_live`, `scheduled_batch_forecasts`, freshness status and next-run metadata, uncertainty bounds refused unless the portfolio authorizes them). `scripts/publish_snapshot.py` refuses when no gold forecasts exist.
+- The React evidence page gains a snapshot panel that renders only when `VITE_LATEST_SNAPSHOT_URL` is configured, fetches on explicit request, validates the contract, and keeps the historical fixture as the displayed evidence on any failure.
+- Realized-error monitoring appends immutable forecast-versus-actual rows keyed by actual vintage; exact replays are no-ops and revisions append rather than overwrite.
+- `build_bi_extracts.py --gold-store` adds a governed `live_forecasts.csv` extract only when gold forecasts exist.
+- Nothing in this section has executed externally: no workspace run, no ALFRED pull, no snapshot published, no scheduled job started. Claims stay at "implemented locally" until each step runs and records evidence.
 
 ## Milestone 6 audit evidence to date
 

@@ -14,9 +14,12 @@ FOUNDATION_PIP := $(FOUNDATION_VENV)/bin/pip
 TABLEAU_VENV ?= .venv-tableau
 TABLEAU_PYTHON := $(TABLEAU_VENV)/bin/python
 TABLEAU_PIP := $(TABLEAU_VENV)/bin/pip
+SPARK_VENV ?= .venv-spark
+SPARK_PYTHON := $(SPARK_VENV)/bin/python
+SPARK_PIP := $(SPARK_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup setup-experiment setup-neural setup-foundation setup-tableau lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 bi-extracts tableau-workbook frontend-check publication-check verify clean-generated
+.PHONY: setup setup-experiment setup-neural setup-foundation setup-tableau setup-spark lock test milestone1-check platform-check warehouse-check fetch-mrts fetch-alfred-mrts vintage-backtest-mrts ingest-latest realized-errors publish-snapshot spark-check baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 bi-extracts tableau-workbook frontend-check publication-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -46,6 +49,16 @@ setup-tableau:
 	$(TABLEAU_PIP) install pip==26.2.1
 	$(TABLEAU_PIP) install -r requirements-tableau.txt
 
+# Requires a Java 17 runtime on the host (brew install openjdk@17).
+setup-spark:
+	$(PYTHON) -m venv $(SPARK_VENV)
+	$(SPARK_PIP) install pip==26.2.1
+	$(SPARK_PIP) install -r requirements-spark.txt
+
+spark-check:
+	@test -x "$(SPARK_PYTHON)" || (echo "Run make setup-spark first" && exit 1)
+	$(SPARK_PYTHON) scripts/spark_local_check.py
+
 lock:
 	$(PYTHON) -m venv $(VENV)
 	$(VENV_PIP) install pip==25.3 pip-tools==7.5.2
@@ -66,6 +79,28 @@ warehouse-check:
 fetch-mrts:
 	@test -n "$(END_YEAR)" || (echo "END_YEAR is required, e.g. make fetch-mrts END_YEAR=2025" && exit 1)
 	$(VENV_PYTHON) -m scripts.fetch_mrts_v2 --end-year $(END_YEAR)
+
+# Real-time vintage pulls from ALFRED; requires FRED_API_KEY in the environment
+# and a completed FRED series mapping in config/fred_mrts_mapping.json.
+fetch-alfred-mrts:
+	@test -n "$(FRED_API_KEY)" || (echo "FRED_API_KEY is required in the environment" && exit 1)
+	@test -n "$(END_YEAR)" || (echo "END_YEAR is required, e.g. make fetch-alfred-mrts END_YEAR=2026 FRED_API_KEY=..." && exit 1)
+	$(VENV_PYTHON) -m scripts.fetch_alfred_mrts --end-year $(END_YEAR) --output data/v2/alfred_mrts_vintages.csv
+
+vintage-backtest-mrts:
+	@test -f data/v2/alfred_mrts_vintages.csv || (echo "Run make fetch-alfred-mrts first" && exit 1)
+	$(VENV_PYTHON) -m scripts.run_mrts_vintage_backtest data/v2/alfred_mrts_vintages.csv
+
+ingest-latest:
+	@test -n "$(CENSUS_API_KEY)" || (echo "CENSUS_API_KEY is required in the environment" && exit 1)
+	$(VENV_PYTHON) -m scripts.ingest_latest --store data/v2/store
+
+realized-errors:
+	$(VENV_PYTHON) -m scripts.realized_errors --store data/v2/store
+
+publish-snapshot:
+	@test -f data/v2/store/gold/forecasts.parquet || (echo "No gold forecasts in the local store; snapshot publishing is unavailable" && exit 1)
+	$(VENV_PYTHON) -m scripts.publish_snapshot --store data/v2/store --output data/v2/snapshots/v2-latest.json
 
 baseline-mrts:
 	@test -n "$(WORKBOOK)" || (echo "WORKBOOK is required" && exit 1)

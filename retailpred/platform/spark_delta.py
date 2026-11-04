@@ -17,17 +17,32 @@ _IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 _COMMON_TYPES = {
     "release_time": "TIMESTAMP",
     "vintage_time": "TIMESTAMP",
+    "forecast_vintage_time": "TIMESTAMP",
+    "actual_vintage_time": "TIMESTAMP",
     "ingested_at": "TIMESTAMP",
+    "generated_at": "TIMESTAMP",
+    "evaluated_at": "TIMESTAMP",
     "observation_time": "DATE",
     "observation_month": "DATE",
+    "forecast_origin": "DATE",
+    "target_time": "DATE",
+    "data_cutoff": "DATE",
+    "observation_date": "DATE",
     "date": "DATE",
     "value": "DOUBLE",
+    "prediction": "DOUBLE",
+    "lower": "DOUBLE",
+    "upper": "DOUBLE",
+    "actual": "DOUBLE",
+    "abs_pct_error": "DOUBLE",
+    "signed_pct_error": "DOUBLE",
     "sell_price": "DOUBLE",
     "units": "BIGINT",
     "size_bytes": "BIGINT",
     "wm_yr_wk": "BIGINT",
     "wday": "INT",
     "month": "INT",
+    "horizon": "INT",
     "snap_CA": "INT",
     "snap_TX": "INT",
     "snap_WI": "INT",
@@ -156,3 +171,23 @@ def replace_delta_snapshot(spark: Any, frame: Any, spec: TableSpec, *, catalog: 
         .option("overwriteSchema", "false")
         .saveAsTable(qualified_table(catalog, spec))
     )
+
+
+def configure_local_session(warehouse_dir: str) -> Any:
+    """Start a local delta-spark session for proofs outside a Databricks workspace."""
+    from delta import configure_spark_with_delta_pip
+    from pyspark.sql import SparkSession
+
+    builder = (
+        SparkSession.builder.master("local[1]")
+        .appName("retailpred-local-delta")
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+        .config(
+            "spark.sql.catalog.spark_catalog",
+            "org.apache.spark.sql.delta.catalog.DeltaCatalog",
+        )
+        .config("spark.sql.warehouse.dir", warehouse_dir)
+        .config("spark.ui.enabled", "false")
+        .config("spark.sql.shuffle.partitions", "1")
+    )
+    return configure_spark_with_delta_pip(builder).getOrCreate()

@@ -258,6 +258,73 @@ GOLD_M5_DEMAND = TableSpec(
 )
 
 
+GOLD_FORECASTS = TableSpec(
+    name="forecasts",
+    layer="gold",
+    schema_version=1,
+    columns=(
+        "dataset",
+        "series_id",
+        "forecast_origin",
+        "target_time",
+        "horizon",
+        "model_name",
+        "model_version",
+        "forecast_vintage_time",
+        "prediction",
+        "lower",
+        "upper",
+        "data_cutoff",
+        "uncertainty_status",
+        "generated_at",
+        "code_revision",
+    ),
+    key=(
+        "dataset",
+        "series_id",
+        "forecast_origin",
+        "target_time",
+        "model_name",
+        "model_version",
+        "forecast_vintage_time",
+    ),
+    nullable=("lower", "upper"),
+)
+
+
+GOLD_REALIZED_ERRORS = TableSpec(
+    name="realized_errors",
+    layer="gold",
+    schema_version=1,
+    columns=(
+        "dataset",
+        "series_id",
+        "forecast_origin",
+        "target_time",
+        "horizon",
+        "model_name",
+        "model_version",
+        "forecast_vintage_time",
+        "prediction",
+        "actual",
+        "actual_vintage_time",
+        "abs_pct_error",
+        "signed_pct_error",
+    ),
+    key=(
+        "dataset",
+        "series_id",
+        "forecast_origin",
+        "target_time",
+        "model_name",
+        "model_version",
+        "forecast_vintage_time",
+        "actual_vintage_time",
+    ),
+    nullable=("abs_pct_error", "signed_pct_error"),
+)
+
+
 ALL_TABLE_SPECS = (
     BRONZE_MRTS,
     BRONZE_FRED,
@@ -270,4 +337,6 @@ ALL_TABLE_SPECS = (
     RETAIL_RELEASES,
     GOLD_MONTHLY,
     GOLD_M5_DEMAND,
+    GOLD_FORECASTS,
+    GOLD_REALIZED_ERRORS,
 )

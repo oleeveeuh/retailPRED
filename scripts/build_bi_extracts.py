@@ -21,6 +21,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-directory", type=Path, default=Path("data/v2/bi/tableau")
     )
+    parser.add_argument(
+        "--gold-store",
+        type=Path,
+        default=None,
+        help="Local contract store containing gold forecasts; adds live_forecasts.csv.",
+    )
     return parser.parse_args()
 
 
@@ -153,6 +159,39 @@ def _freshness(as_of: date) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=CONTRACTS["data_freshness.csv"].columns)
 
 
+def _live_forecasts(store_root: Path) -> pd.DataFrame:
+    """Shape gold forecasts into the governed live extract; refuses when empty."""
+    from retailpred.platform.local_store import LocalTableStore
+    from retailpred.platform.specs import GOLD_FORECASTS
+
+    forecasts = LocalTableStore(store_root).read(GOLD_FORECASTS)
+    if forecasts.empty:
+        raise SystemExit(
+            "the store has no gold forecasts; live_forecasts.csv is unavailable"
+        )
+    from forecasting.portfolio import model_decision
+
+    decision = model_decision(str(forecasts.iloc[0]["dataset"]))
+    rows = [
+        {
+            "dataset": str(row.dataset),
+            "series_id": str(row.series_id),
+            "forecast_origin": pd.Timestamp(row.forecast_origin).date().isoformat(),
+            "target_time": pd.Timestamp(row.target_time).date().isoformat(),
+            "horizon": int(row.horizon),
+            "prediction": float(row.prediction),
+            "model_name": str(row.model_name),
+            "model_version": str(row.model_version),
+            "model_status": decision.point_status,
+            "uncertainty_status": str(row.uncertainty_status),
+            "freshness_status": "scheduled_batch_snapshot",
+            "code_revision": str(row.code_revision),
+        }
+        for row in forecasts.itertuples()
+    ]
+    return pd.DataFrame(rows, columns=CONTRACTS["live_forecasts.csv"].columns)
+
+
 def main() -> None:
     args = parse_args()
     frames = {
@@ -162,6 +201,8 @@ def main() -> None:
         "mrts_regime_accuracy.csv": _regimes(),
         "data_freshness.csv": _freshness(args.as_of_date),
     }
+    if args.gold_store is not None:
+        frames["live_forecasts.csv"] = _live_forecasts(args.gold_store)
     args.output_directory.mkdir(parents=True, exist_ok=True)
     manifest_files = {}
     for filename, frame in frames.items():

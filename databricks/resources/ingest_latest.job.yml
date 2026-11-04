@@ -1,0 +1,30 @@
+resources:
+  jobs:
+    platform_ingest_latest:
+      name: retailpred-platform-ingest-latest
+      # Declared paused: unpause after the census-api-key secret is configured
+      # in the secret scope. The job itself fails closed when scoring is not
+      # authorized by the frozen portfolio.
+      schedule:
+        quartz_cron_expression: "0 30 14 * * ?"
+        timezone_id: "America/New_York"
+        pause_status: PAUSED
+      tasks:
+        - task_key: pull_latest_census_release
+          existing_cluster_id: ${var.cluster_id}
+          spark_python_task:
+            python_file: ../jobs/ingest_latest.py
+            parameters:
+              - --catalog
+              - ${var.catalog}
+              - --secret-scope
+              - ${var.secret_scope}
+        - task_key: score_realized_errors
+          existing_cluster_id: ${var.cluster_id}
+          depends_on:
+            - task_key: pull_latest_census_release
+          spark_python_task:
+            python_file: ../jobs/realized_errors.py
+            parameters:
+              - --catalog
+              - ${var.catalog}
