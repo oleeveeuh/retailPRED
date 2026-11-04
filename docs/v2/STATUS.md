@@ -18,6 +18,7 @@ Last updated: 2026-11-03
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
 - Full Python 3.11 environment: 212 tests passed with no skips at this checkpoint; the frontend gains a vitest unit suite (11 tests) covering the snapshot contract and URL resolution.
+- First external CI runs on the release: run 41885859473 (pushed `v2-rebuild`) and the merge-push run both green across all five jobs — gitleaks, backend tests, Node 24 frontend checks, dbt parse, and the container smoke test building the minimal v2 image and asserting the fail-closed contract on real infrastructure.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources; re-verified from a clean throwaway venv against `warehouse/requirements.txt` only.
 - Frontend type-check: passed.
 - Publication frontend lint: strict zero-warning gate passes. Full preserved frontend lint passes with 193 warnings, below the frozen 215-warning legacy cap; this remains explicit legacy debt rather than a repository-wide clean-lint claim.
