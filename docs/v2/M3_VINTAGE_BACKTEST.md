@@ -15,10 +15,11 @@ after the numbers arrive.
 - Source: ALFRED monthly vintages via the FRED API for the 11 registered MRTS
   categories; each vintage date reproduces the full series history exactly as
   published on that date.
-- Series mapping: `config/fred_mrts_mapping.json`. `retail_total` maps to FRED
-  `RSAFS` (Advance Retail Sales: Retail Trade and Food Services, seasonally
-  adjusted). The remaining 10 entries are completed from the FRED release table
-  before fetching; the fetch script fails closed on unmapped series.
+- Series mapping: `config/fred_mrts_mapping.json`. All 11 entries map to the
+  seasonally adjusted monthly MRTS release family on FRED (`MRTSSM4xxxxxUSS`
+  pattern, including `MRTSSM44000USS` for the total), so vintages stay within
+  one release family. The first fetch run fails closed on any ID FRED rejects,
+  and the mapping must be corrected before the backtest proceeds.
 - Real-time availability: declared, not inferred. The as-of timestamp for
   forecast origin month *t* is the month-end of *t* plus 45 days, standing in
   for the revised-release cadence. Training rows are selected only by

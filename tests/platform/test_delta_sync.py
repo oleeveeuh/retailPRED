@@ -54,7 +54,7 @@ def test_bronze_and_silver_merge_while_gold_replaces() -> None:
 
 def test_plan_lists_populated_tables_with_manifest_hashes(tmp_path) -> None:
     store = _populate(tmp_path)
-    actions = plan_sync(store, catalog="retailpred")
+    actions = plan_sync(store)
     by_name = {action.spec.name: action for action in actions}
     assert set(by_name) == {"mrts_extract_rows", "monthly_observations", "monthly_series"}
     assert by_name["mrts_extract_rows"].mode == "merge_immutable"
@@ -66,13 +66,13 @@ def test_plan_lists_populated_tables_with_manifest_hashes(tmp_path) -> None:
 
 def test_plan_is_stable_across_replays(tmp_path) -> None:
     store = _populate(tmp_path)
-    first = plan_sync(store, catalog="retailpred")
-    second = plan_sync(store, catalog="retailpred")
+    first = plan_sync(store)
+    second = plan_sync(store)
     assert first == second
 
 
 def test_empty_store_yields_no_actions(tmp_path) -> None:
-    assert plan_sync(LocalTableStore(tmp_path), catalog="retailpred") == []
+    assert plan_sync(LocalTableStore(tmp_path)) == []
 
 
 def test_plan_respects_manifest_integrity(tmp_path) -> None:
@@ -80,4 +80,4 @@ def test_plan_respects_manifest_integrity(tmp_path) -> None:
     manifest = store.root / "silver" / "monthly_observations.manifest.json"
     manifest.write_text('{"table": "monthly_observations", "schema_version": 1}')
     with pytest.raises(Exception):
-        plan_sync(store, catalog="retailpred")
+        plan_sync(store)

@@ -12,6 +12,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+import pandas as pd
+
 from retailpred.platform.local_store import LocalTableStore, validate_table_schema
 from retailpred.platform.specs import ALL_TABLE_SPECS, TableSpec
 from retailpred.platform.spark_delta import (
@@ -19,6 +21,21 @@ from retailpred.platform.spark_delta import (
     merge_delta_immutable,
     replace_delta_snapshot,
 )
+
+
+def to_spark_ready(frame: pd.DataFrame) -> pd.DataFrame:
+    """Normalize timezone-aware columns to naive UTC for spark.createDataFrame."""
+    result = frame.copy()
+    for column in result.columns:
+        if pd.api.types.is_datetime64tz_dtype(result[column]):
+            result[column] = result[column].dt.tz_convert("UTC").dt.tz_localize(None)
+    return result
+
+
+def _to_spark_frame(spark: Any, frame: pd.DataFrame, spec: TableSpec) -> Any:
+    from retailpred.platform.spark_delta import contract_schema
+
+    return spark.createDataFrame(to_spark_ready(frame), schema=contract_schema(spec))
 
 
 @dataclass(frozen=True)
@@ -43,7 +60,6 @@ def write_mode(spec: TableSpec) -> str:
 def plan_sync(
     store: LocalTableStore,
     *,
-    catalog: str,
     specs: tuple[TableSpec, ...] = ALL_TABLE_SPECS,
 ) -> list[SyncAction]:
     """Plan synchronization from local manifests without touching Spark."""
@@ -77,11 +93,11 @@ def _manifest_sha256(store: LocalTableStore, spec: TableSpec) -> str:
     ).hexdigest()
 
 
-def sync_store(spark: Any, store: LocalTableStore, *, catalog: str) -> list[SyncAction]:
+def sync_store(spark: Any, store: LocalTableStore, *, catalog: str | None) -> list[SyncAction]:
     """Execute the planned synchronization against Delta tables."""
-    actions = plan_sync(store, catalog=catalog)
+    actions = plan_sync(store)
     for action in actions:
-        frame = store.read(action.spec)
+        frame = _to_spark_frame(spark, store.read(action.spec), action.spec)
         if action.mode == "replace_snapshot":
             replace_delta_snapshot(spark, frame, action.spec, catalog=catalog)
         else:

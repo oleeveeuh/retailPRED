@@ -57,7 +57,10 @@ setup-spark:
 
 spark-check:
 	@test -x "$(SPARK_PYTHON)" || (echo "Run make setup-spark first" && exit 1)
-	$(SPARK_PYTHON) scripts/spark_local_check.py
+	PYSPARK_PYTHON=$$(realpath $(SPARK_VENV)/bin/python) \
+	PYSPARK_DRIVER_PYTHON=$$(realpath $(SPARK_VENV)/bin/python) \
+	JAVA_HOME=$${JAVA_HOME:-/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home} \
+	$(SPARK_PYTHON) -m scripts.spark_local_check
 
 lock:
 	$(PYTHON) -m venv $(VENV)

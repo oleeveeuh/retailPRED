@@ -60,8 +60,9 @@ def _identifier(value: str) -> str:
     return f"`{value}`"
 
 
-def qualified_table(catalog: str, spec: TableSpec) -> str:
-    return ".".join((_identifier(catalog), _identifier(spec.layer), _identifier(spec.name)))
+def qualified_table(catalog: str | None, spec: TableSpec) -> str:
+    parts = [_identifier(catalog)] if catalog else []
+    return ".".join([*parts, _identifier(spec.layer), _identifier(spec.name)])
 
 
 def spark_sql_type(spec: TableSpec, column: str) -> str:
@@ -70,7 +71,7 @@ def spark_sql_type(spec: TableSpec, column: str) -> str:
     )
 
 
-def create_table_sql(spec: TableSpec, *, catalog: str) -> str:
+def create_table_sql(spec: TableSpec, *, catalog: str | None) -> str:
     fields = []
     for column in spec.columns:
         nullable = "" if column in spec.nullable else " NOT NULL"
@@ -103,8 +104,13 @@ def conflict_condition(spec: TableSpec) -> str:
     )
 
 
-def ensure_delta_table(spark: Any, spec: TableSpec, *, catalog: str) -> None:
-    spark.sql(f"CREATE SCHEMA IF NOT EXISTS {_identifier(catalog)}.{_identifier(spec.layer)}")
+def ensure_delta_table(spark: Any, spec: TableSpec, *, catalog: str | None) -> None:
+    namespace = (
+        f"{_identifier(catalog)}.{_identifier(spec.layer)}"
+        if catalog
+        else _identifier(spec.layer)
+    )
+    spark.sql(f"CREATE SCHEMA IF NOT EXISTS {namespace}")
     spark.sql(create_table_sql(spec, catalog=catalog))
 
 
@@ -129,7 +135,20 @@ def cast_to_contract(frame: Any, spec: TableSpec) -> Any:
     return frame.selectExpr(*expressions)
 
 
-def merge_delta_immutable(spark: Any, incoming: Any, spec: TableSpec, *, catalog: str) -> None:
+def key_null_safe_condition(spec: TableSpec) -> Any:
+    """Column-expression join condition with null-safe equality on the key."""
+    from pyspark.sql.functions import col
+
+    condition = None
+    for column in spec.key:
+        clause = col(f"target.{column}").eqNullSafe(col(f"source.{column}"))
+        condition = clause if condition is None else condition & clause
+    return condition
+
+
+def merge_delta_immutable(
+    spark: Any, incoming: Any, spec: TableSpec, *, catalog: str | None
+) -> None:
     """Insert unseen facts while rejecting changed values for an existing key."""
     validate_spark_columns(incoming, spec)
     source = cast_to_contract(incoming, spec)
@@ -138,9 +157,10 @@ def merge_delta_immutable(spark: Any, incoming: Any, spec: TableSpec, *, catalog
     ensure_delta_table(spark, spec, catalog=catalog)
     target_name = qualified_table(catalog, spec)
     target = spark.table(target_name)
+    condition = key_null_safe_condition(spec)
     conflicts = (
         target.alias("target")
-        .join(source.alias("source"), merge_condition(spec), "inner")
+        .join(source.alias("source"), condition, "inner")
         .where(conflict_condition(spec))
         .limit(1)
         .count()
@@ -153,13 +173,13 @@ def merge_delta_immutable(spark: Any, incoming: Any, spec: TableSpec, *, catalog
     (
         DeltaTable.forName(spark, target_name)
         .alias("target")
-        .merge(source.alias("source"), merge_condition(spec))
+        .merge(source.alias("source"), condition)
         .whenNotMatchedInsertAll()
         .execute()
     )
 
 
-def replace_delta_snapshot(spark: Any, frame: Any, spec: TableSpec, *, catalog: str) -> None:
+def replace_delta_snapshot(spark: Any, frame: Any, spec: TableSpec, *, catalog: str | None) -> None:
     validate_spark_columns(frame, spec)
     snapshot = cast_to_contract(frame, spec)
     validate_spark_columns(snapshot, spec)
@@ -173,8 +193,42 @@ def replace_delta_snapshot(spark: Any, frame: Any, spec: TableSpec, *, catalog: 
     )
 
 
+def contract_schema(spec: TableSpec) -> Any:
+    """Explicit Spark schema derived from the declared contract types."""
+    from pyspark.sql.types import (
+        StructType,
+        StructField,
+        StringType,
+        DateType,
+        TimestampType,
+        DoubleType,
+        LongType,
+        IntegerType,
+    )
+
+    mapping = {
+        "TIMESTAMP": TimestampType(),
+        "DATE": DateType(),
+        "DOUBLE": DoubleType(),
+        "BIGINT": LongType(),
+        "INT": IntegerType(),
+    }
+    return StructType(
+        [
+            StructField(
+                column,
+                mapping.get(spark_sql_type(spec, column), StringType()),
+                nullable=column in spec.nullable,
+            )
+            for column in spec.columns
+        ]
+    )
+
+
 def configure_local_session(warehouse_dir: str) -> Any:
     """Start a local delta-spark session for proofs outside a Databricks workspace."""
+    import sys
+
     from delta import configure_spark_with_delta_pip
     from pyspark.sql import SparkSession
 
@@ -189,5 +243,7 @@ def configure_local_session(warehouse_dir: str) -> Any:
         .config("spark.sql.warehouse.dir", warehouse_dir)
         .config("spark.ui.enabled", "false")
         .config("spark.sql.shuffle.partitions", "1")
+        .config("spark.pyspark.python", sys.executable)
+        .config("spark.pyspark.driver.python", sys.executable)
     )
     return configure_spark_with_delta_pip(builder).getOrCreate()

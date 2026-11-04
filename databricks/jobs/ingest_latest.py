@@ -23,6 +23,7 @@ import pandas as pd  # noqa: E402
 from forecasting.data.mrts import MRTSClient  # noqa: E402
 from forecasting.registry import MRTS_SERIES  # noqa: E402
 from retailpred.live_loop.ingest import scoring_decision  # noqa: E402
+from retailpred.platform.delta_sync import to_spark_ready  # noqa: E402
 from retailpred.platform.spark_delta import merge_delta_immutable  # noqa: E402
 from retailpred.platform.specs import SILVER_MONTHLY  # noqa: E402
 
@@ -31,15 +32,6 @@ def resolve_census_key(secret_scope: str) -> str:
     from databricks.sdk.runtime import dbutils
 
     return dbutils.secrets.get(scope=secret_scope, key="census-api-key")
-
-
-def to_spark_ready(frame: pd.DataFrame) -> pd.DataFrame:
-    """Normalize timezone-aware columns to naive UTC for spark.createDataFrame."""
-    result = frame.copy()
-    for column in result.columns:
-        if pd.api.types.is_datetime64tz_dtype(result[column]):
-            result[column] = result[column].dt.tz_convert("UTC").dt.tz_localize(None)
-    return result
 
 
 def main() -> None:

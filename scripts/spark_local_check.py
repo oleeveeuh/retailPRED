@@ -69,7 +69,7 @@ def main() -> None:
         gold = build_gold_monthly(store.read(SILVER_MONTHLY), as_of=vintage)
         store.replace_snapshot(GOLD_MONTHLY, gold)
 
-        actions = plan_sync(store, catalog="local_check")
+        actions = plan_sync(store)
         print("Planned synchronization:")
         for action in actions:
             print(f"  - {action.description}")
@@ -79,14 +79,15 @@ def main() -> None:
         from retailpred.platform.spark_delta import configure_local_session
 
         spark = configure_local_session(str(workspace / "delta"))
-        executed = sync_store(spark, store, catalog="local_check")
+        catalog = None  # local OSS session: default catalog, two-part table names
+        executed = sync_store(spark, store, catalog=catalog)
         if [action.description for action in executed] != [
             action.description for action in actions
         ]:
             raise RuntimeError("executed sync diverged from the plan")
 
         for action in executed:
-            table = f"local_check.{action.spec.layer}.{action.spec.name}"
+            table = f"{action.spec.layer}.{action.spec.name}"
             rows = spark.table(table).count()
             if rows != action.row_count:
                 raise RuntimeError(f"{table} has {rows} rows; expected {action.row_count}")

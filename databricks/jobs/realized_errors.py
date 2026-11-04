@@ -21,21 +21,13 @@ if str(REPOSITORY_ROOT) not in sys.path:
 import pandas as pd  # noqa: E402
 
 from retailpred.live_loop.realized import compute_realized_errors  # noqa: E402
+from retailpred.platform.delta_sync import to_spark_ready  # noqa: E402
 from retailpred.platform.spark_delta import merge_delta_immutable  # noqa: E402
 from retailpred.platform.specs import (  # noqa: E402
     GOLD_FORECASTS,
     GOLD_REALIZED_ERRORS,
     SILVER_MONTHLY,
 )
-
-
-def to_spark_ready(frame: pd.DataFrame) -> pd.DataFrame:
-    """Normalize timezone-aware columns to naive UTC for spark.createDataFrame."""
-    result = frame.copy()
-    for column in result.columns:
-        if pd.api.types.is_datetime64tz_dtype(result[column]):
-            result[column] = result[column].dt.tz_convert("UTC").dt.tz_localize(None)
-    return result
 
 
 def main() -> None:
