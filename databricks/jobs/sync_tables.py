@@ -13,7 +13,16 @@ import sys
 from pathlib import Path
 
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+# Serverless python tasks exec this file without defining __file__, so the
+# bundle passes the synced repository root as an explicit parameter
+# (${workspace.file_path}/files) and it is consumed before the imports below.
+def _repository_root() -> str:
+    argv = sys.argv
+    if "--repo-root" in argv:
+        return argv[argv.index("--repo-root") + 1]
+    return "."
+
+REPOSITORY_ROOT = Path(_repository_root())
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
@@ -29,6 +38,7 @@ def main() -> None:
         required=True,
         help="Volume path containing <layer>/<table>.parquet from the local store",
     )
+    parser.add_argument("--repo-root", default=".", help="Synced bundle root; consumed before imports.")
     args = parser.parse_args()
 
     store = LocalTableStore(args.staged_root)
