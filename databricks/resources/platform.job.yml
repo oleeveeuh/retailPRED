@@ -4,9 +4,13 @@ resources:
       name: retailpred-platform-bootstrap
       tasks:
         - task_key: create_declared_delta_tables
-          existing_cluster_id: ${var.cluster_id}
           spark_python_task:
             python_file: ../jobs/bootstrap_tables.py
             parameters:
               - --catalog
               - ${var.catalog}
+          environment_key: serverless_default
+      environments:
+        - environment_key: serverless_default
+          spec:
+            environment_version: '2'

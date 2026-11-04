@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pytest
 
@@ -81,3 +82,24 @@ def test_plan_respects_manifest_integrity(tmp_path) -> None:
     manifest.write_text('{"table": "monthly_observations", "schema_version": 1}')
     with pytest.raises(Exception):
         plan_sync(store)
+
+
+def test_sync_job_declares_serverless_manual_execution() -> None:
+    import yaml
+
+    root = Path(__file__).resolve().parents[2]
+    bundle = yaml.safe_load((root / "databricks.yml").read_text())
+    resources = yaml.safe_load(
+        (root / "databricks/resources/sync_tables.job.yml").read_text()
+    )
+    assert bundle["variables"]["catalog"]["default"] == "workspace"
+    job = resources["resources"]["jobs"]["platform_sync_tables"]
+    task = job["tasks"][0]
+    assert task["spark_python_task"]["python_file"] == "../jobs/sync_tables.py"
+    assert task["spark_python_task"]["parameters"] == [
+        "--catalog",
+        "${var.catalog}",
+        "--staged-root",
+        "${var.staged_root}",
+    ]
+    assert "existing_cluster_id" not in task

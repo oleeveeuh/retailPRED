@@ -61,6 +61,10 @@ def test_declarative_automation_bundle_has_deployable_job_shape() -> None:
     )
     assert bundle["bundle"]["name"] == "retailpred"
     assert bundle["targets"]["dev"]["mode"] == "development"
-    task = resources["resources"]["jobs"]["platform_bootstrap"]["tasks"][0]
-    assert task["existing_cluster_id"] == "${var.cluster_id}"
+    job = resources["resources"]["jobs"]["platform_bootstrap"]
+    task = job["tasks"][0]
     assert task["spark_python_task"]["python_file"] == "../jobs/bootstrap_tables.py"
+    assert task["environment_key"] == "serverless_default"
+    # Free Edition exposes no classic clusters; jobs run on serverless compute.
+    assert "existing_cluster_id" not in task
+    assert job["environments"][0]["spec"]["environment_version"] == "2"

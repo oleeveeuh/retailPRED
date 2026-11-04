@@ -1,0 +1,22 @@
+resources:
+  jobs:
+    platform_sync_tables:
+      name: retailpred-platform-sync-tables
+      # Manual, parameterized synchronization of staged local-store Parquet
+      # into the declared Delta tables. Run with:
+      #   databricks bundle run platform_sync_tables \
+      #     -t dev --var "catalog=..." --var "staged_root=/Volumes/..."
+      tasks:
+        - task_key: sync_staged_contract_tables
+          spark_python_task:
+            python_file: ../jobs/sync_tables.py
+            parameters:
+              - --catalog
+              - ${var.catalog}
+              - --staged-root
+              - ${var.staged_root}
+          environment_key: serverless_default
+      environments:
+        - environment_key: serverless_default
+          spec:
+            environment_version: '2'

@@ -101,6 +101,8 @@ def test_bundle_declares_paused_scheduled_ingest() -> None:
     task = job["tasks"][0]
     assert task["spark_python_task"]["python_file"] == "../jobs/ingest_latest.py"
     assert "--secret-scope" in task["spark_python_task"]["parameters"]
+    assert "existing_cluster_id" not in task
+    assert task["environment_key"] == "serverless_default"
     assert len(job["tasks"]) == 2
     second = job["tasks"][1]
     assert second["task_key"] == "score_realized_errors"
