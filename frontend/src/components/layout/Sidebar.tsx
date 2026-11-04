@@ -15,6 +15,7 @@ import {
   BarChart3,
   ChevronLeft,
   ChevronRight,
+  Home,
 } from 'lucide-react';
 
 interface NavItem {
@@ -24,6 +25,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
+  { name: 'Overview', path: '/', icon: Home },
   { name: 'Forecast evidence', path: '/dashboard/predictions', icon: BarChart3 },
 ];
 

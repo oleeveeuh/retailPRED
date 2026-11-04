@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout';
 import { PredictionsPage } from './pages/PredictionsPage';
+import { ShowcasePage } from './pages/ShowcasePage';
 import './index.css';
 
 const queryClient = new QueryClient({
@@ -27,9 +28,9 @@ function App() {
       <HashRouter>
         <Layout>
           <Routes>
-            <Route path="/" element={<Navigate to="/dashboard/predictions" replace />} />
+            <Route path="/" element={<ShowcasePage />} />
             <Route path="/dashboard/predictions" element={<PredictionsPage />} />
-            <Route path="*" element={<Navigate to="/dashboard/predictions" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>
       </HashRouter>

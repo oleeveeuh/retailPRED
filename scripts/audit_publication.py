@@ -11,11 +11,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_FRONTEND = (
     ROOT / "frontend/src/App.tsx",
+    ROOT / "frontend/src/content/showcase.ts",
     ROOT / "frontend/src/components/DemoBanner.tsx",
     ROOT / "frontend/src/components/LatestForecastPanel.tsx",
     ROOT / "frontend/src/components/layout/Header.tsx",
     ROOT / "frontend/src/components/layout/Sidebar.tsx",
     ROOT / "frontend/src/pages/PredictionsPage.tsx",
+    ROOT / "frontend/src/pages/ShowcasePage.tsx",
     ROOT / "frontend/src/api/v2Forecasts.ts",
 )
 
