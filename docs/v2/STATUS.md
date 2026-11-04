@@ -17,6 +17,7 @@ Last updated: 2026-11-03
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
 - Full Python 3.11 environment: 143 tests passed with no skips at this checkpoint.
+- First external CI run on the pushed `v2-rebuild` (run 41885859473, 2026-11-04): all five jobs green — gitleaks, backend tests, Node 24 frontend checks, dbt parse, and the container smoke test building the minimal v2 image and asserting the fail-closed contract on real infrastructure.
 - dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources; re-verified from a clean throwaway venv against `warehouse/requirements.txt` only.
 - Frontend type-check: passed.
 - Publication frontend lint: strict zero-warning gate passes. Full preserved frontend lint passes with 193 warnings, below the frozen 215-warning legacy cap; this remains explicit legacy debt rather than a repository-wide clean-lint claim.
