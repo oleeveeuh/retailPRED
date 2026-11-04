@@ -8,10 +8,10 @@ evidence, and the level never silently upgrades.
 |---|---|---|
 | Table contracts and Delta binding | **executed on Databricks** — 13 tables created in `workspace.bronze/silver/gold` by the bootstrap job | — |
 | Bundle deploy (bootstrap job, scheduled pipeline) | **executed on Databricks** — bundle deployed to the dev target; 3 serverless jobs registered | schedule unpaused + first scheduled run |
-| Census ingestion task | **locally verified** — 17 years of live Census history ingested twice with identical values | workspace run of the same pipeline: row counts, manifest hashes |
-| Scoring task | implemented; refuses while the candidate is an unauthorized challenger | a post-promotion run: forecast row counts, benchmark statuses |
-| Realized-error task | implemented | first matured-target evaluation rows |
-| Snapshot publication to `live-data` | implemented | the data-branch commit with its pipeline run id |
+| Census ingestion task | **executed on Databricks** — 2,200 silver rows merged into `workspace.silver.monthly_observations` from live Census pulls | — |
+| Scoring task | executed on Databricks (refusal path): refuses while the candidate is an unauthorized challenger | a post-promotion run: forecast row counts, benchmark statuses |
+| Realized-error task | executed on Databricks (empty-skip path verified) | first matured-target evaluation rows |
+| Snapshot publication to `live-data` | implemented; decline path verified on Databricks | the data-branch commit with its pipeline run id |
 | Recurring schedule | declared paused | unpause commit + first scheduled-run URL, then `is_live=true` |
 | GitHub Pages retrieval | implemented (workflow defined) | first Pages deployment URL + frontend fetch check |
 
@@ -27,4 +27,5 @@ evidence, and the level never silently upgrades.
 | 2026-11-04 | `dbt run` + `dbt test` (workspace, starter warehouse) | **SUCCESS** — 6 models materialized in `workspace.dbt_dev_*`, 20/20 data tests passing (vacuously: platform Delta tables not yet populated; the meaningful green follows the first pipeline run). Catalog default corrected from `retailpred` to Free Edition's `workspace`. | commits `e8314d3`+ |
 | 2026-11-04 | `platform_ingest_latest` (workspace, serverless) | **FAILED** — ingest task ImportError: `scoring_decision` still imported from the pre-refactor module in the cluster wrapper. Fixed import to `retailpred.live_loop.scoring`. | run 1054816300992672 |
 | 2026-11-04 | `platform_ingest_latest` (workspace, serverless) | **FAILED** — `ModuleNotFoundError: No module named 'lightgbm'`: the informational scoring-state import pulls the model chain, and lightgbm was not declared for the serverless environment. Added `lightgbm>=4.0` alongside `pydantic>=2` to every job environment. | fix commit pending |
+| 2026-11-04 | `platform_ingest_latest` (workspace, serverless) — **first end-to-end pipeline run** | **SUCCESS** — ingest: 2,200 silver rows merged into Delta from live Census, cutoff 2026-08-01; score: correctly refused the unauthorized challenger; realized: skipped with no forecasts; publish: declined without gold forecasts. The full four-task graph and every fail-closed gate verified on hosted infrastructure. | run 452582046469351, lightgbm commit `a89fc18` |
 | — | — | — | — |
