@@ -90,7 +90,7 @@ The fail-closed `/api/v2`, publication-only React forecast route, and five-view 
 - Covariates declare historical, known-future, static, or unavailable-at-origin roles.
 - Scale-free seasonal log-ratio training lets one deterministic model learn across categories without allowing large-dollar series to define the target scale.
 - On the same 5,324 revised-history folds, LightGBM reduces mean category WAPE from 6.35% to 4.49% and improves all 11 categories.
-- The numerical promotion gate passes, but final champion status remains blocked on untouched, point-in-time evidence. See `M3_LIGHTGBM.md`.
+- The numerical promotion gate passes on revised history, but the **predeclared point-in-time gate failed** (2026-11-04): on ALFRED vintages, mean category WAPE is 8.49% for LightGBM versus 8.16% for Seasonal Naive, with only 4 of 11 categories improved — the challenger stays unauthorized and serving stays fail-closed. See `M3_LIGHTGBM.md` and `M3_VINTAGE_BACKTEST.md`.
 - MLflow tracking records the data hash, Git revision, parameters, metrics, runtime metadata, dataset, and artifacts. A complete local SQLite run finished and was read back through the client; see `MLFLOW_RUN.md`. No durable remote run is claimed.
 - Native P10–P90 intervals achieve 86.0% coverage on a disjoint 2022–2025 target evaluation partition, versus an 80% target; fixed conformal calibration over-corrects to 92.4%, widens intervals, and worsens WIS, so neither method is promoted. See `M3_PROBABILISTIC.md`.
 - Regime analysis shows LightGBM improves aggregate WAPE by 60.39% pre-COVID, 24.52% during disruption, and 42.26% post-disruption, but fails the strict all-category gate in the latter two regimes. It remains a development challenger; see `M3_MRTS_REGIMES.md`.
