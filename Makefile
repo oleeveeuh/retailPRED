@@ -16,7 +16,7 @@ TABLEAU_PYTHON := $(TABLEAU_VENV)/bin/python
 TABLEAU_PIP := $(TABLEAU_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup setup-experiment setup-neural setup-foundation setup-tableau lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 bi-extracts tableau-workbook frontend-check verify clean-generated
+.PHONY: setup setup-experiment setup-neural setup-foundation setup-tableau lock test milestone1-check platform-check warehouse-check fetch-mrts baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 bi-extracts tableau-workbook frontend-check publication-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -131,10 +131,14 @@ tableau-workbook:
 
 frontend-check:
 	cd frontend && npm run type-check
+	cd frontend && npm run lint:publication
 	cd frontend && npm run lint
 	cd frontend && npm run build
 
-verify: test frontend-check
+publication-check:
+	$(VENV_PYTHON) scripts/audit_publication.py
+
+verify: publication-check test frontend-check
 
 clean-generated:
 	rm -rf frontend/dist .pytest_cache warehouse/target warehouse/logs warehouse/.user.yml

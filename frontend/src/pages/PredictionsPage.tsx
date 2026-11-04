@@ -23,7 +23,7 @@ import {
   YAxis,
 } from 'recharts';
 
-import { v2ForecastsApi } from '../api/unifiedApi';
+import { v2ForecastsApi } from '../api/v2Forecasts';
 
 const FIXTURE = {
   dataset: 'm5' as const,

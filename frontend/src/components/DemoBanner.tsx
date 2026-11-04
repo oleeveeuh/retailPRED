@@ -19,10 +19,10 @@ export const DemoBanner = () => {
             📊
           </span>
           <div>
-            <span className="font-semibold">Demo Mode</span>
+            <span className="font-semibold">Historical evaluation demo</span>
             <span className="mx-2">•</span>
             <span className="text-blue-100 text-sm">
-              Using real predictions from production database
+              Frozen M5 evidence through May 2016; no live or production inference
             </span>
           </div>
         </div>

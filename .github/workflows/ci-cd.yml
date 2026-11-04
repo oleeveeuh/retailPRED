@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout full history
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Run gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -27,10 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11'
           cache: 'pip'
@@ -52,20 +52,23 @@ jobs:
         working-directory: .   # pytest.ini selects tests/
         run: pytest -v --ignore=tests/v2 --ignore=tests/platform
 
+      - name: Audit recruiter-facing publication surface
+        run: python scripts/audit_publication.py
+
   frontend-checks:
-    name: Frontend checks (Node 20)
+    name: Frontend checks (Node 24 LTS)
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: frontend
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
@@ -76,7 +79,7 @@ jobs:
         run: npm run type-check
 
       - name: Lint
-        run: npm run lint
+        run: npm run lint:publication && npm run lint
 
       - name: Build
         run: npm run build
@@ -86,10 +89,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11'
           cache: 'pip'
@@ -100,3 +103,55 @@ jobs:
 
       - name: Parse warehouse project
         run: dbt parse --project-dir warehouse --profiles-dir warehouse
+
+  container-smoke:
+    name: Container smoke test (v2 API image)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Build v2 API image
+        run: docker build -t retailpred-v2-api:ci .
+
+      - name: Start container
+        run: docker run -d --name retailpred-v2-api -p 8000:8000 retailpred-v2-api:ci
+
+      - name: Wait for /api/v2/health
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:8000/api/v2/health > /dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::Container did not become healthy"
+          docker logs retailpred-v2-api
+          exit 1
+
+      - name: Assert fail-closed serving contract
+        run: |
+          set -euo pipefail
+          health=$(curl -fsS http://localhost:8000/api/v2/health)
+          echo "$health" | grep -q '"status":"restricted"'
+          echo "$health" | grep -q '"service":{"status":"healthy"}'
+
+          demo=$(curl -fsS http://localhost:8000/api/v2/demo-catalog)
+          series=$(printf '%s' "$demo" | python3 -c 'import json,sys; print(json.load(sys.stdin)["fixtures"][0]["series_id"])')
+          origin=$(printf '%s' "$demo" | python3 -c 'import json,sys; print(json.load(sys.stdin)["fixtures"][0]["forecast_origin"])')
+
+          code=$(curl -s -o /tmp/forecast-production.json -w '%{http_code}' -X POST http://localhost:8000/api/v2/forecasts \
+            -H 'Content-Type: application/json' \
+            -d "{\"dataset\":\"m5\",\"series_id\":\"$series\",\"forecast_origin\":\"$origin\",\"horizon\":4,\"mode\":\"production\",\"freshness_requirement\":\"current\"}")
+          test "$code" = "409"
+          grep -q 'production_model_unavailable' /tmp/forecast-production.json
+
+          code=$(curl -s -o /tmp/forecast-demo.json -w '%{http_code}' -X POST http://localhost:8000/api/v2/forecasts \
+            -H 'Content-Type: application/json' \
+            -d "{\"dataset\":\"m5\",\"series_id\":\"$series\",\"forecast_origin\":\"$origin\",\"horizon\":4,\"mode\":\"offline_demo\",\"freshness_requirement\":\"historical_allowed\"}")
+          test "$code" = "200"
+          grep -q '"is_demo":true' /tmp/forecast-demo.json
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f retailpred-v2-api

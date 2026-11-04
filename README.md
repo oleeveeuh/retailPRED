@@ -1,284 +1,173 @@
-# RetailPRED
+# RetailPRED v2
 
-> **v2 rebuild active:** Milestone 1—the leakage-safe native-monthly foundation—is complete. The original undergrad implementation is preserved as `v1-undergrad`; its published metrics are historical evidence, not the v2 benchmark. See [`docs/v2/STATUS.md`](docs/v2/STATUS.md).
+RetailPRED is an evidence-first forecasting portfolio rebuilt from an undergraduate project. The v2 work replaces pseudo-replicated weekly targets and leaky rolling features with native-frequency data contracts, causal features, rolling-origin evaluation, governed model promotion, hierarchical M5 forecasting, a fail-closed API, and Tableau-ready reporting.
 
-Leakage-safe monthly forecasting for 11 U.S. retail categories, with versioned Census ingestion, rolling-origin evaluation, and an auditable path from a simple baseline to modern global models.
+> **Publication status:** Milestones 0–5 are complete for the local, reproducible scope. The governed API and web demo expose historical evaluation evidence only; no live production inference, cloud Databricks run, remote MLflow run, or public Tableau workbook is claimed. See the [publication audit](docs/v2/PUBLICATION_AUDIT.md) and [current status](docs/v2/STATUS.md).
 
-[![Live demo](https://img.shields.io/badge/demo-retail--pred.vercel.app-brightgreen)](https://retail-pred.vercel.app)
 [![Python](https://img.shields.io/badge/Python-3.11-blue)](https://www.python.org)
-[![Node](https://img.shields.io/badge/Node-20-blue)](https://nodejs.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+[![Node](https://img.shields.io/badge/Node-24%20LTS-blue)](https://nodejs.org)
+[![License: MIT](https://img.shields.io/badge/code%20license-MIT-yellow)](LICENSE)
 
-## Problem
+## Recruiter skim
 
-Monthly retail sales series published by the U.S. Census Bureau's [Monthly Retail Trade Survey (MRTS)](https://www.census.gov/retail/mrts.html) are revised and released after the observation month. RetailPRED v2 asks a narrower, testable question: how accurately can each category be forecast at its native monthly frequency using only information available before the forecasted month?
+Two related use cases share one governed platform:
 
-The original project expanded monthly totals into synthetic weekly/daily targets. That made the apparent dataset larger without adding independent observations and introduced same-row target leakage in rolling features. v2 preserves that work as historical evidence while replacing its data and evaluation foundation.
+| Use case | Data and grain | Selected point model | Measured decision |
+|---|---|---|---|
+| Macro planning | Census MRTS, 11 monthly U.S. retail series | Global LightGBM challenger | Mean category WAPE 4.49% versus 6.35% for Seasonal Naive on 5,324 revised-history folds; not promoted without point-in-time vintage validation |
+| Operational demand | M5, 30,490 item/store daily series and 42,840 hierarchy nodes | Global LightGBM champion | WRMSSE 0.813301 versus 0.869701 for Seasonal Naive, a 6.48% improvement; won all five rolling windows |
 
-## Current v2 foundation
+The more complex model did not automatically win. NHITS failed its bounded M5 feasibility gate; zero-shot Chronos-2 advanced from a 600-series subset, then failed the complete hierarchy benchmark with 1.937468 WRMSSE and severe aggregate underforecasting. A reconciliation challenger scored 0.768502 on the main holdout but failed the all-window stability gate. M5 conformal intervals reached 80.38% weighted coverage overall but only 69.38% for high-volume bottom series, so uncertainty remains unavailable for serving.
 
-- **Canonical monthly contracts** for series, observations, releases, forecasts, and actuals.
-- **Native-monthly Census ingestion** with explicit errors—failed requests never become generated retail data.
-- **Point-in-time dataset selection** across observation and vintage timestamps.
-- **Causal features** whose rolling, difference, and change calculations are shifted before aggregation.
-- **Rolling-origin evaluation** with expanding or sliding windows and recorded origin, horizon, cutoff, vintage, model version, and actual source.
-- **Point and probabilistic metrics:** WAPE, MAE, RMSSE, bias, pinball loss, weighted interval score, coverage, and interval width.
-- **Measured Seasonal Naive baseline:** 5,324 category/origin/horizon rows on the Census 2026 revision vintage; mean category WAPE 6.35%.
-- **Measured global LightGBM challenger:** the same 5,324 folds, with mean category WAPE 4.49% and improvements in all 11 categories; final promotion awaits untouched point-in-time evidence.
-- **Measured uncertainty, without a false win:** native 80% intervals cover 86.0% of disjoint 2022–2025 targets; fixed conformal calibration over-corrects to 92.4% and worsens interval score, so neither interval method is promoted.
-- **Versioned platform foundation:** immutable MRTS and FRED/ALFRED extracts, versioned silver observations, as-of gold snapshots, idempotent merges, and fail-closed quality gates.
-- **Separate M5 operational contract:** native daily item/store units, weekly prices, calendar events, SNAP flags, and retail hierarchy—without pretending they are MRTS features.
-- **Sparse 12-level M5 hierarchy:** all 42,840 official nodes, exact bottom-up aggregation, nonnegative weighted reconciliation, coherence checks, revenue weights, and WRMSSE contracts; real-data metrics await the licensed files.
-- **Databricks + dbt analytics layer:** declared-schema Delta tables, immutable merge safeguards, bundle-managed bootstrap deployment, tested warehouse models, and a Tableau-ready reporting boundary.
+### Read it as a data-science project
 
-See the [Milestone 1 baseline](docs/v2/M1_BASELINE.md), [LightGBM development benchmark](docs/v2/M3_LIGHTGBM.md), [probabilistic benchmark](docs/v2/M3_PROBABILISTIC.md), [M5 hierarchy design](docs/architecture/m5_hierarchy.md), [leakage report](docs/v2/LEAKAGE_REPORT.md), [data-platform architecture](docs/architecture/data_platform.md), and [implementation status](docs/v2/STATUS.md).
+- [Leakage diagnosis and before/after evidence](docs/v2/LEAKAGE_REPORT.md)
+- [MRTS LightGBM benchmark](docs/v2/M3_LIGHTGBM.md) and [regime analysis](docs/v2/M3_MRTS_REGIMES.md)
+- [M5 baseline](docs/v2/M4_M5_BASELINE.md), [LightGBM result](docs/v2/M4_M5_LIGHTGBM.md), and [rolling stability](docs/v2/M4_M5_STABILITY.md)
+- [NHITS](docs/v2/M4_M5_NHITS_FEASIBILITY.md), [Chronos-2](docs/v2/M4_M5_CHRONOS2.md), [reconciliation](docs/v2/M4_M5_RECONCILIATION_STABILITY.md), and [probabilistic](docs/v2/M4_M5_PROBABILISTIC.md) decision gates
 
-## Architecture
+### Read it as an ML/data-platform project
+
+- [Versioned bronze/silver/gold architecture](docs/architecture/data_platform.md)
+- [Model protocol](forecasting/models/base.py), [promotion rules](forecasting/promotion.py), and [frozen portfolio](forecasting/portfolio.py)
+- [Databricks/dbt execution boundary](docs/architecture/data_platform.md)
+- [Fail-closed serving contract](docs/v2/M5_SERVING_CONTRACT.md)
+- [Governed BI extracts and Tableau workbook](bi/README.md)
+
+## What is implemented
+
+- Immutable contracts for series, observations, releases, forecasts, actuals, model decisions, and BI extracts.
+- Census MRTS and FRED/ALFRED ingestion with observation time, vintage time, explicit as-of selection, and no synthetic fallback.
+- Causal monthly features: target-derived lags, rolling statistics, differences, and changes are shifted before aggregation.
+- Comparable rolling-origin folds with WAPE, MAE, RMSSE, bias, pinball loss, weighted interval score, coverage, and interval width.
+- The official sparse 12-level M5 hierarchy, revenue weights, WRMSSE, bottom-up aggregation, and nonnegative diagonal-variance WLS reconciliation.
+- Seasonal Naive, global LightGBM, NHITS feasibility, and Chronos-2 feasibility/full-hierarchy gates; retired v1 labels are excluded from v2 selection.
+- Local MLflow tracking proof with data hash, Git revision, parameters, metrics, runtime metadata, and artifacts. A durable remote run is still pending credentials.
+- Databricks Asset Bundle and dbt project with 6 models, 20 data tests, and 4 sources. These are parsed and contract-tested locally, not claimed as a cloud deployment.
+- FastAPI `/api/v2` routes that return typed unavailable states for unapproved production, stale-data, incompatible-model, and uncalibrated-uncertainty requests.
+- A React evidence page backed by a deterministic 2016 M5 fixture. It is explicitly historical and is not a current forecast.
+- Five governed Tableau views backed by an aggregate-only Hyper extract and checked against the same frozen model decisions.
+
+## System boundary
 
 ```mermaid
 flowchart LR
-    subgraph data [Data sources]
-        MRTS[Census MRTS API<br/>monthly retail sales]
-        FRED[FRED / market data<br/>economic indicators]
-    end
-
-    subgraph foundation [v2 monthly foundation]
-        INGEST[Validated ingestion<br/>observation + vintage time]
-        FEATURES[Causal monthly features<br/>shift then aggregate]
-        BACKTEST[Rolling-origin folds<br/>complete provenance]
-    end
-
-    subgraph models [Model progression]
-        SNAIVE[Seasonal Naive<br/>measured baseline]
-        LGBM[Global LightGBM<br/>measured challenger]
-        MODERN[NHITS + Chronos-2<br/>challengers]
-    end
-
-    subgraph evidence [Governed outputs]
-        METRICS[WAPE / MAE / RMSSE<br/>bias + interval metrics]
-        REPORTS[Fold evidence<br/>leakage + baseline reports]
-    end
-
-    MRTS --> INGEST
-    FRED -. Milestone 2 vintages .-> INGEST
-    INGEST --> FEATURES --> BACKTEST
-    BACKTEST --> SNAIVE --> METRICS
-    BACKTEST --> LGBM
-    BACKTEST --> MODERN
-    METRICS --> REPORTS
+    A[Census MRTS / FRED vintages] --> B[Versioned bronze, silver, gold]
+    M[M5 licensed source files] --> B
+    B --> C[Causal features and rolling origins]
+    C --> D[Seasonal Naive / LightGBM / bounded challengers]
+    D --> E[Promotion and calibration gates]
+    E --> F[Fail-closed FastAPI contract]
+    E --> G[Governed BI extracts]
+    F --> H[Historical React evidence page]
+    G --> I[Five-view Tableau workbook]
 ```
 
-## Dataset
+The macro MRTS and operational M5 tasks remain separate: national monthly dollar sales are not presented as store/SKU demand, and M5 calendar, price, SNAP, and hierarchy fields are not invented for MRTS.
 
-| | |
-|---|---|
-| **Source** | U.S. Census Bureau MRTS [time-series API](https://api.census.gov/data/timeseries/eits/mrts) and named annual-revision workbooks |
-| **Scope** | 11 retail categories (auto dealers, building materials, clothing, electronics, food & beverage, furniture, gasoline stations, general merchandise, health & personal care, sporting goods, total retail sales) |
-| **Granularity** | One independent seasonally adjusted value per category/month |
-| **Measured baseline history** | January 2010 → December 2025 from the Census 2026 revision workbook |
-| **Evaluation** | Monthly rolling origins, minimum 60-month training window, horizons 1/3/6/12 months |
-| **Generated data policy** | Raw/canonical downloads and fold-level outputs live under ignored `data/v2/`; tracked reports contain source URL, checksum, and declared aggregates |
+## Run and verify
 
-## Integrity guarantees and limits
-
-- Target-derived features at month *t* depend only on values through *t-1*.
-- Duplicate series/month/vintage keys, missing months, non-month-start timestamps, naive provenance timestamps, and non-finite values fail validation.
-- Backtests never random-split time series and always record their data vintage and actual source.
-- The current baseline uses revised Census history. It is not yet a true real-time-vintage backtest; historical release reconstruction is Milestone 2.
-- The React/FastAPI product surface still serves preserved v1 artifacts and is not yet connected to the v2 forecasting modules.
-
-## v1 historical results (not the v2 benchmark)
-
-The frozen v1 snapshot below comes from [`training_outputs/validation_metrics.json`](training_outputs/validation_metrics.json), generated 2026-02-14 by comparing logged weekly predictions against published Census actuals. It is retained to show the starting point, but must not be quoted as authoritative v2 performance because the rows are pseudo-replicated and the training features contain the leakage documented above.
-
-**Evaluation window:** weekly predictions dated 2025-01-05 → 2025-10-26 (the weeks with backfilled actuals). Trained on pre-2025 data only.
-
-| Model | Avg MAPE | Categories | Validated samples | Notes |
-|---|---|---|---|---|
-| **LightGBM** | **9.8%** | 11 | 429 | Best model; SHAP-explainable; used as the default |
-| **RandomForest** | **10.1%** | 11 | 429 | Close second; SHAP-explainable |
-| SeasonalNaive | 14.1% | 11 | 473 | Baseline (same week last year) |
-| PatchTST* | 17.9% | 10 | 430 | Legacy-pipeline label — see note |
-| TimesNet* | 18.6% | 10 | 430 | Legacy-pipeline label — see note |
-| AutoARIMA | 34.8% | 7 | 301 | Failed to train on 4 categories; poor fit |
-
-\* **About PatchTST/TimesNet:** a genuine neural implementation (Nixtla `neuralforecast`) was evaluated in an earlier training pipeline that is no longer part of this repository. The rows logged under those names — and the MAPEs above — come from a trend/seasonal heuristic used after that pipeline was retired; no transformer weights are shipped here. AutoETS was removed entirely after failing badly on the 2025 distribution shift.
-
-Per-category LGBM MAPE ranges from **5.9%** (clothing) to **15.1%** (sporting goods) — full breakdown in [`training_outputs/validation_metrics.json`](training_outputs/validation_metrics.json).
-
-Sample diagnostic generated by the training pipeline (Total Retail Sales, LGBM — per-chart MAPE computed over the full plotted year, which spans more weeks than the validation window above):
-
-![Total Retail Sales LGBM actual vs predicted, 2025](training_outputs/visualizations/Total_Retail_Sales/Total_Retail_Sales_LGBM_performance.png)
-
-**What is *not* claimed:** this is not a production system, there is no deployed backend (the live demo is a static build with pre-generated data), forecasts for 2026 are unvalidated, and the models are trained on ~10 years of one country's monthly retail aggregates — small data, wide error bars.
-
-## Repository structure
-
-```
-retailPRED/
-├── retailpred/platform/         # bronze/silver/gold contracts and local reference store
-├── databricks/                  # Delta bootstrap job + bundle resources
-├── warehouse/                   # dbt staging, marts, reporting, and data tests
-├── forecasting/                # v2 contracts, ingestion, features, models, evaluation
-│   ├── data/                   #   Census API/workbook + canonical vintage-aware dataset
-│   ├── features/               #   leakage-safe native-monthly features
-│   ├── models/                 #   Seasonal Naive baseline
-│   └── evaluation/             #   rolling origins + point/probabilistic metrics
-├── scripts/                    # v2 ingestion and baseline entry points
-├── backend/                    # FastAPI service
-│   ├── api/                    #   routes, schemas, scenario/category/export endpoints
-│   ├── ml/                     #   inference, feature computation, training scripts
-│   │   └── models/             #   22 trained .pkl models (LGBM + RandomForest × 11)
-│   ├── services/               #   prediction, scenario, economic-context logic
-│   └── db/                     #   SQLite helpers + schema migrations
-├── frontend/                   # React 19 + TypeScript + Vite dashboard
-│   └── public/demo-data/       # pre-generated JSON for the static demo
-├── project_root/               # preserved v1 training pipeline
-│   ├── etl/                    #   legacy-only fetchers/builders
-│   └── data_multi_resolution/  #   frozen v1 evidence; never v2 input
-├── data/                       # ignored v2 generated data + runtime SQLite DB
-├── training_outputs/           # validation metrics, training report, diagnostics
-├── dags/                       # Airflow DAG: weekly validation loop
-├── tests/                      # pytest suite (see "Verify")
-└── docs/                       # methodology, API reference, web-app guide
-```
-
-## Quick start
-
-**Prerequisites:** Python 3.11, Node.js 20, Git. No API keys are needed to run the backend, frontend, or tests — only the optional data-fetching scripts use them. Python 3.11 is pinned in `.python-version`; `requirements-dev.lock` is the complete local/CI verification environment.
+Prerequisites: Python 3.11, Node.js 24 LTS, and Git.
 
 ```bash
 git clone https://github.com/oleeveeuh/retailPRED.git
 cd retailPRED
+make setup
+make verify
+```
 
-# --- Backend (FastAPI, port 8000) ---
-cd backend
-python3.11 -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-# initialize an empty SQLite database (the populated DB is not tracked)
-python -m db.migrations --schema-path ../data/db/schema.sql --db-path ../data/retailpred.db
-python -m uvicorn main:app --reload --port 8000
+The verification gate runs the Python suite plus frontend type-check, lint, and production build. The latest local checkpoint is 143 Python tests with no skips; CI must reproduce the result on the publication commit.
 
-# --- Frontend (Vite, port 5173) ---  (new terminal, from repo root)
+Run the restricted v2 API and frontend:
+
+```bash
+# terminal 1
+.venv-v2/bin/python -m uvicorn backend.main:app --port 8000
+
+# terminal 2
 cd frontend
-npm ci
-npm run dev          # dev mode proxies to http://localhost:8000
-
-# --- Or run everything at once ---
-# from repo root: npm install && npm run dev
+npm run dev
 ```
 
-The pre-trained models are committed, so `/api/predict` works immediately. The database starts empty — forecast history accumulates as you use it.
+Useful endpoints:
 
-### Verify
+- `GET /api/v2/health` separates service health, model availability, and data freshness.
+- `GET /api/v2/models` returns frozen portfolio decisions rather than scanning legacy pickle files.
+- `GET /api/v2/demo-catalog` lists the deterministic historical fixture.
+- `POST /api/v2/forecasts` serves only the documented fixture; production mode fails closed.
+
+Legacy v1 mutation, mock, training, export, and scenario routes are absent by default. They can be enabled only for archival investigation with `RETAILPRED_ENABLE_LEGACY_API=true`; they are not part of the v2 product claim.
+
+## Reproduce the measured work
+
+MRTS benchmark commands require the named Census annual-revision workbook and an explicit vintage timestamp:
 
 ```bash
-make setup                  # first run: locked Python dependencies + npm ci
-make verify                 # backend tests + frontend type-check/lint/build
+make baseline-mrts WORKBOOK=/path/to/benchsales26.xlsx VINTAGE_TIME=2026-11-02T00:00:00+00:00
+make benchmark-mrts WORKBOOK=/path/to/benchsales26.xlsx VINTAGE_TIME=2026-11-02T00:00:00+00:00
+make probabilistic-mrts WORKBOOK=/path/to/benchsales26.xlsx VINTAGE_TIME=2026-11-02T00:00:00+00:00
 ```
 
-### Reproduce the v2 monthly foundation
+M5 commands require the four competition files under `data/v2/source/m5/`. They are intentionally not redistributed; expected files, checksums, and validation steps are in [the M5 source record](docs/v2/M4_M5_SOURCE.md).
 
 ```bash
-make milestone1-check
-make platform-check
-make warehouse-check            # after installing warehouse/requirements.txt in .venv-dbt
-
-# Optional live API ingestion; requires CENSUS_API_KEY
-make fetch-mrts END_YEAR=2025
-
-# Reproduce the measured baseline from a downloaded Census revision workbook
-make baseline-mrts \
-  WORKBOOK=/absolute/path/to/benchsales26.xlsx \
-  VINTAGE_TIME=2026-11-02T00:00:00+00:00
-
-# Compare LightGBM and Seasonal Naive on identical folds
-make benchmark-mrts \
-  WORKBOOK=/absolute/path/to/benchsales26.xlsx \
-  VINTAGE_TIME=2026-11-02T00:00:00+00:00
-
-# Evaluate native and conformalized P10/P50/P90 forecasts
-make probabilistic-mrts \
-  WORKBOOK=/absolute/path/to/benchsales26.xlsx \
-  VINTAGE_TIME=2026-11-02T00:00:00+00:00
-
-# Optional: reproduce the tracked run in a separate MLflow environment
-make setup-experiment
-make track-mrts \
-  WORKBOOK=/absolute/path/to/benchsales26.xlsx \
-  VINTAGE_TIME=2026-11-02T00:00:00+00:00 \
-  TRACKING_URI=sqlite:////absolute/path/to/retailpred.mlflow.db
+make validate-m5
+make baseline-m5
+make rolling-m5
+make rolling-reconcile-m5
+make probabilistic-m5
 ```
 
-The historical v1 model scripts remain in `backend/ml/` and `train.py`, but are not valid v2 retraining paths because they consume the frozen interpolated feature CSVs.
-
-### Preserved v1 demo API
-
-The current API and dashboard still serve v1 model artifacts. This example is retained for the historical demo and is not a v2 forecast contract.
+The Tableau workbook and extracts are reproducible from tracked aggregate result reports:
 
 ```bash
-curl "http://localhost:8000/api/predict?category=total_sales&model_name=LGBM&weeks_ahead=4&start_date=2026-01-05"
+make bi-extracts AS_OF_DATE=2026-11-03
+make setup-tableau
+make tableau-workbook
 ```
 
-```json
-{
-  "model_name": "total_sales_LGBM_model",
-  "forecasts": [
-    {
-      "date": "2026-01-05",
-      "predicted_value": 65124.7,
-      "confidence_interval_lower": 64670.0,
-      "confidence_interval_upper": 65579.4
-    }
-  ],
-  "shap_values": [{"feature": "lag_1w", "value": 210.4}],
-  "features_used": 73
-}
+## Repository map
+
+```text
+forecasting/          v2 contracts, causal features, models, evaluation, hierarchy
+retailpred/platform/  versioned local data-platform reference implementation
+databricks/           Delta bootstrap and Asset Bundle resources
+warehouse/            dbt staging, marts, reporting models, and tests
+backend/              restricted FastAPI v2 surface plus isolated legacy code
+frontend/             publication-safe historical evidence page
+bi/                   governed extracts, manifest, Hyper file, and Tableau workbook
+scripts/              reproducible benchmark and artifact entry points
+tests/                temporal, platform, model, serving, BI, and parity tests
+docs/v2/              decisions, results, limitations, and implementation status
+project_root/         preserved undergraduate pipeline; never a v2 input
 ```
 
-(Full endpoint reference: [docs/api.md](docs/api.md).)
+## Limits and blocked claims
 
-## Environment variables
+- MRTS evaluation uses a 2026 revised history, not the value actually available at every historical origin. LightGBM therefore remains a development challenger despite the measured gain.
+- M5 ends in 2016. Its champion is valid for the published historical benchmark, not current retail behavior or a live business.
+- No uncertainty method passed every promotion gate; the API and UI do not show invented confidence bands.
+- Databricks and dbt code is locally tested and parsed, but no remote workspace execution is claimed.
+- MLflow was proven against a local SQLite tracking store, not a durable shared server.
+- The Tableau workbook was opened and checked locally; it has not been published to Tableau Public.
+- The hosted frontend is static. There is no deployed v2 backend, automated retraining, drift monitor, rollback exercise, or production SLA.
+- Secondary v1 UI and model code remains in Git history for provenance. It contains simulations and must not be described as v2 functionality.
+- Forty-two legacy pickle files total about 402 MB in the working tree and materially bloat clone size. Removing them safely requires a planned history rewrite; see the publication audit.
 
-None are required to run or test the project. Optional, for data-fetching scripts:
+## Data, artifacts, and licensing
 
-| Variable | Used by |
-|---|---|
-| `CENSUS_API_KEY` | v2 native-monthly ingestion (`make fetch-mrts`) |
-| `MRTS_API_KEY` | `weekly_validation.py`, `backfill_actuals.py` ([free Census key](https://api.census.gov/data/key_signup.html)) |
-| `FRED_API_KEY` | `project_root/etl/fetch_fred.py` |
-| `RETAILPRED_DIR` | Airflow DAG (path to repo on the runner) |
+- Tracked v2 assets are contracts, tests, checksums, aggregate reports, the aggregate-only Hyper extract, and the deterministic historical demo fixture.
+- Raw downloads, canonical tables, fold-level predictions, trained v2 weights, databases, logs, and secrets are ignored.
+- M5 source files are user-supplied and are not redistributed. Users are responsible for the competition/data terms that apply to their access.
+- FRED is a distribution platform for series from many providers; each series retains its own source and usage terms. This repository does not assert that every FRED series is public domain.
+- The MIT license covers repository code. It does not relicense upstream datasets or third-party model artifacts.
 
-Copy [`project_root/.env.example`](project_root/.env.example) to `project_root/.env` for local use. `.env` files are git-ignored; never commit real keys.
+An earlier commit exposed a local `.env`; the credentials were rotated and the path was removed from reachable history. Report any residual secret privately before opening a public issue.
 
-## Limitations
+## Historical v1 snapshot
 
-- **Revision-vintage baseline:** the current v2 benchmark uses a 2026 revised history, not the values known at each historical forecast origin.
-- **Small macro dataset:** 11 correlated national aggregate series are insufficient evidence for store/SKU demand behavior; M5 will be a separate operational use case.
-- **Development benchmark:** global LightGBM has measured revised-history results, but no model has earned final promotion on untouched point-in-time evidence. On M5, NHITS stops at its bounded gate and zero-shot Chronos-2 fails the complete official hierarchy benchmark despite improving the two lowest levels.
-- **Uncertainty benchmark:** training-only M5 conformal intervals achieve 80.38% overall coverage but fail the declared high-volume segment gate and remain unavailable for production serving.
-- **Regime evidence:** MRTS LightGBM improves aggregate WAPE before, during, and after the COVID disruption, but does not beat Seasonal Naive in every category; it remains a development challenger rather than a production claim.
-- **Fail-closed serving:** `/api/v2` exposes the frozen model portfolio and a provenance-complete deterministic historical demo; production, stale-data, retired-model, and uncalibrated-uncertainty requests return typed unavailable states.
-- **Legacy isolation:** the default service mounts only `/api/v2`; preserved v1 mock, mutation, training, export, and scenario routes require the explicit archival-only `RETAILPRED_ENABLE_LEGACY_API=true` switch.
-- **Governed BI:** reproducible Tableau-ready extracts publish the same model decisions, hierarchy metrics, uncertainty failures, regime results, and freshness labels as the API and React surface.
-- **Serving integration boundary:** secondary legacy dashboard pages still contain preserved v1-era demonstrations and must not be described as the governed v2 model surface.
-- **Historical v1 caveats:** weekly-replicated actuals, inclusive rolling windows, and heuristic neural-model labels apply to the frozen table above, not to v2.
-
-## Future work
-
-- Execute the Delta/bootstrap and dbt projects in a configured Databricks workspace, then connect the reporting schema to Tableau.
-- Run the global LightGBM experiment against a configured MLflow server and real-time vintages.
-- Evaluate NHITS and Chronos-2 only after the classical baseline and data contracts are stable.
-- Add calibrated P10/P50/P90 forecasts and hierarchy-aware M5 evaluation.
-- Build a production inference path only after a portfolio decision, current data contract, and uncertainty policy pass their promotion gates.
-
-## Data and model-artifact policy
-
-- **v2 tracked:** contracts, tests, source/checksum manifests, methodology, and aggregate result reports.
-- **v2 not tracked:** downloaded source data, canonical tables, fold-level predictions, trained weights, SQLite databases, logs, and `.env` files.
-- **v1 historical evidence:** trained models, multi-resolution CSVs, validation metrics, diagnostics, and demo JSON remain tracked until their v2 replacements exist.
-- **History note:** an earlier commit accidentally published `project_root/.env`; those credentials were rotated and the file removed from history. Report any residual secret you find per the security policy.
+The undergraduate implementation is retained for comparison on the `v1-undergrad` tag and in archived directories. Its expanded weekly/daily rows, inclusive rolling features, randomized fallbacks, and heuristic outputs are not valid v2 evidence. The detailed diagnosis is preserved in [the original audit](docs/v2/AUDIT.md); the default API and publication frontend exclude those paths.
 
 ## License
 
-[MIT](LICENSE). Census MRTS and FRED data are public domain / open government data.
+Repository code is available under the [MIT License](LICENSE).

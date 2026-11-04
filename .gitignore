@@ -101,9 +101,6 @@ frontend/build/
 ehthumbs.db
 Thumbs.db
 
-# Docker
-.dockerignore
-
 # IDE
 *.swp
 *.swo

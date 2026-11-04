@@ -197,9 +197,12 @@ Status: complete for the accepted local scope; frozen portfolio, fail-closed `/a
 
 ## Milestone 6: Deployment, observability, and reproducibility
 
+Status: publication and reproducibility audit in progress; minimal v2 images and local health contracts implemented, external deployment/monitoring/rollback remain blocked on a selected target
+
 ### Work
 
 - Build minimal production images for training and serving.
+- Audit every recruiter-facing claim, route, workflow, artifact, runtime, and license boundary before publication.
 - Deploy the API and connect an environment-specific frontend.
 - Add service health, data freshness, inference latency, failure rate, drift, and realized-error monitoring.
 - Validate infrastructure code against the selected deployment architecture; remove speculative resources.
@@ -212,6 +215,7 @@ Status: complete for the accepted local scope; frozen portfolio, fail-closed `/a
 - Health checks distinguish service health, model availability, and data freshness.
 - A prior model version can be restored and verified.
 - CI builds, tests, scans, and deploys the exact artifact promoted to the environment.
+- The publication gate rejects stale README links, legacy public routes, unsupported live/production claims, tracked real `.env` files, nonportable Tableau connections, and container-contract regressions.
 
 ## Milestone 7: Portfolio and résumé delivery
 
@@ -258,4 +262,4 @@ Implementation can proceed locally through Milestone 1 without external accounts
 
 ## Immediate next action
 
-Connect the implemented experiment adapter to a configured MLflow server and add calibrated probabilistic evaluation. Treat the measured LightGBM result as development evidence until point-in-time vintages and untouched evaluation support final promotion.
+Complete the Milestone 6 publication/reproducibility gate, then push `v2-rebuild` for review. External deployment, remote MLflow/Databricks execution, and public Tableau publication remain separate owner-authorized actions and must not be inferred from local contracts.

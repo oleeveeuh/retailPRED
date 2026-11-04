@@ -11,15 +11,15 @@ Last updated: 2026-11-03
 - Milestone 2: platform foundation complete; local and Databricks contracts cover MRTS, Census releases, FRED/ALFRED vintages, M5 operational demand, and the dbt analytics boundary.
 - Milestone 3: locally complete except for a credential-dependent durable remote MLflow run; the common protocol, controlled model suite, evaluator, promotion policy, and local tracking proof are implemented.
 - Milestone 4: complete; M5 point, stability, reconciliation, neural, foundation-model, and probabilistic gates are measured, and MRTS regime behavior is documented.
-- Full-roadmap completion estimate: approximately 85%. Data-science/modeling completion: complete for the accepted local scope. Milestone 5 is complete for its local scope, including the governed Tableau workbook. Deployment/observability and public portfolio delivery follow in later milestones.
+- Data-science/modeling completion: complete for the accepted local scope. Milestone 5 is complete for its local scope, including the governed Tableau workbook. Milestone 6 publication/reproducibility audit is in progress; external deployment and observability remain blocked on a selected target.
 
 ## Quality verification
 
 - Branch: `v2-rebuild`; Milestone 0 commit `ad595d4`, Milestone 1 foundation commit `532754a`.
 - Full Python 3.11 environment: 143 tests passed with no skips at this checkpoint.
-- dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources.
+- dbt Databricks project parse: passed; 6 models, 20 data tests, 4 sources; re-verified from a clean throwaway venv against `warehouse/requirements.txt` only.
 - Frontend type-check: passed.
-- Frontend lint: blocking gate passes with 194 warnings, below the frozen 215-warning legacy cap.
+- Publication frontend lint: strict zero-warning gate passes. Full preserved frontend lint passes with 193 warnings, below the frozen 215-warning legacy cap; this remains explicit legacy debt rather than a repository-wide clean-lint claim.
 - Frontend production build: passed; the existing large-chunk warning remains recorded debt.
 - Production npm dependency audit: 0 known vulnerabilities for root and frontend dependencies; remaining audit findings are development-tool transitive dependencies requiring later breaking upgrades.
 - API compatibility fix: `/api/models` now normalizes both legacy metric payload formats.
@@ -36,7 +36,19 @@ Last updated: 2026-11-03
 
 ## Next checkpoint
 
-The fail-closed `/api/v2`, primary React forecast surface, and five-view local Tableau workbook now share governed evidence and decision semantics. Legacy mock, mutation, training, export, and scenario routes are absent by default and available only behind an explicit archival flag. Next begin Milestone 6 deployment and observability work; public Tableau publishing remains an explicit portfolio-release action. A durable remote MLflow run remains pending workspace credentials.
+The fail-closed `/api/v2`, publication-only React forecast route, and five-view local Tableau workbook share governed evidence and decision semantics. The publication audit removed unsupported live-demo claims, corrected the README, isolated legacy frontend routes, replaced placeholder deployment language, added a minimal v2 container contract verified by a serving-only local smoke test, added a CI container smoke job, and upgraded the frontend path from end-of-life Node 20 to Node 24 LTS. Next complete verification and review the release diff before pushing `v2-rebuild`. Public hosting, Tableau publication, remote MLflow, Databricks execution, monitoring, and rollback remain unclaimed.
+
+## Milestone 6 audit evidence to date
+
+- `docs/v2/PUBLICATION_AUDIT.md` records recruiter-facing findings, fixes, open debt, blocked claims, and a release checklist.
+- `scripts/audit_publication.py` fails on stale README links, unsupported public UI claims, legacy public routes, tracked real `.env` files, nonportable Tableau paths, and container regressions.
+- The default frontend routes only to the deterministic historical M5 evidence page; legacy pages remain source-level provenance and are not public navigation.
+- A serving-only smoke test (Python 3.11 venv restricted to `requirements-serving.txt`) served `backend.main:app` over the `.dockerignore` file set: health, models, demo catalog, offline-demo forecast, and fail-closed 409 production responses all verified.
+- CI now includes a `container-smoke` job that builds the minimal v2 image and asserts the fail-closed contract; the first image-level proof lands on the pushed run because Docker is unavailable on the local machine.
+- CI workflow names now distinguish build/publish actions from deployment; the placeholder deploy job was removed.
+- The v2 API image excludes the 402 MB legacy pickle suite, runs as a non-root user, and health-checks `/api/v2/health`.
+- Node 24 LTS replaces end-of-life Node 20 in CI and the frontend container.
+- The completed rebuild remains local-only until an owner-authorized push and merge.
 
 ## Milestone 5 evidence to date
 

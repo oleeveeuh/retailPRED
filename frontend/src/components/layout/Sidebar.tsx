@@ -12,17 +12,9 @@ import { FC, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Home,
   BarChart3,
-  Bot,
-  CheckCircle,
-  Lightbulb,
-  AlertTriangle,
-  TrendingUp,
-  Sliders,
   ChevronLeft,
   ChevronRight,
-  Briefcase,
 } from 'lucide-react';
 
 interface NavItem {
@@ -32,15 +24,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { name: 'Overview', path: '/dashboard/overview', icon: Home },
-  { name: 'Forecasts', path: '/dashboard/predictions', icon: BarChart3 },
-  { name: 'Models', path: '/dashboard/models', icon: Bot },
-  { name: 'Validation', path: '/dashboard/validation', icon: CheckCircle },
-  { name: 'Explainability', path: '/dashboard/explain', icon: Lightbulb },
-  { name: 'Anomalies', path: '/dashboard/anomalies', icon: AlertTriangle },
-  { name: 'Scenarios', path: '/dashboard/scenarios', icon: TrendingUp },
-  { name: 'Sensitivity', path: '/dashboard/sensitivity', icon: Sliders },
-  { name: 'Business', path: '/dashboard/business', icon: Briefcase },
+  { name: 'Forecast evidence', path: '/dashboard/predictions', icon: BarChart3 },
 ];
 
 export const Sidebar: FC = () => {
@@ -99,7 +83,7 @@ export const Sidebar: FC = () => {
                 </div>
                 <div>
                   <h1 className="text-base font-normal text-gray-900 tracking-tight">RetailPRED</h1>
-                  <p className="text-xs font-light text-gray-500">AI Forecasting</p>
+                  <p className="text-xs font-light text-gray-500">Evaluation portfolio</p>
                 </div>
               </motion.div>
             )}

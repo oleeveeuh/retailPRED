@@ -1,0 +1,6 @@
+*
+!backend/
+!backend/**
+!forecasting/
+!forecasting/**
+!requirements-serving.txt

@@ -1,28 +1,19 @@
 services:
   backend:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     container_name: retailpred-backend
     ports:
       - "8000:8000"
-    volumes:
-      # SQLite database - the backend resolves it at <repo>/data/retailpred.db,
-      # mapped to /data inside the container
-      - ./data:/data
-      # Trained serving models (flat layout read by the inference modules)
-      - ./backend/ml/models:/app/ml/models
-      # Feature CSVs used to build inference features
-      - ./project_root/data_multi_resolution:/project_root/data_multi_resolution:ro
-      # Legacy/auxiliary training outputs
-      - ./training_outputs:/training_outputs
     environment:
       - LOG_LEVEL=INFO
+      - RETAILPRED_ENABLE_LEGACY_API=false
     networks:
       - retailpred-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/api/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v2/health', timeout=3)"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -33,7 +24,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=http://localhost:8000
+        - VITE_DEMO_MODE=false
+        - VITE_API_URL=
     container_name: retailpred-frontend
     ports:
       - "80:80"
