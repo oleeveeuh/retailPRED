@@ -58,7 +58,7 @@ import pandas as pd  # noqa: E402
 
 from forecasting.data.mrts import MRTSClient  # noqa: E402
 from forecasting.registry import MRTS_SERIES  # noqa: E402
-from retailpred.live_loop.ingest import scoring_decision  # noqa: E402
+from retailpred.live_loop.scoring import scoring_decision  # noqa: E402
 from retailpred.platform.delta_sync import to_spark_ready  # noqa: E402
 from retailpred.platform.spark_delta import merge_delta_immutable  # noqa: E402
 from retailpred.platform.specs import SILVER_MONTHLY  # noqa: E402
