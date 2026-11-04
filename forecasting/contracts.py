@@ -7,6 +7,12 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+# Documented encodings of the seasonal-adjustment marker across Census
+# surfaces: the timeseries API historically returned yes/no, while MRTS
+# workbooks and some API schema revisions use SA/NSA (or boolean forms).
+SEASONAL_ADJUSTED_VALUES = frozenset({"yes", "y", "true", "sa"})
+SEASONAL_UNADJUSTED_VALUES = frozenset({"no", "n", "false", "nsa"})
+
 
 class Contract(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True, protected_namespaces=())

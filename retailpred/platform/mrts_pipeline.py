@@ -8,7 +8,7 @@ from typing import Any
 
 import pandas as pd
 
-from forecasting.data.mrts import SEASONAL_ADJUSTED_VALUES
+from forecasting.contracts import SEASONAL_ADJUSTED_VALUES
 from forecasting.registry import MRTS_BY_CODE
 from retailpred.platform.context import ExtractContext
 from retailpred.platform.local_store import LocalTableStore

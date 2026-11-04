@@ -8,17 +8,15 @@ from typing import Any
 import pandas as pd
 import requests
 
-from forecasting.contracts import SeriesMetadata
+from forecasting.contracts import (
+    SEASONAL_ADJUSTED_VALUES,
+    SEASONAL_UNADJUSTED_VALUES,
+    SeriesMetadata,
+)
 
 
 MRTS_API_URL = "https://api.census.gov/data/timeseries/eits/mrts"
 MRTS_FIELDS = "data_type_code,time_slot_id,seasonally_adj,category_code,cell_value,error_data"
-
-# Documented encodings of the seasonal-adjustment marker across Census
-# surfaces: the timeseries API historically returned yes/no, while MRTS
-# workbooks and some API schema revisions use SA/NSA (or boolean forms).
-SEASONAL_ADJUSTED_VALUES = frozenset({"yes", "y", "true", "sa"})
-SEASONAL_UNADJUSTED_VALUES = frozenset({"no", "n", "false", "nsa"})
 
 
 class MRTSError(RuntimeError):
