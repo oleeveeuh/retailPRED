@@ -6,13 +6,13 @@ Branch audited: `v2-rebuild` at and after `b32d98b`
 
 ## Release decision
 
-**Not ready to call published yet.** The local implementation is materially stronger than the public `main` branch, but the release remains blocked until this branch is pushed, reviewed, merged, and the hosted frontend is redeployed and checked. Local verification can close code-level concerns; it cannot prove an external deployment that does not yet exist.
+**Merged and public on `main` (2026-11-04, PR #1, CI green on the merge push).** The release checklist below tracks the remaining post-merge steps: the old Vercel deployment still serves v1 claims until decommissioned or superseded by GitHub Pages, and the hosted-page verification is still owed.
 
 ## Findings
 
 | Severity | Finding | Recruiter interpretation | Status |
 |---|---|---|---|
-| Critical | The hosted landing page claimed real production-database predictions, deployed models, 90.2% accuracy, 0.26% MAPE, and future 2026 output from preserved static v1 data. | Metrics and deployment status appear fabricated or internally inconsistent. | Fixed locally: the publication app now exposes only the governed historical M5 fixture and explicitly disclaims live inference. Requires merge, redeploy, and live verification. |
+| Critical | The hosted landing page claimed real production-database predictions, deployed models, 90.2% accuracy, 0.26% MAPE, and future 2026 output from preserved static v1 data. | Metrics and deployment status appear fabricated or internally inconsistent. | Fixed in the repository and merged to `main`. **The live Vercel deployment still serves the old claims until decommissioned or replaced by GitHub Pages** — this is now the top public-facing risk. |
 | Critical | `v2-rebuild` has no remote tracking branch; public `main` remains at `605d962`. | The portfolio visible to a recruiter does not contain the completed rebuild. | Resolved to the PR stage: branches pushed and CI green on the pushed run (all five jobs, including the first container build/smoke proof). Merge to `main` remains the owner's action. |
 | High | The top-level README described only Milestone 1, said M5 metrics were pending, said the default app served v1, and listed completed modeling work as future work. | The project looks abandoned and the documented architecture cannot be trusted. | Fixed locally with concise DS and ML-platform reading paths, measured decisions, blocked claims, and current run instructions. |
 | High | CI files used deployment language for artifact-only or placeholder jobs. | Inflated MLOps claim; no actual environment promotion exists. | Fixed locally: frontend workflow is labeled as a build artifact; placeholder deploy job removed; container job claims only build/publish. |
