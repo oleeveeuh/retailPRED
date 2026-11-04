@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: silver
+    description: Validated, version-aware facts produced by RetailPRED ingestion.
+    catalog: "{{ env_var('DATABRICKS_CATALOG', 'retailpred') }}"
+    schema: silver
+    config:
+      freshness:
+        warn_after: {count: 45, period: day}
+        error_after: {count: 75, period: day}
+      loaded_at_field: ingested_at
+    tables:
+      - name: monthly_observations
+        description: Monthly Census retail observations, retaining every known vintage.
+      - name: economic_observations
+        description: Monthly FRED/ALFRED observations, retaining every known vintage.
+
+  - name: gold
+    description: Governed consumer contracts published by the data platform.
+    catalog: "{{ env_var('DATABRICKS_CATALOG', 'retailpred') }}"
+    schema: gold
+    tables:
+      - name: monthly_series
+        description: Point-in-time monthly retail series with governed metadata.
+      - name: m5_demand
+        description: Daily item/store demand joined to calendar and weekly prices.

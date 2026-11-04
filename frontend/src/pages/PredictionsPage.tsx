@@ -1,769 +1,251 @@
-/**
- * Professional ML Platform - Predictions Page
- *
- * Features:
- * - Hero section with animated gradient text
- * - Modern form with floating labels
- * - Model selector as pill buttons
- * - Interactive forecast chart with confidence bands
- * - Feature contribution cards with sparklines
- * - Skeleton loaders and error states
- * - Toast notifications
- */
-
 import type { FC } from 'react';
-import { useState, useEffect } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import toast, { Toaster } from 'react-hot-toast';
 import {
-  LineChart,
+  AlertCircle,
+  BarChart3,
+  CheckCircle2,
+  Database,
+  RefreshCw,
+  ShieldAlert,
+  Zap,
+} from 'lucide-react';
+import {
+  CartesianGrid,
+  Legend,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
-  Area,
-  AreaChart,
 } from 'recharts';
-import {
-  TrendingUp,
-  TrendingDown,
-  Sparkles,
-  Zap,
-  Download,
-  RefreshCw,
-  Info,
-  ChevronDown,
-  ChevronUp,
-  Wand2,
-  Brain,
-  AlertCircle,
-  CheckCircle2,
-  Crosshair,
-  BarChart3,
-} from 'lucide-react';
-import { predictionsApi, categoriesApi, scenariosApi, Granularity } from '../api/unifiedApi';
-import { AnomalyExplanation } from '../components/AnomalyExplanation';
-import { triggerConfetti } from '../components/PremiumAnimations';
-import { SkeletonCard } from '../components/PremiumAnimations';
 
-const MODEL_TYPES = [
-  { value: 'lightgbm', label: 'LightGBM', icon: Zap, badge: 'Best Accuracy' },
-  { value: 'randomforest', label: 'Random Forest', icon: Brain, badge: 'Robust' },
-];
+import { v2ForecastsApi } from '../api/v2Forecasts';
 
-const DEFAULT_FEATURES = {
-  inventory_level: 50,
-  promotion_flag: 0,
-  competitor_price: 100,
+const FIXTURE = {
+  dataset: 'm5' as const,
+  seriesId: 'FOODS_1_001_CA_1_evaluation',
+  forecastOrigin: '2016-04-24',
+  modelName: 'm5_global_lightgbm',
 };
 
 export const PredictionsPage: FC = () => {
-  const { data: categoriesData, isLoading: categoriesLoading, error: categoriesError } = useQuery({
-    queryKey: ['categories'],
-    queryFn: async () => {
-      console.log('Fetching categories...');
-      const result = await categoriesApi.list();
-      console.log('Categories response:', result);
-      return result;
-    },
-  });
-
-  // Log errors
-  if (categoriesError) {
-    console.error('Error loading categories:', categoriesError);
-  }
-
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [weeksAhead, setWeeksAhead] = useState<number>(4);
-  const [modelType, setModelType] = useState<string>('lightgbm');
-  const [granularity, setGranularity] = useState<Granularity>(Granularity.WEEKLY);
-  const [features, setFeatures] = useState(DEFAULT_FEATURES);
-  const [historicalData, setHistoricalData] = useState<any[]>([]);
-  const [expandedFeature, setExpandedFeature] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (categoriesData?.categories && categoriesData.categories.length > 0) {
-      if (!selectedCategory) {
-        setSelectedCategory(categoriesData.categories[0].key);
-      }
-    }
-  }, [categoriesData]);
-
-  useEffect(() => {
-    const fetchHistoricalData = async () => {
-      if (!selectedCategory) return;
-
-      try {
-        const result = await scenariosApi.getHistoricalSales(selectedCategory, 90);
-
-        // Transform data to match expected format
-        const formattedData = result.data.map((item: any) => ({
-          date: item.date,
-          sales: item.value,
-          dateFormatted: new Date(item.date).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-          }),
-        }));
-
-        setHistoricalData(formattedData);
-      } catch (error) {
-        console.error('Error fetching historical data:', error);
-      }
-    };
-
-    fetchHistoricalData();
-  }, [selectedCategory]);
-
-  const predictionMutation = useMutation({
-    mutationFn: predictionsApi.predict,
-    onSuccess: (data) => {
-      toast.success(`Forecast generated successfully!`, {
-        duration: 3000,
-        position: 'top-right',
-        icon: <CheckCircle2 className="w-5 h-5 text-emerald-500" />,
+  const [horizon, setHorizon] = useState(4);
+  const prediction = useMutation({
+    mutationFn: () =>
+      v2ForecastsApi.forecast({
+        dataset: FIXTURE.dataset,
+        series_id: FIXTURE.seriesId,
+        forecast_origin: FIXTURE.forecastOrigin,
+        horizon,
+        requested_model: FIXTURE.modelName,
+        mode: 'offline_demo',
+        freshness_requirement: 'historical_allowed',
+      }),
+    onSuccess: () => {
+      toast.success('Historical evaluation fixture loaded.', {
+        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
       });
-      triggerConfetti();
     },
-    onError: (error: any) => {
-      toast.error(`Failed to generate forecast: ${error.message}`, {
-        duration: 5000,
-        position: 'top-right',
-        icon: <AlertCircle className="w-5 h-5 text-red-500" />,
+    onError: (error: Error) => {
+      toast.error(error.message, {
+        icon: <AlertCircle className="h-5 w-5 text-red-600" />,
       });
     },
   });
 
-  const handlePredict = () => {
-    predictionMutation.mutate({
-      category: selectedCategory,
-      weeks_ahead: weeksAhead,
-      model_name: modelType,
-      granularity,
-    });
-  };
-
-  const combinedData = [
-    ...historicalData.map((d) => ({
-      date: d.dateFormatted,
-      historical: d.sales,
-      predicted: null,
-      lower: null,
-      upper: null,
-    })),
-    // @ts-ignore
-    ...(predictionMutation.data?.forecasts.map((f: any) => ({
-      date: new Date(f.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      historical: null,
-      predicted: f.predicted_value,
-      lower: f.confidence_lower,
-      upper: f.confidence_upper,
-    })) || []),
-  ];
-
-  // Get the last historical value (most recent actual sales)
-  const getCurrentValue = () => {
-    if (historicalData.length === 0) return 0;
-    return historicalData[historicalData.length - 1].sales;
-  };
-
-  // Get the average prediction across all forecasted weeks
-  const getPredictedValue = () => {
-    // @ts-ignore
-    const forecasts = predictionMutation.data?.forecasts;
-    if (!forecasts || forecasts.length === 0) return 0;
-
-    const sum = forecasts.reduce((acc: number, f: any) => acc + f.predicted_value, 0);
-    return sum / forecasts.length;
-  };
-
-  // Calculate change from last historical to first forecast
-  const getPercentageChange = () => {
-    const current = getCurrentValue();
-    // @ts-ignore
-    const firstForecast = predictionMutation.data?.forecasts?.[0]?.predicted_value;
-
-    if (!current || !firstForecast) return 0;
-    return current > 0 ? ((firstForecast - current) / current) * 100 : 0;
-  };
-
-  const percentageChange = getPercentageChange();
-  const isPositive = percentageChange >= 0;
-
-  // Custom tooltip
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (!active || !payload || !payload.length) return null;
-    const data = payload[0].payload;
-    return (
-      <div className="bg-slate-900/95 backdrop-blur-sm rounded-xl border border-slate-700 shadow-2xl p-4">
-        <p className="text-white font-semibold mb-2">{data.date}</p>
-        {data.historical && (
-          <p className="text-slate-300 text-sm">Historical: <span className="text-white font-medium">${data.historical.toFixed(2)}</span></p>
-        )}
-        {data.predicted && (
-          <>
-            <p className="text-blue-300 text-sm">Predicted: <span className="text-white font-medium">${data.predicted.toFixed(2)}</span></p>
-            {data.lower && (
-              <p className="text-slate-400 text-xs mt-1">
-                95% CI: ${data.lower.toFixed(2)} - ${data.upper.toFixed(2)}
-              </p>
-            )}
-          </>
-        )}
-      </div>
-    );
-  };
-
-  // Download chart as PNG
-  const downloadChart = () => {
-    toast.success('Chart exported as PNG!', {
-      duration: 2000,
-      icon: <Download className="w-5 h-5 text-primary" />,
-    });
-  };
+  const chartData =
+    prediction.data?.points.map((point) => ({
+      date: new Date(`${point.target_time}T00:00:00`).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      }),
+      forecast: point.prediction,
+      actual: point.evaluation_actual,
+    })) ?? [];
+  const meanForecast = chartData.length
+    ? chartData.reduce((total, point) => total + point.forecast, 0) / chartData.length
+    : 0;
+  const meanActual = chartData.length
+    ? chartData.reduce((total, point) => total + (point.actual ?? 0), 0) / chartData.length
+    : 0;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <Toaster position="top-right" />
 
-      {/* Page Header - Minimalistic */}
-      <div>
-        <h1 className="text-2xl font-normal text-gray-900 tracking-tight">Forecasts</h1>
-        <p className="text-sm font-light text-gray-500 mt-1">
-          Generate retail sales predictions with ML models
+      <header>
+        <h1 className="text-2xl font-normal tracking-tight text-gray-900">Forecast evidence</h1>
+        <p className="mt-1 text-sm font-light text-gray-500">
+          Inspect a measured historical M5 forecast with complete provenance.
         </p>
+      </header>
+
+      <div className="flex items-start gap-3 border border-amber-300 bg-amber-50 p-4 text-amber-950">
+        <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0" />
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-wide">Historical offline demo</p>
+          <p className="mt-1 text-sm">
+            This page shows a frozen 2016 evaluation fixture. It is not live inference and must not
+            be used as a current retail forecast. Production MRTS and M5 inference remain unavailable.
+          </p>
+        </div>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        {/* Input Section - Left Panel (40%) */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+        <motion.section
+          initial={{ opacity: 0, x: -16 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-          className="lg:col-span-2 space-y-5"
+          className="space-y-5 border border-gray-200 bg-white p-5 lg:col-span-2"
         >
-          {/* Configuration Card */}
-          <div className="bg-white border border-gray-200 rounded-sm p-5 space-y-5">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-[#3A3A6C] rounded-sm flex items-center justify-center">
-                <Wand2 className="w-4 h-4 text-[#81C1AC]" />
-              </div>
-              <div>
-                <h2 className="text-xs font-medium text-gray-900 uppercase tracking-wide">Configuration</h2>
-                <p className="text-xs font-light text-gray-500 mt-0.5">Customize your prediction</p>
-              </div>
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center bg-[#3A3A6C]">
+              <Database className="h-4 w-4 text-[#81C1AC]" />
             </div>
-
-            {/* Category Selection */}
-            <div className="space-y-2">
-              <label className="text-xs font-medium text-gray-700 uppercase tracking-wide">Retail Category</label>
-              {categoriesLoading ? (
-                <SkeletonCard className="h-12" />
-              ) : categoriesError ? (
-                <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-                  <p className="text-sm text-red-800 dark:text-red-200">
-                    Failed to load categories. Please check if the backend server is running.
-                  </p>
-                  <p className="text-xs text-red-600 dark:text-red-400 mt-1">
-                    Error: {categoriesError.message}
-                  </p>
-                </div>
-              ) : (
-                <div className="relative">
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="input-base appearance-none cursor-pointer"
-                  >
-                    <option value="">Select a category</option>
-                    {categoriesData?.categories.map((category) => (
-                      <option key={category.key} value={category.key}>
-                        {category.display_name}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                </div>
-              )}
+            <div>
+              <h2 className="text-xs font-medium uppercase tracking-wide text-gray-900">
+                Frozen fixture
+              </h2>
+              <p className="text-xs text-gray-500">Inputs cannot be changed silently.</p>
             </div>
-
-            {/* Model Selector - Pill Buttons */}
-            <div className="space-y-3">
-              <label className="text-xs font-medium text-gray-700 uppercase tracking-wide">Select Model</label>
-              <div className="grid grid-cols-2 gap-3">
-                {MODEL_TYPES.map((model) => {
-                  const Icon = model.icon;
-                  const isSelected = modelType === model.value;
-                  return (
-                    <motion.button
-                      key={model.value}
-                      onClick={() => setModelType(model.value)}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className={`
-                        relative p-4 rounded-sm border-2 transition-all duration-200
-                        ${isSelected
-                          ? 'border-[#3A3A6C] bg-[#3A3A6C]/5'
-                          : 'border-gray-200 hover:border-gray-300'
-                        }
-                      `}
-                    >
-                      <div className="flex items-center gap-2 mb-1">
-                        <Icon className={`w-5 h-5 ${isSelected ? 'text-[#3A3A6C]' : 'text-gray-400'}`} />
-                        <span className={`font-normal text-sm ${isSelected ? 'text-gray-900' : 'text-gray-600'}`}>
-                          {model.label}
-                        </span>
-                      </div>
-                      {isSelected && (
-                        <motion.span
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          className="text-xs text-[#81C1AC] font-light"
-                        >
-                          {model.badge}
-                        </motion.span>
-                      )}
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Granularity */}
-            <div className="space-y-2">
-              <label className="text-xs font-medium text-gray-700 uppercase tracking-wide">Granularity</label>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { value: Granularity.WEEKLY, label: 'Weekly' },
-                  { value: Granularity.DAILY, label: 'Daily' },
-                  { value: Granularity.MONTHLY, label: 'Monthly' },
-                ].map((gran) => (
-                  <button
-                    key={gran.value}
-                    onClick={() => setGranularity(gran.value as Granularity)}
-                    className={`
-                      px-4 py-2 rounded-sm text-sm font-normal transition-all
-                      ${granularity === gran.value
-                        ? 'bg-[#3A3A6C] text-white'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }
-                    `}
-                  >
-                    {gran.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Forecast Horizon Slider */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-gray-700 uppercase tracking-wide">Forecast Horizon</label>
-                <span className="text-sm font-normal text-[#3A3A6C] bg-gray-100 px-3 py-1 rounded-sm">
-                  {weeksAhead} {weeksAhead === 1 ? 'week' : weeksAhead === 52 ? 'year (52 weeks)' : 'weeks'}
-                </span>
-              </div>
-              <input
-                type="range"
-                min="1"
-                max="52"
-                step="1"
-                value={weeksAhead}
-                onChange={(e) => setWeeksAhead(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-sm appearance-none cursor-pointer accent-[#3A3A6C]"
-              />
-              <div className="flex justify-between text-xs text-gray-500">
-                <span>1 week</span>
-                <span>13 weeks (3 months)</span>
-                <span>26 weeks (6 months)</span>
-                <span>52 weeks (1 year)</span>
-              </div>
-              {/* Quick select buttons */}
-              <div className="flex gap-2 flex-wrap">
-                {[
-                  { weeks: 4, label: '1 month' },
-                  { weeks: 13, label: '3 months' },
-                  { weeks: 26, label: '6 months' },
-                  { weeks: 52, label: '1 year' },
-                ].map(({ weeks, label }) => (
-                  <button
-                    key={weeks}
-                    onClick={() => setWeeksAhead(weeks)}
-                    className={`
-                      px-3 py-1 text-xs font-normal rounded-sm transition-all
-                      ${weeksAhead === weeks
-                        ? 'bg-[#3A3A6C] text-white'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }
-                    `}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Generate Button */}
-            <motion.button
-              onClick={handlePredict}
-              disabled={predictionMutation.isPending}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`
-                w-full py-4 rounded-sm font-normal text-white
-                bg-[#3A3A6C]
-                hover:bg-[#4a4a7c]
-                disabled:opacity-50 disabled:cursor-not-allowed
-                transition-all duration-200
-                relative overflow-hidden
-              `}
-            >
-              <AnimatePresence mode="wait">
-                {predictionMutation.isPending ? (
-                  <motion.span
-                    key="loading"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="flex items-center justify-center gap-2"
-                  >
-                    <RefreshCw className="w-5 h-5 animate-spin" />
-                    Generating Forecast...
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    key="generate"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="flex items-center justify-center gap-2"
-                  >
-                    <Sparkles className="w-5 h-5" />
-                    Generate Forecast
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </motion.button>
           </div>
-        </motion.div>
 
-        {/* Results Section - Right Panel (60%) */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
+          <dl className="space-y-4 text-sm">
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide text-gray-500">Series</dt>
+              <dd className="mt-1 break-all text-gray-900">{FIXTURE.seriesId}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide text-gray-500">Model</dt>
+              <dd className="mt-1 flex items-center gap-2 text-gray-900">
+                <Zap className="h-4 w-4 text-[#3A3A6C]" /> M5 Global LightGBM v1.0.0
+              </dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                Forecast origin and data cutoff
+              </dt>
+              <dd className="mt-1 text-gray-900">April 24, 2016</dd>
+            </div>
+          </dl>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-medium uppercase tracking-wide text-gray-700">
+                Demonstration horizon
+              </label>
+              <span className="bg-gray-100 px-3 py-1 text-sm text-[#3A3A6C]">
+                {horizon} {horizon === 1 ? 'day' : 'days'}
+              </span>
+            </div>
+            <input
+              aria-label="Demonstration horizon"
+              type="range"
+              min="1"
+              max="4"
+              value={horizon}
+              onChange={(event) => setHorizon(Number(event.target.value))}
+              className="h-2 w-full cursor-pointer appearance-none bg-gray-200 accent-[#3A3A6C]"
+            />
+          </div>
+
+          <button
+            onClick={() => prediction.mutate()}
+            disabled={prediction.isPending}
+            className="flex w-full items-center justify-center gap-2 bg-[#3A3A6C] py-3 text-white transition hover:bg-[#4a4a7c] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {prediction.isPending ? (
+              <RefreshCw className="h-5 w-5 animate-spin" />
+            ) : (
+              <BarChart3 className="h-5 w-5" />
+            )}
+            Load historical forecast
+          </button>
+
+          <div className="border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700">
+            Calibrated uncertainty is unavailable: the evaluated interval policy failed its
+            high-volume coverage gate. No confidence band is displayed.
+          </div>
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, x: 16 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-          className="lg:col-span-3 space-y-5"
+          className="space-y-5 lg:col-span-3"
         >
-          {!predictionMutation.data ? (
-            /* Empty State */
-            <div className="bg-white border border-gray-200 rounded-sm p-12 text-center">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
-                className="w-20 h-20 bg-[#3A3A6C] rounded-sm flex items-center justify-center mx-auto mb-6"
-              >
-                <BarChart3 className="w-10 h-10 text-[#81C1AC]" />
-              </motion.div>
-              <h3 className="text-xl font-normal text-gray-900 mb-2">
-                Ready to Forecast
-              </h3>
-              <p className="text-gray-500 mb-6">
-                Configure your parameters and click "Generate Forecast" to see predictions
+          {!prediction.data ? (
+            <div className="flex min-h-[420px] flex-col items-center justify-center border border-gray-200 bg-white p-12 text-center">
+              <div className="mb-5 flex h-16 w-16 items-center justify-center bg-[#3A3A6C]">
+                <BarChart3 className="h-8 w-8 text-[#81C1AC]" />
+              </div>
+              <h2 className="text-lg text-gray-900">Evidence ready to inspect</h2>
+              <p className="mt-2 max-w-md text-sm text-gray-500">
+                Load the deterministic fixture to compare the historical forecast with its realized
+                evaluation actuals.
               </p>
             </div>
           ) : (
             <>
-              {/* Prediction Summary */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Last Historical Value */}
-                <div className="bg-white border border-gray-200 rounded-sm p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Last Historical</span>
-                  </div>
-                  <motion.p
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-3xl font-normal text-gray-900"
-                  >
-                    ${getCurrentValue().toFixed(2)}
-                  </motion.p>
-                </div>
-
-                {/* Average Forecast */}
-                <div className="bg-white border border-gray-200 rounded-sm p-6 bg-[#3A3A6C]/5">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-[#3A3A6C] uppercase tracking-wide">Average Forecast</span>
-                  </div>
-                  <motion.p
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.1 }}
-                    className="text-3xl font-normal text-[#3A3A6C]"
-                  >
-                    ${getPredictedValue().toFixed(2)}
-                  </motion.p>
-                </div>
-
-                {/* Percentage Change */}
-                <div className={`bg-white border border-gray-200 rounded-sm p-6 ${isPositive ? 'border-l-2 border-emerald-500' : 'border-l-2 border-red-500'}`}>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Expected Change</span>
-                  </div>
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className={`text-3xl font-normal ${isPositive ? 'text-emerald-600' : 'text-red-600'}`}
-                  >
-                    {isPositive ? '+' : ''}{percentageChange.toFixed(2)}%
-                  </motion.p>
-                </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <Metric label="Mean forecast" value={meanForecast.toFixed(3)} />
+                <Metric label="Mean actual" value={meanActual.toFixed(3)} />
+                <Metric label="Data status" value="Historical" />
               </div>
 
-              {/* Forecast Chart */}
-              <div className="bg-white border border-gray-200 rounded-sm p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h3 className="text-lg font-normal text-gray-900">Sales Forecast</h3>
-                    <p className="text-sm font-light text-gray-500">
-                      {selectedCategory} • {modelType}
-                    </p>
-                  </div>
-                  <motion.button
-                    onClick={downloadChart}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                    title="Download Chart"
-                  >
-                    <Download className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-                  </motion.button>
+              <div className="border border-gray-200 bg-white p-6">
+                <div className="mb-5">
+                  <h2 className="text-lg text-gray-900">Unit demand: forecast versus actual</h2>
+                  <p className="text-sm text-gray-500">
+                    Point forecasts only; values are units, not dollars.
+                  </p>
                 </div>
-
-                <ResponsiveContainer width="100%" height={350}>
-                  <AreaChart data={combinedData}>
-                    <defs>
-                      <linearGradient id="colorPredicted" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                      </linearGradient>
-                      <linearGradient id="colorConfidence" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#93c5fd" stopOpacity={0.4}/>
-                        <stop offset="95%" stopColor="#93c5fd" stopOpacity={0.1}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.5} />
-                    <XAxis
-                      dataKey="date"
-                      stroke="#64748b"
-                      tick={{ fill: '#64748b', fontSize: 11 }}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      stroke="#64748b"
-                      tick={{ fill: '#64748b', fontSize: 11 }}
-                      tickLine={false}
-                      tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Area
-                      type="monotone"
-                      dataKey="upper"
-                      stroke="none"
-                      fill="url(#colorConfidence)"
-                      connectNulls={false}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="lower"
-                      stroke="none"
-                      fill="url(#colorConfidence)"
-                      connectNulls={false}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="historical"
-                      stroke="#94a3b8"
-                      strokeWidth={2}
-                      dot={false}
-                      connectNulls={false}
-                      strokeDasharray="5 5"
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="predicted"
-                      stroke="#3b82f6"
-                      strokeWidth={3}
-                      dot={{ fill: '#3b82f6', r: 4 }}
-                      activeDot={{ r: 6 }}
-                      connectNulls={false}
-                    />
-                    <ReferenceLine
-                      x={historicalData.length}
-                      stroke="#64748b"
-                      strokeDasharray="5 5"
-                      label="Forecast Start"
-                    />
-                  </AreaChart>
+                <ResponsiveContainer width="100%" height={320}>
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                    <YAxis allowDecimals domain={[0, 'auto']} tick={{ fontSize: 12 }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="forecast" name="Forecast" stroke="#3A3A6C" strokeWidth={3} />
+                    <Line type="monotone" dataKey="actual" name="Evaluation actual" stroke="#81C1AC" strokeWidth={3} />
+                  </LineChart>
                 </ResponsiveContainer>
-
-                <div className="flex items-center justify-center gap-6 mt-4 text-xs text-slate-500">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-0.5 bg-slate-400" style={{ borderStyle: 'dashed' }}></div>
-                    <span>Historical</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-0.5 bg-primary"></div>
-                    <span>Forecast</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-blue-200/50 rounded"></div>
-                    <span>95% Confidence</span>
-                  </div>
-                </div>
               </div>
 
-              {/* Anomaly Explanation */}
-              {predictionMutation.data?.forecasts && predictionMutation.data.forecasts.length > 1 && (() => {
-                const forecasts = predictionMutation.data.forecasts;
-                const latest = forecasts[forecasts.length - 1];
-                const previous = forecasts[forecasts.length - 2];
-                const change = previous && previous.predicted_value
-                  ? ((latest.predicted_value - previous.predicted_value) / previous.predicted_value) * 100
-                  : 0;
-
-                if (Math.abs(change) < 5) return null;
-
-                return (
-                  <div className="mb-6">
-                    {/* @ts-ignore */}
-                    <AnomalyExplanation
-                      date={latest.date || new Date().toISOString().split('T')[0]}
-                      predictionChange={change}
-                    />
-                  </div>
-                );
-              })()}
-
-              {/* Feature Contributions */}
-              {/* @ts-ignore */}
-              {predictionMutation.data?.shap_values && predictionMutation.data?.shap_values?.length > 0 && (
-                <div className="glass-card p-6">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 bg-gradient-to-br from-accent to-pink-600 rounded-lg">
-                      <Info className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Feature Contributions</h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">Top factors influencing this prediction</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    {/* @ts-ignore */}
-                    {predictionMutation.data?.shap_values?.slice(0, 5).map((shap: any, index: number) => {
-                      const isExpanded = expandedFeature === index;
-                      const isPositive = shap.value > 0;
-                      return (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.05 }}
-                          className={`
-                            border rounded-xl overflow-hidden transition-all duration-200
-                            ${isExpanded ? 'border-blue-300 dark:border-blue-700 bg-blue-50/50 dark:bg-blue-900/10' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'}
-                          `}
-                        >
-                          <button
-                            onClick={() => setExpandedFeature(isExpanded ? null : index)}
-                            className="w-full p-4 flex items-center gap-4 text-left"
-                          >
-                            <div className={`
-                              p-2 rounded-lg
-                              ${isPositive ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-red-100 dark:bg-red-900/30'}
-                            `}>
-                              {isPositive ? (
-                                <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                              ) : (
-                                <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between mb-1">
-                                <span className="font-semibold text-slate-900 dark:text-slate-100">{shap.feature}</span>
-                                <span className={`
-                                  text-sm font-bold
-                                  ${isPositive ? 'text-emerald-600' : 'text-red-600'}
-                                `}>
-                                  {isPositive ? '+' : ''}{shap.value.toFixed(2)}
-                                </span>
-                              </div>
-                              <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
-                                <motion.div
-                                  initial={{ width: 0 }}
-                                  animate={{ width: `${Math.abs(shap.importance) * 100}%` }}
-                                  transition={{ delay: index * 0.05 + 0.2, duration: 0.5 }}
-                                  className={`h-full ${isPositive ? 'bg-emerald-500' : 'bg-red-500'}`}
-                                />
-                              </div>
-                            </div>
-                            <motion.div
-                              animate={{ rotate: isExpanded ? 180 : 0 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              <ChevronDown className="w-5 h-5 text-slate-400" />
-                            </motion.div>
-                          </button>
-
-                          <AnimatePresence>
-                            {isExpanded && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: 'auto', opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.3 }}
-                                className="px-4 pb-4"
-                              >
-                                <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
-                                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                                    This feature contributed <span className={`font-semibold ${isPositive ? 'text-emerald-600' : 'text-red-600'}`}>
-                                      {(Math.abs(shap.importance) * 100).toFixed(1)}%
-                                    </span> to the prediction.
-                                  </p>
-                                  {/* Mini sparkline */}
-                                  <div className="h-16 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-end p-2 gap-1">
-                                    {Array.from({ length: 20 }).map((_, i) => {
-                                      const height = 30 + Math.random() * 50;
-                                      return (
-                                        <div
-                                          key={i}
-                                          className={`flex-1 rounded-sm ${isPositive ? 'bg-emerald-400' : 'bg-red-400'}`}
-                                          style={{ height: `${height}%` }}
-                                        />
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
+              <div className="border border-gray-200 bg-white p-5 text-sm text-gray-700">
+                <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-900">
+                  Provenance
+                </h2>
+                <dl className="grid gap-3 sm:grid-cols-2">
+                  <Provenance label="Contract" value={prediction.data.contract_version} />
+                  <Provenance label="Model status" value={prediction.data.model_status} />
+                  <Provenance label="Data cutoff" value={prediction.data.data_cutoff} />
+                  <Provenance label="Code revision" value={prediction.data.provenance.code_revision.slice(0, 12)} />
+                  <Provenance label="Evidence" value={prediction.data.provenance.evidence} />
+                  <Provenance label="Uncertainty" value={prediction.data.uncertainty_status} />
+                </dl>
+              </div>
             </>
           )}
-        </motion.div>
+        </motion.section>
       </div>
     </div>
   );
 };
+
+const Metric: FC<{ label: string; value: string }> = ({ label, value }) => (
+  <div className="border border-gray-200 bg-white p-5">
+    <p className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
+    <p className="mt-2 text-2xl text-gray-900">{value}</p>
+  </div>
+);
+
+const Provenance: FC<{ label: string; value: string }> = ({ label, value }) => (
+  <div>
+    <dt className="text-xs uppercase tracking-wide text-gray-500">{label}</dt>
+    <dd className="mt-1 break-all text-gray-900">{value}</dd>
+  </div>
+);

@@ -23,8 +23,15 @@ export default defineConfig(({ mode }) => ({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  // Force demo mode in production builds
-  define: {
-    __DEMO_MODE__: mode === 'production' ? 'true' : 'false',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom', '@tanstack/react-query'],
+          charts: ['recharts'],
+          motion: ['framer-motion'],
+        },
+      },
+    },
   },
 }))

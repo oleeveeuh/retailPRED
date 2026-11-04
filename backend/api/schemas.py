@@ -2,7 +2,7 @@
 Pydantic models for API request/response validation
 """
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, validator
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 from enum import Enum
@@ -37,6 +37,7 @@ class PredictionRequest(BaseModel):
     granularity: Granularity = Field(Granularity.WEEKLY, description="Forecast granularity")
 
     class Config:
+        protected_namespaces = ()
         json_schema_extra = {
             "example": {
                 "store_id": 1,
@@ -77,6 +78,7 @@ class PredictionResponse(BaseModel):
     metadata: Dict[str, Any] = {}
 
     class Config:
+        protected_namespaces = ()
         json_schema_extra = {
             "example": {
                 "prediction_id": 123,
@@ -158,6 +160,7 @@ class ModelInfo(BaseModel):
     updated_at: str
 
     class Config:
+        protected_namespaces = ()
         json_schema_extra = {
             "example": {
                 "id": 1,
@@ -191,6 +194,8 @@ class ModelsListResponse(BaseModel):
 
 class PredictionHistoryFilter(BaseModel):
     """Filters for prediction history query"""
+    model_config = ConfigDict(protected_namespaces=())
+
     model_name: Optional[str] = None
     store_id: Optional[int] = None
     product_id: Optional[int] = None
@@ -207,6 +212,8 @@ class PredictionHistoryItem(BaseModel):
     defines `id INT` (not INTEGER PRIMARY KEY) and older backfill scripts
     inserted rows with NULL ids.
     """
+    model_config = ConfigDict(protected_namespaces=())
+
     id: Optional[int] = None
     model_name: str
     store_id: Optional[int]
@@ -278,6 +285,8 @@ class SHAPExplanationRequest(BaseModel):
 
 class SHAPExplanationResponse(BaseModel):
     """Detailed SHAP explanation response"""
+    model_config = ConfigDict(protected_namespaces=())
+
     prediction_id: int
     model_name: str
     prediction_date: str
@@ -292,6 +301,8 @@ class SHAPExplanationResponse(BaseModel):
 
 class TrainingRequest(BaseModel):
     """Request to train models"""
+    model_config = ConfigDict(protected_namespaces=())
+
     model_types: List[ModelType] = Field(
         default=[ModelType.LIGHTGBM, ModelType.RANDOM_FOREST],
         description="List of model types to train"

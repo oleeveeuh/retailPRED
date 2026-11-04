@@ -1,0 +1,10 @@
+*
+!backend/
+!backend/**
+!forecasting/
+!forecasting/**
+!requirements-serving.txt
+
+# Legacy v1 model artifacts are unsafe to load and add ~390 MB of dead weight
+# to the serving image. This exclusion must stay after the backend re-includes.
+backend/ml

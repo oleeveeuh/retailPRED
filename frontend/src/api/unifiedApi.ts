@@ -26,7 +26,7 @@ import { demoDataService } from '../services/demoDataService';
 //   Granularity,
 //   ModelType,
 // } from './client';
-import { Granularity, ModelType } from './client';
+import { apiClient, Granularity, ModelType } from './client';
 import type {
   PredictionHistoryResponse,
   PredictionHistoryItem,
@@ -49,6 +49,79 @@ import type {
 // ============================================================================
 
 type AsyncFunction<TArgs, TReturn> = (...args: TArgs[]) => Promise<TReturn>;
+
+export interface V2ForecastRequest {
+  dataset: 'mrts' | 'm5';
+  series_id: string;
+  forecast_origin: string;
+  horizon: number;
+  requested_model?: string;
+  mode: 'production' | 'offline_demo';
+  freshness_requirement: 'current' | 'historical_allowed';
+  quantiles?: number[];
+}
+
+export interface V2ForecastPoint {
+  horizon: number;
+  target_time: string;
+  prediction: number;
+  lower: number | null;
+  upper: number | null;
+  evaluation_actual: number | null;
+}
+
+export interface V2ForecastResponse {
+  contract_version: '2.0';
+  dataset: 'mrts' | 'm5';
+  use_case: string;
+  series_id: string;
+  forecast_origin: string;
+  data_cutoff: string;
+  model_name: string;
+  model_version: string;
+  model_status: string;
+  mode: 'offline_demo';
+  data_status: 'historical_evaluation_fixture';
+  uncertainty_status: string;
+  is_demo: true;
+  points: V2ForecastPoint[];
+  provenance: Record<string, string>;
+}
+
+const demoV2ForecastsApi = {
+  forecast: async (request: V2ForecastRequest): Promise<V2ForecastResponse> => {
+    if (
+      request.dataset !== 'm5' ||
+      request.series_id !== 'FOODS_1_001_CA_1_evaluation' ||
+      request.forecast_origin !== '2016-04-24' ||
+      request.mode !== 'offline_demo' ||
+      request.freshness_requirement !== 'historical_allowed'
+    ) {
+      throw new Error('Only the labeled historical M5 fixture is available in offline demo mode.');
+    }
+    if (request.quantiles?.length) {
+      throw new Error('Calibrated uncertainty is unavailable for this model.');
+    }
+    const response = await fetch('/demo-data/v2-forecast.json');
+    if (!response.ok) {
+      throw new Error(`Historical fixture failed to load (${response.status}).`);
+    }
+    const fixture = (await response.json()) as V2ForecastResponse;
+    if (request.horizon < 1 || request.horizon > fixture.points.length) {
+      throw new Error(`Historical fixture supports horizons 1-${fixture.points.length}.`);
+    }
+    return { ...fixture, points: fixture.points.slice(0, request.horizon) };
+  },
+};
+
+const realV2ForecastsApi = {
+  forecast: async (request: V2ForecastRequest): Promise<V2ForecastResponse> => {
+    const response = await apiClient.post<V2ForecastResponse>('/api/v2/forecasts', request);
+    return response.data;
+  },
+};
+
+export const v2ForecastsApi = config.isDemoMode ? demoV2ForecastsApi : realV2ForecastsApi;
 
 // ============================================================================
 // PREDICTIONS API
@@ -165,29 +238,33 @@ const demoModelsApi = {
    * Get all models (demo mode)
    */
   getAll: async (): Promise<ModelsListResponse> => {
-    const summary = await demoDataService.getSummary();
-
-    // Transform summary to model list format
     return {
-      models: summary.models_available.models.map((name, index) => ({
-        id: index + 1,
-        model_name: name,
-        model_type: name as any, // Use the name directly since models don't have underscores
-        training_date: '2025-01-01',
-        metrics: {
-          rmse: 1000 + Math.random() * 500,
-          mae: 800 + Math.random() * 400,
-          r2: 0.92 + Math.random() * 0.07,
-          mape: 3 + Math.random() * 5,
-          training_samples: 1000,
+      models: [
+        {
+          id: 1,
+          model_name: 'M5 Global LightGBM — historical offline demo',
+          model_type: 'LightGBM' as any,
+          training_date: '2026-11-03',
+          metrics: { rmse: 0, mae: 0, r2: 0, mape: 0, training_samples: 0 },
+          file_path: 'offline-demo-only',
+          is_active: true,
+          created_at: '2026-11-03',
+          updated_at: '2026-11-03',
         },
-        file_path: '/models/' + name,
-        is_active: true,
-        created_at: '2025-01-01',
-        updated_at: '2025-01-01',
-      })),
-      total_count: summary.models_available.total_count,
-      active_count: summary.models_available.total_count,
+        {
+          id: 2,
+          model_name: 'MRTS Global LightGBM — development challenger',
+          model_type: 'LightGBM' as any,
+          training_date: '2026-11-03',
+          metrics: { rmse: 0, mae: 0, r2: 0, mape: 0, training_samples: 0 },
+          file_path: 'production-unavailable',
+          is_active: false,
+          created_at: '2026-11-03',
+          updated_at: '2026-11-03',
+        },
+      ],
+      total_count: 2,
+      active_count: 0,
     };
   },
 

@@ -1,0 +1,1 @@
+"""Governed BI extract contracts."""

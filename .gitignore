@@ -54,6 +54,10 @@ data/db/retailpred.db
 
 # Runtime/debugging directories
 data/validation_metrics.json
+data/v2/
+mlruns/
+mlartifacts/
+*.mlflow.db
 models/latest_metrics.json
 models/model_latest.pkl
 models/backend_ml
@@ -97,9 +101,6 @@ frontend/build/
 ehthumbs.db
 Thumbs.db
 
-# Docker
-.dockerignore
-
 # IDE
 *.swp
 *.swo
@@ -126,3 +127,8 @@ logs/*.log
 # Local test/dev virtualenvs
 .venv*/
 venv/
+
+# dbt local state and compiled artifacts
+warehouse/.user.yml
+warehouse/target/
+warehouse/logs/

@@ -6,6 +6,7 @@ FastAPI server for retail sales forecasting system
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
+import os
 import sys
 from pathlib import Path
 
@@ -14,12 +15,9 @@ app_path = Path(__file__).parent
 if str(app_path) not in sys.path:
     sys.path.insert(0, str(app_path))
 
-# Import routes
-from api.routes import router as api_router
-from api.category_routes import router as category_router
-from api.export import router as export_router
-from api.scenario_routes import router as scenario_router
-from api.training_metrics import router as training_metrics_router
+from api.v2_forecasts import router as v2_forecast_router
+
+LEGACY_API_ENABLED = os.getenv("RETAILPRED_ENABLE_LEGACY_API", "").lower() == "true"
 
 # Configure logging
 logging.basicConfig(
@@ -31,16 +29,7 @@ logger = logging.getLogger(__name__)
 # Initialize FastAPI app
 app = FastAPI(
     title="RetailPRED API",
-    description="""
-    Retail Sales Forecasting System with ML model integration.
-
-    ## Features
-    * **Predictions**: Generate sales forecasts with SHAP explanations
-    * **Data Management**: Refresh data from external sources
-    * **Model Management**: Train, evaluate, and manage ML models
-    * **Validation**: Track prediction accuracy over time
-    * **Explainability**: Detailed SHAP value analysis
-    """,
+    description="Evidence-backed retail forecasting with fail-closed model availability.",
     version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -68,12 +57,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include API routes
-app.include_router(api_router)
-app.include_router(category_router)
-app.include_router(export_router, prefix="/api/export", tags=["export"])
-app.include_router(scenario_router)
-app.include_router(training_metrics_router)
+app.include_router(v2_forecast_router)
+
+if LEGACY_API_ENABLED:
+    # Archival compatibility only. These routes contain v1 mutation and mock
+    # behavior and are deliberately absent from the default application.
+    from api.category_routes import router as category_router
+    from api.export import router as export_router
+    from api.routes import router as api_router
+    from api.scenario_routes import router as scenario_router
+    from api.training_metrics import router as training_metrics_router
+
+    app.include_router(api_router)
+    app.include_router(category_router)
+    app.include_router(export_router, prefix="/api/export", tags=["legacy export"])
+    app.include_router(scenario_router)
+    app.include_router(training_metrics_router)
 
 
 # Root endpoint
@@ -83,19 +82,14 @@ async def root():
     return {
         "name": "RetailPRED API",
         "version": "2.0.0",
-        "description": "Retail Sales Forecasting System",
+        "description": "Evidence-backed retail forecasting service",
         "documentation": "/docs",
+        "legacy_api_enabled": LEGACY_API_ENABLED,
         "endpoints": {
-            "predictions": "/api/predict",
-            "categories": "/api/categories/list",
-            "category_predict": "/api/categories/predict",
-            "data_refresh": "/api/refresh-data",
-            "models": "/api/models",
-            "history": "/api/predictions/history",
-            "validation": "/api/predictions/validate",
-            "shap": "/api/shap-explain",
-            "training": "/api/train",
-            "health": "/api/health"
+            "health": "/api/v2/health",
+            "v2_models": "/api/v2/models",
+            "v2_demo_catalog": "/api/v2/demo-catalog",
+            "v2_forecasts": "/api/v2/forecasts",
         }
     }
 
@@ -109,6 +103,7 @@ async def startup_event():
     logger.info("=" * 60)
     logger.info("Documentation available at: http://localhost:8000/docs")
     logger.info("ReDoc available at: http://localhost:8000/redoc")
+    logger.info("Legacy API enabled: %s", LEGACY_API_ENABLED)
 
 
 # Shutdown event

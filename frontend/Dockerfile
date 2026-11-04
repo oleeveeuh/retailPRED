@@ -2,7 +2,7 @@
 # Node build -> nginx serve
 
 # Stage 1: Builder
-FROM node:20-alpine as builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
@@ -10,16 +10,20 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install --legacy-peer-deps
+RUN npm ci
 
 # Copy source code
 COPY . .
 
-# Build the application (skip type checking for faster Docker builds)
-RUN npm run build:only
+ARG VITE_DEMO_MODE=false
+ARG VITE_API_URL=
+ENV VITE_DEMO_MODE=${VITE_DEMO_MODE} \
+    VITE_API_URL=${VITE_API_URL}
+
+RUN npm run type-check && npm run build:only
 
 # Stage 2: Production with nginx
-FROM nginx:1.25-alpine
+FROM nginx:1.30.6-alpine
 
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf

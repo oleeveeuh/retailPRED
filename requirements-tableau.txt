@@ -1,0 +1,2 @@
+# Official Tableau Hyper API used only to rebuild the local governed extract.
+tableauhyperapi==0.0.26479

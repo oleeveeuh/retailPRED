@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: stg_monthly_observations
+    description: Typed monthly retail vintages for warehouse transformations.
+    columns:
+      - name: series_id
+        data_tests: [not_null]
+      - name: observation_date
+        data_tests: [not_null]
+      - name: vintage_time
+        data_tests: [not_null]
+
+  - name: stg_economic_observations
+    description: Typed economic vintages for point-in-time feature analysis.
+    columns:
+      - name: series_id
+        data_tests: [not_null]
+      - name: observation_date
+        data_tests: [not_null]
+      - name: vintage_time
+        data_tests: [not_null]
+
+  - name: dim_retail_series
+    description: One governed descriptive record per Census retail series.
+    columns:
+      - name: series_id
+        data_tests: [not_null, unique]
+
+  - name: fct_monthly_retail_sales
+    description: Point-in-time retail values at series and month grain.
+    columns:
+      - name: series_id
+        data_tests: [not_null]
+      - name: observation_date
+        data_tests: [not_null]
+      - name: sales_value
+        data_tests: [not_null]
+
+  - name: fct_m5_daily_demand
+    description: Operational item/store demand at a daily grain.
+    columns:
+      - name: series_id
+        data_tests: [not_null]
+      - name: demand_date
+        data_tests: [not_null]
+      - name: units
+        data_tests: [not_null]
+
+  - name: rpt_monthly_data_freshness
+    description: Latest observation and ingestion timestamps for BI monitoring.
+    columns:
+      - name: dataset
+        data_tests: [not_null, unique]

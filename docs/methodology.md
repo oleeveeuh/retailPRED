@@ -1,5 +1,7 @@
 # Methodology
 
+> This document describes the preserved v1 methodology. It is not the v2 evaluation specification. The replacement and measured integrity comparison are in [`v2/LEAKAGE_REPORT.md`](v2/LEAKAGE_REPORT.md).
+
 Deep-dive companion to the README: features, models, training configuration, and exactly how the published numbers are (and are not) produced. Evidence-first — every claim here points at code or a tracked artifact.
 
 ## 1. Data pipeline

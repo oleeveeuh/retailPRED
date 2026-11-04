@@ -1,0 +1,3 @@
+# Install after the core environment in a dedicated experiment virtualenv.
+# MLflow currently requires pyarrow<26, while the core lock tests pyarrow 26.
+mlflow==3.16.1

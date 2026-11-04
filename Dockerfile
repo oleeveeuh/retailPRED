@@ -1,45 +1,26 @@
-# Dockerfile for RetailPRED — FastAPI backend image
-# (The React frontend has its own image: frontend/Dockerfile, orchestrated
-#  by docker-compose.yml. This image serves the API only.)
-
 FROM python:3.11-slim
 
-# Set working directory
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
+
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+RUN useradd --create-home --uid 1000 appuser
 
-# Copy requirements first for better caching
-COPY requirements.txt .
-COPY backend/requirements.txt ./backend/
+COPY requirements-serving.txt ./
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements-serving.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir -r backend/requirements.txt
+# The restricted v2 API needs only the application contract, deterministic
+# fixture, and frozen model-portfolio decision. Legacy weights are excluded.
+COPY --chown=appuser:appuser backend ./backend
+COPY --chown=appuser:appuser forecasting ./forecasting
 
-# Copy application code
-COPY . .
-
-# Create necessary directories
-RUN mkdir -p data logs models training_outputs
-
-# Set environment variables
-ENV PYTHONPATH=/app:/app/backend:/app/project_root
-ENV PYTHONUNBUFFERED=1
-ENV HOST=0.0.0.0
-ENV PORT=8000
-
-# Expose port
+USER appuser
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:8000/api/health || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v2/health', timeout=3)"
 
-# Run the application with uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
