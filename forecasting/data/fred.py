@@ -8,6 +8,7 @@ import requests
 
 
 FRED_OBSERVATIONS_URL = "https://api.stlouisfed.org/fred/series/observations"
+FRED_VINTAGE_DATES_URL = "https://api.stlouisfed.org/fred/series/vintagedates"
 
 
 class FREDError(RuntimeError):
@@ -64,3 +65,28 @@ class FREDClient:
         if "observations" not in payload:
             raise FREDError("FRED response is missing observations")
         return payload
+
+    def fetch_vintage_dates(self, series_id: str) -> list[date]:
+        """List the exact vintage dates ALFRED archives for a series.
+
+        Series without ALFRED archives (newer FRED additions) return 400 with
+        an explanatory body, surfaced as FREDError.
+        """
+        response = self.session.get(
+            FRED_VINTAGE_DATES_URL,
+            params={
+                "series_id": series_id,
+                "api_key": self.api_key,
+                "file_type": "json",
+            },
+            timeout=30,
+        )
+        if response.status_code != 200:
+            body = response.text.strip()[:200]
+            raise FREDError(
+                f"FRED vintage-dates request failed with HTTP {response.status_code} "
+                f"for series {series_id!r}: {body or '(no body)'}"
+            )
+        payload = response.json()
+        dates = payload.get("vintage_dates", [])
+        return [date.fromisoformat(str(value)) for value in dates]
