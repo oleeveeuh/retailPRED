@@ -22,4 +22,5 @@ evidence, and the level never silently upgrades.
 | Date | Job / task | Result | Link or run id |
 |---|---|---|---|
 | 2026-11-04 | `make ingest-latest` (local, keyed) | Bronze 110,921 raw rows across 17 year-extracts; silver 4,400 rows = 11 series × 200 months × 2 runs; values identical across both runs; data cutoff 2026-08-01. Two API schema drifts found and fixed en route (ordinal time_slot_id with period in `time`; error_data no longer gettable). | local store `data/v2/store`, commits `bf88e76`, `7adc908`, `781f544` |
+| 2026-11-04 | `platform_bootstrap` (workspace, serverless) | **FAILED** — `NameError: __file__ is not defined`: serverless python tasks exec notebook-style, so the classic path-insert pattern cannot work. Fixed by passing the bundle-synced root as an explicit `--repo-root` parameter (`${workspace.file_path}/files`). | run 466144488641852, fix commit `9b85242` |
 | — | — | — | — |
