@@ -49,8 +49,14 @@ jobs:
       - name: Retrieve and validate the public snapshot
         run: |
           mkdir -p frontend/public/live
-          cp live-data/live/v2-latest.json frontend/public/live/v2-latest.json
-          python scripts/validate_snapshot.py frontend/public/live/v2-latest.json
+          if [ -f live-data/live/v2-latest.json ]; then
+            cp live-data/live/v2-latest.json frontend/public/live/v2-latest.json
+            python scripts/validate_snapshot.py frontend/public/live/v2-latest.json
+          else
+            echo "No snapshot has been published yet (the vintage gate has not authorized scoring)."
+            echo "Deploying without it: the UI will report the snapshot as unavailable and keep"
+            echo "the historical evaluation fixture as displayed evidence."
+          fi
 
       - name: Setup Node.js 24
         uses: actions/setup-node@v7
@@ -75,10 +81,14 @@ jobs:
           VITE_PAGES_BASE: /retailPRED/
         run: npm run build
 
-      - name: Assert subpath assets and snapshot present
+      - name: Assert subpath assets and snapshot placement
         run: |
           grep -q '/retailPRED/assets' frontend/dist/index.html
-          test -f frontend/dist/live/v2-latest.json
+          if [ -f frontend/public/live/v2-latest.json ]; then
+            test -f frontend/dist/live/v2-latest.json
+          else
+            echo "Snapshot absent: the forecast panel will report it as unavailable (fail-closed)."
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
