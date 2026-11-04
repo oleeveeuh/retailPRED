@@ -53,7 +53,9 @@ async function demoForecast(request: V2ForecastRequest): Promise<V2ForecastRespo
   if (request.quantiles?.length) {
     throw new Error('Calibrated uncertainty is unavailable for this model.');
   }
-  const response = await fetch('/demo-data/v2-forecast.json');
+  // BASE_URL keeps the fixture fetch correct on any deployment root
+  // ('/' locally, '/retailPRED/' on GitHub Pages).
+  const response = await fetch(`${import.meta.env.BASE_URL}demo-data/v2-forecast.json`);
   if (!response.ok) {
     throw new Error(`Historical fixture failed to load (${response.status}).`);
   }
