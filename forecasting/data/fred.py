@@ -50,7 +50,13 @@ class FREDClient:
             params["observation_end"] = observation_end.isoformat()
         response = self.session.get(FRED_OBSERVATIONS_URL, params=params, timeout=30)
         if response.status_code != 200:
-            raise FREDError(f"FRED request failed with HTTP {response.status_code}")
+            # FRED error bodies are plain text naming the cause (invalid key,
+            # unknown series, bad parameter) and never echo the api_key.
+            body = response.text.strip()[:200]
+            raise FREDError(
+                f"FRED request failed with HTTP {response.status_code} for series "
+                f"{series_id!r} at vintage {vintage_date.isoformat()}: {body or '(no body)'}"
+            )
         try:
             payload = response.json()
         except requests.JSONDecodeError as exc:
