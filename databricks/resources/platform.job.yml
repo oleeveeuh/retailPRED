@@ -10,7 +10,7 @@ resources:
               - --catalog
               - ${var.catalog}
               - --repo-root
-              - ${workspace.file_path}/files
+              - ${workspace.file_path}
           environment_key: serverless_default
       environments:
         - environment_key: serverless_default

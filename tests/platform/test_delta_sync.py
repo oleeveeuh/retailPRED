@@ -102,6 +102,6 @@ def test_sync_job_declares_serverless_manual_execution() -> None:
         "--staged-root",
         "${var.staged_root}",
         "--repo-root",
-        "${workspace.file_path}/files",
+        "${workspace.file_path}",
     ]
     assert "existing_cluster_id" not in task
