@@ -74,3 +74,25 @@ def test_extract_without_eligible_monthly_rows_stops_before_silver(tmp_path) -> 
     with pytest.raises(ValueError, match="no registered seasonally adjusted"):
         ingest_extract(store, payload, _context("invalid-release", vintage))
     assert store.read(SILVER_MONTHLY).empty
+
+
+def test_silver_derives_months_from_period_column_with_ordinal_slots(tmp_path) -> None:
+    """Mirror the observed current API schema end to end through bronze."""
+    store = LocalTableStore(tmp_path)
+    vintage = datetime(2026, 11, 15, 15, 0, tzinfo=timezone.utc)
+    header = [
+        "data_type_code",
+        "time_slot_id",
+        "seasonally_adj",
+        "category_code",
+        "cell_value",
+        "time",
+    ]
+    payload = [
+        header,
+        ["SM", "0", "yes", "443", "7004", "2025-01"],
+        ["SM", "0", "yes", "443", "7010", "2025-02"],
+    ]
+    bronze, silver = ingest_extract(store, payload, _context("current-schema", vintage))
+    assert silver["observation_time"].dt.strftime("%Y-%m").tolist() == ["2025-01", "2025-02"]
+    assert bronze["year"].tolist() == ["2025-01", "2025-02"]

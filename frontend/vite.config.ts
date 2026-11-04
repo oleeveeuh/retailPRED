@@ -15,8 +15,10 @@ export default defineConfig(({ mode }) => ({
     },
   },
   publicDir: 'public',
-  // Empty base path for Vercel deployment
-  base: mode === 'production' ? '/' : '/',
+  // GitHub Pages serves the showcase from the repository subpath; the
+  // Pages workflow sets VITE_PAGES_BASE=/retailPRED/. Local development
+  // and other root deployments keep '/'.
+  base: process.env.VITE_PAGES_BASE || '/',
   // Additional static file serving
   resolve: {
     alias: {

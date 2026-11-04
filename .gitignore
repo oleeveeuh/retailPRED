@@ -132,3 +132,6 @@ venv/
 warehouse/.user.yml
 warehouse/target/
 warehouse/logs/
+
+# Tableau editor lock/temp files
+bi/tableau/.~*

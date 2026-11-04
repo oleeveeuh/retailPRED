@@ -47,6 +47,7 @@ The more complex model did not automatically win. NHITS failed its bounded M5 fe
 - FastAPI `/api/v2` routes that return typed unavailable states for unapproved production, stale-data, incompatible-model, and uncalibrated-uncertainty requests.
 - A React evidence page backed by a deterministic 2016 M5 fixture. It is explicitly historical and is not a current forecast.
 - Five governed Tableau views backed by an aggregate-only Hyper extract and checked against the same frozen model decisions.
+- A complete live-loop foundation ([snapshot contract](docs/v2/SNAPSHOT_CONTRACT.md), [execution evidence ledger](docs/v2/DATABRICKS_RUN.md)): ALFRED vintage pulls behind a fail-closed series mapping, the predeclared point-in-time promotion gate ([M3_VINTAGE_BACKTEST.md](docs/v2/M3_VINTAGE_BACKTEST.md)), a four-task scheduled Databricks pipeline (ingest → fail-closed scoring → realized errors → snapshot publish to the machine-written `live-data` branch), GitHub Pages delivery with pre-deploy contract validation, vintage-safe seasonal-naive benchmarks frozen beside every forecast, and immutable first-release-plus-revised realized tracking. Implemented and locally verified; no workspace run, vintage pull, or snapshot publish has executed yet, and claims upgrade only as `DATABRICKS_RUN.md` records them.
 
 ## System boundary
 
@@ -151,6 +152,13 @@ project_root/         preserved undergraduate pipeline; never a v2 input
 - MLflow was proven against a local SQLite tracking store, not a durable shared server.
 - The Tableau workbook was opened and checked locally; it has not been published to Tableau Public.
 - The hosted frontend is static. There is no deployed v2 backend, automated retraining, drift monitor, rollback exercise, or production SLA.
+- The live-loop foundation is implemented and locally verified but unexecuted externally: until the vintage gate promotes the MRTS champion and a scheduled job publishes snapshots, the frontend intentionally shows only the historical fixture, and the snapshot's `is_live` flag stays false.
+
+## Deploying the showcase
+
+- **GitHub Pages (target architecture):** merge `main`, then the `pages-deploy` workflow builds the frontend from `main`, validates `v2-latest.json` from the machine-written `live-data` branch against the snapshot contract, and deploys to `https://oleeveeuh.github.io/retailPRED/`. Snapshot updates on `live-data` trigger a redeploy automatically. Requires enabling GitHub Pages with the GitHub Actions source.
+- **Local:** `cd frontend && npm run dev` (the snapshot panel stays hidden unless `VITE_LATEST_SNAPSHOT_URL` points at a reachable snapshot).
+- **Container:** `docker compose up --build` serves the API and an nginx-hosted frontend.
 - Secondary v1 UI and model code remains in Git history for provenance. It contains simulations and must not be described as v2 functionality.
 - Forty-two legacy pickle files total about 402 MB in the working tree and materially bloat clone size. Removing them safely requires a planned history rewrite; see the publication audit.
 

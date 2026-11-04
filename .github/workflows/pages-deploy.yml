@@ -1,0 +1,97 @@
+name: Deploy showcase to GitHub Pages
+
+# Builds the React showcase from main, retrieves the latest snapshot from
+# the machine-written live-data branch, validates it against the snapshot
+# contract, and deploys the artifact to GitHub Pages. Triggered by frontend
+# changes on main, by snapshot updates on live-data (via the trigger
+# workflow), and manually for recovery.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'scripts/validate_snapshot.py'
+      - '.github/workflows/pages-deploy.yml'
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout application source
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Checkout snapshot branch
+        uses: actions/checkout@v7
+        with:
+          ref: live-data
+          path: live-data
+          fetch-depth: 1
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+
+      - name: Retrieve and validate the public snapshot
+        run: |
+          mkdir -p frontend/public/live
+          cp live-data/live/v2-latest.json frontend/public/live/v2-latest.json
+          python scripts/validate_snapshot.py frontend/public/live/v2-latest.json
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Type check and tests
+        working-directory: frontend
+        run: |
+          npm run type-check
+          npm run test
+
+      - name: Build with Pages base path
+        working-directory: frontend
+        env:
+          VITE_PAGES_BASE: /retailPRED/
+        run: npm run build
+
+      - name: Assert subpath assets and snapshot present
+        run: |
+          grep -q '/retailPRED/assets' frontend/dist/index.html
+          test -f frontend/dist/live/v2-latest.json
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -24,6 +24,7 @@ import {
 } from 'recharts';
 
 import { v2ForecastsApi } from '../api/v2Forecasts';
+import { LatestForecastPanel } from '../components/LatestForecastPanel';
 
 const FIXTURE = {
   dataset: 'm5' as const,
@@ -94,6 +95,8 @@ export const PredictionsPage: FC = () => {
           </p>
         </div>
       </div>
+
+      <LatestForecastPanel />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
         <motion.section

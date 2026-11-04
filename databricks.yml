@@ -5,11 +5,15 @@ include:
   - databricks/resources/*.yml
 
 variables:
-  cluster_id:
-    description: Existing Databricks cluster ID used by the bootstrap task.
   catalog:
-    description: Unity Catalog catalog for RetailPRED tables.
+    description: Unity Catalog catalog for RetailPRED tables. Free Edition workspaces use the pre-provisioned "workspace" catalog; named catalogs require a paid workspace.
+    default: workspace
+  secret_scope:
+    description: Secret scope holding census-api-key for the live ingest job.
     default: retailpred
+  staged_root:
+    description: Volume path containing staged local-store Parquet for the sync job.
+    default: "/Volumes/workspace/default/retailpred_staging"
 
 targets:
   dev:

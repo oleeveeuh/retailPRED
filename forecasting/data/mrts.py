@@ -2,17 +2,26 @@
 
 from __future__ import annotations
 
+import hashlib
 from datetime import datetime, timezone
 from typing import Any
 
 import pandas as pd
 import requests
 
-from forecasting.contracts import SeriesMetadata
+from forecasting.contracts import (
+    SEASONAL_ADJUSTED_VALUES,
+    SEASONAL_UNADJUSTED_VALUES,
+    SeriesMetadata,
+    derive_month_periods,
+)
 
 
 MRTS_API_URL = "https://api.census.gov/data/timeseries/eits/mrts"
-MRTS_FIELDS = "data_type_code,time_slot_id,seasonally_adj,category_code,cell_value,error_data"
+# The current API schema no longer accepts error_data as a gettable field
+# (verified live 2026-11: requesting it returns an HTML error page), so the
+# GET list mirrors the observed working response exactly.
+MRTS_FIELDS = "data_type_code,time_slot_id,seasonally_adj,category_code,cell_value"
 
 
 class MRTSError(RuntimeError):
@@ -25,6 +34,10 @@ class MissingAPIKeyError(MRTSError):
 
 class MRTSResponseError(MRTSError):
     pass
+
+
+def _adjustment_allowed(wants_adjusted: bool) -> frozenset[str]:
+    return SEASONAL_ADJUSTED_VALUES if wants_adjusted else SEASONAL_UNADJUSTED_VALUES
 
 
 def parse_mrts_response(
@@ -45,18 +58,39 @@ def parse_mrts_response(
     if missing:
         raise MRTSResponseError(f"Census response is missing fields: {sorted(missing)}")
 
-    adjustment = "yes" if series.seasonal_adjustment == "seasonally_adjusted" else "no"
+    wants_adjusted = series.seasonal_adjustment == "seasonally_adjusted"
+    allowed_adjustments = _adjustment_allowed(wants_adjusted)
+    normalized_adjustment = frame["seasonally_adj"].astype(str).str.strip().str.lower()
     selected = frame.loc[
         frame["data_type_code"].eq("SM")
         & frame["category_code"].astype(str).eq(series.source_code)
-        & frame["seasonally_adj"].str.lower().eq(adjustment)
+        & normalized_adjustment.isin(allowed_adjustments)
     ].copy()
-    selected["month"] = pd.to_numeric(selected["time_slot_id"], errors="coerce")
+    periods = derive_month_periods(selected, year_hint=year)
+    selected["month"] = periods["month"]
+    selected["observation_year"] = periods["observation_year"]
     selected["value"] = pd.to_numeric(selected["cell_value"], errors="coerce")
-    selected = selected.loc[selected["month"].between(1, 12) & selected["value"].notna()]
+    selected = selected.loc[
+        selected["month"].between(1, 12)
+        & selected["observation_year"].notna()
+        & selected["value"].notna()
+    ]
     if selected.empty:
+        observed_codes = sorted(frame["data_type_code"].astype(str).unique())
+        observed_adjustments = sorted(frame["seasonally_adj"].astype(str).unique())
+        observed_slots = sorted(frame["time_slot_id"].astype(str).unique())
+        time_samples = (
+            sorted({str(value) for value in frame["time"].astype(str)})[:3]
+            if "time" in frame.columns
+            else []
+        )
         raise MRTSResponseError(
-            f"no monthly sales rows matched code={series.source_code}, adjustment={adjustment}, year={year}"
+            f"no monthly sales rows matched code={series.source_code}, "
+            f"adjustment={'seasonally adjusted' if wants_adjusted else 'not adjusted'}, "
+            f"year={year}; observed data_type_code={observed_codes}, "
+            f"observed seasonally_adj={observed_adjustments}, "
+            f"observed time_slot_id={observed_slots}, "
+            f"time samples={time_samples}"
         )
     if selected["month"].duplicated().any():
         raise MRTSResponseError(f"duplicate monthly observations for {series.series_id} in {year}")
@@ -66,7 +100,11 @@ def parse_mrts_response(
         {
             "series_id": series.series_id,
             "observation_time": pd.to_datetime(
-                {"year": year, "month": selected["month"].astype(int), "day": 1}
+                {
+                    "year": selected["observation_year"].astype(int),
+                    "month": selected["month"].astype(int),
+                    "day": 1,
+                }
             ),
             "value": selected["value"].astype(float),
             "vintage_time": vintage_time,
@@ -100,7 +138,16 @@ class MRTSClient:
             try:
                 payload = response.json()
             except requests.JSONDecodeError as exc:
-                raise MRTSResponseError("Census returned a non-JSON response") from exc
+                fingerprint = hashlib.sha256(self.api_key.encode("utf-8")).hexdigest()[:8]
+                raise MRTSResponseError(
+                    "Census returned a non-JSON response "
+                    f"(HTTP {response.status_code}, {len(response.content)} bytes, "
+                    f"content-type={response.headers.get('Content-Type', 'unknown')}); "
+                    "this means the request itself was rejected — an invalid or "
+                    "malformed API key (note the page size matches the Missing Key "
+                    f"error page), or a GET field the API no longer serves; "
+                    f"key fingerprint (sha256 prefix) = {fingerprint}"
+                ) from exc
             self._year_payloads[year] = (payload, requested_at)
         payload, requested_at = self._year_payloads[year]
         return parse_mrts_response(payload, series, year=year, vintage_time=requested_at)
@@ -113,3 +160,7 @@ class MRTSClient:
         if result[["series_id", "observation_time"]].duplicated().any():
             raise MRTSResponseError("duplicate series/month keys across Census responses")
         return result
+
+    def cached_year_payloads(self) -> dict[int, tuple[list[list[Any]], datetime]]:
+        """Raw payloads fetched this run, for bronze provenance capture."""
+        return dict(self._year_payloads)

@@ -258,6 +258,100 @@ GOLD_M5_DEMAND = TableSpec(
 )
 
 
+GOLD_FORECASTS = TableSpec(
+    name="forecasts",
+    layer="gold",
+    schema_version=2,
+    columns=(
+        "dataset",
+        "series_id",
+        "forecast_origin",
+        "target_time",
+        "horizon",
+        "model_name",
+        "model_version",
+        "forecast_vintage_time",
+        "prediction",
+        "lower",
+        "upper",
+        "data_cutoff",
+        "origin_as_of",
+        "uncertainty_status",
+        "seasonal_naive_prediction",
+        "seasonal_naive_source_time",
+        "seasonal_naive_source_vintage_time",
+        "seasonal_naive_status",
+        "seasonal_naive_unavailable_reason",
+        "generated_at",
+        "code_revision",
+    ),
+    key=(
+        "dataset",
+        "series_id",
+        "forecast_origin",
+        "target_time",
+        "model_name",
+        "model_version",
+        "forecast_vintage_time",
+    ),
+    nullable=(
+        "lower",
+        "upper",
+        "origin_as_of",
+        "seasonal_naive_prediction",
+        "seasonal_naive_source_time",
+        "seasonal_naive_source_vintage_time",
+        "seasonal_naive_unavailable_reason",
+    ),
+)
+
+
+GOLD_REALIZED_ERRORS = TableSpec(
+    name="realized_errors",
+    layer="gold",
+    schema_version=2,
+    columns=(
+        "dataset",
+        "series_id",
+        "forecast_origin",
+        "target_time",
+        "horizon",
+        "model_name",
+        "model_version",
+        "forecast_vintage_time",
+        "prediction",
+        "seasonal_naive_prediction",
+        "actual",
+        "actual_vintage_time",
+        "model_absolute_error",
+        "model_abs_pct_error",
+        "signed_pct_error",
+        "seasonal_naive_absolute_error",
+        "seasonal_naive_abs_pct_error",
+        "model_beat_seasonal_naive",
+        "evaluation_status",
+    ),
+    key=(
+        "dataset",
+        "series_id",
+        "forecast_origin",
+        "target_time",
+        "model_name",
+        "model_version",
+        "forecast_vintage_time",
+        "actual_vintage_time",
+    ),
+    nullable=(
+        "signed_pct_error",
+        "model_abs_pct_error",
+        "seasonal_naive_prediction",
+        "seasonal_naive_absolute_error",
+        "seasonal_naive_abs_pct_error",
+        "model_beat_seasonal_naive",
+    ),
+)
+
+
 ALL_TABLE_SPECS = (
     BRONZE_MRTS,
     BRONZE_FRED,
@@ -270,4 +364,6 @@ ALL_TABLE_SPECS = (
     RETAIL_RELEASES,
     GOLD_MONTHLY,
     GOLD_M5_DEMAND,
+    GOLD_FORECASTS,
+    GOLD_REALIZED_ERRORS,
 )

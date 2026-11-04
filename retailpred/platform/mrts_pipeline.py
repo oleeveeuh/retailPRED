@@ -8,6 +8,10 @@ from typing import Any
 
 import pandas as pd
 
+from forecasting.contracts import (
+    SEASONAL_ADJUSTED_VALUES,
+    derive_month_periods,
+)
 from forecasting.registry import MRTS_BY_CODE
 from retailpred.platform.context import ExtractContext
 from retailpred.platform.local_store import LocalTableStore
@@ -51,11 +55,27 @@ def bronze_from_api_payload(
 def silver_from_bronze(bronze: pd.DataFrame) -> pd.DataFrame:
     selected = bronze.loc[
         bronze["data_type_code"].eq("SM")
-        & bronze["seasonally_adj"].astype(str).str.lower().eq("yes")
+        & bronze["seasonally_adj"]
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .isin(SEASONAL_ADJUSTED_VALUES)
         & bronze["category_code"].astype(str).isin(MRTS_BY_CODE)
     ].copy()
-    selected["month"] = pd.to_numeric(selected["time_slot_id"], errors="coerce")
-    selected["year_number"] = pd.to_numeric(selected["year"], errors="coerce")
+    # Bronze stores the raw response period in the `year` column. Legacy
+    # responses carried a bare year with the month in time_slot_id; current
+    # responses carry the full period and an ordinal slot.
+    numeric_years = pd.to_numeric(selected["year"], errors="coerce")
+    year_hint = (
+        int(numeric_years.iloc[0])
+        if len(selected) and numeric_years.notna().all()
+        else None
+    )
+    periods = derive_month_periods(
+        selected.assign(time=selected["year"]), year_hint=year_hint
+    )
+    selected["month"] = periods["month"]
+    selected["year_number"] = periods["observation_year"]
     selected["value"] = pd.to_numeric(selected["cell_value"], errors="coerce")
     selected = selected.loc[
         selected["month"].between(1, 12)

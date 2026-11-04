@@ -134,10 +134,30 @@ DATA_FRESHNESS = ExtractContract(
     key=("dataset", "as_of_date"),
 )
 
+LIVE_FORECASTS = ExtractContract(
+    columns=(
+        "dataset",
+        "series_id",
+        "forecast_origin",
+        "target_time",
+        "horizon",
+        "prediction",
+        "model_name",
+        "model_version",
+        "model_status",
+        "uncertainty_status",
+        "freshness_status",
+        "code_revision",
+    ),
+    key=("series_id", "target_time", "horizon"),
+    non_negative=("prediction",),
+)
+
 CONTRACTS = {
     "model_performance.csv": MODEL_PERFORMANCE,
     "m5_hierarchy_accuracy.csv": M5_HIERARCHY_ACCURACY,
     "m5_uncertainty.csv": M5_UNCERTAINTY,
     "mrts_regime_accuracy.csv": MRTS_REGIMES,
     "data_freshness.csv": DATA_FRESHNESS,
+    "live_forecasts.csv": LIVE_FORECASTS,
 }

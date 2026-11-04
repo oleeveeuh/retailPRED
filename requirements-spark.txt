@@ -1,0 +1,8 @@
+# Local Delta/Spark execution environment for the platform sync proof.
+# Run via `make setup-spark`; requires a Java 17 runtime on the host.
+numpy<2
+pandas>=2.2,<3
+pyarrow>=16,<19
+pydantic>=2.6,<3
+pyspark==3.5.3
+delta-spark==3.2.1
