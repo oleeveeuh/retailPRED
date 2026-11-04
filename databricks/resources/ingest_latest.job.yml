@@ -65,3 +65,4 @@ resources:
             environment_version: '2'
             dependencies:
               - pydantic>=2
+              - lightgbm>=4.0
