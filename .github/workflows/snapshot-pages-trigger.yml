@@ -1,0 +1,23 @@
+name: Redeploy Pages on snapshot update
+
+# The Databricks publisher commits v2-latest.json to the machine-written
+# live-data branch; this workflow forwards that change to the Pages deploy.
+
+on:
+  push:
+    branches: [live-data]
+    paths: ['live/v2-latest.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  trigger-pages-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Pages deploy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages-deploy.yml --ref main --repo "$GITHUB_REPOSITORY"

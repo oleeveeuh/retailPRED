@@ -4,7 +4,7 @@
  */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout';
 import { PredictionsPage } from './pages/PredictionsPage';
 import './index.css';
@@ -19,10 +19,12 @@ const queryClient = new QueryClient({
   },
 });
 
+// HashRouter keeps routing reliable on GitHub Pages, where arbitrary deep
+// paths have no server-side rewrite to index.html.
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <HashRouter>
         <Layout>
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard/predictions" replace />} />
@@ -30,7 +32,7 @@ function App() {
             <Route path="*" element={<Navigate to="/dashboard/predictions" replace />} />
           </Routes>
         </Layout>
-      </BrowserRouter>
+      </HashRouter>
     </QueryClientProvider>
   );
 }

@@ -86,6 +86,17 @@ export interface LatestSnapshotPoint {
   prediction: number;
   lower: number | null;
   upper: number | null;
+  seasonal_naive_prediction: number | null;
+  seasonal_naive_source_time: string | null;
+  seasonal_naive_source_vintage_time: string | null;
+  seasonal_naive_status: 'available' | 'unavailable';
+  seasonal_naive_unavailable_reason: string | null;
+  evaluation_actual: number | null;
+  evaluation_actual_vintage_time: string | null;
+  model_absolute_error: number | null;
+  seasonal_naive_absolute_error: number | null;
+  model_beat_seasonal_naive: boolean | null;
+  evaluation_status: string | null;
 }
 
 export interface LatestSnapshotSeries {
@@ -103,7 +114,7 @@ export interface LatestSnapshotFreshness {
 }
 
 export interface LatestSnapshot {
-  contract_version: '2.0';
+  contract_version: '2.1';
   snapshot_kind: 'scheduled_batch_forecasts';
   dataset: 'mrts';
   use_case: string;
@@ -112,7 +123,8 @@ export interface LatestSnapshot {
   model_version: string;
   model_status: string;
   uncertainty_status: string;
-  is_live: true;
+  is_live: boolean;
+  pipeline_run_id: string | null;
   freshness: LatestSnapshotFreshness;
   series: LatestSnapshotSeries[];
   provenance: Record<string, string>;
@@ -123,8 +135,63 @@ export function isSnapshotConfigured(): boolean {
 }
 
 /**
- * Fetch the published scheduled-batch snapshot. Fails closed: anything that
- * does not match the v2 snapshot contract is refused rather than displayed.
+ * Fail-closed validation: anything that does not match the v2 snapshot
+ * contract is refused rather than displayed.
+ */
+export function validateSnapshotPayload(payload: unknown): LatestSnapshot {
+  if (typeof payload !== 'object' || payload === null) {
+    throw new Error('Snapshot is not a JSON object.');
+  }
+  const candidate = payload as Partial<LatestSnapshot>;
+  if (candidate.contract_version !== '2.1') {
+    throw new Error(
+      `Snapshot contract version must be 2.1, got ${String(candidate.contract_version)}; refusing to display it.`,
+    );
+  }
+  if (candidate.snapshot_kind !== 'scheduled_batch_forecasts') {
+    throw new Error('Snapshot kind is not scheduled_batch_forecasts; refusing to display it.');
+  }
+  if (typeof candidate.is_live !== 'boolean') {
+    throw new Error('Snapshot is_live flag is missing; refusing to display it.');
+  }
+  if (
+    typeof candidate.model_status !== 'string' ||
+    typeof candidate.uncertainty_status !== 'string'
+  ) {
+    throw new Error('Snapshot is missing model or uncertainty status.');
+  }
+  if (!candidate.freshness || typeof candidate.freshness.status !== 'string') {
+    throw new Error('Snapshot is missing freshness metadata.');
+  }
+  if (!Array.isArray(candidate.series) || candidate.series.length === 0) {
+    throw new Error('Snapshot contains no series.');
+  }
+  for (const series of candidate.series) {
+    if (!Array.isArray(series.points) || series.points.length === 0) {
+      throw new Error(`Snapshot series ${series.series_id} contains no points.`);
+    }
+    for (const point of series.points) {
+      if (
+        point.seasonal_naive_status !== 'available' &&
+        point.seasonal_naive_status !== 'unavailable'
+      ) {
+        throw new Error(
+          `Snapshot point for ${series.series_id} has an invalid seasonal-naive status.`,
+        );
+      }
+      if (point.seasonal_naive_status === 'unavailable' && point.seasonal_naive_prediction !== null) {
+        throw new Error(
+          `Snapshot point for ${series.series_id} marks the benchmark unavailable but carries a value.`,
+        );
+      }
+    }
+  }
+  return candidate as LatestSnapshot;
+}
+
+/**
+ * Fetch the published scheduled-batch snapshot. cache: 'no-store' keeps a
+ * refresh from serving a stale cached copy as newly fetched.
  */
 export async function fetchLatestSnapshot(): Promise<LatestSnapshot> {
   const url = config.latestSnapshotUrl.trim();
@@ -134,21 +201,12 @@ export async function fetchLatestSnapshot(): Promise<LatestSnapshot> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 8000);
   try {
-    const response = await fetch(url, { signal: controller.signal });
+    const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
     if (!response.ok) {
       throw new Error(`Snapshot request failed (${response.status}).`);
     }
-    const payload = (await response.json()) as LatestSnapshot;
-    if (
-      payload.contract_version !== '2.0' ||
-      payload.snapshot_kind !== 'scheduled_batch_forecasts'
-    ) {
-      throw new Error('Snapshot does not match the v2 contract; refusing to display it.');
-    }
-    if (!Array.isArray(payload.series) || payload.series.length === 0) {
-      throw new Error('Snapshot contains no series.');
-    }
-    return payload;
+    const payload: unknown = await response.json();
+    return validateSnapshotPayload(payload);
   } finally {
     clearTimeout(timer);
   }
