@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: silver
     description: Validated, version-aware facts produced by RetailPRED ingestion.
-    catalog: "{{ env_var('DATABRICKS_CATALOG', 'retailpred') }}"
+    catalog: "{{ env_var('DATABRICKS_CATALOG', 'workspace') }}"
     schema: silver
     config:
       freshness:
@@ -18,7 +18,7 @@ sources:
 
   - name: gold
     description: Governed consumer contracts published by the data platform.
-    catalog: "{{ env_var('DATABRICKS_CATALOG', 'retailpred') }}"
+    catalog: "{{ env_var('DATABRICKS_CATALOG', 'workspace') }}"
     schema: gold
     tables:
       - name: monthly_series
