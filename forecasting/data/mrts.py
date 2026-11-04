@@ -14,6 +14,12 @@ from forecasting.contracts import SeriesMetadata
 MRTS_API_URL = "https://api.census.gov/data/timeseries/eits/mrts"
 MRTS_FIELDS = "data_type_code,time_slot_id,seasonally_adj,category_code,cell_value,error_data"
 
+# Documented encodings of the seasonal-adjustment marker across Census
+# surfaces: the timeseries API historically returned yes/no, while MRTS
+# workbooks and some API schema revisions use SA/NSA (or boolean forms).
+SEASONAL_ADJUSTED_VALUES = frozenset({"yes", "y", "true", "sa"})
+SEASONAL_UNADJUSTED_VALUES = frozenset({"no", "n", "false", "nsa"})
+
 
 class MRTSError(RuntimeError):
     """Base error for explicit MRTS ingestion failures."""
@@ -25,6 +31,10 @@ class MissingAPIKeyError(MRTSError):
 
 class MRTSResponseError(MRTSError):
     pass
+
+
+def _adjustment_allowed(wants_adjusted: bool) -> frozenset[str]:
+    return SEASONAL_ADJUSTED_VALUES if wants_adjusted else SEASONAL_UNADJUSTED_VALUES
 
 
 def parse_mrts_response(
@@ -45,18 +55,25 @@ def parse_mrts_response(
     if missing:
         raise MRTSResponseError(f"Census response is missing fields: {sorted(missing)}")
 
-    adjustment = "yes" if series.seasonal_adjustment == "seasonally_adjusted" else "no"
+    wants_adjusted = series.seasonal_adjustment == "seasonally_adjusted"
+    allowed_adjustments = _adjustment_allowed(wants_adjusted)
+    normalized_adjustment = frame["seasonally_adj"].astype(str).str.strip().str.lower()
     selected = frame.loc[
         frame["data_type_code"].eq("SM")
         & frame["category_code"].astype(str).eq(series.source_code)
-        & frame["seasonally_adj"].str.lower().eq(adjustment)
+        & normalized_adjustment.isin(allowed_adjustments)
     ].copy()
     selected["month"] = pd.to_numeric(selected["time_slot_id"], errors="coerce")
     selected["value"] = pd.to_numeric(selected["cell_value"], errors="coerce")
     selected = selected.loc[selected["month"].between(1, 12) & selected["value"].notna()]
     if selected.empty:
+        observed_codes = sorted(frame["data_type_code"].astype(str).unique())
+        observed_adjustments = sorted(frame["seasonally_adj"].astype(str).unique())
         raise MRTSResponseError(
-            f"no monthly sales rows matched code={series.source_code}, adjustment={adjustment}, year={year}"
+            f"no monthly sales rows matched code={series.source_code}, "
+            f"adjustment={'seasonally adjusted' if wants_adjusted else 'not adjusted'}, "
+            f"year={year}; observed data_type_code={observed_codes}, "
+            f"observed seasonally_adj={observed_adjustments}"
         )
     if selected["month"].duplicated().any():
         raise MRTSResponseError(f"duplicate monthly observations for {series.series_id} in {year}")
@@ -113,3 +130,7 @@ class MRTSClient:
         if result[["series_id", "observation_time"]].duplicated().any():
             raise MRTSResponseError("duplicate series/month keys across Census responses")
         return result
+
+    def cached_year_payloads(self) -> dict[int, tuple[list[list[Any]], datetime]]:
+        """Raw payloads fetched this run, for bronze provenance capture."""
+        return dict(self._year_payloads)

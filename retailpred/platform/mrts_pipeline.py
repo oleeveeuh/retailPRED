@@ -8,6 +8,7 @@ from typing import Any
 
 import pandas as pd
 
+from forecasting.data.mrts import SEASONAL_ADJUSTED_VALUES
 from forecasting.registry import MRTS_BY_CODE
 from retailpred.platform.context import ExtractContext
 from retailpred.platform.local_store import LocalTableStore
@@ -51,7 +52,11 @@ def bronze_from_api_payload(
 def silver_from_bronze(bronze: pd.DataFrame) -> pd.DataFrame:
     selected = bronze.loc[
         bronze["data_type_code"].eq("SM")
-        & bronze["seasonally_adj"].astype(str).str.lower().eq("yes")
+        & bronze["seasonally_adj"]
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .isin(SEASONAL_ADJUSTED_VALUES)
         & bronze["category_code"].astype(str).isin(MRTS_BY_CODE)
     ].copy()
     selected["month"] = pd.to_numeric(selected["time_slot_id"], errors="coerce")
