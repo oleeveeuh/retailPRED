@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from datetime import datetime, timezone
 from typing import Any
 
@@ -137,12 +138,15 @@ class MRTSClient:
             try:
                 payload = response.json()
             except requests.JSONDecodeError as exc:
+                fingerprint = hashlib.sha256(self.api_key.encode("utf-8")).hexdigest()[:8]
                 raise MRTSResponseError(
                     "Census returned a non-JSON response "
                     f"(HTTP {response.status_code}, {len(response.content)} bytes, "
                     f"content-type={response.headers.get('Content-Type', 'unknown')}); "
-                    "this usually means the GET field list names a variable the "
-                    "API no longer serves"
+                    "this means the request itself was rejected — an invalid or "
+                    "malformed API key (note the page size matches the Missing Key "
+                    f"error page), or a GET field the API no longer serves; "
+                    f"key fingerprint (sha256 prefix) = {fingerprint}"
                 ) from exc
             self._year_payloads[year] = (payload, requested_at)
         payload, requested_at = self._year_payloads[year]

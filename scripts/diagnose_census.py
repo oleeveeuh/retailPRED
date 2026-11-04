@@ -10,6 +10,7 @@ the parser's documented expectations.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import sys
 from typing import Any
@@ -77,6 +78,13 @@ def main() -> int:
     if not api_key:
         print("CENSUS_API_KEY must be set in the environment", file=sys.stderr)
         return 1
+    fingerprint = hashlib.sha256(api_key.encode("utf-8")).hexdigest()[:8]
+    print(f"key fingerprint (sha256 prefix) = {fingerprint}; length = {len(api_key)}")
+    if len(api_key) != 32 or not all(char in "0123456789abcdef" for char in api_key.lower()):
+        print(
+            "WARNING: Census API keys are 32 lowercase hex characters; this key "
+            "does not look like one (quotes, whitespace, or a truncated paste?)."
+        )
     session = requests.Session()
     for year in args.years:
         summary = probe_year(session, api_key, year)

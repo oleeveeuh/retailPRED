@@ -168,9 +168,11 @@ class _HTMLSession:
 
 
 def test_non_json_response_failure_names_the_schema_cause() -> None:
-    client = MRTSClient(api_key="key", session=_HTMLSession())
+    secret = "super-secret-census-value"
+    client = MRTSClient(api_key=secret, session=_HTMLSession())
     with pytest.raises(MRTSResponseError) as excinfo:
         client.fetch_year(get_series("retail_total"), year=2010)
     message = str(excinfo.value)
     assert "content-type=text/html" in message
-    assert "GET field list" in message
+    assert "key fingerprint" in message
+    assert secret not in message  # the credential itself never leaks
