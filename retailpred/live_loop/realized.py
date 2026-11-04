@@ -1,9 +1,11 @@
-"""Realized-error monitoring: score published forecasts against revised actuals.
+"""Realized-error monitoring: score published forecasts against actuals.
 
-Once actual months are published, every covering forecast gains an immutable
-realized-error row. Revisions append new rows keyed by the actual vintage
-rather than overwriting history, so the monitoring table itself is
-revision-aware.
+When an actual month becomes available, every applicable stored forecast
+vintage gains an immutable realized-error row keyed by the actual vintage,
+so first-release evaluation and later revised evaluations coexist without
+overwriting each other. Each row records how the model did AND how the
+frozen seasonal-naive benchmark did on the same target, including whether
+the model beat the benchmark.
 """
 
 from __future__ import annotations
@@ -26,22 +28,29 @@ class RealizedOutcome:
     evaluated_at: datetime
 
 
-def latest_revisions(silver: pd.DataFrame) -> pd.DataFrame:
-    """Latest known value per series/month from the versioned silver table."""
+def versioned_actuals(silver: pd.DataFrame) -> pd.DataFrame:
+    """Every published actual vintage, so first-release evaluation survives."""
     clean = validate_monthly_observations(silver)
-    latest = clean.groupby(["series_id", "observation_time"], sort=False)[
-        "vintage_time"
-    ].idxmax()
-    return clean.loc[latest, ["series_id", "observation_time", "value", "vintage_time"]]
+    return clean.loc[:, ["series_id", "observation_time", "value", "vintage_time"]]
+
+
+def _pct_error(prediction: float | None, actual: float) -> float | None:
+    if prediction is None or actual == 0:
+        return None
+    return abs(prediction - actual) / actual
 
 
 def compute_realized_errors(
     forecasts: pd.DataFrame, silver: pd.DataFrame, *, now: datetime
 ) -> pd.DataFrame:
-    """Join published forecasts to revised actuals and quantify the realized error."""
+    """Join published forecasts to every actual vintage and quantify performance.
+
+    One row per (forecast vintage, actual vintage): a first-release actual and
+    any later revision each get their own immutable evaluation row.
+    """
     if forecasts.empty:
         raise ValueError("no published forecasts exist; realized monitoring is unavailable")
-    actuals = latest_revisions(silver)
+    actuals = versioned_actuals(silver)
     joined = forecasts.merge(
         actuals.rename(
             columns={
@@ -52,17 +61,27 @@ def compute_realized_errors(
         ),
         on=["series_id", "target_time"],
         how="inner",
-        validate="many_to_one",
+        validate="many_to_many",
     )
+    first_release_times = actuals.groupby(["series_id", "observation_time"], sort=False)[
+        "vintage_time"
+    ].min()
+
     records: list[dict[str, object]] = []
     for row in joined.itertuples():
         actual = float(row.actual)
-        if actual == 0:
-            abs_pct: float | None = None
-            signed_pct: float | None = None
-        else:
-            abs_pct = abs(float(row.prediction) - actual) / actual
-            signed_pct = (float(row.prediction) - actual) / actual
+        model_absolute = abs(float(row.prediction) - actual)
+        naive_prediction = None if pd.isna(row.seasonal_naive_prediction) else float(row.seasonal_naive_prediction)
+        naive_absolute = None if naive_prediction is None else abs(naive_prediction - actual)
+        beat = None
+        if naive_absolute is not None:
+            beat = bool(model_absolute < naive_absolute)
+        evaluation_status = (
+            "first_release"
+            if pd.Timestamp(row.actual_vintage_time)
+            == first_release_times.loc[(str(row.series_id), pd.Timestamp(row.target_time))]
+            else "revised"
+        )
         records.append(
             {
                 "dataset": str(row.dataset),
@@ -74,10 +93,16 @@ def compute_realized_errors(
                 "model_version": str(row.model_version),
                 "forecast_vintage_time": pd.Timestamp(row.forecast_vintage_time),
                 "prediction": float(row.prediction),
+                "seasonal_naive_prediction": naive_prediction,
                 "actual": actual,
                 "actual_vintage_time": pd.Timestamp(row.actual_vintage_time),
-                "abs_pct_error": abs_pct,
-                "signed_pct_error": signed_pct,
+                "model_absolute_error": model_absolute,
+                "model_abs_pct_error": _pct_error(float(row.prediction), actual),
+                "signed_pct_error": None if actual == 0 else (float(row.prediction) - actual) / actual,
+                "seasonal_naive_absolute_error": naive_absolute,
+                "seasonal_naive_abs_pct_error": _pct_error(naive_prediction, actual),
+                "model_beat_seasonal_naive": beat,
+                "evaluation_status": evaluation_status,
             }
         )
     return pd.DataFrame.from_records(records, columns=GOLD_REALIZED_ERRORS.columns)

@@ -261,7 +261,7 @@ GOLD_M5_DEMAND = TableSpec(
 GOLD_FORECASTS = TableSpec(
     name="forecasts",
     layer="gold",
-    schema_version=1,
+    schema_version=2,
     columns=(
         "dataset",
         "series_id",
@@ -275,7 +275,13 @@ GOLD_FORECASTS = TableSpec(
         "lower",
         "upper",
         "data_cutoff",
+        "origin_as_of",
         "uncertainty_status",
+        "seasonal_naive_prediction",
+        "seasonal_naive_source_time",
+        "seasonal_naive_source_vintage_time",
+        "seasonal_naive_status",
+        "seasonal_naive_unavailable_reason",
         "generated_at",
         "code_revision",
     ),
@@ -288,14 +294,22 @@ GOLD_FORECASTS = TableSpec(
         "model_version",
         "forecast_vintage_time",
     ),
-    nullable=("lower", "upper"),
+    nullable=(
+        "lower",
+        "upper",
+        "origin_as_of",
+        "seasonal_naive_prediction",
+        "seasonal_naive_source_time",
+        "seasonal_naive_source_vintage_time",
+        "seasonal_naive_unavailable_reason",
+    ),
 )
 
 
 GOLD_REALIZED_ERRORS = TableSpec(
     name="realized_errors",
     layer="gold",
-    schema_version=1,
+    schema_version=2,
     columns=(
         "dataset",
         "series_id",
@@ -306,10 +320,16 @@ GOLD_REALIZED_ERRORS = TableSpec(
         "model_version",
         "forecast_vintage_time",
         "prediction",
+        "seasonal_naive_prediction",
         "actual",
         "actual_vintage_time",
-        "abs_pct_error",
+        "model_absolute_error",
+        "model_abs_pct_error",
         "signed_pct_error",
+        "seasonal_naive_absolute_error",
+        "seasonal_naive_abs_pct_error",
+        "model_beat_seasonal_naive",
+        "evaluation_status",
     ),
     key=(
         "dataset",
@@ -321,7 +341,14 @@ GOLD_REALIZED_ERRORS = TableSpec(
         "forecast_vintage_time",
         "actual_vintage_time",
     ),
-    nullable=("abs_pct_error", "signed_pct_error"),
+    nullable=(
+        "signed_pct_error",
+        "model_abs_pct_error",
+        "seasonal_naive_prediction",
+        "seasonal_naive_absolute_error",
+        "seasonal_naive_abs_pct_error",
+        "model_beat_seasonal_naive",
+    ),
 )
 
 

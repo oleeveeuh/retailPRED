@@ -36,6 +36,15 @@ _COMMON_TYPES = {
     "actual": "DOUBLE",
     "abs_pct_error": "DOUBLE",
     "signed_pct_error": "DOUBLE",
+    "seasonal_naive_prediction": "DOUBLE",
+    "seasonal_naive_source_time": "DATE",
+    "seasonal_naive_source_vintage_time": "TIMESTAMP",
+    "origin_as_of": "TIMESTAMP",
+    "model_absolute_error": "DOUBLE",
+    "model_abs_pct_error": "DOUBLE",
+    "seasonal_naive_absolute_error": "DOUBLE",
+    "seasonal_naive_abs_pct_error": "DOUBLE",
+    "model_beat_seasonal_naive": "BOOLEAN",
     "sell_price": "DOUBLE",
     "units": "BIGINT",
     "size_bytes": "BIGINT",
@@ -204,6 +213,7 @@ def contract_schema(spec: TableSpec) -> Any:
         DoubleType,
         LongType,
         IntegerType,
+        BooleanType,
     )
 
     mapping = {
@@ -212,6 +222,7 @@ def contract_schema(spec: TableSpec) -> Any:
         "DOUBLE": DoubleType(),
         "BIGINT": LongType(),
         "INT": IntegerType(),
+        "BOOLEAN": BooleanType(),
     }
     return StructType(
         [

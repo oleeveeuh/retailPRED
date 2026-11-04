@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -32,7 +33,15 @@ def _populate_store(tmp_path: Path) -> LocalTableStore:
                     "lower": None,
                     "upper": None,
                     "data_cutoff": ORIGIN,
+                    "origin_as_of": VINTAGE,
                     "uncertainty_status": decision.uncertainty_status,
+                    "seasonal_naive_prediction": 495.0 - horizon,
+                    "seasonal_naive_source_time": ORIGIN
+                    + pd.offsets.MonthBegin(horizon)
+                    - pd.DateOffset(months=12),
+                    "seasonal_naive_source_vintage_time": VINTAGE,
+                    "seasonal_naive_status": "available",
+                    "seasonal_naive_unavailable_reason": None,
                     "generated_at": VINTAGE,
                     "code_revision": "b" * 40,
                 }
