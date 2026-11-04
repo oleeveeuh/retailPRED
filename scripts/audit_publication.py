@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import fnmatch
 import re
 import subprocess
 from pathlib import Path
@@ -29,8 +30,54 @@ def markdown_link_errors(path: Path) -> list[str]:
     return errors
 
 
+def _dockerignore_includes(lines: list[str], relpath: str) -> bool:
+    """Approximate Docker's last-match-wins context filter for the rule shapes used here."""
+    included = True
+    for raw in lines:
+        rule = raw.strip()
+        if not rule or rule.startswith("#"):
+            continue
+        negated = rule.startswith("!")
+        pattern = rule.lstrip("!").rstrip("/")
+        if pattern == "*":
+            matched = "/" not in relpath
+        elif pattern.endswith("/**"):
+            matched = relpath.startswith(pattern[:-3] + "/")
+        elif "*" in pattern:
+            matched = fnmatch.fnmatch(relpath, pattern)
+        else:
+            matched = relpath == pattern or relpath.startswith(pattern + "/")
+        if matched:
+            # Last matching rule wins: negations re-include, plain patterns exclude.
+            included = negated
+    return included
+
+
+def dockerignore_errors() -> list[str]:
+    """The serving image must contain the v2 contract and exclude legacy artifacts."""
+    lines = (ROOT / ".dockerignore").read_text(encoding="utf-8").splitlines()
+    probes: dict[str, bool] = {
+        "backend/main.py": True,
+        "backend/api/v2_forecasts.py": True,
+        "backend/demo/v2_forecasts.json": True,
+        "forecasting/portfolio.py": True,
+        "requirements-serving.txt": True,
+        "backend/ml/models/automobile_dealers_LGBM_model.pkl": False,
+    }
+    errors = []
+    for relpath, expected in probes.items():
+        included = _dockerignore_includes(lines, relpath)
+        if included is not expected:
+            errors.append(
+                f".dockerignore {'includes' if included else 'excludes'} {relpath} "
+                f"(must be {'in the serving image' if expected else 'excluded from it'})"
+            )
+    return errors
+
+
 def main() -> int:
     errors = markdown_link_errors(ROOT / "README.md")
+    errors += dockerignore_errors()
 
     active_ui = "\n".join(path.read_text(encoding="utf-8") for path in PUBLIC_FRONTEND)
     forbidden_ui_claims = {
@@ -82,6 +129,7 @@ def main() -> int:
 
     pickle_count = sum(path.endswith(".pkl") for path in tracked)
     print("Publication audit passed.")
+    print("Serving image context includes the v2 contract and excludes legacy model artifacts.")
     print(f"Known debt: {pickle_count} tracked legacy pickle files remain isolated from v2 serving.")
     if "predictions.csv" in tracked:
         print("Known debt: tracked legacy predictions.csv is not a v2 evidence source.")

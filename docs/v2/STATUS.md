@@ -43,7 +43,8 @@ The fail-closed `/api/v2`, publication-only React forecast route, and five-view 
 - `docs/v2/PUBLICATION_AUDIT.md` records recruiter-facing findings, fixes, open debt, blocked claims, and a release checklist.
 - `scripts/audit_publication.py` fails on stale README links, unsupported public UI claims, legacy public routes, tracked real `.env` files, nonportable Tableau paths, and container regressions.
 - The default frontend routes only to the deterministic historical M5 evidence page; legacy pages remain source-level provenance and are not public navigation.
-- A serving-only smoke test (Python 3.11 venv restricted to `requirements-serving.txt`) served `backend.main:app` over the `.dockerignore` file set: health, models, demo catalog, offline-demo forecast, and fail-closed 409 production responses all verified.
+- A serving-only smoke test (Python 3.11 venv restricted to `requirements-serving.txt`) served `backend.main:app` from the exact pruned build context (~14 MB, zero legacy pickles): health, models, demo catalog, offline-demo forecast, and fail-closed 409 production responses all verified.
+- The publication gate checks `.dockerignore` resolution so the serving context must include the v2 contract and exclude `backend/ml`; it reproduces the pickle-in-context regression caught during verification.
 - CI now includes a `container-smoke` job that builds the minimal v2 image and asserts the fail-closed contract; the first image-level proof lands on the pushed run because Docker is unavailable on the local machine.
 - CI workflow names now distinguish build/publish actions from deployment; the placeholder deploy job was removed.
 - The v2 API image excludes the 402 MB legacy pickle suite, runs as a non-root user, and health-checks `/api/v2/health`.
