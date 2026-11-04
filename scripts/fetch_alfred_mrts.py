@@ -46,6 +46,11 @@ def parse_args() -> argparse.Namespace:
         help="Fetch every Nth archived vintage date (1 = all vintages).",
     )
     parser.add_argument(
+        "--no-monthly-sampling",
+        action="store_true",
+        help="Fetch every archived vintage instead of the last one per month.",
+    )
+    parser.add_argument(
         "--release-id",
         type=int,
         help="List FRED series in a release to complete the mapping, then exit.",
@@ -130,6 +135,7 @@ def main() -> None:
     upper = date.today() if args.end_year >= date.today().year else date(args.end_year, 12, 1)
     if args.vintage_stride < 1:
         raise SystemExit("--vintage-stride must be positive")
+    monthly_sampling = not args.no_monthly_sampling
 
     # Ask ALFRED for each series' actual archived vintage dates; series that
     # only entered FRED recently have no early vintages to guess at.
@@ -141,7 +147,15 @@ def main() -> None:
             for vintage in client.fetch_vintage_dates(fred_id)
             if lower <= vintage <= upper
         ]
-        archived = archived[:: args.vintage_stride]
+        if monthly_sampling:
+            # Keep the LAST archived vintage per calendar month: monthly
+            # origins then always see the month's final published state,
+            # which keeps the declared availability protocol truthful while
+            # capping request volume.
+            by_month: dict[tuple[int, int], date] = {}
+            for vintage in archived:
+                by_month[(vintage.year, vintage.month)] = vintage
+            archived = sorted(by_month.values())
         if not archived:
             total_without_archives.append(mrts_id)
         series_dates.append((mrts_id, fred_id, archived))
