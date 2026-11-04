@@ -80,10 +80,16 @@ def main() -> int:
         return 1
     fingerprint = hashlib.sha256(api_key.encode("utf-8")).hexdigest()[:8]
     print(f"key fingerprint (sha256 prefix) = {fingerprint}; length = {len(api_key)}")
-    if len(api_key) != 32 or not all(char in "0123456789abcdef" for char in api_key.lower()):
+    if any(character in "\t\n\r " for character in api_key):
         print(
-            "WARNING: Census API keys are 32 lowercase hex characters; this key "
-            "does not look like one (quotes, whitespace, or a truncated paste?)."
+            "WARNING: the key contains whitespace (quotes or a broken paste?). "
+            "Re-export a clean copy."
+        )
+    elif len(api_key) not in (32, 40):
+        print(
+            f"NOTE: Census keys have been observed at 32 and 40 characters; "
+            f"this key has {len(api_key)}. A wrong key is rejected with an "
+            "HTML page rather than JSON."
         )
     session = requests.Session()
     for year in args.years:

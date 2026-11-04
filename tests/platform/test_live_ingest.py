@@ -1,4 +1,3 @@
-from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -72,7 +71,6 @@ def test_run_live_ingest_reports_ingestion_only(tmp_path) -> None:
         FakeMRTSClient(),
         start_year=2024,
         end_year=2024,
-        now=datetime(2025, 11, 15, 15, 0, tzinfo=timezone.utc),
     )
     assert outcome.silver_rows == len(MRTS_SERIES) * len(MONTHS)
     assert outcome.bronze_rows == 2
@@ -86,7 +84,6 @@ def test_run_live_ingest_captures_raw_bronze_provenance(tmp_path) -> None:
         FakeMRTSClient(),
         start_year=2024,
         end_year=2024,
-        now=datetime(2025, 11, 15, 15, 0, tzinfo=timezone.utc),
     )
     bronze = store.read(BRONZE_MRTS)
     assert len(bronze) == 2
@@ -100,7 +97,6 @@ def test_run_live_ingest_captures_raw_bronze_provenance(tmp_path) -> None:
         FakeMRTSClient(),
         start_year=2024,
         end_year=2024,
-        now=datetime(2025, 11, 15, 15, 0, tzinfo=timezone.utc),
     )
     assert len(store.read(BRONZE_MRTS)) == 2
 

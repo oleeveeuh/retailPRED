@@ -117,7 +117,6 @@ def test_ingest_then_score_refuses_on_the_frozen_decision(tmp_path) -> None:
         FakeMRTSClient(),
         start_year=2024,
         end_year=2024,
-        now=datetime(2025, 11, 15, 15, 0, tzinfo=timezone.utc),
     )
     outcome = score_store(store, now=NOW, revision="0" * 40)
     assert outcome.forecasts is None

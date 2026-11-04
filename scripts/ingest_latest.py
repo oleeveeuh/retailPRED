@@ -41,7 +41,6 @@ def main() -> None:
         client,
         start_year=args.start_year,
         end_year=args.end_year,
-        now=datetime.now(timezone.utc),
     )
     print(f"Bronze rows after merge: {outcome.bronze_rows:,}")
     print(f"Silver rows after merge: {outcome.silver_rows:,}")

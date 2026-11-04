@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import subprocess
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Any
 
 import pandas as pd
@@ -43,14 +42,13 @@ def merge_latest_observations(
     return store.merge(SILVER_MONTHLY, batch)
 
 
-def capture_bronze_provenance(
-    store: LocalTableStore, client: Any, *, ingested_at: datetime
-) -> pd.DataFrame | None:
+def capture_bronze_provenance(store: LocalTableStore, client: Any) -> pd.DataFrame | None:
     """Merge every raw payload fetched this run into the bronze table.
 
     The extract id derives from the retrieval time, so a replay of the same
     run is idempotent while a later re-fetch legitimately records a new
-    vintage.
+    vintage. Ingestion time equals each payload's retrieval time: ingestion
+    can never precede the vintage it captures.
     """
     from forecasting.data.mrts import MRTS_API_URL
     from retailpred.platform.context import ExtractContext
@@ -62,7 +60,7 @@ def capture_bronze_provenance(
             extract_id=f"census-live-{requested_at.strftime('%Y%m%dT%H%M%S')}-year-{year}",
             source_url=MRTS_API_URL,
             vintage_time=requested_at,
-            ingested_at=ingested_at,
+            ingested_at=requested_at,
             release_time=None,
         )
         frames.append(bronze_from_api_payload(payload, context))
@@ -77,13 +75,12 @@ def run_live_ingest(
     *,
     start_year: int,
     end_year: int,
-    now: datetime,
 ) -> IngestOutcome:
     """Pull the latest release into bronze and versioned silver."""
     silver = merge_latest_observations(
         store, client, start_year=start_year, end_year=end_year
     )
-    bronze = capture_bronze_provenance(store, client, ingested_at=now)
+    bronze = capture_bronze_provenance(store, client)
     return IngestOutcome(
         silver_rows=len(silver),
         bronze_rows=0 if bronze is None else len(bronze),
