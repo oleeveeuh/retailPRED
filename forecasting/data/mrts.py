@@ -12,6 +12,7 @@ from forecasting.contracts import (
     SEASONAL_ADJUSTED_VALUES,
     SEASONAL_UNADJUSTED_VALUES,
     SeriesMetadata,
+    derive_month_periods,
 )
 
 
@@ -61,17 +62,31 @@ def parse_mrts_response(
         & frame["category_code"].astype(str).eq(series.source_code)
         & normalized_adjustment.isin(allowed_adjustments)
     ].copy()
-    selected["month"] = pd.to_numeric(selected["time_slot_id"], errors="coerce")
+    periods = derive_month_periods(selected, year_hint=year)
+    selected["month"] = periods["month"]
+    selected["observation_year"] = periods["observation_year"]
     selected["value"] = pd.to_numeric(selected["cell_value"], errors="coerce")
-    selected = selected.loc[selected["month"].between(1, 12) & selected["value"].notna()]
+    selected = selected.loc[
+        selected["month"].between(1, 12)
+        & selected["observation_year"].notna()
+        & selected["value"].notna()
+    ]
     if selected.empty:
         observed_codes = sorted(frame["data_type_code"].astype(str).unique())
         observed_adjustments = sorted(frame["seasonally_adj"].astype(str).unique())
+        observed_slots = sorted(frame["time_slot_id"].astype(str).unique())
+        time_samples = (
+            sorted({str(value) for value in frame["time"].astype(str)})[:3]
+            if "time" in frame.columns
+            else []
+        )
         raise MRTSResponseError(
             f"no monthly sales rows matched code={series.source_code}, "
             f"adjustment={'seasonally adjusted' if wants_adjusted else 'not adjusted'}, "
             f"year={year}; observed data_type_code={observed_codes}, "
-            f"observed seasonally_adj={observed_adjustments}"
+            f"observed seasonally_adj={observed_adjustments}, "
+            f"observed time_slot_id={observed_slots}, "
+            f"time samples={time_samples}"
         )
     if selected["month"].duplicated().any():
         raise MRTSResponseError(f"duplicate monthly observations for {series.series_id} in {year}")
@@ -81,7 +96,11 @@ def parse_mrts_response(
         {
             "series_id": series.series_id,
             "observation_time": pd.to_datetime(
-                {"year": year, "month": selected["month"].astype(int), "day": 1}
+                {
+                    "year": selected["observation_year"].astype(int),
+                    "month": selected["month"].astype(int),
+                    "day": 1,
+                }
             ),
             "value": selected["value"].astype(float),
             "vintage_time": vintage_time,
