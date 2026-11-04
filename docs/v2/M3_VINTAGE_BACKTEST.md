@@ -1,6 +1,6 @@
 # Milestone 3 Point-in-Time Vintage Backtest
 
-Status: gates predeclared; measured run pending FRED key rotation and ALFRED vintage pulls
+Status: **measured — gate FAILED**; the MRTS LightGBM challenger remains unauthorized for serving (2026-11-04)
 
 ## Purpose
 
@@ -48,21 +48,59 @@ Failure of any criterion keeps the MRTS serving decision fail-closed
 (`unavailable_until_point_in_time_validation`) and the live loop continues to
 ingest and publish data status without scoring.
 
+## Measured result (2026-11-04)
+
+Source: `data/v2/alfred_mrts_vintages.csv` — 11 series × 106 monthly ALFRED
+vintages (last archived vintage per calendar month), 422,576 versioned
+observations. Code revision at measurement: `2c1ac47`.
+
+| Model | Folds | Mean category WAPE | Aggregate WAPE |
+|---|---:|---:|---:|
+| Seasonal Naive | 1,408 | **8.16%** | **5.43%** |
+| Global LightGBM | 1,408 | 8.49% | 5.48% |
+
+LightGBM improved 4 of 11 categories (building materials +1.05pp, food and
+beverage +1.21pp, gasoline +3.07pp, general merchandise +3.41pp) and regressed
+7, worst on clothing (−4.02pp), furniture (−2.32pp), and electronics (−2.10pp).
+
+**The predeclared gate FAILED on all three criteria.** The MRTS LightGBM
+challenger is not promoted; the serving decision stays fail-closed and the
+scheduled pipeline continues to refuse scoring.
+
+Notable context: point-in-time forecasting is measurably harder than
+revised-history forecasting — the same seasonal-naive benchmark scores 6.35%
+mean category WAPE on revised history versus 8.16% on real-time vintages, and
+the LightGBM edge that existed on revised history (−1.86pp) disappears entirely
+when only origin-visible data is used.
+
+Origin coverage: 32 evaluated monthly origins (2018 → 2025-08), 313 exclusions
+— 250 origins before vintage coverage began (ALFRED archives for these series
+start ~2017-10) and 63 months where no archived vintage fell inside the as-of
+window. Both models were evaluated on identical origins under identical vintage
+conditions, so the comparison is fair; absolute staleness varies where archive
+density is sparse.
+
 ## Status
 
-- Predeclared on 2026-11-04; no measured result exists yet.
-- Blocked on: rotated `FRED_API_KEY`, completed series mapping, and the ALFRED
-  fetch (`make fetch-alfred-mrts END_YEAR=<year>`), then
-  `make vintage-backtest-mrts`.
-- This section must be updated with the measured tables and the gate outcome in
-  the same commit that first runs the backtest.
+- Predeclared 2026-11-04; measured and **failed** 2026-11-04.
+- Consequence: live MRTS scoring stays unauthorized; snapshot publication stays
+  dormant; `is_live` stays false. The scheduled pipeline keeps ingesting and
+  accumulating fresh revisions.
+- Path forward: re-run this gate as vintage coverage grows (the scheduled
+  ingestion adds one vintage month per month) or after a documented model
+  revision — the criteria above are fixed for this protocol; any protocol change
+  requires a new predeclared document first.
 
 ## Limitations
 
 - The fixed 45-day availability lag is a declared approximation of the Census
   release cadence; it is applied identically to every model and every origin.
+- ALFRED archive density for these series is irregular (~10 vintages/year), so
+  training-data staleness varies by origin even though the selection rule is
+  uniform.
 - FRED's seasonal adjustment is the Census process, but FRED is a redisseminator;
-  the series mapping must record the exact FRED IDs used so vintages are auditable.
+  the series mapping records the exact FRED IDs used (`MRTSSM44xxxxUSS` family)
+  so vintages are auditable.
 - The 11 national aggregates remain a small panel; this gate validates MRTS
   champion status only and makes no claim about M5 serving.
 

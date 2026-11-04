@@ -40,6 +40,17 @@ def parse_args() -> argparse.Namespace:
         help="Fetch only mapped series; point-in-time champion promotion still requires all 11.",
     )
     parser.add_argument(
+        "--vintage-stride",
+        type=int,
+        default=1,
+        help="Fetch every Nth archived vintage date (1 = all vintages).",
+    )
+    parser.add_argument(
+        "--no-monthly-sampling",
+        action="store_true",
+        help="Fetch every archived vintage instead of the last one per month.",
+    )
+    parser.add_argument(
         "--release-id",
         type=int,
         help="List FRED series in a release to complete the mapping, then exit.",
@@ -120,17 +131,54 @@ def main() -> None:
 
     selected = [(key, value) for key, value in sorted(mapping.items()) if value]
     vintage_start = args.vintage_start_year or args.start_year
-    first_vintage = date(vintage_start, 1, 1)
-    last_vintage = date.today() if args.end_year >= date.today().year else date(args.end_year, 12, 1)
-    vintage_dates = pd.date_range(first_vintage, last_vintage, freq="MS").date
-    print(f"Fetching {len(vintage_dates)} monthly vintages for {len(selected)} series...")
+    lower = date(vintage_start, 1, 1)
+    upper = date.today() if args.end_year >= date.today().year else date(args.end_year, 12, 1)
+    if args.vintage_stride < 1:
+        raise SystemExit("--vintage-stride must be positive")
+    monthly_sampling = not args.no_monthly_sampling
+
+    # Ask ALFRED for each series' actual archived vintage dates; series that
+    # only entered FRED recently have no early vintages to guess at.
+    series_dates: list[tuple[str, str, list[date]]] = []
+    total_without_archives: list[str] = []
+    for mrts_id, fred_id in selected:
+        archived = [
+            vintage
+            for vintage in client.fetch_vintage_dates(fred_id)
+            if lower <= vintage <= upper
+        ]
+        if monthly_sampling:
+            # Keep the LAST archived vintage per calendar month: monthly
+            # origins then always see the month's final published state,
+            # which keeps the declared availability protocol truthful while
+            # capping request volume.
+            by_month: dict[tuple[int, int], date] = {}
+            for vintage in archived:
+                by_month[(vintage.year, vintage.month)] = vintage
+            archived = sorted(by_month.values())
+        if not archived:
+            total_without_archives.append(mrts_id)
+        series_dates.append((mrts_id, fred_id, archived))
+        print(f"  {mrts_id} ({fred_id}): {len(archived)} vintage dates in range")
+    if total_without_archives:
+        message = (
+            "no ALFRED vintage dates in range for: "
+            + ", ".join(total_without_archives)
+            + " — these series entered FRED too recently (or lack archives)"
+        )
+        if not args.allow_partial:
+            raise SystemExit(message + ". Aborting (pass --allow-partial to fetch the rest).")
+        print("WARNING: " + message)
+        series_dates = [entry for entry in series_dates if entry[2]]
+
+    requests_planned = sum(len(dates) for _, _, dates in series_dates)
+    print(f"Fetching {requests_planned:,} vintage payloads across {len(series_dates)} series...")
 
     ingested_at = datetime.now(timezone.utc)
     frames: list[pd.DataFrame] = []
-    total = len(vintage_dates) * len(selected)
     completed = 0
-    for vintage_date in vintage_dates:
-        for mrts_id, fred_id in selected:
+    for mrts_id, fred_id, vintage_dates in series_dates:
+        for vintage_date in vintage_dates:
             payload = client.fetch_monthly_vintage(fred_id, vintage_date)
             rows: list[dict[str, object]] = []
             for observation in payload["observations"]:
@@ -159,7 +207,7 @@ def main() -> None:
             ]))
             completed += 1
             if completed % 25 == 0:
-                print(f"  {completed}/{total} vintage fetches complete")
+                print(f"  {completed}/{requests_planned:,} vintage fetches complete")
             time.sleep(0.4)  # FRED recommends no more than 120 requests per minute.
 
     if not frames:

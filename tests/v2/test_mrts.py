@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 import pytest
 
@@ -55,3 +55,28 @@ def test_parser_rejects_missing_matching_rows() -> None:
 def test_client_never_falls_back_to_synthetic_data() -> None:
     with pytest.raises(MissingAPIKeyError, match="never substitutes synthetic"):
         MRTSClient(api_key=None)
+
+
+def test_fred_error_includes_the_api_explanation() -> None:
+    import requests
+
+    from forecasting.data.fred import FREDClient, FREDError
+
+    class _Response:
+        status_code = 400
+        text = "Bad Request - The api_key you provided is invalid"
+
+        def json(self):
+            raise ValueError("not JSON")
+
+    class _Session:
+        def get(self, url, params=None, timeout=None):
+            return _Response()
+
+    client = FREDClient(api_key="dapi-old-key", session=_Session())
+    with pytest.raises(FREDError) as excinfo:
+        client.fetch_monthly_vintage("RSAFS", vintage_date=date(2010, 1, 1))
+    message = str(excinfo.value)
+    assert "HTTP 400" in message
+    assert "api_key you provided is invalid" in message
+    assert "dapi-old-key" not in message

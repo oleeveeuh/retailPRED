@@ -13,7 +13,43 @@ import sys
 from pathlib import Path
 
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+# Serverless python tasks exec this file without defining __file__, so the
+# bundle passes the synced repository root as an explicit parameter
+# (${workspace.file_path}, which already ends in /files), validated here,
+# with a workspace-layout fallback and diagnostics because the import
+# depends on it.
+def _repository_root() -> str:
+    argv = sys.argv
+    if "--repo-root" in argv:
+        root = Path(argv[argv.index("--repo-root") + 1])
+        if (root / "retailpred").is_dir():
+            return str(root)
+        print(f"[{TASK_NAME}] --repo-root given but no retailpred package inside: {root}")
+    try:
+        for candidate in sorted(Path("/Workspace/Users").glob("*/.bundle/*/dev/files")):
+            if (candidate / "retailpred").is_dir():
+                print(f"[{TASK_NAME}] fallback located repository root: {candidate}")
+                return str(candidate)
+    except OSError as error:
+        print(f"[{TASK_NAME}] /Workspace/Users not listable: {error}")
+    return "."
+
+
+TASK_NAME = "sync"
+REPOSITORY_ROOT = Path(_repository_root())
+print(
+    f"[{TASK_NAME}] repository root: {REPOSITORY_ROOT} "
+    f"exists={REPOSITORY_ROOT.exists()} "
+    f"package={(REPOSITORY_ROOT / 'retailpred').is_dir()}"
+)
+if not (REPOSITORY_ROOT / "retailpred").is_dir():
+    try:
+        print(
+            f"[{TASK_NAME}] /Workspace/Users entries:",
+            sorted(path.name for path in Path("/Workspace/Users").iterdir())[:10],
+        )
+    except OSError as error:
+        print(f"[{TASK_NAME}] /Workspace/Users not listable: {error}")
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
@@ -29,6 +65,7 @@ def main() -> None:
         required=True,
         help="Volume path containing <layer>/<table>.parquet from the local store",
     )
+    parser.add_argument("--repo-root", default=".", help="Synced bundle root; consumed before imports.")
     args = parser.parse_args()
 
     store = LocalTableStore(args.staged_root)

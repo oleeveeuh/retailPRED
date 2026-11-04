@@ -20,6 +20,8 @@ resources:
               - ${var.catalog}
               - --secret-scope
               - ${var.secret_scope}
+              - --repo-root
+              - ${workspace.file_path}
           environment_key: serverless_default
         - task_key: score_promoted_model
           depends_on:
@@ -29,6 +31,8 @@ resources:
             parameters:
               - --catalog
               - ${var.catalog}
+              - --repo-root
+              - ${workspace.file_path}
           environment_key: serverless_default
         - task_key: evaluate_realized_errors
           depends_on:
@@ -39,6 +43,8 @@ resources:
             parameters:
               - --catalog
               - ${var.catalog}
+              - --repo-root
+              - ${workspace.file_path}
           environment_key: serverless_default
         - task_key: publish_snapshot_github
           depends_on:
@@ -50,8 +56,13 @@ resources:
               - ${var.catalog}
               - --secret-scope
               - ${var.secret_scope}
+              - --repo-root
+              - ${workspace.file_path}
           environment_key: serverless_default
       environments:
         - environment_key: serverless_default
           spec:
             environment_version: '2'
+            dependencies:
+              - pydantic>=2
+              - lightgbm>=4.0
