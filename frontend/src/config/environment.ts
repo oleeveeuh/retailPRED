@@ -19,6 +19,13 @@ export const config = {
   apiUrl: import.meta.env.VITE_API_URL !== undefined ? import.meta.env.VITE_API_URL : 'http://localhost:8000',
 
   /**
+   * Public URL of the v2 latest-forecast snapshot (scheduled batch output).
+   * Empty when the deployment does not publish a snapshot; the UI then stays
+   * on the historical evaluation fixture only.
+   */
+  latestSnapshotUrl: import.meta.env.VITE_LATEST_SNAPSHOT_URL ?? '',
+
+  /**
    * Enable debug logging
    */
   isDebug: import.meta.env.VITE_DEBUG === 'true',

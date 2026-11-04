@@ -13,7 +13,7 @@
     "build:only": "vite build",
     "type-check": "tsc --noEmit",
     "lint": "eslint . --max-warnings 215",
-    "lint:publication": "eslint src/App.tsx src/api/v2Forecasts.ts src/pages/PredictionsPage.tsx src/components/DemoBanner.tsx src/components/layout/Layout.tsx src/components/layout/Header.tsx src/components/layout/Sidebar.tsx --max-warnings 0",
+    "lint:publication": "eslint src/App.tsx src/api/v2Forecasts.ts src/pages/PredictionsPage.tsx src/components/DemoBanner.tsx src/components/LatestForecastPanel.tsx src/components/layout/Layout.tsx src/components/layout/Header.tsx src/components/layout/Sidebar.tsx --max-warnings 0",
     "lint:strict": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "preview": "vite preview"

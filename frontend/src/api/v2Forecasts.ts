@@ -80,6 +80,80 @@ async function apiForecast(request: V2ForecastRequest): Promise<V2ForecastRespon
   return (await response.json()) as V2ForecastResponse;
 }
 
+export interface LatestSnapshotPoint {
+  horizon: number;
+  target_time: string;
+  prediction: number;
+  lower: number | null;
+  upper: number | null;
+}
+
+export interface LatestSnapshotSeries {
+  series_id: string;
+  points: LatestSnapshotPoint[];
+}
+
+export interface LatestSnapshotFreshness {
+  status: 'current' | 'stale';
+  generated_at: string;
+  forecast_vintage_time: string;
+  data_cutoff: string;
+  next_scheduled_run: string | null;
+  max_age_hours: number;
+}
+
+export interface LatestSnapshot {
+  contract_version: '2.0';
+  snapshot_kind: 'scheduled_batch_forecasts';
+  dataset: 'mrts';
+  use_case: string;
+  forecast_origin: string;
+  model_name: string;
+  model_version: string;
+  model_status: string;
+  uncertainty_status: string;
+  is_live: true;
+  freshness: LatestSnapshotFreshness;
+  series: LatestSnapshotSeries[];
+  provenance: Record<string, string>;
+}
+
+export function isSnapshotConfigured(): boolean {
+  return config.latestSnapshotUrl.trim().length > 0;
+}
+
+/**
+ * Fetch the published scheduled-batch snapshot. Fails closed: anything that
+ * does not match the v2 snapshot contract is refused rather than displayed.
+ */
+export async function fetchLatestSnapshot(): Promise<LatestSnapshot> {
+  const url = config.latestSnapshotUrl.trim();
+  if (!url) {
+    throw new Error('No snapshot URL is configured for this deployment.');
+  }
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000);
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) {
+      throw new Error(`Snapshot request failed (${response.status}).`);
+    }
+    const payload = (await response.json()) as LatestSnapshot;
+    if (
+      payload.contract_version !== '2.0' ||
+      payload.snapshot_kind !== 'scheduled_batch_forecasts'
+    ) {
+      throw new Error('Snapshot does not match the v2 contract; refusing to display it.');
+    }
+    if (!Array.isArray(payload.series) || payload.series.length === 0) {
+      throw new Error('Snapshot contains no series.');
+    }
+    return payload;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export const v2ForecastsApi = {
   forecast: config.isDemoMode ? demoForecast : apiForecast,
 };
