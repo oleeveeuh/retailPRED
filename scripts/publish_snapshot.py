@@ -18,7 +18,7 @@ from pathlib import Path
 
 from retailpred.platform.local_store import LocalTableStore
 from retailpred.platform.snapshot import build_snapshot, write_snapshot
-from retailpred.platform.specs import GOLD_FORECASTS, SILVER_MONTHLY
+from retailpred.platform.specs import GOLD_FORECASTS, GOLD_REALIZED_ERRORS, SILVER_MONTHLY
 
 
 def parse_args() -> argparse.Namespace:
@@ -28,6 +28,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-age-hours", type=int, default=336)
     parser.add_argument("--next-run", type=datetime.fromisoformat, default=None)
     parser.add_argument("--job-run-id", default=None)
+    parser.add_argument(
+        "--is-live",
+        action="store_true",
+        help="Set only after the recurring schedule has executed end to end.",
+    )
     return parser.parse_args()
 
 
@@ -66,12 +71,16 @@ def main() -> None:
     next_run = args.next_run
     if next_run is not None and next_run.tzinfo is None:
         raise SystemExit("--next-run must include a timezone offset")
+    realized = store.read(GOLD_REALIZED_ERRORS)
     snapshot = build_snapshot(
         forecasts,
         generated_at=datetime.now(timezone.utc),
+        is_live=args.is_live,
         max_age_hours=args.max_age_hours,
         next_scheduled_run=next_run,
+        pipeline_run_id=args.job_run_id,
         provenance=provenance,
+        realized=realized,
     )
     destination = write_snapshot(snapshot, args.output)
     print(f"Snapshot written to {destination}")
