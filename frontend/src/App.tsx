@@ -4,6 +4,7 @@
  */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MotionConfig } from 'framer-motion';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout';
 import { PredictionsPage } from './pages/PredictionsPage';
@@ -25,6 +26,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <MotionConfig reducedMotion="user">
       <HashRouter>
         <Layout>
           <Routes>
@@ -34,6 +36,7 @@ function App() {
           </Routes>
         </Layout>
       </HashRouter>
+      </MotionConfig>
     </QueryClientProvider>
   );
 }
