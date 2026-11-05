@@ -10,10 +10,11 @@
  */
 
 import { FC, ReactNode } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { DemoBanner } from '../DemoBanner';
+import { skipMountAnimation } from '../../lib/entrance';
 
 interface LayoutProps {
   children: ReactNode;
@@ -32,6 +33,9 @@ const pageTransition = {
 };
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
+  // ?static renders straight at the settled state so headless captures are
+  // deterministic (see lib/entrance).
+  const staticRender = skipMountAnimation();
   return (
     <div className="flex min-h-screen flex-col bg-[#f5f1e8]">
       {/* Demo Banner */}
@@ -49,7 +53,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
 
           {/* Page Content with Transitions */}
           <motion.main
-            initial="initial"
+            initial={staticRender ? false : 'initial'}
             animate="enter"
             exit="exit"
             variants={pageVariants}
@@ -59,7 +63,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
             <div className="p-6 sm:p-8">
               {/* Content Container */}
               <motion.div
-                initial={{ opacity: 0, y: 5 }}
+                initial={staticRender ? false : { opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1, duration: 0.3 }}
                 className="max-w-7xl mx-auto"

@@ -135,3 +135,7 @@ warehouse/logs/
 
 # Tableau editor lock/temp files
 bi/tableau/.~*
+
+# Frontend source in src/lib/ must not be swallowed by the Python lib/ rule above
+# (utils.ts only stayed tracked because it was force-added before anyone noticed).
+!frontend/src/lib/

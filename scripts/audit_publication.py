@@ -12,12 +12,20 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_FRONTEND = (
     ROOT / "frontend/src/App.tsx",
     ROOT / "frontend/src/content/showcase.ts",
+    ROOT / "frontend/src/content/timeline.ts",
+    ROOT / "frontend/src/content/skills.ts",
+    ROOT / "frontend/src/content/story.ts",
+    ROOT / "frontend/src/lib/entrance.ts",
     ROOT / "frontend/src/components/DemoBanner.tsx",
     ROOT / "frontend/src/components/LatestForecastPanel.tsx",
+    ROOT / "frontend/src/components/SectionEyebrow.tsx",
+    ROOT / "frontend/src/components/ExecutionTimeline.tsx",
+    ROOT / "frontend/src/components/SkillsProofGrid.tsx",
     ROOT / "frontend/src/components/layout/Header.tsx",
     ROOT / "frontend/src/components/layout/Sidebar.tsx",
     ROOT / "frontend/src/pages/PredictionsPage.tsx",
     ROOT / "frontend/src/pages/ShowcasePage.tsx",
+    ROOT / "frontend/src/pages/StoryPage.tsx",
     ROOT / "frontend/src/api/v2Forecasts.ts",
 )
 

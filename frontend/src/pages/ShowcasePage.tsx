@@ -27,6 +27,10 @@ import {
   type PipelineTask,
   type TaskStatus,
 } from '../content/showcase';
+import { ExecutionTimeline } from '../components/ExecutionTimeline';
+import { SkillsProofGrid } from '../components/SkillsProofGrid';
+import { SectionEyebrow } from '../components/SectionEyebrow';
+import { entrance, skipMountAnimation } from '../lib/entrance';
 
 const statusChip = (status: TaskStatus) => {
   switch (status) {
@@ -57,18 +61,11 @@ const statusChip = (status: TaskStatus) => {
   }
 };
 
-const SectionEyebrow: FC<{ children: React.ReactNode }> = ({ children }) => (
-  <p className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.13em] text-stone-500">
-    <span className="inline-block h-[7px] w-[7px] rounded-full bg-[#a43b36]" aria-hidden="true" />
-    {children}
-  </p>
-);
-
 export const ShowcasePage: FC = () => (
   <div className="space-y-14">
     {/* Hero */}
     <motion.section
-      initial={{ opacity: 0, y: 12 }}
+      initial={skipMountAnimation() ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       className="relative overflow-hidden border-b border-[#d8d1c4] bg-[#f5f1e8] p-8 sm:p-12"
     >
@@ -102,6 +99,13 @@ export const ShowcasePage: FC = () => (
           className="border-b border-[#a43b36] pb-1.5 text-sm text-[#25251f] transition hover:text-[#a43b36]"
         >
           Explore the forecast evidence <span className="text-[#a43b36]" aria-hidden="true">↗</span>
+        </Link>
+        <Link
+          to="/story"
+          className="border-b border-[#a43b36] pb-1.5 text-sm text-[#25251f] transition hover:text-[#a43b36]"
+        >
+          The research story, chapter by chapter{' '}
+          <span className="text-[#a43b36]" aria-hidden="true">↗</span>
         </Link>
         <a
           href="https://github.com/oleeveeuh/retailPRED"
@@ -137,10 +141,7 @@ export const ShowcasePage: FC = () => (
           return (
             <motion.div
               key={task.task}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.06 }}
+              {...entrance(index * 0.06)}
               className="relative flex flex-col border border-[#d8d1c4] bg-[#fbf9f4] p-5 shadow-[0_4px_13px_rgba(59,49,34,0.08)] transition-transform duration-300 odd:rotate-[-0.8deg] even:rotate-[1.1deg] hover:rotate-0 hover:shadow-[0_10px_22px_rgba(59,49,34,0.14)]"
             >
               <div className="flex items-center justify-between">
@@ -206,6 +207,9 @@ export const ShowcasePage: FC = () => (
       </div>
     </section>
 
+    {/* Execution timeline */}
+    <ExecutionTimeline />
+
     {/* Models */}
     <section className="space-y-6">
       <div className="flex items-center gap-3">
@@ -223,9 +227,7 @@ export const ShowcasePage: FC = () => (
           return (
             <motion.div
               key={card.dataset}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              {...entrance()}
               className={`flex flex-col border p-6 shadow-[0_4px_13px_rgba(59,49,34,0.08)] transition-transform duration-300 hover:rotate-0 hover:shadow-[0_10px_22px_rgba(59,49,34,0.14)] ${
                 promoted
                   ? 'border-[#89927a] bg-[#fbf9f4] odd:rotate-[-0.7deg]'
@@ -314,6 +316,9 @@ export const ShowcasePage: FC = () => (
       </div>
     </section>
 
+    {/* Skills / proof grid */}
+    <SkillsProofGrid />
+
     {/* Tableau */}
     <section className="space-y-6">
       <div className="flex items-center gap-3">
@@ -329,9 +334,7 @@ export const ShowcasePage: FC = () => (
         {tableauViews.map((view) => (
           <motion.div
             key={view.name}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            {...entrance()}
             className="border border-[#d8d1c4] bg-[#fbf9f4] p-4 shadow-[0_4px_13px_rgba(59,49,34,0.06)] odd:rotate-[-0.6deg] even:rotate-[0.7deg] transition-transform duration-300 hover:rotate-0"
           >
             <BarChart3 className="h-4 w-4 text-[#25251f]" />
