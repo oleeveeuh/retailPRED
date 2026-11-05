@@ -166,6 +166,12 @@ export const ShowcasePage: FC = () => (
           );
         })}
       </div>
+      <p className="max-w-3xl text-xs leading-relaxed text-stone-500">
+        A separate, evaluation-only harness validated the M5 competition track — the official
+        12-level item/store hierarchy, WRMSSE machinery, and rolling stability windows. It has no
+        live feed by design: that dataset is frozen at May 2016, so its story is measurement, not
+        ingestion.
+      </p>
 
       {/* Gate story */}
       <div className="border border-amber-300 bg-amber-50/70 p-6">
