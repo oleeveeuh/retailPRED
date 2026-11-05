@@ -10,7 +10,7 @@
  */
 
 import { FC, ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { DemoBanner } from '../DemoBanner';
@@ -71,5 +71,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
     </div>
+  );
+};
   );
 };
