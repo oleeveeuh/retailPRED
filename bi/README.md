@@ -1,6 +1,6 @@
 # Governed BI extracts
 
-The BI boundary converts frozen evaluation evidence into five Tableau-ready CSV
+The BI boundary converts frozen evaluation evidence into six Tableau-ready CSV
 tables. It never reads frontend demo calculations or reconstructs metrics from
 screenshots.
 
@@ -49,6 +49,18 @@ Grain: declared economic regime.
 Contains baseline and LightGBM aggregate and mean-category WAPE, relative
 improvement, category win count, and the strict regime gate result.
 
+### `mrts_research_windows.csv`
+
+Grain: model and evaluation window.
+
+Window-scoped satellite research measurements — seasonal naive, global
+LightGBM, theta, and the regime-switch policy on exploration (2017–2022),
+report (2021–2022), and the single frozen holdout run (2023–2025) origin
+windows. Every row carries its origin count and source artifact; subset
+windows are never mixed with the official full-grid gate metrics in
+`model_performance.csv`. Evidence:
+[docs/v2/M3_SATELLITE_FINDINGS.md](../docs/v2/M3_SATELLITE_FINDINGS.md).
+
 ### `data_freshness.csv`
 
 Grain: dataset and declared extract as-of date.
@@ -67,7 +79,7 @@ file is published.
 ## Tableau workbook
 
 The tracked local workbook is `bi/tableau/retailpred_v2.twb`, backed by the
-adjacent `retailpred_v2.hyper` extract. Its five governed views are:
+adjacent `retailpred_v2.hyper` extract. Its six governed views are:
 
 1. **Model scorecard** — model performance, baseline comparison, decision
    status, evaluation dates, and dataset filter.
@@ -79,6 +91,10 @@ adjacent `retailpred_v2.hyper` extract. Its five governed views are:
    disruption, and post-disruption periods.
 5. **Data status** — cutoff, as-of date, serving restriction, and evidence link
    displayed on every dashboard.
+6. **MRTS research windows** — window-scoped mean-category WAPE for the
+   satellite's measured models (naive, LightGBM, theta, regime-switch
+   policy), colored by beats-naive status, with the window always on the
+   row so subset metrics stay separated from official full-grid gates.
 
 Tableau calculations must format stored decimal rates as percentages; they must
 not recompute WAPE or WRMSSE from differently filtered data. React and Tableau

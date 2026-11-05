@@ -134,6 +134,36 @@ DATA_FRESHNESS = ExtractContract(
     key=("dataset", "as_of_date"),
 )
 
+MRTS_RESEARCH_WINDOWS = ExtractContract(
+    columns=(
+        "dataset",
+        "model_name",
+        "decision_status",
+        "evaluation_window",
+        "origin_count",
+        "evaluation_start",
+        "evaluation_end",
+        "metric_name",
+        "metric_value",
+        "baseline_value",
+        "relative_improvement",
+        "categories_beating_naive",
+        "categories_total",
+        "beats_naive_in_window",
+        "evidence_reference",
+        "code_revision",
+        "data_version",
+    ),
+    key=("model_name", "evaluation_window"),
+    non_negative=(
+        "origin_count",
+        "metric_value",
+        "baseline_value",
+        "categories_beating_naive",
+        "categories_total",
+    ),
+)
+
 LIVE_FORECASTS = ExtractContract(
     columns=(
         "dataset",
@@ -158,6 +188,7 @@ CONTRACTS = {
     "m5_hierarchy_accuracy.csv": M5_HIERARCHY_ACCURACY,
     "m5_uncertainty.csv": M5_UNCERTAINTY,
     "mrts_regime_accuracy.csv": MRTS_REGIMES,
+    "mrts_research_windows.csv": MRTS_RESEARCH_WINDOWS,
     "data_freshness.csv": DATA_FRESHNESS,
     "live_forecasts.csv": LIVE_FORECASTS,
 }

@@ -38,7 +38,7 @@ Last updated: 2026-11-03
 
 ## Next checkpoint
 
-The fail-closed `/api/v2`, publication-only React forecast route, and five-view local Tableau workbook share governed evidence and decision semantics. The publication audit removed unsupported live-demo claims, corrected the README, isolated legacy frontend routes, replaced placeholder deployment language, added a minimal v2 container contract verified by a serving-only local smoke test, added a CI container smoke job, and upgraded the frontend path from end-of-life Node 20 to Node 24 LTS. The live-loop foundation is implemented locally on `v2-live-loop`; the release state on `v2-rebuild` is ready for its first push, and the live loop executes after that in order: Java plus the local Delta proof, Databricks workspace deployment, FRED key plus series mapping plus ALFRED fetch plus the vintage backtest, secret scope plus unpausing the scheduled ingest, then a snapshot host plus `VITE_LATEST_SNAPSHOT_URL`. Public hosting, Tableau publication, remote MLflow, Databricks execution, monitoring, and rollback remain unclaimed.
+The fail-closed `/api/v2`, publication-only React forecast route, and six-view local Tableau workbook share governed evidence and decision semantics. The publication audit removed unsupported live-demo claims, corrected the README, isolated legacy frontend routes, replaced placeholder deployment language, added a minimal v2 container contract verified by a serving-only local smoke test, added a CI container smoke job, and upgraded the frontend path from end-of-life Node 20 to Node 24 LTS. The live-loop foundation is implemented locally on `v2-live-loop`; the release state on `v2-rebuild` is ready for its first push, and the live loop executes after that in order: Java plus the local Delta proof, Databricks workspace deployment, FRED key plus series mapping plus ALFRED fetch plus the vintage backtest, secret scope plus unpausing the scheduled ingest, then a snapshot host plus `VITE_LATEST_SNAPSHOT_URL`. Public hosting, Tableau publication, remote MLflow, Databricks execution, monitoring, and rollback remain unclaimed.
 
 ## Live-loop foundation evidence to date (implemented, awaiting execution)
 
@@ -80,7 +80,7 @@ The fail-closed `/api/v2`, publication-only React forecast route, and five-view 
 - The React forecast page now consumes the v2 contract, exposes only the frozen M5 model and fixture, reports provenance, compares evaluation actuals, and removes randomized predictions, retired model choices, invented confidence bands, and unsupported explanations.
 - A parity test keeps backend and hosted static fixtures identical.
 - Five Tableau-ready extracts cover model performance, M5 hierarchy, M5 uncertainty, MRTS regimes, and data status. Exact schemas, keys, numeric constraints, and a SHA-256 manifest fail closed before publication; see `bi/README.md`.
-- A reproducible local Tableau workbook packages those contracts into five named views backed by a tracked aggregate-only Hyper extract. Structural tests guard its sources and sheets; no Tableau Public upload is claimed.
+- A reproducible local Tableau workbook packages those contracts into six named views backed by a tracked aggregate-only Hyper extract. Structural tests guard its sources and sheets; no Tableau Public upload is claimed.
 - Tableau Public 2026.3 opened every view successfully: 6 model-scorecard marks, 12 hierarchy marks, 47 uncertainty marks, 3 regime marks, and 2 data-status marks.
 
 ## Milestone 3 evidence to date

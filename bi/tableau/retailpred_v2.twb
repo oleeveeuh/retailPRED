@@ -69,6 +69,17 @@
       </connection>
       <aliases enabled='yes' />
     </datasource>
+    <datasource caption="MRTS Research Windows" inline='true' name="federated.retailpred_research" version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption="MRTS Research Windows" name="hyper.retailpred_research">
+            <connection authentication='auth-none' author-locale='en_US' class='hyper' dbname="retailpred_v2.hyper" default-settings='yes' sslmode='' username='tableau_internal_user' />
+          </named-connection>
+        </named-connections>
+        <relation connection="hyper.retailpred_research" name="mrts_research_windows" table="[Extract].[mrts_research_windows]" type='table' />
+      </connection>
+      <aliases enabled='yes' />
+    </datasource>
   </datasources>
   <worksheets>
     <worksheet name="01 Model Scorecard">
@@ -247,6 +258,40 @@
       </table>
       <simple-id uuid="{ACC286F8-81C6-5C5F-B6CA-8B9A05BF1F5C}" />
     </worksheet>
+    <worksheet name="06 MRTS Research Windows">
+      <table>
+        <view>
+          <datasources>
+            <datasource caption="MRTS Research Windows" name="federated.retailpred_research" />
+          </datasources>
+          <datasource-dependencies datasource="federated.retailpred_research">
+            <column caption="Model" datatype="string" name="[model_name]" role="dimension" type="nominal" />
+            <column caption="Evaluation Window" datatype="string" name="[evaluation_window]" role="dimension" type="nominal" />
+            <column caption="Mean-Category WAPE" datatype="real" name="[metric_value]" role="measure" type="quantitative" />
+            <column caption="Beats Naive In Window" datatype="boolean" name="[beats_naive_in_window]" role="dimension" type="nominal" />
+            <column-instance column="[model_name]" derivation="None" name="[none:model_name:nk]" pivot='key' type="nominal" />
+            <column-instance column="[evaluation_window]" derivation="None" name="[none:evaluation_window:nk]" pivot='key' type="nominal" />
+            <column-instance column="[metric_value]" derivation="Sum" name="[sum:metric_value:qk]" pivot='key' type="quantitative" />
+            <column-instance column="[beats_naive_in_window]" derivation="None" name="[none:beats_naive_in_window:nk]" pivot='key' type="nominal" />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view><breakdown value='auto' /></view>
+            <mark class="Bar" />
+            <encodings>
+              <color column="[federated.retailpred_research].[none:beats_naive_in_window:nk]" />
+              <text column="[federated.retailpred_research].[sum:metric_value:qk]" />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.retailpred_research].[none:model_name:nk] / [federated.retailpred_research].[none:evaluation_window:nk]</rows>
+        <cols>[federated.retailpred_research].[sum:metric_value:qk]</cols>
+      </table>
+      <simple-id uuid="{F25F2E9B-CADD-5BDF-A4C3-64901483D098}" />
+    </worksheet>
   </worksheets>
   <windows source-height='51'>
     <window class='worksheet' maximized='true' name="01 Model Scorecard">
@@ -328,6 +373,22 @@
         </edge>
       </cards>
       <simple-id uuid="{E874532F-1627-5C08-9240-EB8C38B274C6}" />
+    </window>
+    <window class='worksheet' maximized='true' name="06 MRTS Research Windows">
+      <cards>
+        <edge name='left'>
+          <strip size='160'><card type='pages' /><card type='filters' /><card type='marks' /></strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'><card type='columns' /></strip>
+          <strip size='2147483647'><card type='rows' /></strip>
+          <strip size='31'><card type='title' /></strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'><card pane-specification-id='0' param="[federated.retailpred_research].[none:beats_naive_in_window:nk]" type='color' /></strip>
+        </edge>
+      </cards>
+      <simple-id uuid="{E4498467-B478-50F1-8BFD-2A6AB9799C81}" />
     </window>
   </windows>
 </workbook>

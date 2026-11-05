@@ -152,6 +152,55 @@ def _regimes() -> pd.DataFrame:
     return pd.DataFrame(rows, columns=CONTRACTS["mrts_regime_accuracy.csv"].columns)
 
 
+def _research_windows() -> pd.DataFrame:
+    """Window-scoped satellite research numbers (docs/v2/M3_SATELLITE_FINDINGS.md).
+
+    Every row carries its evaluation window and origin count; these are
+    subset measurements and are never mixed with the official full-grid
+    gate metrics in model_performance.csv.
+    """
+    summary = _json("data/v2/evidence/mrts_research_windows/mrts_window_summary.json")
+    by_window: dict[str, dict[str, float]] = {}
+    for row in summary["rows"]:
+        by_window.setdefault(row["evaluation_window"], {})[row["model_name"]] = float(
+            row["metric_value"]
+        )
+    rows = []
+    for row in summary["rows"]:
+        window = row["evaluation_window"]
+        model = row["model_name"]
+        if model == "seasonal_naive":
+            status = "research_baseline"
+        elif model == "regime_switch_policy":
+            status = "research_policy_switch"
+        else:
+            status = "research_challenger"
+        baseline = by_window[window]["seasonal_naive"]
+        value = float(row["metric_value"])
+        rows.append(
+            {
+                "dataset": "mrts",
+                "model_name": model,
+                "decision_status": status,
+                "evaluation_window": window,
+                "origin_count": int(row["origin_count"]),
+                "evaluation_start": row["evaluation_start"],
+                "evaluation_end": row["evaluation_end"],
+                "metric_name": row["metric_name"],
+                "metric_value": value,
+                "baseline_value": baseline,
+                "relative_improvement": (baseline - value) / baseline,
+                "categories_beating_naive": int(row["categories_beating_naive"]),
+                "categories_total": int(row["categories_total"]),
+                "beats_naive_in_window": bool(row["beats_naive_in_window"]),
+                "evidence_reference": "docs/v2/M3_SATELLITE_FINDINGS.md",
+                "code_revision": str(summary["provenance"]["satellite_code_revision"]),
+                "data_version": str(summary["provenance"]["data_sha256"]),
+            }
+        )
+    return pd.DataFrame(rows, columns=CONTRACTS["mrts_research_windows.csv"].columns)
+
+
 def _freshness(as_of: date) -> pd.DataFrame:
     rows = []
     for decision in MODEL_PORTFOLIO:
@@ -199,6 +248,7 @@ def main() -> None:
         "m5_hierarchy_accuracy.csv": _hierarchy_accuracy(),
         "m5_uncertainty.csv": _uncertainty(),
         "mrts_regime_accuracy.csv": _regimes(),
+        "mrts_research_windows.csv": _research_windows(),
         "data_freshness.csv": _freshness(args.as_of_date),
     }
     if args.gold_store is not None:

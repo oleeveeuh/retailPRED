@@ -158,6 +158,30 @@ DATA_SOURCES = (
             ("evidence", "string"),
         ),
     ),
+    DataSource(
+        "research",
+        "MRTS Research Windows",
+        "mrts_research_windows.csv",
+        (
+            ("dataset", "string"),
+            ("model_name", "string"),
+            ("decision_status", "string"),
+            ("evaluation_window", "string"),
+            ("origin_count", "integer"),
+            ("evaluation_start", "date"),
+            ("evaluation_end", "date"),
+            ("metric_name", "string"),
+            ("metric_value", "real"),
+            ("baseline_value", "real"),
+            ("relative_improvement", "real"),
+            ("categories_beating_naive", "integer"),
+            ("categories_total", "integer"),
+            ("beats_naive_in_window", "boolean"),
+            ("evidence_reference", "string"),
+            ("code_revision", "string"),
+            ("data_version", "string"),
+        ),
+    ),
 )
 
 
@@ -221,6 +245,17 @@ SHEETS = (
         color=dimension("freshness_status", "Freshness Status"),
         label=dimension("evidence", "Evidence"),
         mark="Text",
+    ),
+    Sheet(
+        "06 MRTS Research Windows",
+        "research",
+        (
+            dimension("model_name", "Model"),
+            dimension("evaluation_window", "Evaluation Window"),
+        ),
+        (measure("metric_value", "Mean-Category WAPE"),),
+        color=dimension("beats_naive_in_window", "Beats Naive In Window", "boolean"),
+        label=measure("metric_value", "Mean-Category WAPE"),
     ),
 )
 

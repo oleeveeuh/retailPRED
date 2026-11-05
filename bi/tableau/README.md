@@ -2,7 +2,7 @@
 
 `retailpred_v2.twb` is the local Tableau Public workbook for the governed
 Milestone 5 reporting boundary. `retailpred_v2.hyper` is its small packaged
-extract. It contains only aggregate evaluation evidence from the five
+extract. It contains only aggregate evaluation evidence from the six
 contract-validated CSVs; it does not contain the licensed raw M5 source files.
 
 ## Views
@@ -17,6 +17,11 @@ contract-validated CSVs; it does not contain the licensed raw M5 source files.
    and post-disruption regimes and colors the strict gate result.
 5. **05 Data Status** displays the historical cutoff, freshness restriction,
    serving mode, uncertainty status, and evidence reference.
+6. **06 MRTS Research Windows** displays window-scoped mean-category WAPE for
+   naive, LightGBM, theta, and the regime-switch policy across the satellite's
+   evaluation windows, colored by beats-naive status. These rows are subset
+   measurements recorded from the satellite research findings; they never mix
+   with the official full-grid gate metrics of view 01.
 
 The workbook reads stored WAPE and WRMSSE values. It does not recalculate them
 from filtered rows, so the Tableau, API, and React surfaces retain the same
@@ -31,7 +36,7 @@ make tableau-workbook
 ```
 
 The generator validates every CSV header before replacing either workbook
-artifact. It creates one Hyper database with five tables and deterministic
+artifact. It creates one Hyper database with six tables and deterministic
 sheet identifiers, so diffs remain reviewable. Open `retailpred_v2.twb` in
 Tableau Public 2026.3 or newer; the `.hyper` file must remain beside it.
 

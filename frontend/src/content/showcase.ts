@@ -49,7 +49,7 @@ export const hero = {
   chips: [
     { label: 'Databricks pipeline', value: 'executed', tone: 'mint' as const },
     { label: 'Vintage gate', value: 'refused the challenger', tone: 'amber' as const },
-    { label: 'Tableau', value: '5 governed views', tone: 'mint' as const },
+    { label: 'Tableau', value: '6 governed views', tone: 'mint' as const },
     { label: 'Serving', value: 'fail-closed', tone: 'slate' as const },
   ],
 };
@@ -166,6 +166,7 @@ export const tableauViews: TableauView[] = [
   { name: 'M5 uncertainty', marks: '47 marks', oneLine: 'Coverage and interval width by level, horizon, and segment.' },
   { name: 'MRTS regimes', marks: '3 marks', oneLine: 'Pre-COVID, disruption, and post-disruption skill split.' },
   { name: 'Data freshness', marks: '2 marks', oneLine: 'Evaluation cutoffs and serving states per dataset.' },
+  { name: 'MRTS research windows', marks: '9 marks', oneLine: 'Window-scoped satellite research: naive, LightGBM, theta, and the regime-switch policy.' },
 ];
 
 export const claimLadder = [
