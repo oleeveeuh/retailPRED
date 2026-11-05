@@ -24,6 +24,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { predictionsApi, trainingMetricsApi } from '../api/unifiedApi';
 import { TableauEmbed } from '../components/TableauEmbed';
+import { tableauViews } from '../content/showcase';
 
 type TabType = 'tableau' | 'export' | 'guide';
 
@@ -361,29 +362,60 @@ export const BusinessDashboard: FC = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center py-16">
-                    <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-normal text-gray-900 mb-2">
-                      Tableau Dashboard Not Configured
-                    </h3>
-                    <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                      To display the Tableau dashboard, you need to:
+                  // Fail-closed fallback: the governed views exist as a tracked
+                  // local workbook; nothing is publicly embedded yet.
+                  // TODO(owner): after republishing to Tableau Public, set
+                  // VITE_TABLEAU_EMBED_URL to the published workbook URL — the
+                  // embed branch above activates with no other change.
+                  <div className="py-8">
+                    <div className="flex items-start mb-5">
+                      <AlertCircle className="w-5 h-5 text-gray-400 mr-3 mt-0.5" />
+                      <div>
+                        <h3 className="text-lg font-normal text-gray-900">
+                          Six governed views, tracked as a local artifact
+                        </h3>
+                        <p className="text-sm text-gray-600 mt-1">
+                          The workbook is a tracked local artifact; Tableau Public
+                          publication is a separate release action. Interactive
+                          embeds are unavailable until that release — the views
+                          below are governed and verified locally, not served here.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {tableauViews.map((view) => (
+                        <div
+                          key={view.name}
+                          className="border border-gray-200 bg-gray-50 p-4"
+                        >
+                          <div className="flex items-center justify-between">
+                            <BarChart3 className="w-4 h-4 text-gray-500" />
+                            <span className="text-[11px] font-medium uppercase tracking-wide text-gray-400">
+                              local artifact
+                            </span>
+                          </div>
+                          <h4 className="mt-2 text-sm font-medium text-gray-900">{view.name}</h4>
+                          <p className="mt-1 text-[11px] font-medium uppercase tracking-wide text-gray-500">
+                            {view.marks}
+                          </p>
+                          <p className="mt-2 text-xs leading-relaxed text-gray-600">
+                            {view.oneLine}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="mt-4 text-xs text-gray-500">
+                      Workbook and extract contracts:{" "}
+                      <a
+                        href="https://github.com/oleeveeuh/retailPRED/blob/main/bi/README.md"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#3A3A6C] underline hover:no-underline"
+                      >
+                        the BI contract
+                      </a>
+                      .
                     </p>
-                    <ol className="text-left text-sm text-gray-600 max-w-lg mx-auto space-y-2 mb-8">
-                      <li>1. Export data using the "Export Data" tab</li>
-                      <li>2. Create a dashboard in Tableau Desktop or Tableau Public</li>
-                      <li>3. Publish to Tableau Public and get the embed URL</li>
-                      <li>4. Add <code className="bg-gray-100 px-2 py-1 rounded">VITE_TABLEAU_EMBED_URL</code> to your .env file</li>
-                    </ol>
-                    <a
-                      href="https://public.tableau.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center px-5 py-2.5 bg-[#3A3A6C] text-white rounded-sm hover:bg-[#4a4a7c] transition-colors font-normal"
-                    >
-                      Go to Tableau Public
-                      <ExternalLink className="w-4 h-4 ml-2" />
-                    </a>
                   </div>
                 )}
               </motion.div>
