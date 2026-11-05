@@ -10,6 +10,7 @@ import { Layout } from './components/layout';
 import { PredictionsPage } from './pages/PredictionsPage';
 import { ShowcasePage } from './pages/ShowcasePage';
 import { StoryPage } from './pages/StoryPage';
+import { LabPage } from './pages/LabPage';
 import './index.css';
 
 const queryClient = new QueryClient({
@@ -33,6 +34,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ShowcasePage />} />
             <Route path="/story" element={<StoryPage />} />
+            <Route path="/lab" element={<LabPage />} />
             <Route path="/dashboard/predictions" element={<PredictionsPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

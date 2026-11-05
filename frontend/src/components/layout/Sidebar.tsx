@@ -13,8 +13,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BarChart3,
+  BookOpen,
   ChevronLeft,
   ChevronRight,
+  FlaskConical,
   Home,
 } from 'lucide-react';
 
@@ -26,6 +28,8 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { name: 'Overview', path: '/', icon: Home },
+  { name: 'Story', path: '/story', icon: BookOpen },
+  { name: 'Lab', path: '/lab', icon: FlaskConical },
   { name: 'Forecast evidence', path: '/dashboard/predictions', icon: BarChart3 },
 ];
 

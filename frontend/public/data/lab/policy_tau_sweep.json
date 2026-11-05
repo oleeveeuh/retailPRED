@@ -1,0 +1,337 @@
+{
+  "provenance": {
+    "generated_at": "2026-11-05T23:19:27.162303+00:00",
+    "platform_code_revision": "7cf56cc93722bb0ce3770012e120a10f2938afc0",
+    "data_sha256": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
+    "source_artifacts": [
+      "retailPRED-satellite results/policy_train.json (tau_sweep_choose_oof)",
+      "retailPRED-satellite results/policy_report.json"
+    ],
+    "note": "CHOOSE out-of-fold sweep only. The REPORT window is a single frozen point at the frozen tau \u2014 it is never a curve, because sweeping tau on evaluation origins would be re-tuning."
+  },
+  "frozen_tau": 0.5,
+  "frozen_model": "lightgbm",
+  "guardrail_max_loss_pp": 0.5,
+  "choose_oof_brier": 0.15528331317805003,
+  "n_choose_oof_pairs": 77,
+  "n_report_pairs": 99,
+  "references": {
+    "naive": 0.132969,
+    "theta": 0.119566,
+    "blend": 0.120835
+  },
+  "sweep": [
+    {
+      "tau": 0.0,
+      "policy_mean_cat_wape": 0.119566,
+      "delta_vs_naive_pp": -1.3403,
+      "theta_call_rate": 1.0
+    },
+    {
+      "tau": 0.02,
+      "policy_mean_cat_wape": 0.118317,
+      "delta_vs_naive_pp": -1.4653,
+      "theta_call_rate": 0.9091
+    },
+    {
+      "tau": 0.04,
+      "policy_mean_cat_wape": 0.118317,
+      "delta_vs_naive_pp": -1.4653,
+      "theta_call_rate": 0.9091
+    },
+    {
+      "tau": 0.06,
+      "policy_mean_cat_wape": 0.118317,
+      "delta_vs_naive_pp": -1.4653,
+      "theta_call_rate": 0.9091
+    },
+    {
+      "tau": 0.08,
+      "policy_mean_cat_wape": 0.118317,
+      "delta_vs_naive_pp": -1.4653,
+      "theta_call_rate": 0.9091
+    },
+    {
+      "tau": 0.1,
+      "policy_mean_cat_wape": 0.118317,
+      "delta_vs_naive_pp": -1.4653,
+      "theta_call_rate": 0.9091
+    },
+    {
+      "tau": 0.12,
+      "policy_mean_cat_wape": 0.118317,
+      "delta_vs_naive_pp": -1.4653,
+      "theta_call_rate": 0.9091
+    },
+    {
+      "tau": 0.14,
+      "policy_mean_cat_wape": 0.118317,
+      "delta_vs_naive_pp": -1.4653,
+      "theta_call_rate": 0.9091
+    },
+    {
+      "tau": 0.16,
+      "policy_mean_cat_wape": 0.118317,
+      "delta_vs_naive_pp": -1.4653,
+      "theta_call_rate": 0.9091
+    },
+    {
+      "tau": 0.18,
+      "policy_mean_cat_wape": 0.117807,
+      "delta_vs_naive_pp": -1.5162,
+      "theta_call_rate": 0.8312
+    },
+    {
+      "tau": 0.2,
+      "policy_mean_cat_wape": 0.117807,
+      "delta_vs_naive_pp": -1.5162,
+      "theta_call_rate": 0.8312
+    },
+    {
+      "tau": 0.22,
+      "policy_mean_cat_wape": 0.117807,
+      "delta_vs_naive_pp": -1.5162,
+      "theta_call_rate": 0.8312
+    },
+    {
+      "tau": 0.24,
+      "policy_mean_cat_wape": 0.117807,
+      "delta_vs_naive_pp": -1.5162,
+      "theta_call_rate": 0.8312
+    },
+    {
+      "tau": 0.26,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.28,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.3,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.32,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.34,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.36,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.38,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.4,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.42,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.44,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.46,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.48,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.5,
+      "policy_mean_cat_wape": 0.117099,
+      "delta_vs_naive_pp": -1.5871,
+      "theta_call_rate": 0.7273
+    },
+    {
+      "tau": 0.52,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.54,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.56,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.58,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.6,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.62,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.64,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.66,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.68,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.7,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.72,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.74,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.76,
+      "policy_mean_cat_wape": 0.117282,
+      "delta_vs_naive_pp": -1.5687,
+      "theta_call_rate": 0.6753
+    },
+    {
+      "tau": 0.78,
+      "policy_mean_cat_wape": 0.122294,
+      "delta_vs_naive_pp": -1.0675,
+      "theta_call_rate": 0.5065
+    },
+    {
+      "tau": 0.8,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    },
+    {
+      "tau": 0.82,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    },
+    {
+      "tau": 0.84,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    },
+    {
+      "tau": 0.86,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    },
+    {
+      "tau": 0.88,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    },
+    {
+      "tau": 0.9,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    },
+    {
+      "tau": 0.92,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    },
+    {
+      "tau": 0.94,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    },
+    {
+      "tau": 0.96,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    },
+    {
+      "tau": 0.98,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    },
+    {
+      "tau": 1.0,
+      "policy_mean_cat_wape": 0.132869,
+      "delta_vs_naive_pp": -0.0101,
+      "theta_call_rate": 0.013
+    }
+  ],
+  "report_point": {
+    "tau": 0.5,
+    "policy_mean_cat_wape": 0.07432307269784799,
+    "naive_mean_cat_wape": 0.10507828941049087,
+    "categories_beating_naive": 10
+  }
+}

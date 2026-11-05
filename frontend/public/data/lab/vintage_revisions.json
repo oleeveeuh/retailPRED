@@ -1,0 +1,1845 @@
+{
+  "provenance": {
+    "generated_at": "2026-11-05T23:19:27.844348+00:00",
+    "platform_code_revision": "7cf56cc93722bb0ce3770012e120a10f2938afc0",
+    "data_sha256": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
+    "source_artifact": "data/v2/alfred_mrts_vintages.csv",
+    "rule": "values exactly as published in each ALFRED vintage; first 12 vintages shown, total count retained",
+    "availability_rule": "a month's first value appears in the vintage published about 45 days after month-end; every later vintage may revise it"
+  },
+  "months": [
+    {
+      "month": "2020-04-01",
+      "label": "the crash month",
+      "categories": [
+        {
+          "series_id": "building_material_and_garden",
+          "latest_revised": 32282.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 32746.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 32746.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 32815.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 32815.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 32815.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 32815.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 32815.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 32815.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 32815.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 32815.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 32306.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 32306.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        },
+        {
+          "series_id": "clothing_and_accessories",
+          "latest_revised": 2631.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 2818.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 2818.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 3013.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 3013.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 3013.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 3013.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 3013.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 3013.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 3013.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 3013.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 2840.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 2840.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        },
+        {
+          "series_id": "electronics_and_appliances",
+          "latest_revised": 3216.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 3774.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 3774.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 3758.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 3758.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 3758.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 3758.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 3758.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 3758.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 3758.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 3758.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 3527.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 3527.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        },
+        {
+          "series_id": "food_and_beverage",
+          "latest_revised": 70167.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 71186.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 71186.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 71116.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 71116.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 71116.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 71116.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 71116.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 71116.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 71116.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 71116.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 72069.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 72069.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        },
+        {
+          "series_id": "furniture_and_home_furnishings",
+          "latest_revised": 3795.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 4071.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 4071.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 4034.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 4034.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 4034.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 4034.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 4034.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 4034.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 4034.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 4034.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 4156.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 4156.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        },
+        {
+          "series_id": "gasoline_stations",
+          "latest_revised": 26606.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 26068.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 26068.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 26048.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 26048.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 26048.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 26048.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 26048.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 26048.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 26048.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 26048.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 26156.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 26156.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        },
+        {
+          "series_id": "general_merchandise",
+          "latest_revised": 58166.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 56180.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 56180.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 56129.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 56129.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 56129.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 56129.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 56129.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 56129.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 56129.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 56129.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 57089.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 57089.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        },
+        {
+          "series_id": "health_and_personal_care",
+          "latest_revised": 25599.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 26878.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 26878.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 26952.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 26952.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 26952.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 26952.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 26952.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 26952.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 26952.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 26952.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 25958.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 25958.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        },
+        {
+          "series_id": "motor_vehicle_and_parts",
+          "latest_revised": 66434.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 68425.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 68425.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 68468.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 68468.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 68468.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 68468.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 68468.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 68468.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 68468.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 68468.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 68198.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 68198.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        },
+        {
+          "series_id": "retail_total",
+          "latest_revised": 372381.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 382654.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 382654.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 382734.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 382734.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 382734.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 382734.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 382734.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 382734.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 382734.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 382734.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 380193.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 380193.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        },
+        {
+          "series_id": "sporting_goods_and_hobby",
+          "latest_revised": 3459.0,
+          "n_vintages_total": 76,
+          "vintages": [
+            {
+              "value": 3686.0,
+              "vintage_date": "2020-06-16"
+            },
+            {
+              "value": 3686.0,
+              "vintage_date": "2020-07-16"
+            },
+            {
+              "value": 3667.0,
+              "vintage_date": "2020-08-14"
+            },
+            {
+              "value": 3667.0,
+              "vintage_date": "2020-09-16"
+            },
+            {
+              "value": 3667.0,
+              "vintage_date": "2020-10-16"
+            },
+            {
+              "value": 3667.0,
+              "vintage_date": "2020-11-17"
+            },
+            {
+              "value": 3667.0,
+              "vintage_date": "2020-12-16"
+            },
+            {
+              "value": 3667.0,
+              "vintage_date": "2021-01-15"
+            },
+            {
+              "value": 3667.0,
+              "vintage_date": "2021-02-17"
+            },
+            {
+              "value": 3667.0,
+              "vintage_date": "2021-03-16"
+            },
+            {
+              "value": 3771.0,
+              "vintage_date": "2021-04-26"
+            },
+            {
+              "value": 3771.0,
+              "vintage_date": "2021-05-14"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "month": "2021-03-01",
+      "label": "the inflationary rebound",
+      "categories": [
+        {
+          "series_id": "building_material_and_garden",
+          "latest_revised": 43023.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 43374.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 43458.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 43458.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 43458.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 43458.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 43458.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 43458.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 43458.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 43458.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 43458.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 43458.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 42136.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        },
+        {
+          "series_id": "clothing_and_accessories",
+          "latest_revised": 22747.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 24759.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 25012.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 25012.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 25012.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 25012.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 25012.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 25012.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 25012.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 25012.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 25012.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 25012.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 24320.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        },
+        {
+          "series_id": "electronics_and_appliances",
+          "latest_revised": 7780.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 8329.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 8339.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 8339.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 8339.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 8339.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 8339.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 8339.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 8339.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 8339.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 8339.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 8339.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 8161.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        },
+        {
+          "series_id": "food_and_beverage",
+          "latest_revised": 71233.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 72877.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 72955.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 72955.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 72955.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 72955.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 72955.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 72955.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 72955.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 72955.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 72955.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 72955.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 71284.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        },
+        {
+          "series_id": "furniture_and_home_furnishings",
+          "latest_revised": 11505.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 12404.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 12414.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 12414.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 12414.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 12414.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 12414.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 12414.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 12414.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 12414.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 12414.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 12414.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 12040.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        },
+        {
+          "series_id": "gasoline_stations",
+          "latest_revised": 45664.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 46504.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 46453.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 46453.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 46453.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 46453.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 46453.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 46453.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 46453.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 46453.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 46453.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 46453.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 46054.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        },
+        {
+          "series_id": "general_merchandise",
+          "latest_revised": 70035.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 69026.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 71164.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 71164.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 71164.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 71164.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 71164.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 71164.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 71164.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 71164.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 71164.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 71164.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 69148.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        },
+        {
+          "series_id": "health_and_personal_care",
+          "latest_revised": 31233.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 32055.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 32081.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 32081.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 32081.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 32081.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 32081.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 32081.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 32081.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 32081.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 32081.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 32081.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 32383.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        },
+        {
+          "series_id": "motor_vehicle_and_parts",
+          "latest_revised": 132492.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 135501.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 135432.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 135432.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 135432.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 135432.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 135432.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 135432.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 135432.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 135432.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 135432.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 135432.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 130528.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        },
+        {
+          "series_id": "retail_total",
+          "latest_revised": 542769.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 556804.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 559871.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 559871.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 559871.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 559871.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 559871.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 559871.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 559871.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 559871.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 559871.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 559871.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 559161.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        },
+        {
+          "series_id": "sporting_goods_and_hobby",
+          "latest_revised": 8528.0,
+          "n_vintages_total": 65,
+          "vintages": [
+            {
+              "value": 9970.0,
+              "vintage_date": "2021-05-14"
+            },
+            {
+              "value": 9931.0,
+              "vintage_date": "2021-06-15"
+            },
+            {
+              "value": 9931.0,
+              "vintage_date": "2021-07-16"
+            },
+            {
+              "value": 9931.0,
+              "vintage_date": "2021-08-17"
+            },
+            {
+              "value": 9931.0,
+              "vintage_date": "2021-09-16"
+            },
+            {
+              "value": 9931.0,
+              "vintage_date": "2021-10-15"
+            },
+            {
+              "value": 9931.0,
+              "vintage_date": "2021-11-16"
+            },
+            {
+              "value": 9931.0,
+              "vintage_date": "2021-12-15"
+            },
+            {
+              "value": 9931.0,
+              "vintage_date": "2022-01-14"
+            },
+            {
+              "value": 9931.0,
+              "vintage_date": "2022-02-16"
+            },
+            {
+              "value": 9931.0,
+              "vintage_date": "2022-03-16"
+            },
+            {
+              "value": 9504.0,
+              "vintage_date": "2022-04-25"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "month": "2023-06-01",
+      "label": "a settled month",
+      "categories": [
+        {
+          "series_id": "building_material_and_garden",
+          "latest_revised": 42900.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 41307.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 41391.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 41391.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 41391.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 41391.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 41391.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 41391.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 41391.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 40980.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 40980.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 40980.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 41034.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        },
+        {
+          "series_id": "clothing_and_accessories",
+          "latest_revised": 23267.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 25695.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 25736.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 25736.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 25736.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 25736.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 25736.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 25736.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 25736.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 25336.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 25336.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 25336.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 25277.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        },
+        {
+          "series_id": "electronics_and_appliances",
+          "latest_revised": 7091.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 7792.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 7762.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 7762.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 7762.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 7762.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 7762.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 7762.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 7762.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 7730.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 7730.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 7730.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 7658.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        },
+        {
+          "series_id": "food_and_beverage",
+          "latest_revised": 79792.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 81491.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 81463.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 81463.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 81463.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 81463.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 81463.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 81463.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 81463.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 80759.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 80759.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 80759.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 81107.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        },
+        {
+          "series_id": "furniture_and_home_furnishings",
+          "latest_revised": 10845.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 11238.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 11258.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 11258.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 11258.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 11258.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 11258.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 11258.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 11258.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 11631.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 11631.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 11631.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 11550.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        },
+        {
+          "series_id": "gasoline_stations",
+          "latest_revised": 52294.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 52142.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 52499.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 52499.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 52499.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 52499.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 52499.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 52499.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 52499.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 51698.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 51698.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 51698.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 52131.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        },
+        {
+          "series_id": "general_merchandise",
+          "latest_revised": 74462.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 72510.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 72448.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 72448.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 72448.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 72448.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 72448.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 72448.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 72448.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 73117.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 73117.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 73117.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 73238.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        },
+        {
+          "series_id": "health_and_personal_care",
+          "latest_revised": 33708.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 35969.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 36020.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 36020.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 36020.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 36020.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 36020.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 36020.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 36020.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 36302.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 36302.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 36302.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 36302.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        },
+        {
+          "series_id": "motor_vehicle_and_parts",
+          "latest_revised": 137583.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 133929.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 133682.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 133682.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 133682.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 133682.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 133682.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 133682.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 133682.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 132669.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 132669.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 132669.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 133708.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        },
+        {
+          "series_id": "retail_total",
+          "latest_revised": 585497.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 601433.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 600736.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 600736.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 600736.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 600736.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 600736.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 600736.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 600736.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 596128.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 596128.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 596128.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 597826.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        },
+        {
+          "series_id": "sporting_goods_and_hobby",
+          "latest_revised": 7677.0,
+          "n_vintages_total": 38,
+          "vintages": [
+            {
+              "value": 8552.0,
+              "vintage_date": "2023-08-15"
+            },
+            {
+              "value": 8542.0,
+              "vintage_date": "2023-09-14"
+            },
+            {
+              "value": 8542.0,
+              "vintage_date": "2023-10-17"
+            },
+            {
+              "value": 8542.0,
+              "vintage_date": "2023-11-15"
+            },
+            {
+              "value": 8542.0,
+              "vintage_date": "2023-12-14"
+            },
+            {
+              "value": 8542.0,
+              "vintage_date": "2024-01-17"
+            },
+            {
+              "value": 8542.0,
+              "vintage_date": "2024-02-15"
+            },
+            {
+              "value": 8542.0,
+              "vintage_date": "2024-03-14"
+            },
+            {
+              "value": 8505.0,
+              "vintage_date": "2024-04-23"
+            },
+            {
+              "value": 8505.0,
+              "vintage_date": "2024-05-15"
+            },
+            {
+              "value": 8505.0,
+              "vintage_date": "2024-06-18"
+            },
+            {
+              "value": 8547.0,
+              "vintage_date": "2024-07-16"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

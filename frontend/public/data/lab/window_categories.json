@@ -1,0 +1,506 @@
+{
+  "provenance": {
+    "generated_at": "2026-11-05T23:19:27.874796+00:00",
+    "platform_code_revision": "7cf56cc93722bb0ce3770012e120a10f2938afc0",
+    "data_sha256": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
+    "source_artifacts": [
+      "data/v2/evidence/mrts_research_windows/mrts_window_summary.json",
+      "retailPRED-satellite results/category_win_matrix.json",
+      "retailPRED-satellite results/policy_report.json"
+    ],
+    "note": "policy is evaluated on the report window only (single frozen pass); holdout is absent by design \u2014 it is never re-derived"
+  },
+  "windows": [
+    "exploration_2017_2022",
+    "report_2021_2022"
+  ],
+  "models": [
+    "seasonal_naive",
+    "global_lightgbm",
+    "theta_method",
+    "regime_switch_policy"
+  ],
+  "mean_category_wape": {
+    "seasonal_naive": {
+      "exploration_2017_2022": 0.092962,
+      "report_2021_2022": 0.105078,
+      "holdout_2023_2025": 0.05151
+    },
+    "global_lightgbm": {
+      "exploration_2017_2022": 0.095483,
+      "report_2021_2022": 0.108274
+    },
+    "theta_method": {
+      "exploration_2017_2022": 0.075125,
+      "report_2021_2022": 0.070246,
+      "holdout_2023_2025": 0.049803
+    },
+    "regime_switch_policy": {
+      "report_2021_2022": 0.074323
+    }
+  },
+  "rows": [
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "building_material_and_garden",
+      "wape": 0.068852
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "building_material_and_garden",
+      "wape": 0.054872
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "building_material_and_garden",
+      "wape": 0.052786
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "clothing_and_accessories",
+      "wape": 0.152849
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "clothing_and_accessories",
+      "wape": 0.197272
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "clothing_and_accessories",
+      "wape": 0.134987
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "electronics_and_appliances",
+      "wape": 0.14313
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "electronics_and_appliances",
+      "wape": 0.169202
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "electronics_and_appliances",
+      "wape": 0.126515
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "food_and_beverage",
+      "wape": 0.045803
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "food_and_beverage",
+      "wape": 0.024162
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "food_and_beverage",
+      "wape": 0.024987
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "furniture_and_home_furnishings",
+      "wape": 0.086998
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "furniture_and_home_furnishings",
+      "wape": 0.12063
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "furniture_and_home_furnishings",
+      "wape": 0.082866
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "gasoline_stations",
+      "wape": 0.157748
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "gasoline_stations",
+      "wape": 0.120144
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "gasoline_stations",
+      "wape": 0.094798
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "general_merchandise",
+      "wape": 0.076117
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "general_merchandise",
+      "wape": 0.038679
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "general_merchandise",
+      "wape": 0.050477
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "health_and_personal_care",
+      "wape": 0.028975
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "health_and_personal_care",
+      "wape": 0.051576
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "health_and_personal_care",
+      "wape": 0.035149
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "motor_vehicle_and_parts",
+      "wape": 0.076419
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "motor_vehicle_and_parts",
+      "wape": 0.074626
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "motor_vehicle_and_parts",
+      "wape": 0.05269
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "retail_total",
+      "wape": 0.051107
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "retail_total",
+      "wape": 0.047504
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "retail_total",
+      "wape": 0.033273
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "seasonal_naive",
+      "series_id": "sporting_goods_and_hobby",
+      "wape": 0.134585
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "global_lightgbm",
+      "series_id": "sporting_goods_and_hobby",
+      "wape": 0.15165
+    },
+    {
+      "window": "exploration_2017_2022",
+      "model": "theta_method",
+      "series_id": "sporting_goods_and_hobby",
+      "wape": 0.137849
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "building_material_and_garden",
+      "wape": 0.088024
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "building_material_and_garden",
+      "wape": 0.035697
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "building_material_and_garden",
+      "wape": 0.043012
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "clothing_and_accessories",
+      "wape": 0.15229
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "clothing_and_accessories",
+      "wape": 0.243865
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "clothing_and_accessories",
+      "wape": 0.113176
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "electronics_and_appliances",
+      "wape": 0.108031
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "electronics_and_appliances",
+      "wape": 0.171398
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "electronics_and_appliances",
+      "wape": 0.079745
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "food_and_beverage",
+      "wape": 0.042224
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "food_and_beverage",
+      "wape": 0.020101
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "food_and_beverage",
+      "wape": 0.016373
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "furniture_and_home_furnishings",
+      "wape": 0.096811
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "furniture_and_home_furnishings",
+      "wape": 0.148806
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "furniture_and_home_furnishings",
+      "wape": 0.082065
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "gasoline_stations",
+      "wape": 0.194923
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "gasoline_stations",
+      "wape": 0.155009
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "gasoline_stations",
+      "wape": 0.102823
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "general_merchandise",
+      "wape": 0.119707
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "general_merchandise",
+      "wape": 0.055953
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "general_merchandise",
+      "wape": 0.080495
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "health_and_personal_care",
+      "wape": 0.03379
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "health_and_personal_care",
+      "wape": 0.047752
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "health_and_personal_care",
+      "wape": 0.02334
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "motor_vehicle_and_parts",
+      "wape": 0.093704
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "motor_vehicle_and_parts",
+      "wape": 0.066715
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "motor_vehicle_and_parts",
+      "wape": 0.03831
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "retail_total",
+      "wape": 0.072982
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "retail_total",
+      "wape": 0.047605
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "retail_total",
+      "wape": 0.02451
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "seasonal_naive",
+      "series_id": "sporting_goods_and_hobby",
+      "wape": 0.153375
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "global_lightgbm",
+      "series_id": "sporting_goods_and_hobby",
+      "wape": 0.198109
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "theta_method",
+      "series_id": "sporting_goods_and_hobby",
+      "wape": 0.168853
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "building_material_and_garden",
+      "wape": 0.067891
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "clothing_and_accessories",
+      "wape": 0.111752
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "electronics_and_appliances",
+      "wape": 0.076023
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "food_and_beverage",
+      "wape": 0.016373
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "furniture_and_home_furnishings",
+      "wape": 0.082065
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "gasoline_stations",
+      "wape": 0.120563
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "general_merchandise",
+      "wape": 0.086138
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "health_and_personal_care",
+      "wape": 0.02334
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "motor_vehicle_and_parts",
+      "wape": 0.03831
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "retail_total",
+      "wape": 0.026246
+    },
+    {
+      "window": "report_2021_2022",
+      "model": "regime_switch_policy",
+      "series_id": "sporting_goods_and_hobby",
+      "wape": 0.168853
+    }
+  ]
+}
