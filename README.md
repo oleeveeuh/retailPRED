@@ -176,6 +176,20 @@ An earlier commit exposed a local `.env`; the credentials were rotated and the p
 
 The undergraduate implementation is retained for comparison on the `v1-undergrad` tag and in archived directories. Its expanded weekly/daily rows, inclusive rolling features, randomized fallbacks, and heuristic outputs are not valid v2 evidence. The detailed diagnosis is preserved in [the original audit](docs/v2/AUDIT.md); the default API and publication frontend exclude those paths.
 
+## The v1 → v2 story: why the platform changed
+
+**v1 (GCP + Airflow).** The original system ran an Airflow-scheduled pipeline on cloud infrastructure: monthly Census values were expanded into synthetic weekly rows, features were computed with inclusive rolling windows (the target month's value leaked into its own features), per-category model pickles served through a SQLite-backed FastAPI, and a React dashboard on Vercel presented the results. The orchestration itself worked — jobs ran on schedule, data flowed, the site rendered. That is worth saying plainly, because it sharpens the diagnosis: **v1's failures were not operational. They were epistemic.** The validation snapshot showed 9.76% MAPE for LightGBM against 14.11% for seasonal naive, but the 429 "validation rows" were monthly actuals repeated across weekly targets — pseudo-replication that flattered every model — and the neural entries (PatchTST, TimesNet) were heuristic outputs from a retired pipeline. The published demo claimed 90.2% accuracy and 0.26% MAPE from static data that no deployed model had produced. The infrastructure delivered numbers; nothing in the stack could say what those numbers meant.
+
+**The rebuild decision.** The v2 diagnosis kept one thing from v1's architecture and rejected the rest: orchestration was never the problem, so the question became *what the pipeline should enforce, not just schedule*. Three requirements drove the platform choice:
+
+1. **Revisions had to be first-class.** Census data changes after publication, so the storage layer needed immutable bronze rows keyed by vintage, versioned silver, and point-in-time selection — semantics that a relational warehouse only provides by hand-building slowly-changing tables, but that Delta Lake implements natively through append-only tables and time travel.
+2. **Governance had to be auditable** — declared schemas, quality gates that fail closed, and an execution ledger. Unity Catalog plus declared Delta table properties give that without a separate audit stack.
+3. **The deployment had to be the repository** — one bundle definition in CI, no cloud-console drift, zero-cost serverless for a pipeline that runs once a month.
+
+That is why v2 runs on Databricks: the lakehouse *is* the revision-awareness design rather than a hand-built layer over it, and the governance lives next to the compute. Airflow remains a perfectly good orchestrator — and the honest tradeoff is real: v2 accepts platform lock-in in exchange for native versioning, and it deliberately drops the always-on serving posture v1 had, because the measurement work showed no MRTS model had earned live inference.
+
+**What the rebuild proved.** The same 11 categories, re-measured properly: LightGBM beats seasonal naive by 29% on revised history (4.49% vs 6.35% WAPE) — and then loses in real time on ALFRED vintages (8.49% vs 8.16%), where a promotion gate written before the measurement refused it. M5's global LightGBM was promoted (WRMSSE 0.8133 vs 0.8697) while four other approaches — Chronos-2, NHITS, MinT-style reconciliation, conformal intervals — were rejected by their own predeclared gates. v1 could not have produced any of those sentences, because nothing in it could fail.
+
 ## License
 
 Repository code is available under the [MIT License](LICENSE).
