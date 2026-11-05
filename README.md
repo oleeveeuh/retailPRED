@@ -51,6 +51,100 @@ Delivery target: **[oleeveeuh.github.io/retailPRED](https://oleeveeuh.github.io/
 
 ## What is implemented
 
+**The showcase, live** — every card below is rendered from governed evidence, and the screenshot is the real deployment:
+
+<p align="center">
+  <img src="docs/images/showcase.png" alt="retailPRED showcase landing: pipeline cards, gate metrics, model scorecards, Tableau views" width="880">
+</p>
+
+### A governed data platform — revisions are first-class
+
+The storage layer never overwrites history: bronze is append-only, silver is keyed by vintage, and gold is selected *as of* any moment. The entire point-in-time guarantee is three lines:
+
+```python
+eligible = clean.loc[clean["vintage_time"] <= pd.Timestamp(as_of)]
+latest = eligible.groupby(["series_id", "observation_time"])["vintage_time"].idxmax()
+return eligible.loc[latest]   # exactly what a forecaster could have known
+```
+
+On top of it: Census MRTS and FRED/ALFRED ingestion that fails closed (no synthetic fallback), causal monthly features shifted before aggregation, the official sparse 12-level M5 hierarchy with WRMSSE, and Databricks Delta + dbt models generated from the same declared specifications — 20 data tests green against live tables.
+
+### Model selection by predeclared gate
+
+The gate criteria were written before the measurement and are enforced in code — the failed real-time verdict exists because this function said no:
+
+```python
+gate["passed"] = (
+    gate["mean_category_wape_improved"]
+    and gate["improved_series_count"] >= gate["series_count"] - 1
+    and gate["acceptable_regressions"]
+)
+```
+
+Around it: comparable rolling-origin folds (WAPE, MAE, RMSSE, bias, pinball loss, WIS, coverage), MLflow tracking with full provenance, a frozen portfolio decisions module that serving reads instead of "whatever trained last," and four documented rejections — Chronos-2, NHITS, MinT-style reconciliation, conformal intervals.
+
+### A serving contract that stays dark until earned
+
+Production requests are never approximated with a demo — they return a typed refusal with the exact action required:
+
+```json
+{"detail": {"code": "production_model_unavailable",
+            "message": "The frozen portfolio does not authorize production inference.",
+            "required_action": "offline_demo_until_refit_on_current_data",
+            "model_status": "development_challenger"}}
+```
+
+The React evidence page consumes the same contract, labels the fixture as historical, and hides calibrated uncertainty behind its (failed) promotion gate:
+
+<p align="center">
+  <img src="docs/images/evidence.png" alt="retailPRED evidence page: historical demo banner, snapshot panel, frozen fixture controls" width="880">
+</p>
+
+### A live loop, executed on Databricks
+
+Four scheduled serverless tasks — with the scoring task refusing while the portfolio has not authorized a champion:
+
+```yaml
+tasks:
+  - pull_latest_census_release     # live Census -> versioned silver
+  - score_promoted_model           # refuses until the gate passes
+  - evaluate_realized_errors       # forecasts vs revised actuals
+  - publish_snapshot_github        # contract-validated JSON -> live-data branch
+```
+
+Plus ALFRED vintage pulls behind a fail-closed series mapping, vintage-safe seasonal-naive benchmarks frozen beside every forecast, and the full execution ledger in [DATABRICKS_RUN.md](docs/v2/DATABRICKS_RUN.md).
+
+## Two datasets, two lessons
+
+| | **Census MRTS** — macro planning | **M5 (Kaggle)** — operational demand |
+|---|---|---|
+| Grain | 11 national monthly categories, millions of dollars | 30,490 item/store daily series |
+| The catch | **Alive**: every month is published, then revised | **Frozen**: fixed snapshot, ends May 2016 |
+| What it taught | Real-time forecasting is measurably harder than revised history — and the revision process itself is the next modeling frontier | Related-series pooling beats per-series models at scale; the hierarchy must add up exactly |
+
+The tracks stay separate on purpose: national dollar categories are never presented as store/SKU demand.
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[Census MRTS + ALFRED vintages] --> B[Immutable bronze → versioned silver → point-in-time gold]
+    M[M5 licensed source files] --> B
+    B --> C[Causal features · rolling origins]
+    C --> D[Seasonal Naive / global LightGBM / gated challengers]
+    D --> E[Predeclared promotion + calibration gates]
+    E --> F[Fail-closed FastAPI · typed 409 refusals]
+    E --> G[Governed BI → 5-view Tableau workbook]
+    B --> P[[Scheduled Databricks pipeline:<br/>ingest → score → realized errors → publish]]
+    P --> S[Snapshot on live-data branch]
+    S --> W[GitHub Pages · contract-validated]
+    E -. refused .-> X[Records the refusal — serves nothing]
+```
+
+Delivery target: **[oleeveeuh.github.io/retailPRED](https://oleeveeuh.github.io/retailPRED/)** — the Pages workflow validates the snapshot contract before anything deploys, and the UI reports a missing snapshot as unavailable instead of inventing one.
+
+## What is implemented
+
 - **Immutable contracts** for series, observations, releases, forecasts, actuals, model decisions, and BI extracts — with observation time, vintage time, explicit as-of selection, and no synthetic fallback.
 - **Causal monthly features** — target-derived lags, rolling statistics, and changes shifted before aggregation — plus comparable rolling-origin folds with WAPE, MAE, RMSSE, bias, pinball loss, WIS, and coverage.
 - **The official sparse 12-level M5 hierarchy**: revenue weights, WRMSSE, exact bottom-up aggregation, and nonnegative diagonal-variance WLS reconciliation.
