@@ -73,14 +73,16 @@ export const StoryPage: FC = () => (
         <p className="mt-3 font-serif text-[17px] italic leading-[1.6] text-stone-500">
           {chapter.lede}
         </p>
-        {chapter.body.map((paragraph, pIndex) => (
-          <p key={pIndex} className="mt-4 text-[15px] leading-[1.85] text-stone-600">
-            {paragraph}
-          </p>
-        ))}
-        {(chapter.figures ?? []).map((figure) => (
-          <ChapterFigure key={figure.src} figure={figure} />
-        ))}
+        {chapter.blocks.map((block, blockIndex) => {
+          if (block.kind === 'figure') {
+            return <ChapterFigure key={blockIndex} figure={block.figure} />;
+          }
+          return (
+            <p key={blockIndex} className="mt-4 text-[15px] leading-[1.85] text-stone-600">
+              {block.text}
+            </p>
+          );
+        })}
         <ChapterEvidence chapter={chapter} />
       </motion.article>
     ))}

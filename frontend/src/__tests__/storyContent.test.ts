@@ -55,9 +55,12 @@ describe('story content', () => {
       expect(chapter.kicker.length).toBeGreaterThan(0);
       expect(chapter.title.length).toBeGreaterThan(0);
       expect(chapter.lede.length).toBeGreaterThan(0);
-      expect(chapter.body.length).toBeGreaterThanOrEqual(2);
-      for (const paragraph of chapter.body) {
-        expect(paragraph.length).toBeGreaterThan(0);
+      const paragraphs = chapter.blocks.filter((block) => block.kind === 'paragraph');
+      expect(paragraphs.length).toBeGreaterThanOrEqual(2);
+      for (const block of chapter.blocks) {
+        if (block.kind === 'paragraph') {
+          expect(block.text.length).toBeGreaterThan(0);
+        }
       }
     });
     expect(storyChapters[0].id).toBe('the-gate-that-said-no');
@@ -84,7 +87,10 @@ describe('story content', () => {
   it('freezes the honest measured numbers in the prose', () => {
     const text = (id: string) => {
       const found = chapter(id);
-      return [found.lede, ...found.body].join(' ');
+      return [
+        found.lede,
+        ...found.blocks.map((block) => (block.kind === 'paragraph' ? block.text : '')),
+      ].join(' ');
     };
     // Full-grid gate (docs/v2/M3_VINTAGE_BACKTEST.md) — real-time measurement.
     expect(text('the-gate-that-said-no')).toContain('8.49%');
@@ -112,7 +118,9 @@ describe('story content', () => {
   it('resolves any declared chapter figure inside frontend/public', () => {
     const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
     for (const chapter of storyChapters) {
-      for (const figure of chapter.figures ?? []) {
+      for (const block of chapter.blocks) {
+        if (block.kind !== 'figure') continue;
+        const figure = block.figure;
         expect(figure.caption.length).toBeGreaterThan(0);
         expect(figure.alt.length).toBeGreaterThan(0);
         expect(figure.src.startsWith(base + '/images/story/')).toBe(true);
