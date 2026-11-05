@@ -99,14 +99,14 @@ export const LatestForecastPanel: FC = () => {
       aria-label="Latest published batch forecasts"
     >
       <div className="flex items-center gap-3">
-        <div className="flex h-8 w-8 items-center justify-center bg-[#3A3A6C]">
-          <Satellite className="h-4 w-4 text-[#81C1AC]" />
+        <div className="flex h-8 w-8 items-center justify-center bg-[#25251f]">
+          <Satellite className="h-4 w-4 text-[#89927a]" />
         </div>
         <div>
-          <h2 className="text-xs font-medium uppercase tracking-wide text-gray-900">
+          <h2 className="text-xs font-medium uppercase tracking-wide text-stone-900">
             Latest published batch forecasts
           </h2>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-stone-500">
             Scheduled pipeline output from the governed store. Not on-demand inference.
           </p>
         </div>
@@ -117,7 +117,7 @@ export const LatestForecastPanel: FC = () => {
           <button
             onClick={() => snapshot.refetch()}
             disabled={snapshot.isFetching}
-            className="flex w-full items-center justify-center gap-2 bg-[#3A3A6C] py-3 text-white transition hover:bg-[#4a4a7c] disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 bg-[#25251f] py-3 text-white transition hover:bg-[#4a4a7c] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {snapshot.isFetching ? (
               <RefreshCw className="h-5 w-5 animate-spin" />
@@ -126,7 +126,7 @@ export const LatestForecastPanel: FC = () => {
             )}
             Fetch latest published forecasts
           </button>
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-2 text-xs text-stone-500">
             This retrieves the newest forecast already produced by the Databricks pipeline. It does
             not run the model inside your browser.
           </p>
@@ -175,7 +175,7 @@ export const LatestForecastPanel: FC = () => {
           </div>
 
           <div className="flex items-start gap-2 border border-slate-200 bg-white p-3 text-sm text-slate-700">
-            <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-[#3A3A6C]" />
+            <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-[#25251f]" />
             <p>
               Realized performance so far: the model beat the seasonal-naive benchmark in{' '}
               <strong>
@@ -189,7 +189,7 @@ export const LatestForecastPanel: FC = () => {
           <div className="space-y-2">
             <label
               htmlFor="latest-snapshot-series"
-              className="text-xs font-medium uppercase tracking-wide text-gray-700"
+              className="text-xs font-medium uppercase tracking-wide text-stone-700"
             >
               Series
             </label>
@@ -197,7 +197,7 @@ export const LatestForecastPanel: FC = () => {
               id="latest-snapshot-series"
               value={seriesIndex}
               onChange={(event) => setSeriesIndex(Number(event.target.value))}
-              className="w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
+              className="w-full border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900"
             >
               {snapshot.data.series.map((item, index) => (
                 <option key={item.series_id} value={index}>
@@ -208,10 +208,10 @@ export const LatestForecastPanel: FC = () => {
           </div>
 
           {series && (
-            <div className="border border-gray-200 bg-white p-4">
+            <div className="border border-stone-200 bg-white p-4">
               <div className="mb-3">
-                <h3 className="text-sm text-gray-900">Forecast versus benchmark and actuals</h3>
-                <p className="text-xs text-gray-500">
+                <h3 className="text-sm text-stone-900">Forecast versus benchmark and actuals</h3>
+                <p className="text-xs text-stone-500">
                   The dashed benchmark is the same month one year earlier, as known at forecast
                   time, aligned to each target month.
                 </p>
@@ -226,18 +226,18 @@ export const LatestForecastPanel: FC = () => {
                       if (!active || !payload || payload.length === 0) return null;
                       const row = payload[0].payload as ChartRow;
                       return (
-                        <div className="border border-gray-200 bg-white p-2 text-xs text-gray-700">
-                          <p className="font-medium text-gray-900">{row.label}</p>
+                        <div className="border border-stone-200 bg-white p-2 text-xs text-stone-700">
+                          <p className="font-medium text-stone-900">{row.label}</p>
                           <p>Model forecast: {formatNumber(row.model ?? 0)}</p>
                           <p>
                             Seasonal naive — same month last year, as known at forecast time:{' '}
                             {row.seasonalNaive === null ? 'unavailable' : formatNumber(row.seasonalNaive)}
                           </p>
                           {row.sourceMonth && (
-                            <p className="text-gray-500">Benchmark source month: {row.sourceMonth}</p>
+                            <p className="text-stone-500">Benchmark source month: {row.sourceMonth}</p>
                           )}
                           {row.sourceVintage && (
-                            <p className="text-gray-500">
+                            <p className="text-stone-500">
                               Benchmark source vintage: {new Date(row.sourceVintage).toLocaleString()}
                             </p>
                           )}
@@ -252,7 +252,7 @@ export const LatestForecastPanel: FC = () => {
                             <p>{row.beat ? 'Model beat the benchmark.' : 'Benchmark won this target.'}</p>
                           )}
                           {row.evaluationStatus && (
-                            <p className="text-gray-500">Evaluation: {row.evaluationStatus}</p>
+                            <p className="text-stone-500">Evaluation: {row.evaluationStatus}</p>
                           )}
                         </div>
                       );
@@ -260,7 +260,7 @@ export const LatestForecastPanel: FC = () => {
                   />
                   <Legend
                     formatter={(value) => (
-                      <span className="text-xs text-gray-700">
+                      <span className="text-xs text-stone-700">
                         {value === 'model' && 'Model forecast'}
                         {value === 'naive' && 'Seasonal naive (dashed)'}
                         {value === 'actual' && 'Published actual'}
@@ -271,7 +271,7 @@ export const LatestForecastPanel: FC = () => {
                     type="monotone"
                     dataKey="model"
                     name="model"
-                    stroke="#3A3A6C"
+                    stroke="#a43b36"
                     strokeWidth={3}
                     dot={false}
                     connectNulls={false}
@@ -280,7 +280,7 @@ export const LatestForecastPanel: FC = () => {
                     type="monotone"
                     dataKey="seasonalNaive"
                     name="naive"
-                    stroke="#81C1AC"
+                    stroke="#89927a"
                     strokeWidth={2}
                     strokeDasharray="6 4"
                     dot={false}
@@ -290,14 +290,14 @@ export const LatestForecastPanel: FC = () => {
                     type="monotone"
                     dataKey="actual"
                     name="actual"
-                    stroke="#C2571B"
+                    stroke="#25251f"
                     strokeWidth={2}
                     dot={{ r: 3 }}
                     connectNulls={false}
                   />
                 </LineChart>
               </ResponsiveContainer>
-              <p className="mt-2 text-xs text-gray-500">
+              <p className="mt-2 text-xs text-stone-500">
                 Dashes and labels distinguish the benchmark from the model forecast; missing
                 benchmark values are gaps, never zeros.
               </p>

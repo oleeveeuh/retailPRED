@@ -6,7 +6,7 @@
  * - Sharp corners (rounded-sm)
  * - Light typography (font-light)
  * - Minimal borders
- * - RetailPRED brand colors (purple #3A3A6C + teal #81C1AC)
+ * - RetailPRED brand colors (field-notes paper, ink, sage, crimson)
  */
 
 import { FC, ReactNode } from 'react';
@@ -33,7 +33,7 @@ const pageTransition = {
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex min-h-screen flex-col bg-[#f5f1e8]">
       {/* Demo Banner */}
       <DemoBanner />
 
@@ -54,7 +54,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
             exit="exit"
             variants={pageVariants}
             transition={pageTransition}
-            className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50/50"
+            className="flex-1 overflow-x-hidden overflow-y-auto bg-stone-50/50"
           >
             <div className="p-6 sm:p-8">
               {/* Content Container */}

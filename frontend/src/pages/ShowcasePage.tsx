@@ -50,7 +50,7 @@ const statusChip = (status: TaskStatus) => {
       };
     default:
       return {
-        classes: 'border-gray-300 bg-gray-50 text-gray-600',
+        classes: 'border-stone-300 bg-stone-50 text-stone-600',
         icon: <Clock className="h-3.5 w-3.5" />,
         label: 'Dormant',
       };
@@ -58,7 +58,10 @@ const statusChip = (status: TaskStatus) => {
 };
 
 const SectionEyebrow: FC<{ children: React.ReactNode }> = ({ children }) => (
-  <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#81C1AC]">{children}</p>
+  <p className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.13em] text-stone-500">
+    <span className="inline-block h-[7px] w-[7px] rounded-full bg-[#a43b36]" aria-hidden="true" />
+    {children}
+  </p>
 );
 
 export const ShowcasePage: FC = () => (
@@ -67,9 +70,9 @@ export const ShowcasePage: FC = () => (
     <motion.section
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="overflow-hidden bg-gradient-to-br from-[#232347] via-[#3A3A6C] to-[#232347] p-8 text-white sm:p-12"
+      className="overflow-hidden bg-gradient-to-br from-[#232347] via-[#25251f] to-[#232347] p-8 text-white sm:p-12"
     >
-      <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#81C1AC]">
+      <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#89927a]">
         {hero.eyebrow}
       </p>
       <h1 className="mt-4 max-w-3xl text-3xl font-light leading-tight sm:text-4xl">
@@ -85,7 +88,7 @@ export const ShowcasePage: FC = () => (
             className="border border-white/25 bg-white/10 px-3 py-1 text-xs text-white/90"
           >
             <span className="text-white/60">{chip.label}:</span>{' '}
-            <span className={chip.tone === 'amber' ? 'text-amber-200' : 'text-[#81C1AC]'}>
+            <span className={chip.tone === 'amber' ? 'text-amber-200' : 'text-[#89927a]'}>
               {chip.value}
             </span>
           </span>
@@ -94,7 +97,7 @@ export const ShowcasePage: FC = () => (
       <div className="mt-8 flex flex-wrap gap-3">
         <Link
           to="/dashboard/predictions"
-          className="flex items-center gap-2 bg-[#81C1AC] px-5 py-2.5 text-sm font-medium text-[#232347] transition hover:bg-[#9dd1bf]"
+          className="flex items-center gap-2 bg-[#89927a] px-5 py-2.5 text-sm font-medium text-[#232347] transition hover:bg-[#9dd1bf]"
         >
           Explore the forecast evidence <ArrowRight className="h-4 w-4" />
         </Link>
@@ -112,12 +115,12 @@ export const ShowcasePage: FC = () => (
     {/* Pipeline */}
     <section className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center bg-[#3A3A6C]">
-          <Database className="h-5 w-5 text-[#81C1AC]" />
+        <div className="flex h-9 w-9 items-center justify-center bg-[#25251f]">
+          <Database className="h-5 w-5 text-[#89927a]" />
         </div>
         <div>
           <SectionEyebrow>The Databricks pull</SectionEyebrow>
-          <h2 className="text-xl text-gray-900">Four governed tasks, one scheduled pipeline</h2>
+          <h2 className="text-xl text-stone-900">Four governed tasks, one scheduled pipeline</h2>
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
@@ -130,10 +133,10 @@ export const ShowcasePage: FC = () => (
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.06 }}
-              className="relative flex flex-col border border-gray-200 bg-white p-5"
+              className="relative flex flex-col border border-[#d8d1c4] bg-[#fbf9f4] p-5 shadow-[0_4px_13px_rgba(59,49,34,0.08)] transition-transform duration-300 odd:rotate-[-0.8deg] even:rotate-[1.1deg] hover:rotate-0 hover:shadow-[0_10px_22px_rgba(59,49,34,0.14)]"
             >
               <div className="flex items-center justify-between">
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                <p className="text-xs font-medium uppercase tracking-wide text-stone-400">
                   {task.task}
                 </p>
                 <span className={`flex items-center gap-1 border px-2 py-0.5 text-[11px] ${chip.classes}`}>
@@ -141,15 +144,15 @@ export const ShowcasePage: FC = () => (
                   {chip.label}
                 </span>
               </div>
-              <h3 className="mt-3 text-sm font-medium text-gray-900">{task.headline}</h3>
-              <p className="mt-2 flex-1 text-xs leading-relaxed text-gray-500">
+              <h3 className="mt-3 text-sm font-medium text-stone-900">{task.headline}</h3>
+              <p className="mt-2 flex-1 text-xs leading-relaxed text-stone-500">
                 {task.description}
               </p>
-              <p className="mt-3 border-t border-gray-100 pt-3 text-[11px] font-medium text-gray-700">
+              <p className="mt-3 border-t border-stone-100 pt-3 text-[11px] font-medium text-stone-700">
                 {task.evidence}
               </p>
               {index < pipelineTasks.length - 1 && (
-                <ArrowRight className="absolute -right-3 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-gray-300 lg:block" />
+                <ArrowRight className="absolute -right-3 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-stone-300 lg:block" />
               )}
             </motion.div>
           );
@@ -180,7 +183,7 @@ export const ShowcasePage: FC = () => (
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs font-medium text-[#3A3A6C] underline hover:no-underline"
+              className="flex items-center gap-1 text-xs font-medium text-[#25251f] underline hover:no-underline"
             >
               {link.label} <ExternalLink className="h-3 w-3" />
             </a>
@@ -192,12 +195,12 @@ export const ShowcasePage: FC = () => (
     {/* Models */}
     <section className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center bg-[#3A3A6C]">
-          <Cpu className="h-5 w-5 text-[#81C1AC]" />
+        <div className="flex h-9 w-9 items-center justify-center bg-[#25251f]">
+          <Cpu className="h-5 w-5 text-[#89927a]" />
         </div>
         <div>
           <SectionEyebrow>The models</SectionEyebrow>
-          <h2 className="text-xl text-gray-900">Measured, gated, honestly ranked</h2>
+          <h2 className="text-xl text-stone-900">Measured, gated, honestly ranked</h2>
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -209,17 +212,19 @@ export const ShowcasePage: FC = () => (
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className={`flex flex-col border p-6 ${
-                promoted ? 'border-emerald-300 bg-emerald-50/40' : 'border-amber-300 bg-amber-50/40'
+              className={`flex flex-col border p-6 shadow-[0_4px_13px_rgba(59,49,34,0.08)] transition-transform duration-300 hover:rotate-0 hover:shadow-[0_10px_22px_rgba(59,49,34,0.14)] ${
+                promoted
+                  ? 'border-[#89927a] bg-[#fbf9f4] odd:rotate-[-0.7deg]'
+                  : 'border-[#d8d1c4] bg-[#fbf9f4] even:rotate-[0.9deg]'
               }`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                  <p className="text-xs font-medium uppercase tracking-wide text-stone-500">
                     {card.dataset}
                   </p>
-                  <h3 className="mt-1 text-lg text-gray-900">{card.model}</h3>
-                  <p className="mt-1 text-xs text-gray-500">{card.useCase}</p>
+                  <h3 className="mt-1 text-lg text-stone-900">{card.model}</h3>
+                  <p className="mt-1 text-xs text-stone-500">{card.useCase}</p>
                 </div>
                 <span
                   className={`flex items-center gap-1 border px-2 py-1 text-[11px] font-medium ${
@@ -236,24 +241,24 @@ export const ShowcasePage: FC = () => (
                   {promoted ? 'Promoted' : 'Not promoted'}
                 </span>
               </div>
-              <p className="mt-4 text-sm text-gray-600">{card.headline}</p>
+              <p className="mt-4 text-sm text-stone-600">{card.headline}</p>
               <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="border border-gray-200 bg-white p-3">
-                  <p className="text-[11px] uppercase tracking-wide text-gray-400">
+                <div className="border border-stone-200 bg-white p-3">
+                  <p className="text-[11px] uppercase tracking-wide text-stone-400">
                     {card.metricName}
                   </p>
-                  <p className="mt-1 text-2xl text-[#3A3A6C]">{card.metricValue}</p>
+                  <p className="mt-1 text-2xl text-[#25251f]">{card.metricValue}</p>
                 </div>
-                <div className="border border-gray-200 bg-white p-3">
-                  <p className="text-[11px] uppercase tracking-wide text-gray-400">
+                <div className="border border-stone-200 bg-white p-3">
+                  <p className="text-[11px] uppercase tracking-wide text-stone-400">
                     {card.baselineName}
                   </p>
-                  <p className="mt-1 text-2xl text-gray-500">{card.baselineValue}</p>
+                  <p className="mt-1 text-2xl font-serif text-stone-500">{card.baselineValue}</p>
                 </div>
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-700">{card.improvement}</p>
+              <p className="mt-3 text-xs font-medium text-stone-700">{card.improvement}</p>
               <p
-                className={`mt-3 border-t border-gray-200 pt-3 text-xs ${
+                className={`mt-3 border-t border-stone-200 pt-3 text-xs ${
                   promoted ? 'text-emerald-800' : 'text-amber-800'
                 }`}
               >
@@ -263,7 +268,7 @@ export const ShowcasePage: FC = () => (
                 href={card.evidencePath}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 flex items-center gap-1 text-xs text-[#3A3A6C] underline hover:no-underline"
+                className="mt-3 flex items-center gap-1 text-xs text-[#25251f] underline hover:no-underline"
               >
                 Full benchmark document <ExternalLink className="h-3 w-3" />
               </a>
@@ -273,22 +278,22 @@ export const ShowcasePage: FC = () => (
       </div>
 
       {/* Honest rejections */}
-      <div className="border border-gray-200 bg-white p-6">
+      <div className="border border-[#d8d1c4] bg-[#fbf9f4] p-6">
         <div className="flex items-center gap-2">
-          <Layers className="h-4 w-4 text-gray-500" />
-          <h3 className="text-sm font-medium uppercase tracking-wide text-gray-700">
+          <Layers className="h-4 w-4 text-stone-500" />
+          <h3 className="text-sm font-medium uppercase tracking-wide text-stone-700">
             Also measured, also rejected — by predeclared gates
           </h3>
         </div>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           {rejections.map((rejection) => (
-            <div key={rejection.name} className="border border-gray-100 bg-gray-50 p-4">
+            <div key={rejection.name} className="border border-[#d8d1c4] bg-[#f5f1e8] p-4">
               <div className="flex items-center gap-2">
                 <XCircle className="h-4 w-4 shrink-0 text-red-400" />
-                <p className="text-sm font-medium text-gray-900">{rejection.name}</p>
+                <p className="text-sm font-medium text-stone-900">{rejection.name}</p>
               </div>
-              <p className="mt-1 text-xs text-gray-500">{rejection.oneLine}</p>
-              <p className="mt-2 text-xs font-medium text-gray-700">{rejection.outcome}</p>
+              <p className="mt-1 text-xs text-stone-500">{rejection.oneLine}</p>
+              <p className="mt-2 text-xs font-medium text-stone-700">{rejection.outcome}</p>
             </div>
           ))}
         </div>
@@ -298,12 +303,12 @@ export const ShowcasePage: FC = () => (
     {/* Tableau */}
     <section className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center bg-[#3A3A6C]">
-          <Table2 className="h-5 w-5 text-[#81C1AC]" />
+        <div className="flex h-9 w-9 items-center justify-center bg-[#25251f]">
+          <Table2 className="h-5 w-5 text-[#89927a]" />
         </div>
         <div>
           <SectionEyebrow>The Tableau layer</SectionEyebrow>
-          <h2 className="text-xl text-gray-900">Governed extracts behind five views</h2>
+          <h2 className="text-xl text-stone-900">Governed extracts behind five views</h2>
         </div>
       </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -313,47 +318,47 @@ export const ShowcasePage: FC = () => (
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="border border-gray-200 bg-white p-4"
+            className="border border-[#d8d1c4] bg-[#fbf9f4] p-4 shadow-[0_4px_13px_rgba(59,49,34,0.06)] odd:rotate-[-0.6deg] even:rotate-[0.7deg] transition-transform duration-300 hover:rotate-0"
           >
-            <BarChart3 className="h-4 w-4 text-[#3A3A6C]" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">{view.name}</h3>
-            <p className="mt-1 text-[11px] font-medium uppercase tracking-wide text-[#81C1AC]">
+            <BarChart3 className="h-4 w-4 text-[#25251f]" />
+            <h3 className="mt-2 text-sm font-medium text-stone-900">{view.name}</h3>
+            <p className="mt-1 text-[11px] font-medium uppercase tracking-wide text-[#a43b36]">
               {view.marks}
             </p>
-            <p className="mt-2 text-xs leading-relaxed text-gray-500">{view.oneLine}</p>
+            <p className="mt-2 text-xs leading-relaxed text-stone-500">{view.oneLine}</p>
           </motion.div>
         ))}
       </div>
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border border-gray-200 bg-white p-4 text-xs text-gray-600">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border border-[#d8d1c4] bg-[#fbf9f4] p-4 text-xs text-stone-600">
         <span className="flex items-center gap-1">
           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
           Verified in Tableau Public 2026.3 against a tracked aggregate-only Hyper extract
         </span>
         <span className="flex items-center gap-1">
-          <GitBranch className="h-3.5 w-3.5 text-gray-400" />
+          <GitBranch className="h-3.5 w-3.5 text-stone-400" />
           Schema-checked and fail-closed before publication — see the{' '}
           <a
             href="https://github.com/oleeveeuh/retailPRED/blob/main/bi/README.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#3A3A6C] underline hover:no-underline"
+            className="text-[#25251f] underline hover:no-underline"
           >
             BI contract
           </a>
         </span>
-        <span className="text-gray-400">Public embed pending</span>
+        <span className="text-stone-400">Public embed pending</span>
       </div>
     </section>
 
     {/* Evidence footer */}
-    <section className="border border-gray-200 bg-white p-6">
+    <section className="border border-[#d8d1c4] bg-[#fbf9f4] p-6">
       <div className="flex items-center gap-2">
-        <ShieldAlert className="h-4 w-4 text-gray-500" />
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-700">
+        <ShieldAlert className="h-4 w-4 text-stone-500" />
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-stone-700">
           Claims are graded, not implied
         </h3>
       </div>
-      <p className="mt-3 text-sm leading-relaxed text-gray-600">
+      <p className="mt-3 text-sm leading-relaxed text-stone-600">
         Every capability in this project sits on an explicit ladder — implemented → locally
         verified → executed on Databricks → scheduled → publicly deployed — and the serving
         contract keeps this site on historical evidence only. No live inference is claimed,
@@ -366,7 +371,7 @@ export const ShowcasePage: FC = () => (
             href={`https://github.com/oleeveeuh/retailPRED/blob/main/docs/v2/${doc}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[#3A3A6C] underline hover:no-underline"
+            className="flex items-center gap-1 text-[#25251f] underline hover:no-underline"
           >
             {doc.replace('.md', '')} <ExternalLink className="h-3 w-3" />
           </a>

@@ -66,11 +66,11 @@ export const Sidebar: FC = () => {
           fixed lg:relative left-0 top-0 h-full z-50
           flex flex-col
           bg-white
-          border-r border-gray-200
+          border-r border-stone-200
         `}
       >
         {/* Logo Section */}
-        <div className="h-16 border-b border-gray-200 flex items-center justify-between px-4">
+        <div className="h-16 border-b border-stone-200 flex items-center justify-between px-4">
           <AnimatePresence mode="wait">
             {!isCollapsed && (
               <motion.div
@@ -80,12 +80,12 @@ export const Sidebar: FC = () => {
                 transition={{ duration: 0.15 }}
                 className="flex items-center gap-3"
               >
-                <div className="w-9 h-9 bg-[#3A3A6C] rounded-sm flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-[#81C1AC]" />
+                <div className="w-9 h-9 bg-[#25251f] rounded-sm flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-[#89927a]" />
                 </div>
                 <div>
-                  <h1 className="text-base font-normal text-gray-900 tracking-tight">RetailPRED</h1>
-                  <p className="text-xs font-light text-gray-500">Evaluation portfolio</p>
+                  <h1 className="font-mono text-sm font-semibold lowercase tracking-[-0.06em] text-[#25251f]">RetailPRED</h1>
+                  <p className="font-mono text-[10px] lowercase text-stone-500">Evaluation portfolio</p>
                 </div>
               </motion.div>
             )}
@@ -94,7 +94,7 @@ export const Sidebar: FC = () => {
           {/* Collapse Toggle */}
           <motion.button
             onClick={toggleCollapse}
-            className="p-1.5 rounded-sm hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors"
+            className="p-1.5 rounded-sm hover:bg-stone-100 text-stone-400 hover:text-stone-700 transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Toggle sidebar"
@@ -122,8 +122,8 @@ export const Sidebar: FC = () => {
                   rounded-sm transition-all duration-150
                   ${
                     active
-                      ? 'bg-[#3A3A6C] text-[#81C1AC]'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-[#25251f] text-[#89927a]'
+                      : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
                   }
                 `}
               >
@@ -131,7 +131,7 @@ export const Sidebar: FC = () => {
                 {active && (
                   <motion.div
                     layoutId="activeIndicator"
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-[#81C1AC]"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-[#89927a]"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -164,7 +164,7 @@ export const Sidebar: FC = () => {
         {/* Mobile Close Button */}
         <motion.button
           onClick={() => setIsCollapsed(true)}
-          className="lg:hidden absolute top-4 right-4 p-1.5 rounded-sm hover:bg-gray-100 text-gray-400"
+          className="lg:hidden absolute top-4 right-4 p-1.5 rounded-sm hover:bg-stone-100 text-stone-400"
           whileTap={{ scale: 0.95 }}
         >
           <ChevronLeft className="w-5 h-5" />

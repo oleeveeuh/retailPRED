@@ -79,8 +79,8 @@ export const PredictionsPage: FC = () => {
       <Toaster position="top-right" />
 
       <header>
-        <h1 className="text-2xl font-normal tracking-tight text-gray-900">Forecast evidence</h1>
-        <p className="mt-1 text-sm font-light text-gray-500">
+        <h1 className="font-serif text-2xl lowercase tracking-[-0.02em] text-[#25251f]">Forecast evidence</h1>
+        <p className="mt-1 text-sm font-light text-stone-500">
           Inspect a measured historical M5 forecast with complete provenance.
         </p>
       </header>
@@ -102,45 +102,45 @@ export const PredictionsPage: FC = () => {
         <motion.section
           initial={{ opacity: 0, x: -16 }}
           animate={{ opacity: 1, x: 0 }}
-          className="space-y-5 border border-gray-200 bg-white p-5 lg:col-span-2"
+          className="space-y-5 border border-stone-200 bg-white p-5 lg:col-span-2"
         >
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center bg-[#3A3A6C]">
-              <Database className="h-4 w-4 text-[#81C1AC]" />
+            <div className="flex h-8 w-8 items-center justify-center bg-[#25251f]">
+              <Database className="h-4 w-4 text-[#89927a]" />
             </div>
             <div>
-              <h2 className="text-xs font-medium uppercase tracking-wide text-gray-900">
+              <h2 className="text-xs font-medium uppercase tracking-wide text-stone-900">
                 Frozen fixture
               </h2>
-              <p className="text-xs text-gray-500">Inputs cannot be changed silently.</p>
+              <p className="text-xs text-stone-500">Inputs cannot be changed silently.</p>
             </div>
           </div>
 
           <dl className="space-y-4 text-sm">
             <div>
-              <dt className="text-xs font-medium uppercase tracking-wide text-gray-500">Series</dt>
-              <dd className="mt-1 break-all text-gray-900">{FIXTURE.seriesId}</dd>
+              <dt className="text-xs font-medium uppercase tracking-wide text-stone-500">Series</dt>
+              <dd className="mt-1 break-all text-stone-900">{FIXTURE.seriesId}</dd>
             </div>
             <div>
-              <dt className="text-xs font-medium uppercase tracking-wide text-gray-500">Model</dt>
-              <dd className="mt-1 flex items-center gap-2 text-gray-900">
-                <Zap className="h-4 w-4 text-[#3A3A6C]" /> M5 Global LightGBM v1.0.0
+              <dt className="text-xs font-medium uppercase tracking-wide text-stone-500">Model</dt>
+              <dd className="mt-1 flex items-center gap-2 text-stone-900">
+                <Zap className="h-4 w-4 text-[#25251f]" /> M5 Global LightGBM v1.0.0
               </dd>
             </div>
             <div>
-              <dt className="text-xs font-medium uppercase tracking-wide text-gray-500">
+              <dt className="text-xs font-medium uppercase tracking-wide text-stone-500">
                 Forecast origin and data cutoff
               </dt>
-              <dd className="mt-1 text-gray-900">April 24, 2016</dd>
+              <dd className="mt-1 text-stone-900">April 24, 2016</dd>
             </div>
           </dl>
 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium uppercase tracking-wide text-gray-700">
+              <label className="text-xs font-medium uppercase tracking-wide text-stone-700">
                 Demonstration horizon
               </label>
-              <span className="bg-gray-100 px-3 py-1 text-sm text-[#3A3A6C]">
+              <span className="bg-stone-100 px-3 py-1 text-sm text-[#25251f]">
                 {horizon} {horizon === 1 ? 'day' : 'days'}
               </span>
             </div>
@@ -151,14 +151,14 @@ export const PredictionsPage: FC = () => {
               max="4"
               value={horizon}
               onChange={(event) => setHorizon(Number(event.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none bg-gray-200 accent-[#3A3A6C]"
+              className="h-2 w-full cursor-pointer appearance-none bg-stone-200 accent-[#25251f]"
             />
           </div>
 
           <button
             onClick={() => prediction.mutate()}
             disabled={prediction.isPending}
-            className="flex w-full items-center justify-center gap-2 bg-[#3A3A6C] py-3 text-white transition hover:bg-[#4a4a7c] disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 bg-[#25251f] py-3 text-white transition hover:bg-[#4a4a7c] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {prediction.isPending ? (
               <RefreshCw className="h-5 w-5 animate-spin" />
@@ -180,12 +180,12 @@ export const PredictionsPage: FC = () => {
           className="space-y-5 lg:col-span-3"
         >
           {!prediction.data ? (
-            <div className="flex min-h-[420px] flex-col items-center justify-center border border-gray-200 bg-white p-12 text-center">
-              <div className="mb-5 flex h-16 w-16 items-center justify-center bg-[#3A3A6C]">
-                <BarChart3 className="h-8 w-8 text-[#81C1AC]" />
+            <div className="flex min-h-[420px] flex-col items-center justify-center border border-stone-200 bg-white p-12 text-center">
+              <div className="mb-5 flex h-16 w-16 items-center justify-center bg-[#25251f]">
+                <BarChart3 className="h-8 w-8 text-[#89927a]" />
               </div>
-              <h2 className="text-lg text-gray-900">Evidence ready to inspect</h2>
-              <p className="mt-2 max-w-md text-sm text-gray-500">
+              <h2 className="text-lg text-stone-900">Evidence ready to inspect</h2>
+              <p className="mt-2 max-w-md text-sm text-stone-500">
                 Load the deterministic fixture to compare the historical forecast with its realized
                 evaluation actuals.
               </p>
@@ -198,10 +198,10 @@ export const PredictionsPage: FC = () => {
                 <Metric label="Data status" value="Historical" />
               </div>
 
-              <div className="border border-gray-200 bg-white p-6">
+              <div className="border border-stone-200 bg-white p-6">
                 <div className="mb-5">
-                  <h2 className="text-lg text-gray-900">Unit demand: forecast versus actual</h2>
-                  <p className="text-sm text-gray-500">
+                  <h2 className="text-lg text-stone-900">Unit demand: forecast versus actual</h2>
+                  <p className="text-sm text-stone-500">
                     Point forecasts only; values are units, not dollars.
                   </p>
                 </div>
@@ -212,14 +212,14 @@ export const PredictionsPage: FC = () => {
                     <YAxis allowDecimals domain={[0, 'auto']} tick={{ fontSize: 12 }} />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="forecast" name="Forecast" stroke="#3A3A6C" strokeWidth={3} />
-                    <Line type="monotone" dataKey="actual" name="Evaluation actual" stroke="#81C1AC" strokeWidth={3} />
+                    <Line type="monotone" dataKey="forecast" name="Forecast" stroke="#a43b36" strokeWidth={3} />
+                    <Line type="monotone" dataKey="actual" name="Evaluation actual" stroke="#89927a" strokeWidth={3} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
 
-              <div className="border border-gray-200 bg-white p-5 text-sm text-gray-700">
-                <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-900">
+              <div className="border border-stone-200 bg-white p-5 text-sm text-stone-700">
+                <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-stone-900">
                   Provenance
                 </h2>
                 <dl className="grid gap-3 sm:grid-cols-2">
@@ -240,15 +240,15 @@ export const PredictionsPage: FC = () => {
 };
 
 const Metric: FC<{ label: string; value: string }> = ({ label, value }) => (
-  <div className="border border-gray-200 bg-white p-5">
-    <p className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
-    <p className="mt-2 text-2xl text-gray-900">{value}</p>
+  <div className="border border-stone-200 bg-white p-5">
+    <p className="text-xs font-medium uppercase tracking-wide text-stone-500">{label}</p>
+    <p className="mt-2 text-2xl text-stone-900">{value}</p>
   </div>
 );
 
 const Provenance: FC<{ label: string; value: string }> = ({ label, value }) => (
   <div>
-    <dt className="text-xs uppercase tracking-wide text-gray-500">{label}</dt>
-    <dd className="mt-1 break-all text-gray-900">{value}</dd>
+    <dt className="text-xs uppercase tracking-wide text-stone-500">{label}</dt>
+    <dd className="mt-1 break-all text-stone-900">{value}</dd>
   </div>
 );
