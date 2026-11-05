@@ -9,6 +9,7 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout';
 import { PredictionsPage } from './pages/PredictionsPage';
 import { ShowcasePage } from './pages/ShowcasePage';
+import { StoryPage } from './pages/StoryPage';
 import './index.css';
 
 const queryClient = new QueryClient({
@@ -31,6 +32,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<ShowcasePage />} />
+            <Route path="/story" element={<StoryPage />} />
             <Route path="/dashboard/predictions" element={<PredictionsPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
