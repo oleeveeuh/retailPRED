@@ -70,44 +70,52 @@ export const ShowcasePage: FC = () => (
     <motion.section
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="overflow-hidden bg-gradient-to-br from-[#232347] via-[#25251f] to-[#232347] p-8 text-white sm:p-12"
+      className="relative overflow-hidden border-b border-[#d8d1c4] bg-[#f5f1e8] p-8 sm:p-12"
     >
-      <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#89927a]">
-        {hero.eyebrow}
+      <p className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.13em] text-stone-500">
+        <span className="inline-block h-[7px] w-[7px] rounded-full bg-[#a43b36]" aria-hidden="true" />
+        retailpred · v2.0.0
       </p>
-      <h1 className="mt-4 max-w-3xl text-3xl font-light leading-tight sm:text-4xl">
-        {hero.title}
+      <h1 className="mt-5 max-w-3xl font-serif text-4xl font-normal lowercase leading-[1.05] tracking-[-0.03em] text-[#25251f] sm:text-5xl">
+        retail forecasting, with an{' '}
+        <em className="italic text-[#89927a]">evidence gate.</em>
       </h1>
-      <p className="mt-4 max-w-2xl text-sm font-light leading-relaxed text-white/80">
+      <p className="mt-5 max-w-2xl text-[15px] leading-[1.8] text-stone-600">
         {hero.subtitle}
       </p>
       <div className="mt-6 flex flex-wrap gap-2">
         {hero.chips.map((chip) => (
           <span
             key={chip.label}
-            className="border border-white/25 bg-white/10 px-3 py-1 text-xs text-white/90"
+            className="rounded-[20px] bg-[#dfe1d5] px-3 py-1 font-mono text-[10px] text-[#555b4a]"
           >
-            <span className="text-white/60">{chip.label}:</span>{' '}
-            <span className={chip.tone === 'amber' ? 'text-amber-200' : 'text-[#89927a]'}>
+            <span className="text-stone-500">{chip.label}:</span>{' '}
+            <span className={chip.tone === 'amber' ? 'text-[#a43b36]' : 'text-[#25251f]'}>
               {chip.value}
             </span>
           </span>
         ))}
       </div>
-      <div className="mt-8 flex flex-wrap gap-3">
+      <div className="mt-8 flex flex-wrap items-center gap-6">
         <Link
           to="/dashboard/predictions"
-          className="flex items-center gap-2 bg-[#89927a] px-5 py-2.5 text-sm font-medium text-[#232347] transition hover:bg-[#9dd1bf]"
+          className="border-b border-[#a43b36] pb-1.5 text-sm text-[#25251f] transition hover:text-[#a43b36]"
         >
-          Explore the forecast evidence <ArrowRight className="h-4 w-4" />
+          Explore the forecast evidence <span className="text-[#a43b36]" aria-hidden="true">↗</span>
         </Link>
         <a
           href="https://github.com/oleeveeuh/retailPRED"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 border border-white/30 px-5 py-2.5 text-sm text-white transition hover:bg-white/10"
+          className="border-b border-[#a43b36] pb-1.5 text-sm text-[#25251f] transition hover:text-[#a43b36]"
         >
-          Source and evidence ledger <ExternalLink className="h-4 w-4" />
+          Source and evidence ledger <span className="text-[#a43b36]" aria-hidden="true">↗</span>
+        </a>
+        <a
+          href="https://oleeveeuh.github.io/"
+          className="border-b border-[#a43b36] pb-1.5 text-sm text-[#25251f] transition hover:text-[#a43b36]"
+        >
+          ← back to field notes
         </a>
       </div>
     </motion.section>
