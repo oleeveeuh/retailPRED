@@ -12,16 +12,16 @@ export const DemoBanner = () => {
   }
 
   return (
-    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 shadow-lg">
+    <div className="border-b border-[#d8d1c4] bg-[#fbf9f4] px-4 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" role="img" aria-label="chart">
-            📊
-          </span>
+          <span className="inline-block h-[7px] w-[7px] rounded-full bg-[#a43b36]" aria-hidden="true" />
           <div>
-            <span className="font-semibold">Historical evaluation demo</span>
-            <span className="mx-2">•</span>
-            <span className="text-blue-100 text-sm">
+            <span className="font-mono text-[10px] uppercase tracking-[0.13em] text-stone-500">
+              Historical evaluation demo
+            </span>
+            <span className="mx-2 text-stone-300">•</span>
+            <span className="text-sm text-stone-600">
               Frozen M5 evidence through May 2016; no live or production inference
             </span>
           </div>
@@ -31,7 +31,7 @@ export const DemoBanner = () => {
           href="https://github.com/oleeveeuh/retailPRED"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
+          className="inline-flex items-center gap-1.5 border-b border-[#a43b36] pb-0.5 text-xs text-[#25251f] transition hover:text-[#a43b36]"
         >
           <svg
             className="w-4 h-4"

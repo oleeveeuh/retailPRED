@@ -80,7 +80,7 @@ export const Sidebar: FC = () => {
                 transition={{ duration: 0.15 }}
                 className="flex items-center gap-3"
               >
-                <div className="w-9 h-9 bg-[#25251f] rounded-sm flex items-center justify-center">
+                <div className="w-9 h-9 bg-[#dfe1d5] rounded-sm flex items-center justify-center">
                   <BarChart3 className="w-5 h-5 text-[#89927a]" />
                 </div>
                 <div>
@@ -122,7 +122,7 @@ export const Sidebar: FC = () => {
                   rounded-sm transition-all duration-150
                   ${
                     active
-                      ? 'bg-[#25251f] text-[#89927a]'
+                      ? 'bg-[#dfe1d5] text-[#89927a]'
                       : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
                   }
                 `}

@@ -99,7 +99,7 @@ export const LatestForecastPanel: FC = () => {
       aria-label="Latest published batch forecasts"
     >
       <div className="flex items-center gap-3">
-        <div className="flex h-8 w-8 items-center justify-center bg-[#25251f]">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#dfe1d5]">
           <Satellite className="h-4 w-4 text-[#89927a]" />
         </div>
         <div>
@@ -117,7 +117,7 @@ export const LatestForecastPanel: FC = () => {
           <button
             onClick={() => snapshot.refetch()}
             disabled={snapshot.isFetching}
-            className="flex w-full items-center justify-center gap-2 bg-[#25251f] py-3 text-white transition hover:bg-[#4a4a7c] disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 bg-[#dfe1d5] py-3 text-white transition hover:bg-[#4a4a7c] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {snapshot.isFetching ? (
               <RefreshCw className="h-5 w-5 animate-spin" />

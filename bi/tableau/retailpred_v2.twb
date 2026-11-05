@@ -212,10 +212,20 @@
           <datasource-dependencies datasource="federated.retailpred_freshness">
             <column caption="Dataset" datatype="string" name="[dataset]" role="dimension" type="nominal" />
             <column caption="Use Case" datatype="string" name="[use_case]" role="dimension" type="nominal" />
+            <column caption="Evaluation Cutoff" datatype="date" name="[evaluation_cutoff]" role="dimension" type="nominal" />
+            <column caption="Extract As-Of Date" datatype="date" name="[as_of_date]" role="dimension" type="nominal" />
+            <column caption="Serving Mode" datatype="string" name="[serving_mode]" role="dimension" type="nominal" />
+            <column caption="Point-Forecast Status" datatype="string" name="[point_status]" role="dimension" type="nominal" />
+            <column caption="Uncertainty Status" datatype="string" name="[uncertainty_status]" role="dimension" type="nominal" />
             <column caption="Freshness Status" datatype="string" name="[freshness_status]" role="dimension" type="nominal" />
             <column caption="Evidence" datatype="string" name="[evidence]" role="dimension" type="nominal" />
             <column-instance column="[dataset]" derivation="None" name="[none:dataset:nk]" pivot='key' type="nominal" />
             <column-instance column="[use_case]" derivation="None" name="[none:use_case:nk]" pivot='key' type="nominal" />
+            <column-instance column="[evaluation_cutoff]" derivation="None" name="[none:evaluation_cutoff:nk]" pivot='key' type="nominal" />
+            <column-instance column="[as_of_date]" derivation="None" name="[none:as_of_date:nk]" pivot='key' type="nominal" />
+            <column-instance column="[serving_mode]" derivation="None" name="[none:serving_mode:nk]" pivot='key' type="nominal" />
+            <column-instance column="[point_status]" derivation="None" name="[none:point_status:nk]" pivot='key' type="nominal" />
+            <column-instance column="[uncertainty_status]" derivation="None" name="[none:uncertainty_status:nk]" pivot='key' type="nominal" />
             <column-instance column="[freshness_status]" derivation="None" name="[none:freshness_status:nk]" pivot='key' type="nominal" />
             <column-instance column="[evidence]" derivation="None" name="[none:evidence:nk]" pivot='key' type="nominal" />
           </datasource-dependencies>
@@ -232,7 +242,7 @@
             </encodings>
           </pane>
         </panes>
-        <rows>[federated.retailpred_freshness].[none:dataset:nk] / [federated.retailpred_freshness].[none:use_case:nk]</rows>
+        <rows>[federated.retailpred_freshness].[none:dataset:nk] / [federated.retailpred_freshness].[none:use_case:nk] / [federated.retailpred_freshness].[none:evaluation_cutoff:nk] / [federated.retailpred_freshness].[none:as_of_date:nk] / [federated.retailpred_freshness].[none:serving_mode:nk] / [federated.retailpred_freshness].[none:point_status:nk] / [federated.retailpred_freshness].[none:uncertainty_status:nk]</rows>
         <cols></cols>
       </table>
       <simple-id uuid="{ACC286F8-81C6-5C5F-B6CA-8B9A05BF1F5C}" />

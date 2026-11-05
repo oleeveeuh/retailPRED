@@ -208,7 +208,15 @@ SHEETS = (
     Sheet(
         "05 Data Status",
         "freshness",
-        (dimension("dataset", "Dataset"), dimension("use_case", "Use Case")),
+        (
+            dimension("dataset", "Dataset"),
+            dimension("use_case", "Use Case"),
+            dimension("evaluation_cutoff", "Evaluation Cutoff", "date"),
+            dimension("as_of_date", "Extract As-Of Date", "date"),
+            dimension("serving_mode", "Serving Mode"),
+            dimension("point_status", "Point-Forecast Status"),
+            dimension("uncertainty_status", "Uncertainty Status"),
+        ),
         (),
         color=dimension("freshness_status", "Freshness Status"),
         label=dimension("evidence", "Evidence"),

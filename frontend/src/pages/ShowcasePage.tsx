@@ -123,7 +123,7 @@ export const ShowcasePage: FC = () => (
     {/* Pipeline */}
     <section className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center bg-[#25251f]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#dfe1d5]">
           <Database className="h-5 w-5 text-[#89927a]" />
         </div>
         <div>
@@ -209,7 +209,7 @@ export const ShowcasePage: FC = () => (
     {/* Models */}
     <section className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center bg-[#25251f]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#dfe1d5]">
           <Cpu className="h-5 w-5 text-[#89927a]" />
         </div>
         <div>
@@ -317,7 +317,7 @@ export const ShowcasePage: FC = () => (
     {/* Tableau */}
     <section className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center bg-[#25251f]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#dfe1d5]">
           <Table2 className="h-5 w-5 text-[#89927a]" />
         </div>
         <div>
