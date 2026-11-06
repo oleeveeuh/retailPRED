@@ -27,6 +27,7 @@ import {
   type PipelineTask,
   type TaskStatus,
 } from '../content/showcase';
+import { TableauEmbed } from '../components/TableauEmbed';
 import { ExecutionTimeline } from '../components/ExecutionTimeline';
 import { SkillsProofGrid } from '../components/SkillsProofGrid';
 import { SectionEyebrow } from '../components/SectionEyebrow';
@@ -346,6 +347,13 @@ export const ShowcasePage: FC = () => (
           </motion.div>
         ))}
       </div>
+      <div className="rounded-sm border border-[#d8d1c4] bg-[#fbf9f4] p-3">
+        <TableauEmbed url="https://public.tableau.com/views/retailpred_v2/06MRTSResearchWindows" height={560} />
+        <p className="mt-2 border-t border-[#d8d1c4] pt-2 font-mono text-xs lowercase text-stone-500">
+          view 06 · mrts research windows — live from tableau public (workbook retailpred_v2):
+          the nine governed window × model rows, colored by beats-naive status
+        </p>
+      </div>
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border border-[#d8d1c4] bg-[#fbf9f4] p-4 text-xs text-stone-600">
         <span className="flex items-center gap-1">
           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
@@ -363,7 +371,14 @@ export const ShowcasePage: FC = () => (
             BI contract
           </a>
         </span>
-        <span className="text-stone-400">Public embed pending</span>
+        <a
+          href="https://public.tableau.com/views/retailpred_v2/06MRTSResearchWindows"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 text-[#25251f] underline hover:no-underline"
+        >
+          Published on Tableau Public <ExternalLink className="h-3.5 w-3.5" />
+        </a>
       </div>
     </section>
 

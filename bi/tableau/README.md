@@ -46,3 +46,10 @@ The tracked workbook is intentionally local. Publishing to a Tableau Public
 profile is a separate, explicit release action because it uploads the embedded
 evaluation evidence and makes the visualization public. No credentials or
 Tableau profile identifiers are stored in this repository.
+
+Published: workbook `retailpred_v2` on Tableau Public (all six views,
+including 06 MRTS Research Windows), owner release 2026-11-05. The showcase
+embeds view 06 from
+`https://public.tableau.com/views/retailpred_v2/06MRTSResearchWindows`.
+After any governed extract rebuild, republishing remains a manual release
+action so the public surface never diverges silently from `main`.
