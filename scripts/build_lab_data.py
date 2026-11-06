@@ -197,7 +197,7 @@ def window_categories(satellite_results: Path) -> None:
             ),
         },
         "windows": list(window_keys),
-        "models": ["seasonal_naive", "theta_method", "regime_switch_policy", "global_lightgbm"],
+        "models": ["seasonal_naive", "regime_switch_policy", "theta_method", "global_lightgbm"],
         "mean_category_wape": means,
         "rows": rows,
     }

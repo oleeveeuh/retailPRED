@@ -194,9 +194,9 @@ export const gateCandidates: GateCandidate[] = [
 ];
 
 export const MODEL_COLORS: Record<string, string> = {
-  seasonal_naive: '#9db4d0',
+  seasonal_naive: '#1E342E',
   global_lightgbm: '#d9a05e',
-  theta_method: '#a43b36',
+  theta_method: '#482728',
   regime_switch_policy: '#89927a',
 };
 

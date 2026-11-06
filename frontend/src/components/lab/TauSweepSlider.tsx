@@ -80,8 +80,8 @@ export const TauSweepSlider: FC = () => {
               isAnimationActive={false}
               name="switched policy"
             />
-            <ReferenceLine y={100 * references.naive} stroke="#9db4d0" strokeDasharray="4 3" />
-            <ReferenceLine y={100 * references.theta} stroke={CRIMSON} strokeDasharray="4 3" />
+            <ReferenceLine y={100 * references.naive} stroke="#1E342E" strokeDasharray="4 3" />
+            <ReferenceLine y={100 * references.theta} stroke="#482728" strokeDasharray="4 3" />
             <ReferenceLine y={100 * references.blend} stroke="#b86a62" strokeDasharray="4 3" />
             <ReferenceLine
               y={guardrailY}
