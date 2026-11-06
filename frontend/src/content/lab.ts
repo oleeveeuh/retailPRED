@@ -197,7 +197,7 @@ export const MODEL_COLORS: Record<string, string> = {
   seasonal_naive: '#343330',
   global_lightgbm: '#a38a1c',
   theta_method: '#a43b36',
-  regime_switch_policy: '#0d5a8a',
+  regime_switch_policy: '#89927a',
 };
 
 export const MODEL_LABELS: Record<string, string> = {
