@@ -194,10 +194,10 @@ export const gateCandidates: GateCandidate[] = [
 ];
 
 export const MODEL_COLORS: Record<string, string> = {
-  seasonal_naive: '#6b6b66',
-  global_lightgbm: '#d4708c',
+  seasonal_naive: '#9db4d0',
+  global_lightgbm: '#d9a05e',
   theta_method: '#a43b36',
-  regime_switch_policy: '#2b579b',
+  regime_switch_policy: '#89927a',
 };
 
 export const MODEL_LABELS: Record<string, string> = {

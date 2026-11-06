@@ -23,7 +23,7 @@ const INK = '#25251f';
 const INK2 = '#52514e';
 const MUTED = '#77776c';
 const GRID = '#d8d1c4';
-const POLICY = '#2b579b';
+const POLICY = '#89927a';
 const CRIMSON = '#a43b36';
 
 const pct = (value: number) => `${(100 * value).toFixed(2)}%`;
@@ -80,7 +80,7 @@ export const TauSweepSlider: FC = () => {
               isAnimationActive={false}
               name="switched policy"
             />
-            <ReferenceLine y={100 * references.naive} stroke="#6b6b66" strokeDasharray="4 3" />
+            <ReferenceLine y={100 * references.naive} stroke="#9db4d0" strokeDasharray="4 3" />
             <ReferenceLine y={100 * references.theta} stroke={CRIMSON} strokeDasharray="4 3" />
             <ReferenceLine y={100 * references.blend} stroke="#b86a62" strokeDasharray="4 3" />
             <ReferenceLine
@@ -121,7 +121,7 @@ export const TauSweepSlider: FC = () => {
           step={0.02}
           value={tau}
           onChange={(e) => setTau(Number(e.target.value))}
-          className="h-1 w-full cursor-pointer accent-[#2b579b]"
+          className="h-1 w-full cursor-pointer accent-[#89927a]"
           aria-label="policy threshold tau"
         />
         <span className="w-14 shrink-0 font-mono text-sm" style={{ color: INK2 }}>

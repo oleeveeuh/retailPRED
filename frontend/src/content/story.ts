@@ -219,8 +219,8 @@ export const storyChapters: StoryChapter[] = [
         figure: {
           src: storyImage('policy_categories_report.png'),
           caption:
-            'Per-category WAPE delta, naive minus policy, on the report window; positive (indigo) means the policy was better. Ten of eleven categories improved, and the one loss is sporting goods (−1.55pp).',
-          alt: 'Horizontal bar chart of the WAPE delta per category on the report window; ten indigo positive bars and one crimson negative bar for sporting goods.',
+            'Per-category WAPE delta, naive minus policy, on the report window; positive (sage) means the policy was better. Ten of eleven categories improved, and the one loss is sporting goods (−1.55pp).',
+          alt: 'Horizontal bar chart of the WAPE delta per category on the report window; ten sage positive bars and one crimson negative bar for sporting goods.',
         },
       },
       {
@@ -263,7 +263,7 @@ export const storyChapters: StoryChapter[] = [
         figure: {
           src: storyImage('policy_reliability.png'),
           caption:
-            'Reliability of P(theta wins): CHOOSE out-of-fold deciles (indigo, n=77, Brier 0.155) transfer badly to the report window (diamonds, n=99, Brier 0.276) — worse than always calling theta at the 72.7% base rate. Base-rate-robust calibration is the spec for any future policy.',
+            'Reliability of P(theta wins): CHOOSE out-of-fold deciles (sage, n=77, Brier 0.155) transfer badly to the report window (diamonds, n=99, Brier 0.276) — worse than always calling theta at the 72.7% base rate. Base-rate-robust calibration is the spec for any future policy.',
           alt: 'Reliability diagram comparing CHOOSE out-of-fold probability deciles against the frozen report-window deciles, showing the calibration degradation.',
         },
       },

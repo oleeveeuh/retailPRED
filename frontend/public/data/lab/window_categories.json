@@ -1,7 +1,7 @@
 {
   "provenance": {
-    "generated_at": "2026-11-06T07:09:27.657331+00:00",
-    "platform_code_revision": "705f1bfc173c96ebe0e2ef52a45a6fe84ef41e6f",
+    "generated_at": "2026-11-06T07:25:32.030013+00:00",
+    "platform_code_revision": "b1f05ff0bf169d6f00700b49940c67de88c48c51",
     "data_sha256": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
     "source_artifacts": [
       "data/v2/evidence/mrts_research_windows/mrts_window_summary.json",
