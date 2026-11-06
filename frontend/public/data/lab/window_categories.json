@@ -1,7 +1,7 @@
 {
   "provenance": {
-    "generated_at": "2026-11-05T23:19:27.874796+00:00",
-    "platform_code_revision": "7cf56cc93722bb0ce3770012e120a10f2938afc0",
+    "generated_at": "2026-11-06T07:09:27.657331+00:00",
+    "platform_code_revision": "705f1bfc173c96ebe0e2ef52a45a6fe84ef41e6f",
     "data_sha256": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
     "source_artifacts": [
       "data/v2/evidence/mrts_research_windows/mrts_window_summary.json",
@@ -16,9 +16,9 @@
   ],
   "models": [
     "seasonal_naive",
-    "global_lightgbm",
     "theta_method",
-    "regime_switch_policy"
+    "regime_switch_policy",
+    "global_lightgbm"
   ],
   "mean_category_wape": {
     "seasonal_naive": {
