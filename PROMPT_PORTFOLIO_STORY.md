@@ -114,6 +114,30 @@ it scored. Results charts belong in the story; the card gets the method.
 
 ## Deliverable 3 — the entry block and its story
 
+**The title is the recruiting hook — write it last, test it hardest.**
+
+- Shape: `<project name> — <thesis clause>` when the project has a name
+  worth anchoring ("retailPRED — demand forecasting that survives real
+  time"); otherwise lead with the domain gerund: `<Gerund domain> —
+  <methodology clause>` ("Classifying Parkinson's from drawings —
+  subject-safe evaluation of a multimodal MoE").
+- The clause carries three things in reading order: the **domain** (a
+  recruiter skimming six cards should get the discipline within the first
+  two words), the **problem/context**, and the **methodology's flavor** —
+  usually through one strong verb: "survives real time", "gated by
+  evidence", "judged by what it knew".
+- **No wit that doesn't land.** Puns and meme phrases ("forecasting, with
+  receipts") were tried and rejected — the wit must live in the precision
+  of the claim, not in wordplay.
+- **Coordinate with the subtitle: never share a key verb or claim.** The
+  subtitle owns the drama (the refusal, the twist); the title owns the
+  thesis. retailpred's pair: title "…survives real time" / subtitle
+  "…refused to serve its own model."
+- Mechanics: the site renders lowercase — write the source naturally and
+  keep the spaced em-dash separator. Wrap test: at most two lines on the
+  gallery card at 20px Spectral, i.e. ≤ ~60 characters after the name.
+  Screenshot the card (verification step 3) before committing.
+
 Follow the sibling prompt's schema exactly. The narrative shape:
 
 - **Prologue**: kicker `the question · where this started`, title `what was
