@@ -3,11 +3,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
-import { SATELLITE_URL, storyChapters } from '../content/story';
+import { SATELLITE_URL, storyChapters, v1Chapters } from '../content/story';
 
 const BANNED_CLAIMS = ['90.2', '0.26%', 'production database', 'currently deployed'];
 
-const serialized = JSON.stringify({ storyChapters });
+const serialized = JSON.stringify({ storyChapters, v1Chapters });
 
 const repoRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -136,5 +136,42 @@ describe('story content', () => {
 
   it('keeps the satellite constant pointed at the public repository', () => {
     expect(SATELLITE_URL).toBe('https://github.com/oleeveeuh/retailPRED-satellite');
+  });
+
+  it('tells exactly three v1 chapters with unique ids', () => {
+    expect(v1Chapters).toHaveLength(3);
+    expect(new Set(v1Chapters.map((chapter) => chapter.id)).size).toBe(3);
+    for (const chapter of v1Chapters) {
+      expect(chapter.kicker.length).toBeGreaterThan(0);
+      expect(chapter.title.length).toBeGreaterThan(0);
+      expect(chapter.lede.length).toBeGreaterThan(0);
+      const paragraphs = chapter.blocks.filter((block) => block.kind === 'paragraph');
+      expect(paragraphs.length).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it('links every v1 chapter to platform evidence that resolves', () => {
+    for (const chapter of v1Chapters) {
+      expectPlatformHrefResolves(chapter.evidence.href);
+    }
+  });
+
+  it('freezes the audited v1 numbers without the fabricated headline', () => {
+    const text = (id: string) => {
+      const found = v1Chapters.find((entry) => entry.id === id)!;
+      return [
+        found.lede,
+        ...found.blocks.map((block) => (block.kind === 'paragraph' ? block.text : '')),
+      ].join(' ');
+    };
+    // README §"The v1 → v2 story" / docs/v2/AUDIT.md.
+    expect(text('v1-numbers-without-meaning')).toContain('9.76%');
+    expect(text('v1-numbers-without-meaning')).toContain('14.11%');
+    expect(text('v1-numbers-without-meaning')).toContain('429');
+    expect(text('v1-numbers-without-meaning')).toMatch(/pseudo-replication/i);
+    // The fabricated accuracy figure is never restated — the evidence link
+    // carries it (BANNED_CLAIMS already enforces the '90.2' literal above).
+    expect(text('v1-epistemic-not-operational')).toContain('29%');
+    expect(text('v1-epistemic-not-operational')).toMatch(/fail-closed/);
   });
 });

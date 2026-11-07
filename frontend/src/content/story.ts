@@ -261,6 +261,15 @@ export const storyChapters: StoryChapter[] = [
       {
         kind: 'figure',
         figure: {
+          src: storyImage('databricks_cycle.png'),
+          caption:
+            'The scheduled cycle: four Databricks tasks per run — pull the Census release (immutable silver merge), score behind the fail-closed promotion gate (the refusal path is the state verified on a live workspace run), evaluate matured targets into immutable realized-error rows, and publish one contract-validated JSON to the live-data branch. Cron 14:30 UTC daily, declared paused; is_live stays false until the recurring schedule executes end to end. Airflow runs a separate weekly validation cadence, Mondays 02:00 UTC.',
+          alt: 'Schematic of the four-task scheduled cycle: pull Census release, score the promoted model behind a fail-closed gate that keeps serving empty, evaluate realized errors with matured actuals feeding the next gate, and publish a snapshot to the live-data branch.',
+        },
+      },
+      {
+        kind: 'figure',
+        figure: {
           src: storyImage('policy_reliability.png'),
           caption:
             'Reliability of P(theta wins): CHOOSE out-of-fold deciles (sage, n=77, Brier 0.155) transfer badly to the report window (diamonds, n=99, Brier 0.276) — worse than always calling theta at the 72.7% base rate. Base-rate-robust calibration is the spec for any future policy.',
@@ -275,6 +284,82 @@ export const storyChapters: StoryChapter[] = [
     evidence: {
       label: 're-open conditions (satellite FINDINGS.md §5)',
       href: satelliteDoc('FINDINGS.md'),
+    },
+  },
+];
+
+/**
+ * v1 — the undergraduate GCP + Airflow pipeline this whole rebuild answers.
+ * Every claim below is copied from the repository's own audit trail
+ * (docs/v2/AUDIT.md, README §"The v1 → v2 story"); the fabricated headline
+ * accuracy figure is deliberately not restated here — the evidence link
+ * carries it.
+ */
+export const v1Chapters: StoryChapter[] = [
+  {
+    id: 'v1-what-it-was',
+    chapter: 0,
+    kicker: 'chapter 00 · v1 · gcp + airflow',
+    title: 'the original automated pipeline',
+    lede:
+      'v1 worked as orchestration — and that is exactly what makes its failure worth diagnosing precisely.',
+    blocks: [
+      {
+        kind: 'paragraph',
+        text: 'v1 was the undergraduate build: an Airflow-scheduled pipeline on GCP that expanded monthly Census values into synthetic weekly rows, computed features with inclusive rolling windows — the target month leaked into its own features — served per-category model pickles through a SQLite-backed FastAPI, and presented the results on a Vercel dashboard. Jobs ran on schedule, data flowed, the site rendered.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'That is what makes v1 the useful foil. Every operational layer functioned: scheduling, ingestion, serving, presentation. The failures were not in the plumbing — they were in what the plumbing was allowed to claim. The full undergraduate implementation is preserved on the v1-undergrad tag of this repository, isolated from v2 evidence on purpose.',
+      },
+    ],
+    evidence: {
+      label: 'original v1 audit (docs/v2/AUDIT.md)',
+      href: platformDoc('docs/v2/AUDIT.md'),
+    },
+  },
+  {
+    id: 'v1-numbers-without-meaning',
+    chapter: 0,
+    kicker: 'chapter 00 · v1 · the validation snapshot',
+    title: 'numbers without meaning',
+    lede:
+      'a validation snapshot that looks healthy and means nothing is worse than no snapshot at all.',
+    blocks: [
+      {
+        kind: 'paragraph',
+        text: 'The validation snapshot looked healthy: 9.76% MAPE for LightGBM against 14.11% for seasonal naive — a convincing margin, on 429 validation rows. But those rows were monthly actuals repeated across weekly targets. Pseudo-replication flatters every model equally while making the sample look sixteen times larger than the data underneath it.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'The neural entries in the same snapshot were heuristic outputs from a retired pipeline rather than measurements of any deployed model, and the published demo stated a headline accuracy figure that no deployed model had produced. Nothing in the stack could say what the numbers meant — and nothing in it could fail loudly enough for anyone to notice.',
+      },
+    ],
+    evidence: {
+      label: 'original v1 audit (docs/v2/AUDIT.md)',
+      href: platformDoc('docs/v2/AUDIT.md'),
+    },
+  },
+  {
+    id: 'v1-epistemic-not-operational',
+    chapter: 0,
+    kicker: 'chapter 00 · v1 · the verdict',
+    title: 'epistemic, not operational',
+    lede:
+      'the diagnosis that shaped everything in the v2 tab: orchestration was never the problem.',
+    blocks: [
+      {
+        kind: 'paragraph',
+        text: 'The audit’s verdict: v1’s failures were epistemic, not operational. The pipeline could not have produced a single sentence of the v2 story — not “LightGBM beats naive by 29% on revised history, then loses in real time”, not “the gate refused the champion”, not “the holdout was scored once” — because nothing in v1 was designed to fail, to freeze a criterion in advance, or to separate what was known at decision time from what revisions said later.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'So the rebuild asked what the pipeline should enforce, not just schedule: versioned point-in-time storage, predeclared gates, fail-closed serving. The same 11 Census categories carried over. The always-on serving posture did not — the measurement work showed no MRTS model had earned live inference, and v2 declines to pretend otherwise.',
+      },
+    ],
+    evidence: {
+      label: 'the v1 → v2 decision (docs/v2/DECISIONS.md)',
+      href: platformDoc('docs/v2/DECISIONS.md'),
     },
   },
 ];

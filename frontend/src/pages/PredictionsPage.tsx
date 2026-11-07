@@ -25,6 +25,7 @@ import {
 
 import { v2ForecastsApi } from '../api/v2Forecasts';
 import { LatestForecastPanel } from '../components/LatestForecastPanel';
+import { PipelineCyclePanel } from '../components/PipelineCyclePanel';
 
 const FIXTURE = {
   dataset: 'm5' as const,
@@ -95,6 +96,8 @@ export const PredictionsPage: FC = () => {
           </p>
         </div>
       </div>
+
+      <PipelineCyclePanel />
 
       <LatestForecastPanel />
 
