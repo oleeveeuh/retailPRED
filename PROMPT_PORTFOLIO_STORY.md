@@ -1,200 +1,170 @@
-# Portfolio story, themed figures, and Tableau page integration — repository prompt
+# Portfolio entry generator — paste into any project's session
 
-Work in `~/retailPRED` (the public platform repo; the Pages site at
-[oleeveeuh.github.io/retailPRED](https://oleeveeuh.github.io/retailPRED/)
-deploys from `main`). Read `README.md`, `docs/v2/STATUS.md`,
-`docs/v2/M3_SATELLITE_FINDINGS.md`, `docs/v2/M3_VINTAGE_BACKTEST.md`,
-`scripts/audit_publication.py`, and the frontend under `frontend/src/`
-(`pages/ShowcasePage.tsx`, `pages/BusinessDashboard.tsx`,
-`components/TableauEmbed.tsx`, `content/showcase.ts`, plus the owner's new
-`content/skills.ts`, `components/SkillsProofGrid.tsx`,
-`components/ExecutionTimeline.tsx`, `components/SectionEyebrow.tsx`)
-before writing anything. The research satellite lives at
-[oleeveeuh/retailPRED-satellite](https://github.com/oleeveeuh/retailPRED-satellite)
-(public, branch `main`); read its `POLICY_FINDINGS.md`, `FINDINGS.md`,
-`scripts/research_figures.py`, `scripts/method_schematic.py`, and
-`scripts/window_summary.py` for raw material. This build answers one question: **does the portfolio now tell
-the full data-exploration story — narrative, figures, and the governed
-Tableau views — without overclaiming a single thing?**
+You are working in a project repository. The goal: produce **one complete
+portfolio entry** on [oleeveeuh.github.io](https://oleeveeuh.github.io) —
+the `projects.js` block, the card photo (a method schematic), the story
+figures, and the dialog story — matching the `retailpred` reference entry.
+Scope ends there: **no showcase website, no new pages, no site restyling.**
+The entry, its figures, and its story are the whole deliverable. There is
+nothing to deploy per project; the entry lives on the existing site.
 
-## Why this build (measured, do not re-litigate)
+## Read first
 
-- The vintage gate refused the LightGBM (8.49% vs naive 8.16% real-time);
-  the satellite decomposed the failure, tested five predeclared hypotheses,
-  found theta (best real-time MRTS forecaster on every window), built the
-  regime-switch policy layer, and refused the policy too (beats naive 10/11
-  and the blend, loses to pure theta 7.02% vs 7.43%). Every number is
-  frozen; nothing is re-measured here.
-- The platform now records the research as evidence
-  (`docs/v2/M3_SATELLITE_FINDINGS.md`, extract `mrts_research_windows.csv`,
-  workbook view `06 MRTS Research Windows` — platform commit `0ad645b`).
-- The site already claims `Tableau — 6 governed views` and lists six
-  `tableauViews`; the dashboard page and story surfaces must now match.
+- **This project's frozen artifacts** — committed results JSONs, frozen
+  docs, the README's own measured claims. Every number in the entry must be
+  copied from one of these, and you must be able to name the file it came
+  from. A project with no frozen artifacts gets a placeholder entry: no
+  `previewImage`, no figures, no numbers (the site renders placeholder SVGs
+  for entries without figures — that is the honest state, not a failure).
+- **`~/portfolio-site/PROMPT_PROJECT_ENTRIES.md`** — authoritative for site
+  mechanics: entry schema, story block grammar, renderer behavior, skill
+  groups, categorization, pitfalls. Follow it; this prompt adds the settled
+  styling and the workflow around it.
+- **`~/portfolio-site/projects.js`** — find `id: "retailpred"`. That entry
+  is the reference shape: copy its structure exactly, do not invent.
+- **`~/portfolio-site/app.js`** — renderers, `techMark()`, `artSVG()`.
 
-## Known state (artifacts you must reuse, not rebuild)
+## The styling is settled — copy it, never re-derive it
 
-- Owner-in-progress edits are expected in the working tree (new showcase
-  components, `.gitignore`, `package.json`, `scripts/audit_publication.py`,
-  `docs/images/showcase.png`, possibly more). **Never stage, revert, or
-  rework files the owner is editing** unless a step below explicitly
-  requires the same file; if it does, coordinate — build on their code, do
-  not restyle it. `git status` first, every time.
-- Frozen numbers live only in named artifacts. Copy numbers into prose and
-  captions from exactly these, never from memory or other files:
-  - Full-grid gate: `reference` numbers in `docs/v2/M3_VINTAGE_BACKTEST.md`
-    (naive 8.16% / LightGBM 8.49%, 4/11 improved) and the revised-history
-    benchmark rows in `data/v2/mrts_model_summary.json` — these two are
-    different measurements; never average or mix them.
-  - Window research: `data/v2/evidence/mrts_research_windows/
-    mrts_window_summary.json` (9 rows; exploration 7.51 θ vs 9.30 naive;
-    report 7.02 θ / 7.43 policy / 7.77 blend vs 10.51 naive; holdout 4.98 θ
-    vs 5.15 naive, single frozen run).
-  - Policy detail: `results/policy_report.json` on the satellite
-    (10/11 vs naive, CI +0.70..+5.13pp; Brier 0.155→0.276; precision 0.716,
-    recall 0.806; n=99 REPORT pairs / 77 CHOOSE training rows).
-- Figures are generated by scripts, never hand-edited:
-  `~/retailPRED-satellite/scripts/research_figures.py`,
-  `scripts/figures.py`, and `scripts/method_schematic.py`, reading
-  frozen `results/*.json` only.
-- The workbook is rebuilt only by `make bi-extracts AS_OF_DATE=<date>` +
-  `make tableau-workbook`; its publishing boundary is documented in
-  `bi/tableau/README.md` (tracked-local artifact; Tableau Public upload is
-  a separate, explicit release action).
-- The claim ladder is enforced by `scripts/audit_publication.py`
-  (`make publication-check`): implemented → locally verified → executed on
-  Databricks → scheduled → publicly deployed. Nothing on these pages may
-  skip rungs.
+Fonts are installed locally as static TTFs in `~/Library/Fonts` (Source
+Sans 3 400/600/700; IBM Plex Mono 400/500). Verify before rendering:
 
-## Part 1 — the data-exploration story, blog style
+```python
+from matplotlib import font_manager as fm
+fm.findfont(fm.FontProperties(family="Source Sans 3"), fallback_to_default=False)
+```
 
-Single source of truth is a typed content module `frontend/src/content/
-story.ts` rendered by a new `StoryPage.tsx` on a `#/story` route wired into
-the existing HashRouter, following the exact patterns of
-`showcase.ts`/`ShowcasePage.tsx` (typed interfaces, exported arrays/objects,
-a content test in `frontend/src/__tests__/storyContent.test.ts` asserting
-chapter count, unique ids, and that every chapter's `evidenceHref` and
-`figureSrc` resolve). Do not duplicate the story into `docs/` — link to the
-route from `ShowcasePage` and add one line to the README's layout or
-scoreboard pointing at `#/story`.
+```python
+# figure rcParams — every figure script in the house style starts here
+plt.rcParams["font.sans-serif"] = ["Source Sans 3", "Helvetica Neue", "Arial",
+                                   "DejaVu Sans"]
+plt.rcParams["font.monospace"] = ["IBM Plex Mono", "Courier New",
+                                  "DejaVu Sans Mono"]
+plt.rcParams["font.family"] = "sans-serif"
+```
 
-Chapter outline (fixed; keep chapter count at 8):
+- **Source Sans 3** is the body voice: all primary figure text.
+- **IBM Plex Mono** is the caption voice: footnotes, cron/cadence lines,
+  annotation eyebrows, artifact labels under nodes.
+- matplotlib has no letter-spacing. Headings mimic the site's
+  letter-spaced mono eyebrows with space-joined caps:
+  `" ".join("THE TITLE")` at 14pt.
+- Traps: matplotlib **silently falls back to DejaVu Sans** when a family is
+  missing — check `findfont`, don't trust the render. macOS Helvetica Neue
+  is a `.ttc` matplotlib cannot load at all; never first in a stack.
 
-1. **The gate that said no** — the 2026-11-04 vintage gate, predeclared
-   criteria, fail-closed outcome; revised-history edge vs real-time
-   collapse.
-2. **Where the failure lives** — equal-weighted vs pooled metrics,
-   h=12 recursion, regime concentration, revision correlation
-   (Spearman −0.755).
-3. **The hypothesis graveyard** — H1–H4 refuted, one line each, with the
-   log-ratio target lesson.
-4. **Theta** — the 2000 method that wins exploration and the report window;
-   trend-tracking at short horizons.
-5. **The holdout** — one run, +0.17pp, 7/11; why the category criterion
-   fails and the verdict stands.
-6. **Two questions about time** — window length is second-order; regimes
-   decide (§8–§9 of satellite FINDINGS).
-7. **The switch** — the policy layer's design (causal features, OOF
-   isotonic, predeclared τ), 10/11 vs naive, and the honest loss to pure
-   theta; calibration across regimes as the open defect.
-8. **What remains open** — the ≈2027 re-gate path, theta as third
-   benchmark, base-rate-robust calibration as the spec for any future
-   policy.
+Palette (the fieldnotes theme — the whole site reads as one system):
 
-Voice: first-person "field notes" matching the README — measured numbers
-inline, negative results as headline, no superlatives, every chapter ends
-with an `evidence` link (platform doc or satellite file on github.com).
-State the sample-size constraint wherever the policy appears (n=99 REPORT
-pairs, origin-block bootstrap CIs). Blog tone may be warmer than the docs,
-but every sentence with a number must survive the frozen-artifact check
-above.
+```python
+SURFACE = "#e4e4d7"   # card-art light green — the preview's background
+PAPER   = "#fbf9f4"   # cream card surface
+INK     = "#25251f"
+INK2    = "#52514e"
+MUTED   = "#77776c"
+GRID    = "#d8d1c4"
+SAGE    = "#89927a"   # positive / site accent
+SAGE_LIGHT = "#dfe1d5"
+WINE    = "#482728"   # failure / refusal voice
+CRIMSON = "#a43b36"   # site red accent — negatives, links
+SUMI    = "#1E342E"   # neutral baseline (deepest tone)
+ROSE    = "#d4708c"   # fourth identity hue
+```
 
-## Part 2 — figures matched to the portfolio theme, then inserted
+Voice mapping: **sage = positive**, **wine/crimson = failure, refusal,
+negative results** — negative results are headline material, never buried.
+Never place rose beside wine or crimson; never introduce a fifth identity
+hue; fold extras into labels.
 
-- Extract the theme from the frontend (CSS custom properties / Tailwind
-  tokens the owner's new components use): surface, ink, muted, accent hues.
-- **Fonts are settled (2026-11-06) — use exactly these, do not re-derive.**
-  The frontend and the portfolio card entry load the same three Google
-  fonts: Source Sans 3 (body voice), IBM Plex Mono (labels, captions,
-  eyebrows), Spectral (headings). Figures take Source Sans 3 for all
-  text (`FIELDNOTES["font_sans"]` in `research_figures.py`) and IBM Plex
-  Mono for the caption/annotation voice (e.g. the schematic's footnote
-  line). Both are installed locally as static TTFs in `~/Library/Fonts`
-  (Source Sans 3 400/600/700; IBM Plex Mono 400/500) so matplotlib
-  resolves them — without them matplotlib silently falls back to DejaVu
-  Sans, and macOS Helvetica Neue is a `.ttc` matplotlib cannot load at
-  all, so never put it first in a font stack. Matplotlib has no
-  letter-spacing: the card heading mimics the site's letter-spaced mono
-  eyebrows with space-joined caps (`" ".join("VINTAGE-SAFE")`-style).
-  Themed re-render: `research_figures.py --theme fieldnotes --scale 2
-  --out <dir>` and `method_schematic.py <dir>/method_schematic.png` —
-  the schematic canvas is padded to the portfolio card's 2:1 art-frame
-  aspect so `object-fit: cover` crops nothing legible; keep that
-  property when editing.
-- Restyle ONLY presentation: extend the satellite figure scripts with a
-  theme parameter (surface/ink/grid/accent hexes + the font stack above)
-  so `research_windows.png`, `policy_categories_report.png`,
-  `policy_tau_sweep.png`, and `policy_reliability.png` render in the
-  site's palette at `frontend/public/images/story/` (retina 2x,
-  transparent or site-surface background per the theme's convention).
-- Numbers are untouched: same frozen JSONs, same axes, same annotations.
-  Keep categorical identity colors distinguishable against the new surface
-  — validate adjacent-pair CVD/contrast before committing (a palette that
-  fails contrast needs direct labels, which these figures already carry).
-- If the theme is dark: figures get a dark-surface variant; do not ship
-  light figures on a dark page.
-- Insert each chapter's figure(s) via the content module (`figureSrc` +
-  caption + alt text naming the measured quantity), referenced the same way
-  existing frontend images are referenced (respect `VITE_PAGES_BASE=/retailPRED/`).
-- The satellite keeps its canonical copies; commit the themed regeneration
-  as a new parameter/default-off there too so the satellite remains the
-  figure source of truth.
+**Card canvas (the trap that cost sessions):** the gallery art box is
+320.7×160 (aspect ≈ 2.004) and shows previews with `object-fit: cover`.
+Render with `bbox_inches="tight"`, then **pad the canvas to the exact
+aspect with the surface color** — the wings are invisible because the
+padding color IS the card background. Copy the save block verbatim from
+`~/retailPRED-satellite/scripts/method_schematic.py` (the `io.BytesIO` →
+`plt.imread` → wing-padding → `plt.imsave` block). `figsize ≈ (6.42, 3.3)`;
+type 7–16pt; `pad_inches=0.2`.
 
-## Part 3 — the Tableau workbook on the page
+## Deliverable 1 — the card photo: a method schematic
 
-- Read `TableauEmbed.tsx` and `BusinessDashboard.tsx` first. Then exactly
-  one of these, decided by evidence, not preference:
-  1. If the page embeds published Tableau Public views: add view `06 MRTS
-     Research Windows` to the embedded set ONLY if the published workbook
-     actually contains it. It does not yet — the tracked workbook is local
-     by design. So: surface view 06 as a clearly-labeled local-artifact
-     card (workbook + extract description, link to
-     `bi/tableau/retailpred_v2.twb` on GitHub, "publishes with the next
-     manual Tableau Public release") and leave the embed list untouched
-     until the owner republishes. Do not fabricate an embed URL.
-  2. If the page renders local fallback cards (the fail-closed pattern):
-     update it to all six views from `tableauViews`, same unavailable
-     semantics as the snapshot panel.
-- Either way: the dashboard page must state the publishing boundary in one
-  line ("workbook is a tracked local artifact; Tableau Public publication
-  is a separate release action"), and view 06's card must carry its
-  one-liner from `showcase.ts`.
-- If the owner later republishes to Tableau Public, flipping the embed on
-  is a two-line change — leave a `TODO(owner)` comment marking exactly
-  which constant/URL to update.
+The card is the project's hook: it shows **how the project works**, not how
+it scored. Results charts belong in the story; the card gets the method.
+
+- No axes, no grid, no tick chrome. Flat shapes on `SURFACE`; the figure's
+  facecolor IS the background, so the preview fills edge-to-edge.
+- Direct-labeled throughout; real names, dates, and protocol values from
+  the frozen artifacts are welcome; **no metrics on the card**.
+- Reference implementations (copy their structure): `method_schematic.py`
+  (band layout: staircase/flow band + secondary band),
+  `databricks_cycle_schematic.py` (loop/flow with a fail-closed branch),
+  `gcp_flow_schematic.py` (pipeline with wine failure sites pinned at their
+  nodes). Wine dashed annotations marking failure sites on a flow are house
+  style — that honesty is the brand.
+- Write the script in the project repo (generation lives where the data
+  lives), render, and copy the PNG to
+  `~/portfolio-site/assets/<projectid>-<slug>.png`.
+
+## Deliverable 2 — story figures
+
+- Generated from the project's frozen artifacts only, one per chapter that
+  earns one. 2× retina (~2200 px wide for charts). Captions carry the
+  numbers, the reading ("lower is better"), and sample sizes.
+- Reference: `~/retailPRED-satellite/scripts/research_figures.py`
+  (`--theme fieldnotes --scale 2`) for the themed chart pattern.
+- Same deploy: `~/portfolio-site/assets/<projectid>-<slug>.png`.
+
+## Deliverable 3 — the entry block and its story
+
+Follow the sibling prompt's schema exactly. The narrative shape:
+
+- **Prologue**: kicker `the question · where this started`, title `what was
+  I investigating?` (or the project's equivalent), one paragraph: state the
+  question plainly, then the surprising obstacle — and stop there.
+- **A predecessor earns chapter 00.** If the project replaces or audits an
+  earlier version, give it `chapter 00 · v1` with the old system's summary,
+  its measured numbers, and the verdict — and end that section with the
+  transition paragraph that forks the question into the chapters that
+  follow ("…every chapter after this one is the same question asked one
+  layer deeper").
+- **Chapters**: kicker `chapter NN · <date or phase>`; one idea per
+  paragraph, 3–7 sentences; figures placed where they belong; each chapter
+  carries or links its evidence.
+- **`result`**: the open path and the lesson — never a victory lap.
+- **Voice**: first person, field-notes register. Measured numbers inline
+  with their artifact named. Negative results as headline. No superlatives,
+  nothing "planned" presented as done. Every sentence with a number must
+  survive the check: which frozen file did this come from?
+- If the project has a retired legacy stack, it gets its own first
+  `technologyGroups` entry with `v1: true` — the renderer draws the wine
+  **v1 sticker** and dashed chips, so retired skills read as history, not
+  current claims. Never mix retired skills into current groups.
+- Extend `techMark()` in app.js for any new glyph-worthy skill; unknown
+  skills fall back to `⌘` — never leave a broken mapping for a skill that
+  deserves one.
+
+## Verification — run all, in order
+
+1. `node --check projects.js && node --check app.js`.
+2. **Cover-crop simulation** on the preview PNG (PIL): scale to the art box
+   aspect with the cover rule (scale = max(box_w/w, box_h/h), center-crop)
+   and confirm nothing legible is cropped — the whole title and caption
+   line must survive.
+3. Serve `~/portfolio-site` (`python3 -m http.server`), screenshot the
+   gallery card, then open the dialog (click the card — an iframe wrapper
+   with `contentDocument.querySelector('.project-card').click()` works in
+   headless Chrome) and screenshot the summary (skill groups, sticker) and
+   the story (chapter 00, figures). Fix collisions before shipping.
+4. Read the entry aloud against the artifacts: every number → named file.
+   Anything you cannot source, delete.
 
 ## Boundaries
 
-- "Revise current commits" means **new commits on top of the current
-  state** — no history rewriting, no rebasing, no force pushes.
-- Frozen evidence (`data/v2/`, `bi/`, `reference/`, both repos' `results/`)
-  is read-only. Figures change style, never values.
-- Honor `prefers-reduced-motion` in any new animation (the site already
-  does; keep the pattern).
-- Gates before done: `frontend` vitest suite green (respect the frozen
-  legacy-warning cap), `.venv-v2/bin/python -m pytest tests/` green,
-  `make publication-check` green (this is the claim-language gate — run it
-  after every content change), workbook structural tests green if the
-  workbook is touched (it should not need to be).
-- One commit per component: (1) story content + route + test, (2) themed
-  figures + insertion, (3) Tableau page integration, (4) screenshot
-  refresh (owner's reduced-motion flow) + README embed + link lines.
-- Do not push. The owner pushes `main` (Pages deploys on push), and the
-  owner may batch it with their own in-progress entry work.
-- End every commit message with the Claude Code attribution line.
-
-## Deliverables
-
-1. `frontend/src/content/story.ts` + `pages/StoryPage.tsx` + route + content test — the eight-chapter story.
-2. Themed figure set under `frontend/public/images/story/` + satellite script theme parameter + insertion into chapters.
-3. `BusinessDashboard`/`TableauEmbed` integration per the Part-3 decision, with the publishing boundary stated and view 06 represented honestly.
-4. Updated screenshots + README embed + the `#/story` link line, all claims passing the publication audit.
+- Scope: `projects.js`, `assets/`, and `app.js` **only if** a new glyph is
+  needed. Never restyle the site, never touch other entries, no build step,
+  no new dependencies — the site is plain static JS.
+- Nothing fabricated: no invented numbers, no stock images, no skills not
+  in the repos, no scope beyond the entry.
+- Commit in `~/portfolio-site` with the Claude Code attribution line.
+  **Pushing deploys the live site** — push on the owner's instruction.
+- The `retailpred` entry and its scripts
+  (`~/retailPRED-satellite/scripts/*.py`) are the reference
+  implementations; when in doubt, imitate them rather than inventing.
