@@ -309,6 +309,19 @@ export const v1Chapters: StoryChapter[] = [
         text: 'v1 was the undergraduate build: an Airflow-scheduled pipeline on GCP that expanded monthly Census values into synthetic weekly rows, computed features with inclusive rolling windows — the target month leaked into its own features — served per-category model pickles through a SQLite-backed FastAPI, and presented the results on a Vercel dashboard. Jobs ran on schedule, data flowed, the site rendered.',
       },
       {
+        kind: 'figure',
+        figure: {
+          src: storyImage('v1_gcp_flow.png'),
+          caption:
+            'v1’s scheduled flow on GCP: an Airflow DAG ran Mondays at 02:00 UTC — fetch Census actuals, update rolling predictions from per-category pickles (LightGBM / XGBoost / scikit-learn), compute metrics and anomalies, export and push to GitHub for the Vercel dashboard, with FastAPI + SQLite serving always-on. The wine annotations mark the three epistemic failure sites: leaky inclusive features, pseudo-replicated validation rows, and a headline accuracy no deployed model produced.',
+          alt: 'Schematic of the v1 Airflow flow on GCP: fetch Census actuals, update rolling predictions, metrics and anomalies, export and push to GitHub, Vercel dashboard, with wine annotations marking leaky features, pseudo-replicated validation rows, and an unearned headline accuracy.',
+        },
+      },
+      {
+        kind: 'paragraph',
+        text: 'The skill set was real, and it carried forward: Python end to end — Airflow on GCP for the weekly schedule; LightGBM, XGBoost, and scikit-learn models serialized per category as joblib pickles; SHAP for explanations; a FastAPI + SQLite serving layer; a Vercel dashboard. Every one of those skills transferred to v2. What v2 added was not a new stack — it was the right to trust the numbers the stack produced.',
+      },
+      {
         kind: 'paragraph',
         text: 'That is what makes v1 the useful foil. Every operational layer functioned: scheduling, ingestion, serving, presentation. The failures were not in the plumbing — they were in what the plumbing was allowed to claim. The full undergraduate implementation is preserved on the v1-undergrad tag of this repository, isolated from v2 evidence on purpose.',
       },
