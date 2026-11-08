@@ -3,11 +3,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
-import { SATELLITE_URL, storyChapters, v1Chapters } from '../content/story';
+import { dataContext, SATELLITE_URL, storyChapters, v1Chapters } from '../content/story';
 
 const BANNED_CLAIMS = ['90.2', '0.26%', 'production database', 'currently deployed'];
 
-const serialized = JSON.stringify({ storyChapters, v1Chapters });
+const serialized = JSON.stringify({ storyChapters, v1Chapters, dataContext });
 
 const repoRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -132,6 +132,18 @@ describe('story content', () => {
         expect(existsSync(localPath), `missing figure: ${figure.src}`).toBe(true);
       }
     }
+  });
+
+  it('grounds the data context in the platform contract', () => {
+    expect(dataContext.paragraphs).toHaveLength(2);
+    const text = dataContext.paragraphs.join(' ');
+    // docs/architecture/data_platform.md + DATABRICKS_RUN.md run log.
+    expect(text).toContain('110,921');
+    expect(text).toContain('(series, observation month, vintage)');
+    expect(text).toContain('1.96%');
+    expect(text).toContain('3.17%');
+    expect(text).toContain('45-day publication allowance');
+    expectPlatformHrefResolves(dataContext.evidence.href);
   });
 
   it('keeps the satellite constant pointed at the public repository', () => {

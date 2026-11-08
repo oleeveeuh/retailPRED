@@ -56,6 +56,23 @@ export interface StoryChapter {
   evidence: StoryEvidence;
 }
 
+/** The data behind the whole story — sources, grain, and why the vintage
+ * dimension is load-bearing. Mirrors the portfolio entry's "the data"
+ * section; every number is copied from docs/architecture/data_platform.md
+ * and docs/v2/DATABRICKS_RUN.md (run log, 2026-11-04 ingest rows). */
+export const dataContext = {
+  kicker: 'the data · census, fred, and the vintage dimension',
+  title: 'what the platform stores',
+  paragraphs: [
+    'The raw material is monthly retail sales from the Census Bureau’s Monthly Retail Trade Survey: 11 series (ten spending categories plus the retail total), seasonally adjusted, in millions of dollars, ~200 monthly observations each. Census publishes every month at least twice — an advance estimate, a revised value, and periodic annual revisions — and the platform keeps a release catalog with each release’s timezone-aware publication time, because point-in-time selection only works if publication moments are facts rather than assumptions. The revision history comes from the FRED/ALFRED vintage service: requesting the same date for realtime_start and realtime_end reconstructs the dataset exactly as it stood on that date. Training rows carry a 45-day publication allowance at each forecast origin — the model may see a value if its vintage was published within 45 days of the origin.',
+    'Storage is append-only by design. Bronze holds 110,921 immutable raw rows across 17 Census year-extracts; silver holds revisions as coexisting rows keyed by (series, observation month, vintage) — never update-in-place — with 4,400 rows in the local store (11 series × 200 months × 2 verification runs) and 2,200 more merged from live Census pulls on Databricks at an August 2026 data cutoff. An as-of query filters out vintages later than the requested timestamp and keeps the latest eligible one; that query is what every training-set rebuild in this story actually executes. Revision magnitude is itself regime-dependent — preliminary→final revisions in the 2020s run ~60% larger than the 2010s (median 1.96% → 3.17% of value) — so the vintage dimension is load-bearing, not bookkeeping. Quality gates sit between every layer: immutable-key conflicts stop the pipeline, schema drift is rejected until reviewed, freshness thresholds stop training, and every table carries a manifest with row counts and SHA-256s.',
+  ],
+  evidence: {
+    label: 'data platform contract (docs/architecture/data_platform.md)',
+    href: platformDoc('docs/architecture/data_platform.md'),
+  },
+} as const;
+
 export const storyChapters: StoryChapter[] = [
   {
     id: 'the-gate-that-said-no',

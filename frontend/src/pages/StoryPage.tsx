@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 
 import {
+  dataContext,
   storyChapters,
   v1Chapters,
   type StoryChapter,
@@ -96,6 +97,41 @@ export const StoryPage: FC = () => {
           </Link>
         </div>
       </section>
+
+      {/* Data context (v2 tab): sources, grain, the vintage dimension */}
+      {tab === 'v2' && (
+        <motion.article
+          key="data-context"
+          id="the-data"
+          {...entrance(0)}
+          className="max-w-3xl"
+        >
+          <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[#a43b36]">
+            {dataContext.kicker}
+          </p>
+          <h2 className="mt-2 font-serif text-2xl lowercase leading-snug text-[#25251f] sm:text-3xl">
+            {dataContext.title}
+          </h2>
+          {dataContext.paragraphs.map((text, i) => (
+            <p key={i} className="mt-4 text-[15px] leading-[1.85] text-stone-600">
+              {text}
+            </p>
+          ))}
+          <div className="mt-5 flex flex-wrap items-center gap-x-4 border-t border-[#d8d1c4] pt-4">
+            <span className="font-mono text-[10px] uppercase tracking-[0.13em] text-stone-400">
+              evidence
+            </span>
+            <a
+              href={dataContext.evidence.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-xs text-[#25251f] underline hover:no-underline"
+            >
+              {dataContext.evidence.label} <ExternalLink className="h-3 w-3" />
+            </a>
+          </div>
+        </motion.article>
+      )}
 
       {/* Chapters */}
       {chapters.map((chapter, index) => (
