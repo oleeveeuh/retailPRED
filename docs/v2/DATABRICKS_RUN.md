@@ -1,8 +1,8 @@
 # Databricks execution evidence
 
-Live claims live here. Nothing below has executed on a Databricks workspace
-yet; every entry stays at its current claim level until a real run records
-evidence, and the level never silently upgrades.
+Live claims live here. The claim level of every capability below reflects the
+run log at the bottom of this file — nothing upgrades without a recorded run,
+and no level moves silently.
 
 | Capability | Claim level | Evidence required to upgrade |
 |---|---|---|
