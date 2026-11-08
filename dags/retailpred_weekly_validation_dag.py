@@ -13,13 +13,13 @@ Environment Variables:
     AIRFLOW_HOME: Airflow home directory
 
 Author: RetailPRED Team
-Schedule: Every Monday at 2 AM
+Schedule: Every Monday at 02:00 UTC
 """
 
 import os
 import sys
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 # Optional Airflow imports - allow local testing without Airflow installed
 try:
@@ -92,7 +92,7 @@ except ImportError as e:
 default_args = {
     'owner': 'retailpred',
     'depends_on_past': False,
-    'start_date': datetime(2025, 1, 6),  # First Monday of 2025
+    'start_date': datetime(2025, 1, 6, tzinfo=timezone.utc),  # First Monday of 2025, UTC
     'email': ['admin@retailpred.com'],
     'email_on_failure': True,
     'email_on_retry': False,
@@ -108,7 +108,7 @@ if AIRFLOW_AVAILABLE:
         'retailpred_weekly_validation',
         default_args=default_args,
         description='Weekly prediction validation and metrics calculation for RetailPRED',
-        schedule='0 2 * * 1',  # 2 AM every Monday
+        schedule='0 2 * * 1',  # 02:00 UTC every Monday
         catchup=False,
         tags=['retail', 'validation', 'weekly', 'retailpred'],
         max_active_runs=1,
