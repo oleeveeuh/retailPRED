@@ -64,7 +64,7 @@ export const dataContext = {
   kicker: 'the data · census, fred, and the vintage dimension',
   title: 'what the platform stores',
   paragraphs: [
-    'The raw material is monthly retail sales from the Census Bureau’s Monthly Retail Trade Survey: 11 series (ten spending categories plus the retail total), seasonally adjusted, in millions of dollars, ~200 monthly observations each. Census publishes every month at least twice — an advance estimate, a revised value, and periodic annual revisions — and the platform keeps a release catalog with each release’s timezone-aware publication time, because point-in-time selection only works if publication moments are facts rather than assumptions. The revision history comes from the FRED/ALFRED vintage service: requesting the same date for realtime_start and realtime_end reconstructs the dataset exactly as it stood on that date. Training rows carry a 45-day publication allowance at each forecast origin — the model may see a value if its vintage was published within 45 days of the origin.',
+    'The raw material is monthly retail sales from the Census Bureau’s Monthly Retail Trade Survey: 11 series (ten spending categories plus the retail total), seasonally adjusted, in millions of dollars, ~200 monthly observations each. Census publishes every month at least twice — an advance estimate, a revised value, and periodic annual revisions — and the platform keeps a release catalog with each release’s timezone-aware publication time, because point-in-time selection only works if publication moments are facts rather than assumptions. The revision history comes from the FRED/ALFRED vintage service: requesting the same date for realtime_start and realtime_end reconstructs the dataset exactly as it stood on that date. Training rows carry a 45-day publication allowance at each forecast origin — the model may see a value if its vintage was published within 45 days of the origin. The platform also carries a second, deliberately separate track — Walmart’s public M5 demand benchmark — which this story never touches.',
     'Storage is append-only by design. Bronze holds 110,921 immutable raw rows across 17 Census year-extracts; silver holds revisions as coexisting rows keyed by (series, observation month, vintage) — never update-in-place — with 4,400 rows in the local store (11 series × 200 months × 2 verification runs) and 2,200 more merged from live Census pulls on Databricks at an August 2026 data cutoff. An as-of query filters out vintages later than the requested timestamp and keeps the latest eligible one; that query is what every training-set rebuild in this story actually executes. Revision magnitude is itself regime-dependent — preliminary→final revisions in the 2020s run ~60% larger than the 2010s (median 1.96% → 3.17% of value) — so the vintage dimension is load-bearing, not bookkeeping. Quality gates sit between every layer: immutable-key conflicts stop the pipeline, schema drift is rejected until reviewed, freshness thresholds stop training, and every table carries a manifest with row counts and SHA-256s.',
   ],
   evidence: {
@@ -80,15 +80,15 @@ export const storyChapters: StoryChapter[] = [
     kicker: 'chapter 01 · 2026-11-04',
     title: 'the gate that said no',
     lede:
-      'A model that beat seasonal naive by 29% on revised history met the one test that matters — and lost.',
+      'A model that beat the seasonal naive (the year-ago value carried forward) by 29% on revised history met the one test that matters — and lost.',
     blocks: [
       {
         kind: 'paragraph',
-        text: 'On revised history, the global LightGBM looked genuinely good: 4.49% mean-category WAPE against the seasonal naive’s 6.35%, better in all 11 Census retail categories. That result earned it a shot at the real thing. The vintage gate had been written before the measurement, in the style I want to keep: fix the criteria first, then let the data answer.',
+        text: 'On revised history, the global LightGBM — one model trained across all 11 series at once — looked genuinely good: 4.49% mean-category WAPE — weighted absolute percentage error, averaged equally across the 11 categories — against the seasonal naive’s 6.35%, better in all 11 Census retail categories. That result earned it a shot at the real thing. The vintage gate had been written before the measurement, in the style I want to keep: fix the criteria first, then let the data answer.',
       },
       {
         kind: 'paragraph',
-        text: 'The gate rebuilt every training set from 106 real ALFRED vintages — only what was publishable at each forecast origin — and scored 1,408 folds. Real time flipped the result: 8.49% vs the naive’s 8.16%, with LightGBM improving just 4 of 11 categories. It failed on all three predeclared criteria, and the serving decision stayed fail-closed. No champion, no hand-waving — the pipeline kept serving nothing, which is what an honest gate is for.',
+        text: 'The gate rebuilt every training set from 106 real ALFRED vintages — only what was publishable at each forecast origin — and scored 1,408 folds — one scored forecast per series, origin, and horizon. Real time flipped the result: 8.49% vs the naive’s 8.16%, with LightGBM improving just 4 of 11 categories. It failed on all three predeclared criteria — mean improvement, 10-of-11 category wins, bounded regressions — and the serving decision stayed fail-closed. No champion, no hand-waving — the pipeline kept serving nothing, which is what an honest gate is for.',
       },
     ],
     evidence: {
@@ -110,7 +110,7 @@ export const storyChapters: StoryChapter[] = [
       },
       {
         kind: 'paragraph',
-        text: 'The decomposition that followed changed how I read every metric in this project. Pooled across folds (volume-weighted), the LightGBM actually beat naive even in real time — 5.87% vs 6.54% on exploration origins. The gate metric weights categories equally, and the model lost exactly there: it won big, quiet categories and lost small, volatile ones. By horizon, it won h=1 and lost h=12 badly — the recursive rollout feeds its own drift back eleven times, and clothing degrades monotonically from +0.6pp to −8.5pp. By regime, every point of advantage came from the pandemic disruption. And the category regressions ranked by revision magnitude (Spearman −0.755): loudly-revised categories were where it bled. Training staleness, the first suspect, measured constant and was ruled out.',
+        text: 'The decomposition that followed changed how I read every metric in this project. Pooled across folds (volume-weighted), the LightGBM actually beat naive even in real time — 5.87% vs 6.54% on exploration origins. The gate metric weights categories equally, and the model lost exactly there: it won big, quiet categories and lost small, volatile ones. By horizon, it won the one-month-ahead forecast and lost the twelve-month one badly — the recursive rollout feeds its own drift back eleven times, and clothing degrades monotonically from +0.6pp to −8.5pp. By regime, every point of advantage came from the pandemic disruption. And the category regressions ranked by revision magnitude (Spearman rank correlation −0.755): loudly-revised categories were where it bled. Training staleness, the first suspect, measured constant and was ruled out.',
       },
     ],
     evidence: {
@@ -128,11 +128,11 @@ export const storyChapters: StoryChapter[] = [
     blocks: [
       {
         kind: 'paragraph',
-        text: 'H1: drop the preliminary training rows, the values most likely to be revised later. Refuted — trimming never helped (−0.41pp on the report window). The poison, if any, was not in the fit-row targets. H2: give the model revision metadata — counts, magnitudes, value ages. Refuted (−0.68pp); an L1 tree ensemble could not turn reliability notes into sharper targets.',
+        text: 'H1: drop the preliminary training rows, the values most likely to be revised later. Refuted — trimming never helped (−0.41pp on the report window). The poison, if any, was not in the fit-row targets. H2: give the model revision metadata — counts, magnitudes, value ages. Refuted (−0.68pp); the tree ensemble could not turn those reliability notes into sharper targets.',
       },
       {
         kind: 'paragraph',
-        text: 'H4: change the target transformation. Every alternative lost: year-over-year differencing −0.88pp, STL-detrended inputs −1.06pp, and a plain log-level target collapsing outright at −19.07pp. That last one was the most useful negative result in the project: the scale-free log(value/lag₁₂) target is load-bearing, and nothing replaces it. H3, shrinking the model toward naive, did help (+1.18pp, 7/11 categories) — real, but not gate-shaped, and it pointed away from patching LightGBM toward looking for a better method entirely.',
+        text: 'H4: change the target transformation. Every alternative lost: year-over-year differencing −0.88pp, STL-detrended inputs −1.06pp, and a plain log-level target collapsing outright at −19.07pp. That last one was the most useful negative result in the project: the scale-free log(value/lag₁₂) target — the log of this month’s value over the year-ago value, a pure growth rate — is load-bearing, and nothing replaces it. H3, shrinking the model toward naive, did help (+1.18pp, 7/11 categories) — real, but not gate-shaped, and it pointed away from patching LightGBM toward looking for a better method entirely.',
       },
     ],
     evidence: {
@@ -167,7 +167,7 @@ export const storyChapters: StoryChapter[] = [
       },
       {
         kind: 'paragraph',
-        text: 'The mechanism is legible: theta tracks trend at short horizons, and at h=1 through the 2021–22 inflationary rebound it scored 3.1% where naive carried 11.5% — naive was still anchoring on year-ago crash values. For the first time since the gate, a challenger had a case.',
+        text: 'The mechanism is legible: theta tracks trend at short horizons, and at the one-month horizon through the 2021–22 inflationary rebound it scored 3.1% where naive carried 11.5% — naive was still anchoring on year-ago crash values. For the first time since the gate, a challenger had a case.',
       },
     ],
     evidence: {
@@ -189,7 +189,7 @@ export const storyChapters: StoryChapter[] = [
       },
       {
         kind: 'paragraph',
-        text: 'I find this the most satisfying negative result in the project. The holdout was computed once, written down, and never re-read — no second look, no criterion adjustment. For the record: theta’s 4.98% was still better than the frozen gate’s LightGBM slice (5.64%) on the same origins, and the serving decision stayed fail-closed. Naive stands.',
+        text: 'I find this the most satisfying negative result in the project. The holdout was computed once, written down, and never re-read — no second look, no criterion adjustment. For the record: theta’s 4.98% was still better than the frozen gate’s LightGBM scored on those same origins (5.64%), and the serving decision stayed fail-closed. Naive stands.',
       },
     ],
     evidence: {
@@ -207,7 +207,7 @@ export const storyChapters: StoryChapter[] = [
     blocks: [
       {
         kind: 'paragraph',
-        text: 'Question one: can the past N years predict 2020? Measured on a designated pre-shock/in-shock split. From 2019 origins: no — nothing beat naive on mean-category WAPE (all methods 18.4–19.2% vs naive 18.5%); the collapse was not in any window of pre-2020 history. From 2020 origins, after the shock started: yes — LightGBM beat naive in 8 of 11 categories. Window length itself was second-order: the spread across 5/10/20/full-year training panels was ~1–2pp with inconsistent direction. The five-year protocol floor stays defensible.',
+        text: 'Question one: can the past N years predict 2020? Measured on a designated pre-shock/in-shock split. From 2019 origins: no — nothing beat naive on mean-category WAPE (all methods 18.4–19.2% vs naive 18.5%); the collapse was not in any window of pre-2020 history. From 2020 origins, after the shock started: yes — LightGBM beat naive in 8 of 11 categories. Window length itself was second-order: the spread across 5/10/20/full-year training panels was ~1–2pp with inconsistent direction. The five-year minimum training window stays defensible.',
       },
       {
         kind: 'paragraph',
@@ -229,7 +229,7 @@ export const storyChapters: StoryChapter[] = [
     blocks: [
       {
         kind: 'paragraph',
-        text: 'The policy: a capped LightGBM classifier on causal, point-in-time features (trend strength, volatility, revision churn, lagged performance), isotonic-calibrated on leave-one-origin-out CHOOSE scores, calling naive or theta per category and origin when P(theta wins) clears a predeclared τ = 0.50. Trained on 77 CHOOSE pairs, then evaluated once on the report window — n = 99 pairs (9 origins × 11 categories), every uncertainty an origin-block bootstrap CI over 2,000 resamples.',
+        text: 'The policy: a small LightGBM classifier on causal, point-in-time features (trend strength, volatility, revision churn, lagged performance), calibrated with isotonic regression on held-out scores — each earlier origin left out of its own calibration in turn — calling naive or theta per category and origin whenever its confidence that theta wins clears a predeclared threshold (τ = 0.50). Trained on 77 pairs from those earlier origins (7 origins × 11 categories), then evaluated once on the report window — n = 99 pairs (9 origins × 11 categories), with every confidence interval resampling whole origins 2,000 times (forecasts made in the same month rise and fall together).',
       },
       {
         kind: 'figure',
@@ -242,20 +242,20 @@ export const storyChapters: StoryChapter[] = [
       },
       {
         kind: 'paragraph',
-        text: 'It beat naive in 10 of 11 categories (7.43% vs 10.51%, +3.08pp, CI +0.70..+5.13) and beat the fixed 0.5/0.5 blend (7.77%). It did not beat pure theta (7.02%) — the entire delta CI sits below zero (−0.59..−0.21), so guardrail 2 failed and the predeclared rule earned a findings document, not a promotion.',
+        text: 'It beat naive in 10 of 11 categories (7.43% vs 10.51%, +3.08pp, CI +0.70..+5.13) and beat the fixed 0.5/0.5 blend (7.77%). It did not beat pure theta (7.02%) — the entire confidence interval for the gap sits below zero (−0.59..−0.21), so the second guardrail — beat everything — failed and the predeclared rule earned a findings document, not a promotion.',
       },
       {
         kind: 'figure',
         figure: {
           src: storyImage('policy_tau_sweep.png'),
           caption:
-            'The frozen τ = 0.50 sits in the flat bottom of the CHOOSE out-of-fold sweep (11.71%); the diamond is the single frozen REPORT pass (7.43%) — the sweep’s floor does not transfer across the regime boundary.',
+            'The frozen τ = 0.50 sits in the flat bottom of the out-of-fold sweep on the training window (11.71%); the diamond is the single frozen report-window evaluation (7.43%) — the sweep’s floor does not transfer across the regime boundary.',
           alt: 'Line chart of policy mean-category WAPE across the tau sweep with dashed reference lines for naive, pure theta, and the fixed blend, and a diamond marking the frozen report evaluation.',
         },
       },
       {
         kind: 'paragraph',
-        text: 'The diagnosis is structural: the report window is single-regime (theta wins 72.7% of pairs there), and a switch has no surface to pay off when one model is already near-ceiling. The measured defect is calibration — Brier 0.155 on CHOOSE OOF degraded to 0.276 on REPORT, worse than always calling theta at the 72.7% base rate. Theta-call quality on REPORT: precision 0.716, recall 0.806.',
+        text: 'The diagnosis is structural: the report window is single-regime (theta wins 72.7% of pairs there), and a switch has no surface to pay off when one model is already near-ceiling. The measured defect is calibration — the Brier score (calibration error, lower is better) degraded from 0.155 on the training window to 0.276 on the report window, worse than always calling theta at the 72.7% base rate. Theta-call quality on the report window: precision 0.716, recall 0.806.',
       },
     ],
     evidence: {
@@ -289,8 +289,8 @@ export const storyChapters: StoryChapter[] = [
         figure: {
           src: storyImage('policy_reliability.png'),
           caption:
-            'Reliability of P(theta wins): CHOOSE out-of-fold deciles (sage, n=77, Brier 0.155) transfer badly to the report window (diamonds, n=99, Brier 0.276) — worse than always calling theta at the 72.7% base rate. Base-rate-robust calibration is the spec for any future policy.',
-          alt: 'Reliability diagram comparing CHOOSE out-of-fold probability deciles against the frozen report-window deciles, showing the calibration degradation.',
+            'Reliability of the policy’s confidence that theta wins: training-window out-of-fold deciles (sage, n=77, Brier 0.155) transfer badly to the report window (diamonds, n=99, Brier 0.276) — worse than always calling theta at the 72.7% base rate. Base-rate-robust calibration is the spec for any future policy.',
+          alt: 'Reliability diagram comparing training-window out-of-fold probability deciles against the frozen report-window deciles, showing the calibration degradation.',
         },
       },
       {

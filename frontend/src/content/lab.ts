@@ -140,12 +140,12 @@ export const gateCandidates: GateCandidate[] = [
     window: 'report 2021-01 → 2022-10 · single frozen evaluation',
     documentedVerdict: 'refused',
     documentedSummary:
-      'Passes the 10/11 count shape and guardrail 1, and beats naive and the blend — but pure theta (7.02%) beats the policy (7.43%) with its whole delta CI below zero. Guardrail 2 (beat everything) fails, so no gate document is issued.',
+      'Passes the 10/11 count shape and guardrail 1, and beats naive and the blend — but pure theta (7.02%) beats the policy (7.43%) with its whole confidence interval below zero. Guardrail 2 (beat everything) fails, so no gate document is issued.',
     source: { label: 'satellite POLICY_FINDINGS.md', href: SATELLITE_POLICY },
     criteria: [
       {
         kind: 'improves_mean',
-        name: 'guardrail 1 · bounded downside on CHOOSE (out-of-fold)',
+        name: 'guardrail 1 · bounded downside on the training window (out-of-fold)',
         detail: 'Policy 11.71% vs naive 13.30% — it does not lose to naive; it wins by 1.59pp.',
         candidateWape: 0.1171,
         baselineWape: 0.133,
@@ -162,7 +162,7 @@ export const gateCandidates: GateCandidate[] = [
         kind: 'beats_references',
         name: 'guardrail 2 · mean-category WAPE beats naive AND theta AND the blend',
         detail:
-          'Policy 7.43%: beats naive (10.51%) ✓ and the 0.5 blend (7.77%) ✓, but pure theta is 7.02% — the entire theta-vs-policy delta CI sits below zero.',
+          'Policy 7.43%: beats naive (10.51%) ✓ and the 0.5 blend (7.77%) ✓, but pure theta is 7.02% — the entire theta-vs-policy confidence interval sits below zero.',
         comparisons: [
           { reference: 'seasonal naive', candidateWape: 0.0743, referenceWape: 0.1051 },
           { reference: 'pure theta', candidateWape: 0.0743, referenceWape: 0.0702 },

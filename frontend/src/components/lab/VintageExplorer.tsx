@@ -4,7 +4,7 @@
  * have known, versus what the latest revision eventually said.
  */
 
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import {
   CartesianGrid,
   Line,
@@ -38,15 +38,11 @@ export const VintageExplorer: FC = () => {
 
   const current = category.vintages[index];
   const revisionPct = (100 * (category.latest_revised - current.value)) / current.value;
-  const data = useMemo(
-    () =>
-      category.vintages.map((v, i) => ({
-        i,
-        date: v.vintage_date,
-        value: v.value,
-      })),
-    [category],
-  );
+  const data = category.vintages.map((v, i) => ({
+    i,
+    date: v.vintage_date,
+    value: v.value,
+  }));
 
   return (
     <div>

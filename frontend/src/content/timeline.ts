@@ -123,7 +123,7 @@ export const timeline: TimelineEntry[] = [
     phase: 'phase 06 · satellite, phase 1',
     headline: 'Where the failure lives',
     detail:
-      'The failure is equal-weighted, concentrated at the h=12 recursion and high-revision categories (Spearman −0.755). Staleness ruled out.',
+      'The failure is equal-weighted, concentrated at the twelve-month-ahead recursion and high-revision categories (Spearman rank correlation −0.755). Staleness ruled out.',
     links: [],
     satelliteDoc: 'ERROR_ANALYSIS.md',
   },

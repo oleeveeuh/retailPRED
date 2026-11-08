@@ -1,4 +1,4 @@
-/** τ-sweep slider — drag the policy threshold across the frozen CHOOSE-OOF sweep.
+/** τ-sweep slider — drag the policy threshold across the frozen training-window out-of-fold sweep.
  *
  * The REPORT window appears only as the single frozen diamond: sweeping τ on
  * evaluation origins would be re-tuning, so it is never a curve here either.
@@ -133,14 +133,14 @@ export const TauSweepSlider: FC = () => {
         <Readout label="theta-call rate" value={`${(100 * nearest.theta_call_rate).toFixed(0)}%`} />
         <Readout label="policy mean-cat WAPE" value={pct(nearest.policy_mean_cat_wape)} />
         <Readout
-          label="vs naive on CHOOSE OOF"
+          label="vs naive on the training window"
           value={`${nearest.delta_vs_naive_pp >= 0 ? '+' : ''}${nearest.delta_vs_naive_pp.toFixed(2)}pp`}
         />
         <Readout label="guardrail 1" value={guardrailPasses ? 'within 0.5pp' : 'violated'} bad={!guardrailPasses} />
       </div>
 
       <p className="mt-3 font-mono text-xs lowercase text-stone-500">
-        curve: CHOOSE out-of-fold (77 pairs) · naive {(100 * references.naive).toFixed(2)}% / theta{' '}
+        curve: training-window out-of-fold (77 pairs) · naive {(100 * references.naive).toFixed(2)}% / theta{' '}
         {(100 * references.theta).toFixed(2)}% / blend {(100 * references.blend).toFixed(2)}% as dashed
         references · the black diamond is the REPORT window at the frozen τ (7.43%, evaluated once —
         never a curve) · frozen τ = {frozen_tau.toFixed(2)}

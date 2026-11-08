@@ -104,7 +104,7 @@ describe('story content', () => {
     expect(text('the-holdout')).toContain('7 of 11');
     // Policy (satellite results/policy_report.json) with its sample-size constraint.
     expect(text('the-switch')).toContain('n = 99');
-    expect(text('the-switch')).toContain('77 CHOOSE');
+    expect(text('the-switch')).toContain('77 pairs');
     expect(text('the-switch')).toContain('7.43%');
     expect(text('the-switch')).toContain('+0.70..+5.13');
     expect(text('the-switch')).toContain('7.02%');

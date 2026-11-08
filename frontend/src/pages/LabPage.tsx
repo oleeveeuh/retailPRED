@@ -25,7 +25,7 @@ const SECTIONS: { eyebrow: string; title: string; intro: string }[] = [
     eyebrow: 'drag the threshold',
     title: 'the τ sweep',
     intro:
-      'The policy uses theta when P(theta wins) ≥ τ. The curve is the CHOOSE-window out-of-fold sweep; move τ and watch the tradeoff. The REPORT window stays a single diamond — evaluated once, at the frozen threshold.',
+      'The policy uses theta whenever its confidence that theta wins clears the threshold τ. The curve is the out-of-fold sweep on the training window; move τ and watch the tradeoff. The report window stays a single diamond — evaluated once, at the frozen threshold.',
   },
   {
     eyebrow: 'watch a revision happen',
