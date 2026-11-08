@@ -1,7 +1,7 @@
 {
   "provenance": {
-    "generated_at": "2026-11-05T23:19:27.162303+00:00",
-    "platform_code_revision": "7cf56cc93722bb0ce3770012e120a10f2938afc0",
+    "generated_at": "2026-11-06T07:49:12.449013+00:00",
+    "platform_code_revision": "3cc699d27bf5f8c727423a56c5497bb789a7cb3a",
     "data_sha256": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
     "source_artifacts": [
       "retailPRED-satellite results/policy_train.json (tau_sweep_choose_oof)",
