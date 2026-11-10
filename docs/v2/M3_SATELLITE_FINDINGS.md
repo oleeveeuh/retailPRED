@@ -17,14 +17,26 @@ measurement; one commit per component).
 ## What was measured
 
 1. **The theta method** (Assimakopoulos & Nikolopoulos 2000; custom NumPy,
-   no learned parameters beyond one in-sample SES α) is the best measured
-   real-time MRTS forecaster on every evaluated window — it beat seasonal
-   naive in 9/11 categories on exploration origins (2017-10..2022-10),
-   10/11 on the report window (2021-01..2022-10), and was carried to the
-   single predeclared holdout run (2023-01..2025-03): mean-category WAPE
-   4.98% vs naive 5.15% (+0.17pp), improving 7/11 categories — better than
-   the frozen gate LightGBM slice (5.64%) but failing the ≥10/11 category
-   criterion. The holdout was computed exactly once and is never re-read.
+   no learned parameters beyond one in-sample SES α) recorded the lowest
+   mean-category WAPE of the three evaluated models on every evaluated
+   window — it beat seasonal naive in 9/11 categories on exploration
+   origins (2017-10..2022-10), 10/11 on the report window (2021-01..
+   2022-10), and was carried to the single predeclared holdout run
+   (2023-01..2025-03): mean-category WAPE 4.98% vs naive 5.15% (+0.17pp,
+   origin-block CI −0.17..+0.54 — indistinguishable from naive), improving
+   7/11 categories — better than the frozen gate LightGBM slice (5.64%;
+   that gap is the one holdout ranking the CI resolves: +0.65,
+   +0.46..+0.88) but failing the ≥10/11 category criterion. The holdout
+   was computed exactly once; its fold rows were later recovered
+   deterministically under a verification-locked protocol (satellite
+   `scripts/holdout_theta_recovery.py` — all 34 frozen aggregates
+   reproduced at diff 0.0) to enable the reporting-only scorecard
+   (satellite `results/holdout_scorecard.md`: MASE, signed bias, horizon
+   breakdown, first-release re-scoring). Under first-release actuals the
+   same stored predictions give theta a wholly positive holdout margin
+   (+1.19pp, CI +0.83..+1.57) — recorded as descriptive only; the gate's
+   predeclared actual source (latest_revision_vintage) is unchanged, and
+   criterion 2 still fails at 7/11.
 2. **A regime-switch policy** (capped LightGBM classifier, isotonic
    calibration on leave-one-origin-out CHOOSE scores, predeclared τ=0.50)
    choosing naive or theta per category and origin beats naive in 10/11
@@ -58,7 +70,11 @@ These are window-scoped research measurements on exploration/report/holdout
 origin subsets. They are **not comparable to the official full-grid MRTS
 gate metrics** in `model_performance.csv` and are therefore kept in a
 separate extract (`mrts_research_windows.csv`) whose every row carries its
-evaluation window, origin count, and source artifact. No candidate here is
-promoted, authorized, or served; a future re-gate (theta as third
-benchmark, per satellite FINDINGS §5) remains the owner's documented path
-after vintage accumulation.
+evaluation window, origin count, and source artifact. The 2026-11-10
+scorecard's additional metrics (MASE, signed bias, horizon breakdown,
+first-release re-scoring) remain in the satellite artifacts only and are
+not added to the governed extract. No candidate here is promoted,
+authorized, or served; a future re-gate (theta as third benchmark, per
+satellite FINDINGS §5 and its drafted predeclaration
+`REGATE_DESIGN.md`) remains the owner's documented path after vintage
+accumulation.
