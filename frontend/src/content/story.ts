@@ -161,8 +161,8 @@ export const storyChapters: StoryChapter[] = [
         figure: {
           src: storyImage('research_windows.png'),
           caption:
-            'Mean-category WAPE by evaluation window (lower is better): theta beats naive on every one — 7.51% vs 9.30% exploration, 7.02% vs 10.51% report, 4.98% vs 5.15% on the single frozen holdout run. The regime-switch policy appears on the report window only (7.43%).',
-          alt: 'Grouped bar chart of mean-category WAPE for naive, global LightGBM, theta, and the regime-switch policy across the exploration, report, and holdout windows.',
+            'Mean-category WAPE by evaluation window (lower is better): theta beats naive on every one — 7.51% vs 9.30% exploration, 7.02% vs 10.51% report, 4.98% vs 5.15% on the single frozen holdout run. The holdout panel also carries LightGBM’s gate slice (5.64%, 5/11), previously observed in the gate run. The regime-switch policy appears on the report window only (7.43%).',
+          alt: 'Grouped bar chart of mean-category WAPE for naive, global LightGBM, theta, and the regime-switch policy across the exploration, report, and holdout windows; the policy appears on the report window only, and the holdout shows the frozen single run plus the previously observed LightGBM gate slice.',
         },
       },
       {
@@ -171,7 +171,7 @@ export const storyChapters: StoryChapter[] = [
       },
     ],
     evidence: {
-      label: 'window summary (frozen, 9 rows)',
+      label: 'window summary (frozen, 10 rows)',
       href: platformDoc('data/v2/evidence/mrts_research_windows/mrts_window_summary.json'),
     },
   },
@@ -189,7 +189,7 @@ export const storyChapters: StoryChapter[] = [
       },
       {
         kind: 'paragraph',
-        text: 'I find this the most satisfying negative result in the project. The holdout was computed once, written down, and never re-read — no second look, no criterion adjustment. For the record: theta’s 4.98% was still better than the frozen gate’s LightGBM scored on those same origins (5.64%), and the serving decision stayed fail-closed. Naive stands.',
+        text: 'I find this the most satisfying negative result in the project. The holdout was computed once, written down, and never re-read — no second look, no criterion adjustment. For the record: theta’s 4.98% was still better than the frozen gate’s LightGBM scored on those same origins — 5.64%, with only 5 of 11 categories improved, re-aggregated from the stored gate folds under a predeclared reporting-only protocol — and the serving decision stayed fail-closed. Naive stands.',
       },
     ],
     evidence: {

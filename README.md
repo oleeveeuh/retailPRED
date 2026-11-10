@@ -238,10 +238,10 @@ H5 was the hypothesis I almost skipped: the theta method (Assimakopoulos & Nikol
 It won. On exploration origins (2017-10..2022-10) it beat naive in 9 of 11 categories — 7.51% vs 9.30% mean-category WAPE. On the report window (2021-01..2022-10) it won 10 of 11 — 7.02% vs 10.51%.
 
 <p align="center">
-  <img src="docs/images/story/research_windows.png" alt="Grouped bar chart of mean-category WAPE for naive, global LightGBM, theta, and the regime-switch policy across the exploration, report, and holdout windows" width="720">
+  <img src="docs/images/story/research_windows.png" alt="Grouped bar chart of mean-category WAPE for naive, global LightGBM, theta, and the regime-switch policy across the exploration, report, and holdout windows; the policy appears on the report window only, and the holdout shows the frozen single run plus the previously observed LightGBM gate slice" width="720">
 </p>
 
-*Mean-category WAPE by evaluation window (lower is better): theta beats naive on every one — 7.51% vs 9.30% exploration, 7.02% vs 10.51% report, 4.98% vs 5.15% on the single frozen holdout run. The regime-switch policy appears on the report window only (7.43%).*
+*Mean-category WAPE by evaluation window (lower is better): theta beats naive on every one — 7.51% vs 9.30% exploration, 7.02% vs 10.51% report, 4.98% vs 5.15% on the single frozen holdout run. The holdout panel also carries LightGBM's gate slice (5.64%, 5/11), previously observed in the gate run. The regime-switch policy appears on the report window only (7.43%).*
 
 The mechanism is legible: theta tracks trend at short horizons, and at the one-month horizon through the 2021–22 inflationary rebound it scored 3.1% where naive carried 11.5% — naive was still anchoring on year-ago crash values. For the first time since the gate, a challenger had a case. ([window summary](data/v2/evidence/mrts_research_windows/mrts_window_summary.json))
 
@@ -251,7 +251,7 @@ The mechanism is legible: theta tracks trend at short horizons, and at the one-m
 
 The 2023–2025 origins had been reserved the whole investigation. One run, predeclared: theta needs ≥10 of 11 categories to beat naive for the case to continue. The result — 4.98% vs 5.15% mean-category WAPE, +0.17pp, with only 7 of 11 categories improved. Criterion 2 failed. Theta's dominance was regime-specific: real on volatile targets, gone on the settled ones.
 
-I find this the most satisfying negative result in the project. The holdout was computed once, written down, and never re-read — no second look, no criterion adjustment. For the record: theta's 4.98% was still better than the frozen gate's LightGBM scored on those same origins (5.64%), and the serving decision stayed fail-closed. Naive stands. ([holdout record](https://github.com/oleeveeuh/retailPRED-satellite/blob/main/FINDINGS.md))
+I find this the most satisfying negative result in the project. The holdout was computed once, written down, and never re-read — no second look, no criterion adjustment. For the record: theta's 4.98% was still better than the frozen gate's LightGBM scored on those same origins — 5.64%, with only 5 of 11 categories improved, re-aggregated from the stored gate folds under a predeclared reporting-only protocol — and the serving decision stayed fail-closed. Naive stands. ([holdout record](https://github.com/oleeveeuh/retailPRED-satellite/blob/main/FINDINGS.md))
 
 ### 06 — two questions about time
 
