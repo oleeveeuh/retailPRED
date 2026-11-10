@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 
 import {
   dataContext,
+  m5Chapters,
   storyChapters,
   v1Chapters,
   type StoryChapter,
@@ -14,12 +15,16 @@ import {
 import { entrance } from '../lib/entrance';
 import { SectionEyebrow } from '../components/SectionEyebrow';
 
-type StoryTab = 'v1' | 'v2';
+type StoryTab = 'v1' | 'v2' | 'm5';
 
 const TABS: Array<{ id: StoryTab; label: string }> = [
   { id: 'v1', label: 'v1 · the pipeline that could not fail' },
   { id: 'v2', label: 'v2 · the rebuild, measured' },
+  { id: 'm5', label: 'm5 · the kaggle study that started it' },
 ];
+
+const isStoryTab = (value: string | null): value is StoryTab =>
+  value === 'v1' || value === 'v2' || value === 'm5';
 
 const ChapterFigure: FC<{ figure: StoryFigure }> = ({ figure }) => (
   <figure className="mt-6 border border-[#d8d1c4] bg-[#fbf9f4] p-3 shadow-[0_4px_13px_rgba(59,49,34,0.08)]">
@@ -47,8 +52,10 @@ const ChapterEvidence: FC<{ chapter: StoryChapter }> = ({ chapter }) => (
 );
 
 export const StoryPage: FC = () => {
-  const [tab, setTab] = useState<StoryTab>('v2');
-  const chapters = tab === 'v1' ? v1Chapters : storyChapters;
+  const [searchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const [tab, setTab] = useState<StoryTab>(isStoryTab(tabParam) ? tabParam : 'v2');
+  const chapters = tab === 'v1' ? v1Chapters : tab === 'm5' ? m5Chapters : storyChapters;
 
   return (
     <div className="space-y-12">
@@ -59,11 +66,14 @@ export const StoryPage: FC = () => {
           a refused model, investigated <em className="italic text-[#89927a]">properly.</em>
         </h1>
         <p className="mt-5 max-w-2xl text-[15px] leading-[1.8] text-stone-600">
-          Two tabs. v1 is the pipeline that could not fail — the undergraduate
-          build whose numbers meant nothing. v2 is the rebuild: the vintage
-          gate refused the champion, the question moved to a research
-          satellite, and eight chapters follow, every number from a frozen
-          artifact, negative results included on purpose.
+          Three tabs. v1 is the pipeline that could not fail — the
+          undergraduate build whose numbers meant nothing. v2 is the rebuild:
+          the vintage gate refused the champion, the question moved to a
+          research satellite, and eight chapters follow, every number from a
+          frozen artifact, negative results included on purpose. m5 is the
+          Kaggle benchmark study that started it all — four model families on
+          30,490 Walmart series, where predeclared gates stopped two
+          challengers before and after the full benchmark.
         </p>
         <div
           className="mt-6 flex flex-wrap items-center gap-3"
