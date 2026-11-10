@@ -26,6 +26,9 @@ def test_tableau_workbook_has_governed_extract_and_views() -> None:
         "MRTS Regime Accuracy",
         "Data Status",
         "MRTS Research Windows",
+        "MRTS Feature Ladder",
+        "MRTS Horizon Accuracy",
+        "MRTS Candidate Comparisons",
     ]
     assert [node.attrib["name"] for node in worksheets] == [
         "01 Model Scorecard",
@@ -34,11 +37,14 @@ def test_tableau_workbook_has_governed_extract_and_views() -> None:
         "04 MRTS Regimes",
         "05 Data Status",
         "06 MRTS Research Windows",
+        "07 MRTS Feature Ladder",
+        "08 MRTS Horizon Accuracy",
+        "09 MRTS Candidate Comparisons",
     ]
-    assert len(windows) == 6
+    assert len(windows) == 9
 
     connections = root.findall(".//connection[@class='hyper']")
-    assert len(connections) == 6
+    assert len(connections) == 9
     assert {node.attrib["dbname"] for node in connections} == {
         "retailpred_v2.hyper"
     }

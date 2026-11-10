@@ -140,6 +140,8 @@ MRTS_RESEARCH_WINDOWS = ExtractContract(
         "model_name",
         "decision_status",
         "evaluation_window",
+        "actual_definition",
+        "evidence_class",
         "origin_count",
         "evaluation_start",
         "evaluation_end",
@@ -154,7 +156,7 @@ MRTS_RESEARCH_WINDOWS = ExtractContract(
         "code_revision",
         "data_version",
     ),
-    key=("model_name", "evaluation_window"),
+    key=("model_name", "evaluation_window", "actual_definition"),
     non_negative=(
         "origin_count",
         "metric_value",
@@ -162,6 +164,64 @@ MRTS_RESEARCH_WINDOWS = ExtractContract(
         "categories_beating_naive",
         "categories_total",
     ),
+)
+
+MRTS_FEATURE_LADDER = ExtractContract(
+    columns=(
+        "dataset",
+        "rung",
+        "feature_groups",
+        "compare_to",
+        "mean_category_delta_pp",
+        "improved_origins",
+        "origins_total",
+        "improved_origin_share",
+        "advanced",
+        "verdict",
+        "evidence_reference",
+        "code_revision",
+        "data_version",
+    ),
+    key=("rung",),
+    non_negative=("improved_origins", "origins_total", "improved_origin_share"),
+)
+
+MRTS_HORIZON_ACCURACY = ExtractContract(
+    columns=(
+        "dataset",
+        "model_name",
+        "evaluation_window",
+        "actual_definition",
+        "horizon",
+        "mean_category_wape",
+        "decision_status",
+        "evidence_reference",
+        "code_revision",
+        "data_version",
+    ),
+    key=("model_name", "evaluation_window", "actual_definition", "horizon"),
+    non_negative=("horizon", "mean_category_wape"),
+)
+
+MRTS_CANDIDATE_COMPARISONS = ExtractContract(
+    columns=(
+        "dataset",
+        "model_name",
+        "reference_model",
+        "evaluation_window",
+        "actual_definition",
+        "origin_count",
+        "mean_category_delta_pp",
+        "ci_low_pp",
+        "ci_high_pp",
+        "resolved",
+        "verdict",
+        "evidence_reference",
+        "code_revision",
+        "data_version",
+    ),
+    key=("model_name", "reference_model", "evaluation_window", "actual_definition"),
+    non_negative=("origin_count",),
 )
 
 LIVE_FORECASTS = ExtractContract(
@@ -189,6 +249,9 @@ CONTRACTS = {
     "m5_uncertainty.csv": M5_UNCERTAINTY,
     "mrts_regime_accuracy.csv": MRTS_REGIMES,
     "mrts_research_windows.csv": MRTS_RESEARCH_WINDOWS,
+    "mrts_feature_ladder.csv": MRTS_FEATURE_LADDER,
+    "mrts_horizon_accuracy.csv": MRTS_HORIZON_ACCURACY,
+    "mrts_candidate_comparisons.csv": MRTS_CANDIDATE_COMPARISONS,
     "data_freshness.csv": DATA_FRESHNESS,
     "live_forecasts.csv": LIVE_FORECASTS,
 }

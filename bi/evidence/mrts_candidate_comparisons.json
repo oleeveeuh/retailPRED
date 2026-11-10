@@ -1,0 +1,18 @@
+{
+  "provenance": {
+    "data_sha256": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
+    "satellite_code_revision": "d88e365",
+    "purpose": "H7 paired origin-block confidence intervals for the final direct LightGBM + growth challenger",
+    "source_artifact": "results/h7_scorecard.json"
+  },
+  "rows": [
+    {"reference_model":"seasonal_naive","evaluation_window":"exploration_2017_2022","actual_definition":"final_vintage","origin_count":24,"mean_category_delta_pp":0.2798296087053759,"ci_low_pp":-0.4611777660866162,"ci_high_pp":1.138116887248899,"resolved":false,"verdict":"UNRESOLVED VS NAIVE"},
+    {"reference_model":"theta_method","evaluation_window":"exploration_2017_2022","actual_definition":"final_vintage","origin_count":24,"mean_category_delta_pp":-1.503840237691051,"ci_low_pp":-2.454886072155022,"ci_high_pp":-0.7345021290553522,"resolved":true,"verdict":"RESOLVED LOSS TO THETA"},
+    {"reference_model":"seasonal_naive","evaluation_window":"report_2021_2022","actual_definition":"final_vintage","origin_count":9,"mean_category_delta_pp":0.6614317177083745,"ci_low_pp":-0.5982783448653102,"ci_high_pp":2.165787949393522,"resolved":false,"verdict":"UNRESOLVED VS NAIVE"},
+    {"reference_model":"theta_method","evaluation_window":"report_2021_2022","actual_definition":"final_vintage","origin_count":9,"mean_category_delta_pp":-2.8218279979956753,"ci_low_pp":-4.6870100169118825,"ci_high_pp":-1.1703843084341814,"resolved":true,"verdict":"RESOLVED LOSS TO THETA"},
+    {"reference_model":"seasonal_naive","evaluation_window":"exploration_2017_2022","actual_definition":"first_release_descriptive","origin_count":24,"mean_category_delta_pp":2.226329750591401,"ci_low_pp":1.4212747150701355,"ci_high_pp":3.1332217607326616,"resolved":true,"verdict":"RESOLVED WIN VS NAIVE"},
+    {"reference_model":"theta_method","evaluation_window":"exploration_2017_2022","actual_definition":"first_release_descriptive","origin_count":24,"mean_category_delta_pp":-1.284002573398154,"ci_low_pp":-2.3186208888221733,"ci_high_pp":-0.44081919153870114,"resolved":true,"verdict":"RESOLVED LOSS TO THETA"},
+    {"reference_model":"seasonal_naive","evaluation_window":"report_2021_2022","actual_definition":"first_release_descriptive","origin_count":9,"mean_category_delta_pp":3.0762015101994793,"ci_low_pp":1.5743341503539041,"ci_high_pp":4.863791088492516,"resolved":true,"verdict":"RESOLVED WIN VS NAIVE"},
+    {"reference_model":"theta_method","evaluation_window":"report_2021_2022","actual_definition":"first_release_descriptive","origin_count":9,"mean_category_delta_pp":-2.897354394962707,"ci_low_pp":-4.716949612489012,"ci_high_pp":-1.252475774190386,"resolved":true,"verdict":"RESOLVED LOSS TO THETA"}
+  ]
+}

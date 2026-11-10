@@ -1,0 +1,17 @@
+{
+  "provenance": {
+    "data_sha256": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
+    "satellite_code_revision": "d88e365",
+    "purpose": "H7 choose-window feature ladder; final-vintage actuals only",
+    "source_artifact": "results/h7_rung_*.json"
+  },
+  "rows": [
+    {"rung":"direct_base","feature_groups":"base","compare_to":"anchor","mean_category_delta_pp":0.0,"improved_origins":0,"origins_total":15,"improved_origin_share":0.0,"advanced":true,"verdict":"ANCHOR"},
+    {"rung":"direct_growth","feature_groups":"base + growth","compare_to":"direct_base","mean_category_delta_pp":0.1565,"improved_origins":13,"origins_total":15,"improved_origin_share":0.8667,"advanced":true,"verdict":"ADVANCE"},
+    {"rung":"direct_trend","feature_groups":"base + growth + trend","compare_to":"direct_growth","mean_category_delta_pp":-0.0965,"improved_origins":7,"origins_total":15,"improved_origin_share":0.4667,"advanced":false,"verdict":"NO-ADVANCE"},
+    {"rung":"direct_cross","feature_groups":"base + growth + cross-category","compare_to":"direct_growth","mean_category_delta_pp":-0.0411,"improved_origins":9,"origins_total":15,"improved_origin_share":0.6,"advanced":false,"verdict":"NO-ADVANCE"},
+    {"rung":"direct_revision","feature_groups":"base + growth + revision","compare_to":"direct_growth","mean_category_delta_pp":0.0466,"improved_origins":8,"origins_total":15,"improved_origin_share":0.5333,"advanced":false,"verdict":"NO-ADVANCE"},
+    {"rung":"direct_external","feature_groups":"base + growth + external macro","compare_to":"direct_growth","mean_category_delta_pp":0.0,"improved_origins":4,"origins_total":15,"improved_origin_share":0.2667,"advanced":false,"verdict":"NO-ADVANCE"},
+    {"rung":"removal_growth","feature_groups":"base (growth removed)","compare_to":"direct_growth","mean_category_delta_pp":-0.1565,"improved_origins":2,"origins_total":15,"improved_origin_share":0.1333,"advanced":false,"verdict":"CONFIRMS GROWTH"}
+  ]
+}

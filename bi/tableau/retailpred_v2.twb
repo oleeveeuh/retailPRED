@@ -80,6 +80,39 @@
       </connection>
       <aliases enabled='yes' />
     </datasource>
+    <datasource caption="MRTS Feature Ladder" inline='true' name="federated.retailpred_feature_ladder" version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption="MRTS Feature Ladder" name="hyper.retailpred_feature_ladder">
+            <connection authentication='auth-none' author-locale='en_US' class='hyper' dbname="retailpred_v2.hyper" default-settings='yes' sslmode='' username='tableau_internal_user' />
+          </named-connection>
+        </named-connections>
+        <relation connection="hyper.retailpred_feature_ladder" name="mrts_feature_ladder" table="[Extract].[mrts_feature_ladder]" type='table' />
+      </connection>
+      <aliases enabled='yes' />
+    </datasource>
+    <datasource caption="MRTS Horizon Accuracy" inline='true' name="federated.retailpred_horizon_accuracy" version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption="MRTS Horizon Accuracy" name="hyper.retailpred_horizon_accuracy">
+            <connection authentication='auth-none' author-locale='en_US' class='hyper' dbname="retailpred_v2.hyper" default-settings='yes' sslmode='' username='tableau_internal_user' />
+          </named-connection>
+        </named-connections>
+        <relation connection="hyper.retailpred_horizon_accuracy" name="mrts_horizon_accuracy" table="[Extract].[mrts_horizon_accuracy]" type='table' />
+      </connection>
+      <aliases enabled='yes' />
+    </datasource>
+    <datasource caption="MRTS Candidate Comparisons" inline='true' name="federated.retailpred_candidate_comparisons" version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption="MRTS Candidate Comparisons" name="hyper.retailpred_candidate_comparisons">
+            <connection authentication='auth-none' author-locale='en_US' class='hyper' dbname="retailpred_v2.hyper" default-settings='yes' sslmode='' username='tableau_internal_user' />
+          </named-connection>
+        </named-connections>
+        <relation connection="hyper.retailpred_candidate_comparisons" name="mrts_candidate_comparisons" table="[Extract].[mrts_candidate_comparisons]" type='table' />
+      </connection>
+      <aliases enabled='yes' />
+    </datasource>
   </datasources>
   <worksheets>
     <worksheet name="01 Model Scorecard">
@@ -267,12 +300,14 @@
           <datasource-dependencies datasource="federated.retailpred_research">
             <column caption="Model" datatype="string" name="[model_name]" role="dimension" type="nominal" />
             <column caption="Evaluation Window" datatype="string" name="[evaluation_window]" role="dimension" type="nominal" />
+            <column caption="Actual Definition" datatype="string" name="[actual_definition]" role="dimension" type="nominal" />
             <column caption="Mean-Category WAPE" datatype="real" name="[metric_value]" role="measure" type="quantitative" />
-            <column caption="Beats Naive In Window" datatype="boolean" name="[beats_naive_in_window]" role="dimension" type="nominal" />
+            <column caption="Decision Status" datatype="string" name="[decision_status]" role="dimension" type="nominal" />
             <column-instance column="[model_name]" derivation="None" name="[none:model_name:nk]" pivot='key' type="nominal" />
             <column-instance column="[evaluation_window]" derivation="None" name="[none:evaluation_window:nk]" pivot='key' type="nominal" />
+            <column-instance column="[actual_definition]" derivation="None" name="[none:actual_definition:nk]" pivot='key' type="nominal" />
             <column-instance column="[metric_value]" derivation="Sum" name="[sum:metric_value:qk]" pivot='key' type="quantitative" />
-            <column-instance column="[beats_naive_in_window]" derivation="None" name="[none:beats_naive_in_window:nk]" pivot='key' type="nominal" />
+            <column-instance column="[decision_status]" derivation="None" name="[none:decision_status:nk]" pivot='key' type="nominal" />
           </datasource-dependencies>
           <aggregation value='true' />
         </view>
@@ -282,15 +317,129 @@
             <view><breakdown value='auto' /></view>
             <mark class="Bar" />
             <encodings>
-              <color column="[federated.retailpred_research].[none:beats_naive_in_window:nk]" />
+              <color column="[federated.retailpred_research].[none:decision_status:nk]" />
               <text column="[federated.retailpred_research].[sum:metric_value:qk]" />
             </encodings>
           </pane>
         </panes>
-        <rows>[federated.retailpred_research].[none:model_name:nk] / [federated.retailpred_research].[none:evaluation_window:nk]</rows>
+        <rows>[federated.retailpred_research].[none:model_name:nk] / [federated.retailpred_research].[none:evaluation_window:nk] / [federated.retailpred_research].[none:actual_definition:nk]</rows>
         <cols>[federated.retailpred_research].[sum:metric_value:qk]</cols>
       </table>
       <simple-id uuid="{F25F2E9B-CADD-5BDF-A4C3-64901483D098}" />
+    </worksheet>
+    <worksheet name="07 MRTS Feature Ladder">
+      <table>
+        <view>
+          <datasources>
+            <datasource caption="MRTS Feature Ladder" name="federated.retailpred_feature_ladder" />
+          </datasources>
+          <datasource-dependencies datasource="federated.retailpred_feature_ladder">
+            <column caption="Feature Rung" datatype="string" name="[feature_groups]" role="dimension" type="nominal" />
+            <column caption="Origins Improved" datatype="integer" name="[improved_origins]" role="dimension" type="nominal" />
+            <column caption="Origins Evaluated" datatype="integer" name="[origins_total]" role="dimension" type="nominal" />
+            <column caption="Frozen Verdict" datatype="string" name="[verdict]" role="dimension" type="nominal" />
+            <column caption="Incremental Mean-Category WAPE Delta (pp)" datatype="real" name="[mean_category_delta_pp]" role="measure" type="quantitative" />
+            <column caption="Advanced" datatype="boolean" name="[advanced]" role="dimension" type="nominal" />
+            <column-instance column="[feature_groups]" derivation="None" name="[none:feature_groups:nk]" pivot='key' type="nominal" />
+            <column-instance column="[improved_origins]" derivation="None" name="[none:improved_origins:nk]" pivot='key' type="nominal" />
+            <column-instance column="[origins_total]" derivation="None" name="[none:origins_total:nk]" pivot='key' type="nominal" />
+            <column-instance column="[verdict]" derivation="None" name="[none:verdict:nk]" pivot='key' type="nominal" />
+            <column-instance column="[mean_category_delta_pp]" derivation="Sum" name="[sum:mean_category_delta_pp:qk]" pivot='key' type="quantitative" />
+            <column-instance column="[advanced]" derivation="None" name="[none:advanced:nk]" pivot='key' type="nominal" />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view><breakdown value='auto' /></view>
+            <mark class="Bar" />
+            <encodings>
+              <color column="[federated.retailpred_feature_ladder].[none:advanced:nk]" />
+              <text column="[federated.retailpred_feature_ladder].[sum:mean_category_delta_pp:qk]" />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.retailpred_feature_ladder].[none:feature_groups:nk] / [federated.retailpred_feature_ladder].[none:improved_origins:nk] / [federated.retailpred_feature_ladder].[none:origins_total:nk] / [federated.retailpred_feature_ladder].[none:verdict:nk]</rows>
+        <cols>[federated.retailpred_feature_ladder].[sum:mean_category_delta_pp:qk]</cols>
+      </table>
+      <simple-id uuid="{E6C8BF33-7F5F-5AF5-8221-7DECB0493710}" />
+    </worksheet>
+    <worksheet name="08 MRTS Horizon Accuracy">
+      <table>
+        <view>
+          <datasources>
+            <datasource caption="MRTS Horizon Accuracy" name="federated.retailpred_horizon_accuracy" />
+          </datasources>
+          <datasource-dependencies datasource="federated.retailpred_horizon_accuracy">
+            <column caption="Model" datatype="string" name="[model_name]" role="dimension" type="nominal" />
+            <column caption="Forecast Horizon" datatype="integer" name="[horizon]" role="dimension" type="nominal" />
+            <column caption="Mean-Category WAPE" datatype="real" name="[mean_category_wape]" role="measure" type="quantitative" />
+            <column caption="Decision Status" datatype="string" name="[decision_status]" role="dimension" type="nominal" />
+            <column-instance column="[model_name]" derivation="None" name="[none:model_name:nk]" pivot='key' type="nominal" />
+            <column-instance column="[horizon]" derivation="None" name="[none:horizon:nk]" pivot='key' type="nominal" />
+            <column-instance column="[mean_category_wape]" derivation="Sum" name="[sum:mean_category_wape:qk]" pivot='key' type="quantitative" />
+            <column-instance column="[decision_status]" derivation="None" name="[none:decision_status:nk]" pivot='key' type="nominal" />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view><breakdown value='auto' /></view>
+            <mark class="Bar" />
+            <encodings>
+              <color column="[federated.retailpred_horizon_accuracy].[none:decision_status:nk]" />
+              <text column="[federated.retailpred_horizon_accuracy].[sum:mean_category_wape:qk]" />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.retailpred_horizon_accuracy].[none:model_name:nk] / [federated.retailpred_horizon_accuracy].[none:horizon:nk]</rows>
+        <cols>[federated.retailpred_horizon_accuracy].[sum:mean_category_wape:qk]</cols>
+      </table>
+      <simple-id uuid="{D230ACFE-5FD8-59E2-B95C-18B109993D54}" />
+    </worksheet>
+    <worksheet name="09 MRTS Candidate Comparisons">
+      <table>
+        <view>
+          <datasources>
+            <datasource caption="MRTS Candidate Comparisons" name="federated.retailpred_candidate_comparisons" />
+          </datasources>
+          <datasource-dependencies datasource="federated.retailpred_candidate_comparisons">
+            <column caption="Reference Model" datatype="string" name="[reference_model]" role="dimension" type="nominal" />
+            <column caption="Evaluation Window" datatype="string" name="[evaluation_window]" role="dimension" type="nominal" />
+            <column caption="Actual Definition" datatype="string" name="[actual_definition]" role="dimension" type="nominal" />
+            <column caption="CI Low (pp)" datatype="real" name="[ci_low_pp]" role="dimension" type="nominal" />
+            <column caption="CI High (pp)" datatype="real" name="[ci_high_pp]" role="dimension" type="nominal" />
+            <column caption="Inference Verdict" datatype="string" name="[verdict]" role="dimension" type="nominal" />
+            <column caption="Mean-Category WAPE Delta (pp)" datatype="real" name="[mean_category_delta_pp]" role="measure" type="quantitative" />
+            <column caption="Resolved" datatype="boolean" name="[resolved]" role="dimension" type="nominal" />
+            <column-instance column="[reference_model]" derivation="None" name="[none:reference_model:nk]" pivot='key' type="nominal" />
+            <column-instance column="[evaluation_window]" derivation="None" name="[none:evaluation_window:nk]" pivot='key' type="nominal" />
+            <column-instance column="[actual_definition]" derivation="None" name="[none:actual_definition:nk]" pivot='key' type="nominal" />
+            <column-instance column="[ci_low_pp]" derivation="None" name="[none:ci_low_pp:nk]" pivot='key' type="nominal" />
+            <column-instance column="[ci_high_pp]" derivation="None" name="[none:ci_high_pp:nk]" pivot='key' type="nominal" />
+            <column-instance column="[verdict]" derivation="None" name="[none:verdict:nk]" pivot='key' type="nominal" />
+            <column-instance column="[mean_category_delta_pp]" derivation="Sum" name="[sum:mean_category_delta_pp:qk]" pivot='key' type="quantitative" />
+            <column-instance column="[resolved]" derivation="None" name="[none:resolved:nk]" pivot='key' type="nominal" />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view><breakdown value='auto' /></view>
+            <mark class="Bar" />
+            <encodings>
+              <color column="[federated.retailpred_candidate_comparisons].[none:resolved:nk]" />
+              <text column="[federated.retailpred_candidate_comparisons].[sum:mean_category_delta_pp:qk]" />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.retailpred_candidate_comparisons].[none:reference_model:nk] / [federated.retailpred_candidate_comparisons].[none:evaluation_window:nk] / [federated.retailpred_candidate_comparisons].[none:actual_definition:nk] / [federated.retailpred_candidate_comparisons].[none:ci_low_pp:nk] / [federated.retailpred_candidate_comparisons].[none:ci_high_pp:nk] / [federated.retailpred_candidate_comparisons].[none:verdict:nk]</rows>
+        <cols>[federated.retailpred_candidate_comparisons].[sum:mean_category_delta_pp:qk]</cols>
+      </table>
+      <simple-id uuid="{D105282C-C91C-59A2-ABBF-EBF84A745B16}" />
     </worksheet>
   </worksheets>
   <windows source-height='51'>
@@ -385,10 +534,58 @@
           <strip size='31'><card type='title' /></strip>
         </edge>
         <edge name='right'>
-          <strip size='160'><card pane-specification-id='0' param="[federated.retailpred_research].[none:beats_naive_in_window:nk]" type='color' /></strip>
+          <strip size='160'><card pane-specification-id='0' param="[federated.retailpred_research].[none:decision_status:nk]" type='color' /></strip>
         </edge>
       </cards>
       <simple-id uuid="{E4498467-B478-50F1-8BFD-2A6AB9799C81}" />
+    </window>
+    <window class='worksheet' maximized='true' name="07 MRTS Feature Ladder">
+      <cards>
+        <edge name='left'>
+          <strip size='160'><card type='pages' /><card type='filters' /><card type='marks' /></strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'><card type='columns' /></strip>
+          <strip size='2147483647'><card type='rows' /></strip>
+          <strip size='31'><card type='title' /></strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'><card pane-specification-id='0' param="[federated.retailpred_feature_ladder].[none:advanced:nk]" type='color' /></strip>
+        </edge>
+      </cards>
+      <simple-id uuid="{EAAA85E4-62C4-55B9-855D-2CF5A6F4DE79}" />
+    </window>
+    <window class='worksheet' maximized='true' name="08 MRTS Horizon Accuracy">
+      <cards>
+        <edge name='left'>
+          <strip size='160'><card type='pages' /><card type='filters' /><card type='marks' /></strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'><card type='columns' /></strip>
+          <strip size='2147483647'><card type='rows' /></strip>
+          <strip size='31'><card type='title' /></strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'><card pane-specification-id='0' param="[federated.retailpred_horizon_accuracy].[none:decision_status:nk]" type='color' /></strip>
+        </edge>
+      </cards>
+      <simple-id uuid="{F1A683EB-A173-5B8D-88CE-81A29FB46D19}" />
+    </window>
+    <window class='worksheet' maximized='true' name="09 MRTS Candidate Comparisons">
+      <cards>
+        <edge name='left'>
+          <strip size='160'><card type='pages' /><card type='filters' /><card type='marks' /></strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'><card type='columns' /></strip>
+          <strip size='2147483647'><card type='rows' /></strip>
+          <strip size='31'><card type='title' /></strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'><card pane-specification-id='0' param="[federated.retailpred_candidate_comparisons].[none:resolved:nk]" type='color' /></strip>
+        </edge>
+      </cards>
+      <simple-id uuid="{8F32904F-C938-5B8B-BF89-52E9047B3082}" />
     </window>
   </windows>
 </workbook>

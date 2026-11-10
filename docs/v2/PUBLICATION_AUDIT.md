@@ -34,7 +34,7 @@ Branch audited: `v2-rebuild` at and after `b32d98b`
 - A Python 3.11 venv containing only `requirements-serving.txt` (fastapi, pydantic, uvicorn) served `backend.main:app` from a copy of the exact pruned context (~14 MB, zero pickles): `/api/v2/health`, `/api/v2/models`, `/api/v2/demo-catalog`, and the offline-demo `POST /api/v2/forecasts` succeeded; production mode returned 409 `production_model_unavailable`.
 - Default FastAPI application mounts only `/api/v2`; legacy routes require `RETAILPRED_ENABLE_LEGACY_API=true`.
 - The React fixture and backend fixture are guarded by a parity test.
-- The Tableau workbook uses relative Hyper connections and six governed sheets.
+- The Tableau workbook uses relative Hyper connections and nine governed sheets; the three additions are MRTS-only research diagnostics.
 - No tracked real `.env` file is present, and the local reachable history query did not find `project_root/.env`; CI still runs a full-history gitleaks scan.
 - Raw M5 files, local databases, MLflow state, dbt targets, logs, virtual environments, and secrets are ignored.
 - The public source branch remains `origin/main`; local work is not recruiter-visible.

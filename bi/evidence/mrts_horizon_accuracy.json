@@ -1,0 +1,34 @@
+{
+  "provenance": {
+    "data_sha256": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
+    "satellite_code_revision": "de58394c5f25b0a7e7ea438c8a24483bc8264f52",
+    "purpose": "H7 full-exploration final-vintage horizon comparison",
+    "source_artifacts": ["results/h7_scorecard.json", "results/category_win_matrix.json"]
+  },
+  "rows": [
+    {"model_name":"seasonal_naive","horizon":1,"mean_category_wape":0.09517549118028677,"decision_status":"research_baseline"},
+    {"model_name":"seasonal_naive","horizon":3,"mean_category_wape":0.09094671147734584,"decision_status":"research_baseline"},
+    {"model_name":"seasonal_naive","horizon":6,"mean_category_wape":0.0845471708978745,"decision_status":"research_baseline"},
+    {"model_name":"seasonal_naive","horizon":12,"mean_category_wape":0.1013930972107065,"decision_status":"research_baseline"},
+    {"model_name":"recursive_gate_lightgbm","horizon":1,"mean_category_wape":0.0717,"decision_status":"rejected_gate_reference"},
+    {"model_name":"recursive_gate_lightgbm","horizon":3,"mean_category_wape":0.0849,"decision_status":"rejected_gate_reference"},
+    {"model_name":"recursive_gate_lightgbm","horizon":6,"mean_category_wape":0.0963,"decision_status":"rejected_gate_reference"},
+    {"model_name":"recursive_gate_lightgbm","horizon":12,"mean_category_wape":0.1289,"decision_status":"rejected_gate_reference"},
+    {"model_name":"direct_lightgbm_base_growth","horizon":1,"mean_category_wape":0.07105183928295379,"decision_status":"research_challenger_rejected_vs_theta"},
+    {"model_name":"direct_lightgbm_base_growth","horizon":3,"mean_category_wape":0.08480633095930452,"decision_status":"research_challenger_rejected_vs_theta"},
+    {"model_name":"direct_lightgbm_base_growth","horizon":6,"mean_category_wape":0.08990883467814702,"decision_status":"research_challenger_rejected_vs_theta"},
+    {"model_name":"direct_lightgbm_base_growth","horizon":12,"mean_category_wape":0.11473098523486516,"decision_status":"research_challenger_rejected_vs_theta"},
+    {"model_name":"chronos_2_zero_shot","horizon":1,"mean_category_wape":0.05879831061532224,"decision_status":"research_benchmark_second_to_theta"},
+    {"model_name":"chronos_2_zero_shot","horizon":3,"mean_category_wape":0.06638831581658246,"decision_status":"research_benchmark_second_to_theta"},
+    {"model_name":"chronos_2_zero_shot","horizon":6,"mean_category_wape":0.08101507879868422,"decision_status":"research_benchmark_second_to_theta"},
+    {"model_name":"chronos_2_zero_shot","horizon":12,"mean_category_wape":0.1037491010841301,"decision_status":"research_benchmark_second_to_theta"},
+    {"model_name":"nhits_trained","horizon":1,"mean_category_wape":0.06076661868464655,"decision_status":"research_benchmark_behind_theta"},
+    {"model_name":"nhits_trained","horizon":3,"mean_category_wape":0.0730130145824097,"decision_status":"research_benchmark_behind_theta"},
+    {"model_name":"nhits_trained","horizon":6,"mean_category_wape":0.0960358761626948,"decision_status":"research_benchmark_behind_theta"},
+    {"model_name":"nhits_trained","horizon":12,"mean_category_wape":0.12644177777826837,"decision_status":"research_benchmark_behind_theta"},
+    {"model_name":"theta_method","horizon":1,"mean_category_wape":0.057991932145317344,"decision_status":"selected_future_regate_candidate"},
+    {"model_name":"theta_method","horizon":3,"mean_category_wape":0.062324100061080016,"decision_status":"selected_future_regate_candidate"},
+    {"model_name":"theta_method","horizon":6,"mean_category_wape":0.07806984830165821,"decision_status":"selected_future_regate_candidate"},
+    {"model_name":"theta_method","horizon":12,"mean_category_wape":0.10201475398063332,"decision_status":"selected_future_regate_candidate"}
+  ]
+}

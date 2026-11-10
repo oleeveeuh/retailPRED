@@ -1,6 +1,6 @@
 # Governed BI extracts
 
-The BI boundary converts frozen evaluation evidence into six Tableau-ready CSV
+The BI boundary converts frozen evaluation evidence into nine Tableau-ready CSV
 tables. It never reads frontend demo calculations or reconstructs metrics from
 screenshots.
 
@@ -61,6 +61,29 @@ windows are never mixed with the official full-grid gate metrics in
 `model_performance.csv`. Evidence:
 [docs/v2/M3_SATELLITE_FINDINGS.md](../docs/v2/M3_SATELLITE_FINDINGS.md).
 
+The table also carries the predeclared MRTS Chronos benchmark, the H7 final
+challenger, and an explicit actual definition. Chronos holdout evidence remains
+visibly post-hoc and descriptive.
+
+### `mrts_feature_ladder.csv`
+
+Grain: H7 feature rung on the choose window. Contains incremental
+mean-category WAPE change, origin stability, and the frozen advance/no-advance
+verdict. Rejected rungs have no report or holdout scores.
+
+### `mrts_horizon_accuracy.csv`
+
+Grain: model and horizon on the full exploration window. Compares seasonal
+naive, recursive gate LightGBM, direct LightGBM + growth, and theta under
+final-vintage actuals.
+
+### `mrts_candidate_comparisons.csv`
+
+Grain: final H7 challenger, reference model, evaluation window, and actual
+definition. Stores paired origin-block point deltas and confidence bounds so
+the resolved losses to theta remain visible rather than being inferred from
+close-looking bars.
+
 ### `data_freshness.csv`
 
 Grain: dataset and declared extract as-of date.
@@ -79,7 +102,7 @@ file is published.
 ## Tableau workbook
 
 The tracked local workbook is `bi/tableau/retailpred_v2.twb`, backed by the
-adjacent `retailpred_v2.hyper` extract. Its six governed views are:
+adjacent `retailpred_v2.hyper` extract. Its nine governed views are:
 
 1. **Model scorecard** — model performance, baseline comparison, decision
    status, evaluation dates, and dataset filter.
@@ -92,9 +115,16 @@ adjacent `retailpred_v2.hyper` extract. Its six governed views are:
 5. **Data status** — cutoff, as-of date, serving restriction, and evidence link
    displayed on every dashboard.
 6. **MRTS research windows** — window-scoped mean-category WAPE for the
-   satellite's measured models (naive, LightGBM, theta, regime-switch
-   policy), colored by beats-naive status, with the window always on the
-   row so subset metrics stay separated from official full-grid gates.
+   satellite's measured models, including zero-shot Chronos, trained NHITS,
+   and the final H7 challenger, split by actual definition and colored by
+   evidence status.
+7. **MRTS feature ladder** — every choose-window rung, incremental WAPE delta,
+   origin stability, and frozen advancement verdict.
+8. **MRTS horizon accuracy** — final-vintage exploration WAPE at h=1/3/6/12
+   across the classical, foundation, neural, learned, and baseline families,
+   exposing the recursion improvement and every challenger's theta deficit.
+9. **MRTS candidate comparisons** — paired deltas and confidence bounds for
+   the final H7 challenger versus naive and theta on both actual definitions.
 
 Tableau calculations must format stored decimal rates as percentages; they must
 not recompute WAPE or WRMSSE from differently filtered data. React and Tableau
