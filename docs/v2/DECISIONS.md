@@ -67,3 +67,9 @@ Decisions are recorded before implementation so later changes can distinguish de
 - Status: accepted
 - Decision: additive or breaking source columns fail the current table contract until a deliberate schema-version change is implemented and tested.
 - Reason: permissive automatic evolution can silently alter training and reporting inputs.
+
+## D012: No cross-dataset elimination for the neural and foundation challengers
+
+- Status: accepted
+- Decision: Chronos-2 and NHITS were evaluated and rejected on the M5 track. They remain untested on MRTS and were excluded from the satellite study to keep the investigation focused on methods appropriate to a small, revision-sensitive monthly panel. No cross-dataset performance claim is made. On 2026-11-10 the owner directed a frozen zero-shot Chronos-2 benchmark on MRTS under the satellite protocol (predeclaration written before any run); it is a benchmark, not a promotion — any promotion decision requires future origins under the regate design with owner-set thresholds.
+- Reason: the M5 rejection reflects a hierarchy-specific failure mode (bottom-level bias accumulating under aggregation across 30,490 sparse daily series) that does not transfer to 11 directly-forecast national monthly series. Record accuracy requires naming the dataset for every elimination.
