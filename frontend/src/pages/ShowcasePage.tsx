@@ -328,7 +328,7 @@ export const ShowcasePage: FC = () => (
         </div>
         <div>
           <SectionEyebrow>The Tableau layer</SectionEyebrow>
-          <h2 className="text-xl text-stone-900">Governed extracts behind nine local views</h2>
+          <h2 className="text-xl text-stone-900">Governed extracts behind nine views</h2>
         </div>
       </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -348,12 +348,12 @@ export const ShowcasePage: FC = () => (
         ))}
       </div>
       <div className="rounded-sm border border-[#d8d1c4] bg-[#fbf9f4] p-3">
-        <TableauEmbed url="https://public.tableau.com/views/retailpred_v2/06MRTSResearchWindows" height={560} />
+        <TableauEmbed url="https://public.tableau.com/views/retailpred_v2/09MRTSCandidateComparisons" tabs height={560} />
         <p className="mt-2 border-t border-[#d8d1c4] pt-2 font-mono text-xs lowercase text-stone-500">
-          view 06 · mrts research windows — live from tableau public (workbook retailpred_v2,
-          released 2026-11-05 with the prior six-view evidence set): window-scoped mean-category
-          wape colored by beats-naive status. the tracked local workbook now carries nine governed
-          views; republishing is a manual release action.
+          view 09 · mrts candidate comparisons — live from tableau public (workbook retailpred_v2,
+          republished 2026-11-10 with all nine governed views): paired wape deltas and confidence
+          bounds vs naive and theta on both actual definitions. tabs expose the other eight views;
+          republishing after an extract rebuild stays a manual release action.
         </p>
       </div>
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border border-[#d8d1c4] bg-[#fbf9f4] p-4 text-xs text-stone-600">
@@ -374,7 +374,7 @@ export const ShowcasePage: FC = () => (
           </a>
         </span>
         <a
-          href="https://public.tableau.com/views/retailpred_v2/06MRTSResearchWindows"
+          href="https://public.tableau.com/views/retailpred_v2/09MRTSCandidateComparisons"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1 text-[#25251f] underline hover:no-underline"

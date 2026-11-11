@@ -49,7 +49,7 @@ export const hero = {
   chips: [
     { label: 'Databricks pipeline', value: 'executed', tone: 'mint' as const },
     { label: 'Vintage gate', value: 'refused the challenger', tone: 'amber' as const },
-    { label: 'Tableau', value: '9 governed views (local)', tone: 'mint' as const },
+    { label: 'Tableau', value: '9 governed views', tone: 'mint' as const },
     { label: 'Serving', value: 'fail-closed', tone: 'slate' as const },
   ],
 };

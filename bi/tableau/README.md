@@ -54,10 +54,10 @@ profile is a separate, explicit release action because it uploads the embedded
 evaluation evidence and makes the visualization public. No credentials or
 Tableau profile identifiers are stored in this repository.
 
-Published: workbook `retailpred_v2` on Tableau Public (all six views,
-including 06 MRTS Research Windows), owner release 2026-11-05. The showcase
-embeds view 06 from
-`https://public.tableau.com/views/retailpred_v2/06MRTSResearchWindows`.
-The tracked local workbook now has nine views. The November 5 public release
-still has the prior six-view evidence set. Republishing remains a manual release
+Published: workbook `retailpred_v2` on Tableau Public with all nine views,
+owner release 2026-11-10 (the initial 2026-11-05 release carried six).
+The showcase embeds view 09 (MRTS Candidate Comparisons) with workbook
+tabs enabled, from
+`https://public.tableau.com/views/retailpred_v2/09MRTSCandidateComparisons`.
+Republishing after a governed extract rebuild remains a manual release
 action so the public surface never changes silently.

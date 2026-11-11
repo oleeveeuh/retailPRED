@@ -9,9 +9,11 @@ import { FC, useEffect, useRef } from 'react';
 interface TableauEmbedProps {
   url: string;
   height?: string | number;
+  /** Expose the workbook's sheet tabs (the owner's published embed uses tabs). */
+  tabs?: boolean;
 }
 
-export const TableauEmbed: FC<TableauEmbedProps> = ({ url, height = 600 }) => {
+export const TableauEmbed: FC<TableauEmbedProps> = ({ url, height = 600, tabs = false }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const scriptLoaded = useRef(false);
 
@@ -43,7 +45,7 @@ export const TableauEmbed: FC<TableauEmbedProps> = ({ url, height = 600 }) => {
           <param name='embed_code_version' value='3' />
           <param name='site_root' value='' />
           <param name='name' value='${workbook}/${sheet}' />
-          <param name='tabs' value='no' />
+          <param name='tabs' value='${tabs ? 'yes' : 'no'}' />
           <param name='toolbar' value='yes' />
           <param name='static_image' value='https://public.tableau.com/static/images/${workbook.charAt(0)}/${workbook}/${sheet}/1.png' />
           <param name='animate_transition' value='yes' />
@@ -74,7 +76,7 @@ export const TableauEmbed: FC<TableauEmbedProps> = ({ url, height = 600 }) => {
       }
       scriptLoaded.current = false;
     };
-  }, [url, height]);
+  }, [url, height, tabs]);
 
   return (
     <div
