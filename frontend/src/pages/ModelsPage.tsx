@@ -25,6 +25,7 @@ import {
   Brain,
   Network,
   GitBranch,
+  Database,
   Sliders,
   Sparkles,
   Medal,

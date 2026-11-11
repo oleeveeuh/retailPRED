@@ -403,6 +403,7 @@ export const categoriesApi = {
 export interface TrainingMetricsModel {
   id: number;
   model_name: string;
+  model_type?: string;
   category: string;
   training_date: string;
   metrics: {

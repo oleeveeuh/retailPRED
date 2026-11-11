@@ -95,7 +95,7 @@ export const ExplainPage: FC = () => {
           : b.feature.localeCompare(a.feature);
       }
 
-      return sortOrder === 'asc' ? aVal - bVal : bVal - aVal;
+      return sortOrder === 'asc' ? (aVal as number) - (bVal as number) : (bVal as number) - (aVal as number);
     });
   }, [shapData, sortField, sortOrder]);
 
