@@ -47,9 +47,9 @@ const chapter = (id: string) => {
 };
 
 describe('story content', () => {
-  it('tells exactly eight chapters with unique ordered ids', () => {
-    expect(storyChapters).toHaveLength(8);
-    expect(new Set(storyChapters.map((chapter) => chapter.id)).size).toBe(8);
+  it('tells exactly ten chapters with unique ordered ids', () => {
+    expect(storyChapters).toHaveLength(10);
+    expect(new Set(storyChapters.map((chapter) => chapter.id)).size).toBe(10);
     storyChapters.forEach((chapter, index) => {
       expect(chapter.chapter).toBe(index + 1);
       expect(chapter.kicker.length).toBeGreaterThan(0);
@@ -64,7 +64,9 @@ describe('story content', () => {
       }
     });
     expect(storyChapters[0].id).toBe('the-gate-that-said-no');
-    expect(storyChapters[7].id).toBe('what-remains-open');
+    expect(storyChapters[7].id).toBe('the-wider-search');
+    expect(storyChapters[8].id).toBe('feature-engineering-ceiling');
+    expect(storyChapters[9].id).toBe('what-remains-open');
   });
 
   it('carries no legacy fabricated claims', () => {
@@ -102,6 +104,11 @@ describe('story content', () => {
     expect(text('theta')).toContain('7.02%');
     expect(text('the-holdout')).toContain('+0.17pp');
     expect(text('the-holdout')).toContain('7 of 11');
+    // Holdout scorecard (reporting-only audit; satellite results/holdout_scorecard.md).
+    expect(text('the-holdout')).toContain('−0.17..+0.54');
+    expect(text('the-holdout')).toContain('−1.24..−0.36');
+    expect(text('the-holdout')).toContain('+1.19pp');
+    expect(text('the-holdout')).toContain('computed once and frozen');
     // Policy (satellite results/policy_report.json) with its sample-size constraint.
     expect(text('the-switch')).toContain('n = 99');
     expect(text('the-switch')).toContain('77 pairs');
@@ -110,8 +117,22 @@ describe('story content', () => {
     expect(text('the-switch')).toContain('7.02%');
     expect(text('the-switch')).toContain('0.155');
     expect(text('the-switch')).toContain('0.276');
+    // Family benchmarks (satellite CHRONOS_MRTS.md / NHITS_MRTS.md; holdout post-hoc).
+    expect(text('the-wider-search')).toContain('7.75%');
+    expect(text('the-wider-search')).toContain('8.91%');
+    expect(text('the-wider-search')).toContain('5.00%');
+    expect(text('the-wider-search')).toContain('6.90%');
+    expect(text('the-wider-search')).toMatch(/post-hoc/);
+    expect(text('the-wider-search')).toMatch(/not conclusions/);
+    // Feature ladder (satellite H7_FEATURE_LADDER.md / results/h7_scorecard.json).
+    expect(text('feature-engineering-ceiling')).toContain('+0.16pp');
+    expect(text('feature-engineering-ceiling')).toContain('13 of 15');
+    expect(text('feature-engineering-ceiling')).toContain('−1.50pp');
+    expect(text('feature-engineering-ceiling')).toContain('11.47%');
+    expect(text('feature-engineering-ceiling')).toContain('2.23pp');
     // The verdict stays fail-closed.
     expect(text('what-remains-open')).toMatch(/fail-closed/);
+    expect(text('what-remains-open')).toMatch(/closed for this design/);
     expect(text('the-holdout')).toMatch(/Naive stands/);
   });
 

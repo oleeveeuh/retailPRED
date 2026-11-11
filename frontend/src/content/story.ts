@@ -8,8 +8,16 @@
  *    the revised-history benchmark in docs/v2/M3_LIGHTGBM.md (4.49% vs
  *    6.35%). The two are never mixed.
  *  - Window research: data/v2/evidence/mrts_research_windows/
- *    mrts_window_summary.json (9 rows, frozen copy of the satellite's
+ *    mrts_window_summary.json (10 rows, frozen copy of the satellite's
  *    consolidated window summary).
+ *  - Holdout uncertainty: the satellite's reporting-only scorecard
+ *    (results/holdout_scorecard.md; protocol committed before
+ *    recalculation — origin-block CIs, pooled-vs-mean-category split,
+ *    first-release re-scoring).
+ *  - Family benchmarks: the satellite's CHRONOS_MRTS.md / NHITS_MRTS.md
+ *    (predeclared; holdout passes post-hoc and descriptive only).
+ *  - Feature ladder: the satellite's H7_FEATURE_LADDER.md and
+ *    results/h7_scorecard.json (choose-window rungs; report scored once).
  *  - Policy detail: the satellite's results/policy_report.json
  *    (n=99 REPORT pairs, origin-block bootstrap CIs).
  *
@@ -128,11 +136,11 @@ export const storyChapters: StoryChapter[] = [
     blocks: [
       {
         kind: 'paragraph',
-        text: 'H1: drop the preliminary training rows, the values most likely to be revised later. Refuted — trimming never helped (−0.41pp on the report window). The poison, if any, was not in the fit-row targets. H2: give the model revision metadata — counts, magnitudes, value ages. Refuted (−0.68pp); the tree ensemble could not turn those reliability notes into sharper targets.',
+        text: 'Drop the preliminary training rows, the values most likely to be revised later (H1): refuted — trimming never helped (−0.41pp on the report window). The poison, if any, was not in the fit-row targets. Give the model revision metadata — counts, magnitudes, value ages (H2): refuted (−0.68pp); the tree ensemble could not turn those reliability notes into sharper targets.',
       },
       {
         kind: 'paragraph',
-        text: 'H4: change the target transformation. Every alternative lost: year-over-year differencing −0.88pp, STL-detrended inputs −1.06pp, and a plain log-level target collapsing outright at −19.07pp. That last one was the most useful negative result in the project: the scale-free log(value/lag₁₂) target — the log of this month’s value over the year-ago value, a pure growth rate — is load-bearing, and nothing replaces it. H3, shrinking the model toward naive, did help (+1.18pp, 7/11 categories) — real, but not gate-shaped, and it pointed away from patching LightGBM toward looking for a better method entirely.',
+        text: 'Change the target transformation (H4): every alternative lost — year-over-year differencing −0.88pp, STL-detrended inputs −1.06pp, and a plain log-level target collapsing outright at −19.07pp. That last one was the most useful negative result in the project: the scale-free log(value/lag₁₂) target — the log of this month’s value over the year-ago value, a pure growth rate — is load-bearing, and nothing replaces it. Shrinking the model toward naive (H3) did help (+1.18pp, 7/11 categories) — real, but short of the gate’s category breadth — and it pointed away from patching LightGBM toward looking for a better method entirely.',
       },
     ],
     evidence: {
@@ -143,14 +151,14 @@ export const storyChapters: StoryChapter[] = [
   {
     id: 'theta',
     chapter: 4,
-    kicker: 'chapter 04 · satellite, H5',
+    kicker: 'chapter 04 · the theta method',
     title: 'theta',
     lede:
       'The method that finally beat naive in real time was twenty-five years old, per-series, and had almost no parameters.',
     blocks: [
       {
         kind: 'paragraph',
-        text: 'H5 was the hypothesis I almost skipped: the theta method (Assimakopoulos & Nikolopoulos 2000) — decompose a series into short- and long-term components, extrapolate the short one with a single in-sample smoothing parameter. No learned features, no training panel, nothing to leak.',
+        text: 'The fifth predeclared hypothesis (H5 — the experiment id stays in the evidence link) was the one I almost skipped: the theta method (Assimakopoulos & Nikolopoulos 2000) is a classical statistical forecasting approach that combines a smoothed estimate of the series’ recent level with its longer-term trend. It fits very few parameters — one smoothing constant chosen in-sample, often written θ — and uses no engineered feature panel and no cross-series training, which makes it comparatively difficult to overfit on a small collection of monthly series. No learned features, no training panel, nothing to leak.',
       },
       {
         kind: 'paragraph',
@@ -189,7 +197,11 @@ export const storyChapters: StoryChapter[] = [
       },
       {
         kind: 'paragraph',
-        text: 'I find this the most satisfying negative result in the project. The holdout was computed once, written down, and never re-read — no second look, no criterion adjustment. For the record: theta’s 4.98% was still better than the frozen gate’s LightGBM scored on those same origins — 5.64%, with only 5 of 11 categories improved, re-aggregated from the stored gate folds under a predeclared reporting-only protocol — and the serving decision stayed fail-closed. Naive stands.',
+        text: 'I find this the most satisfying negative result in the project. The holdout was computed once, written down, and its verdict was never changed by anything that came after. A later reporting-only audit — protocol committed before any recalculation, verification gates reproducing the frozen record — measured the uncertainty the frozen run never had: theta’s mean-category edge is +0.17pp with the interval −0.17..+0.54, covering zero; pooled WAPE flips the sign and resolves in naive’s favor (−0.77pp, −1.24..−0.36); against first-release actuals theta’s advantage returns (+1.19pp, interval +0.83..+1.57, 10 of 11 categories). The aggregation choice and the actual choice each change the conclusion — the audit reports both, and neither was allowed to move the gate. Stated plainly: theta had the lowest recorded mean-category WAPE, but failed the original final-vintage 10-of-11 promotion criterion.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'The original theta holdout decision was computed once and frozen; the later metric audits and the predeclared post-hoc Chronos and NHITS benchmarks reused the stored window descriptively, without changing the original selection rule or the promotion verdict. For the record: theta’s 4.98% was still better than the frozen gate’s LightGBM scored on those same origins — 5.64%, with only 5 of 11 categories improved, re-aggregated from the stored gate folds under a predeclared reporting-only protocol — and theta vs LightGBM is the one holdout ranking the interval resolves (+0.65pp, wholly positive). The serving decision stayed fail-closed. Naive stands.',
       },
     ],
     evidence: {
@@ -223,9 +235,9 @@ export const storyChapters: StoryChapter[] = [
     id: 'the-switch',
     chapter: 7,
     kicker: 'chapter 07 · satellite, policy layer',
-    title: 'the switch',
+    title: 'a learned selector added complexity, not enough value',
     lede:
-      'If different regimes favor different models, train something to tell them apart. I predeclared what a win would mean — and it wasn’t this.',
+      'If different regimes favor different models, train something to tell them apart. I predeclared what a win would mean — and the measurement said the complexity was not justified.',
     blocks: [
       {
         kind: 'paragraph',
@@ -255,7 +267,7 @@ export const storyChapters: StoryChapter[] = [
       },
       {
         kind: 'paragraph',
-        text: 'The diagnosis is structural: the report window is single-regime (theta wins 72.7% of pairs there), and a switch has no surface to pay off when one model is already near-ceiling. The measured defect is calibration — the Brier score (calibration error, lower is better) degraded from 0.155 on the training window to 0.276 on the report window, worse than always calling theta at the 72.7% base rate. Theta-call quality on the report window: precision 0.716, recall 0.806.',
+        text: 'The diagnosis is structural: the report window is single-regime (theta wins 72.7% of pairs there), and a switch has no surface to pay off when one model is already near-ceiling. The measured defect is calibration — the Brier score (calibration error, lower is better) degraded from 0.155 on the training window to 0.276 on the report window, worse than always calling theta at the 72.7% base rate. Theta-call quality on the report window: precision 0.716, recall 0.806. A learned switching layer that cannot calibrate across regime changes does not justify its additional complexity — the conclusion is a measured no, and the layer was not carried forward.',
       },
     ],
     evidence: {
@@ -264,16 +276,103 @@ export const storyChapters: StoryChapter[] = [
     },
   },
   {
-    id: 'what-remains-open',
+    id: 'the-wider-search',
     chapter: 8,
-    kicker: 'chapter 08 · open questions',
-    title: 'what remains open',
+    kicker: 'chapter 08 · the wider search',
+    title: 'foundation and neural models did not displace theta',
     lede:
-      'The gate is still closed, on purpose. Here is exactly what would reopen it.',
+      'Chronos-2 and NHITS had been tested on M5 only. Two predeclared MRTS benchmarks put them under the same vintage protocol — and theta stayed first.',
     blocks: [
       {
         kind: 'paragraph',
-        text: 'The serving decision stays fail-closed until a challenger passes a predeclared gate — that has not changed since the first refusal, and nothing in the satellite challenged it. The documented re-open path: accumulate roughly 24 more calm forecast origins (≈ end of 2027), then re-gate with theta as a third benchmark beside naive and LightGBM.',
+        text: 'The two modern families had never been tested on the Census problem. Chronos-2 — a zero-shot foundation model, meaning a large pretrained time-series network used off the shelf with no fine-tuning — and NHITS, a neural forecaster trained from scratch, had both been evaluated and rejected on M5, but those results could not determine their MRTS performance: M5 is 30,490 granular daily series where Chronos’s failure was aggregate underforecasting, and nothing about that transfers to 11 directly-forecast monthly national series. The satellite therefore ran each under a fresh predeclaration — configuration and reading rules frozen in writing before any run — on the identical vintage protocol: same origin grid, same availability rule, same actuals, same metrics. The M5 and MRTS studies share infrastructure, not conclusions.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'Zero-shot Chronos-2 was genuinely competitive: 7.75% mean-category WAPE on exploration — ahead of naive by +1.54pp (9 of 11 categories) and of the gate LightGBM by +1.80pp, trailing the theta method by 0.24pp and beating it in only 3 of 11 categories. Its 5.00% holdout score versus theta’s 4.98% is post-hoc and descriptive — the predeclared reading rules forbid confidence intervals and any selection input there — a ranking observation, not evidence. Cross-learning and fine-tuned Chronos variants remain untested. Chronos showed that a modern zero-shot foundation model could be competitive on MRTS, but it did not displace theta.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'Trained NHITS was rebuilt from scratch at every forecast origin on exactly the vintage-safe panel available then, hyperparameters fixed, no search. Exploration: 8.91% mean-category WAPE — beating naive by 0.39pp (6 of 11 categories) and the gate LightGBM by 0.64pp (8 of 11), losing to theta by 1.40pp (1 of 11). At one month ahead it was competitive (6.08% vs theta’s 5.80%); at twelve it degraded to 12.64%, effectively the recursive LightGBM’s position. On the post-hoc descriptive holdout it scored 6.90% — worse than naive’s 5.15%, improving only 2 of 11 categories versus naive and 1 versus theta — degrading monotonically with horizon from 5.20% to 8.75%. No prediction was negative and none was clipped; no confidence interval or promotion claim applies to that run; alternative NHITS configurations remain untested because the predeclaration prohibited a search. NHITS learned useful short-horizon structure during the volatile exploration period, but paid the largest calm-regime penalty of the three challengers and reproduced the long-horizon weakness already seen in learned models.',
+      },
+      {
+        kind: 'figure',
+        figure: {
+          src: storyImage('model_families.png'),
+          caption:
+            'The identical-protocol comparison (mean-category WAPE, lower is better): classical statistical (theta) 7.51% exploration / 4.98% holdout; foundation (zero-shot Chronos-2) 7.75% / 5.00%; neural (trained NHITS) 8.91% / 6.90%; tree ensemble (gate LightGBM) 9.55% / 5.64%, its holdout slice previously observed in the gate run; baseline (seasonal naive) 9.30% / 5.15%. The exploration ordering inverts below theta on the calm holdout — the learned and trained approaches fell below naive while Chronos stayed narrowly ahead of it — and the holdout column is the single post-hoc descriptive pass: no selection or promotion input.',
+          alt: 'Grouped bar chart comparing five model families on mean-category WAPE across exploration and holdout windows: theta lowest on both windows, Chronos-2 second, NHITS paying the largest calm-regime penalty at 6.9 percent, with the holdout column labeled post-hoc descriptive.',
+        },
+      },
+      {
+        kind: 'paragraph',
+        text: 'With both benchmarks recorded, the same protocol had evaluated every family side by side: theta 7.51% < Chronos 7.75% < NHITS 8.91% < naive 9.30% < gate LightGBM 9.55% on exploration. Neither holdout number is a promotion claim: promotion exists only on future origins.',
+      },
+    ],
+    evidence: {
+      label: 'family benchmarks (satellite CHRONOS_MRTS.md, NHITS_MRTS.md)',
+      href: satelliteDoc('NHITS_MRTS.md'),
+    },
+  },
+  {
+    id: 'feature-engineering-ceiling',
+    chapter: 9,
+    kicker: 'chapter 09 · the feature ladder',
+    title: 'feature engineering reached a measured ceiling',
+    lede:
+      'Direct per-horizon models, a frozen feature-group ladder, and a challenger that still loses to theta with a resolved interval.',
+    blocks: [
+      {
+        kind: 'paragraph',
+        text: 'The last open question: could a learned model with the right inputs beat theta, not merely naive? The test was a predeclared feature-group ladder built on direct per-horizon models — one model per horizon instead of a recursive rollout — removing recursion as a confound. Feature groups were evaluated on the choose window only (the 15 exploration origins before 2021); the report window was computed exactly once, after the ladder selected its final configuration; an elastic-net arm used per-origin inner cross-validation for its regularization; and five external macro series — CPI, unemployment, consumer sentiment, the federal funds rate, and real disposable income — were ingested as vintages aligned point-in-time, so no today-downloaded value could enter a past origin.',
+      },
+      {
+        kind: 'figure',
+        figure: {
+          src: storyImage('feature_ladder.png'),
+          caption:
+            'The feature-group ladder, choose window only (incremental mean-category WAPE delta vs the previous best rung; positive = better): growth advances (+0.16pp, improving 13 of 15 origins); trend (−0.10pp) and cross-category (−0.04pp) are rejected; revision’s +0.05pp fails origin stability (8 of 15) and is rejected for instability; external macro adds exactly nothing (+0.00pp, 4 of 15); removing growth reverses the gain — growth was load-bearing. Verdicts are frozen; the report window was scored once, after the ladder concluded.',
+          alt: 'Horizontal bar chart of choose-window WAPE deltas for seven feature rungs: growth positive in sage and advanced, trend and the growth-removal check negative in crimson, revision small and rejected for origin instability, external macro at exactly zero, with origin-stability counts and frozen verdicts listed beside each bar.',
+        },
+      },
+      {
+        kind: 'paragraph',
+        text: 'Every rung was measured, and only one advanced. Growth features advanced (+0.16pp, improving 13 of 15 choose origins). Trend and cross-category context were rejected outright; revision metadata’s +0.05pp failed the origin-stability rule (8 of 15) and was rejected for instability; external macro added exactly nothing (+0.00pp, 4 of 15 origins). Removing growth reversed its gain, confirming growth was load-bearing. The ceiling was measured, not assumed.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'The surviving configuration — direct LightGBM + growth — still loses to theta with the interval resolving the loss, on every window, under final-vintage actuals: full exploration 9.02% vs 7.51% (−1.50pp, CI −2.45..−0.73); report 9.85% vs 7.02% (−2.82pp, CI −4.69..−1.17). Against naive it is unresolved (+0.28pp, CI −0.46..+1.14). The elastic net trailed the LightGBM on identical features (8.65% vs 8.39% on the choose window).',
+      },
+      {
+        kind: 'figure',
+        figure: {
+          src: storyImage('horizon_families.png'),
+          caption:
+            'Exploration-window mean-category WAPE by horizon, one panel per model (dotted line = seasonal naive): theta and Chronos hold near 10.2–10.4% at twelve months; trained NHITS degrades to 12.6% and the recursive gate LightGBM to 12.9%; direct forecasting with growth improves the recursive model to 11.5% — 1.42pp of recursion repaired — and still trails theta at every horizon.',
+          alt: 'Six small-multiple line panels of mean-category WAPE at horizons 1, 3, 6, and 12 months: naive flat near 8.5 to 10.1 percent, theta lowest throughout, Chronos-2 close behind theta, NHITS and the recursive gate LightGBM degrading steeply with horizon, and direct LightGBM plus growth improving on recursive but staying above theta.',
+        },
+      },
+      {
+        kind: 'paragraph',
+        text: 'Direct forecasting did repair part of the recursion problem: at the twelve-month horizon it improved the recursive gate model by 1.42pp (12.89% → 11.47%) — but it still trailed theta at every horizon (h=12: 11.47% vs 10.20%). Against first-release actuals the engineered model beat naive by 2.23pp, improving 10 of 11 categories, and still lost to theta by 1.28pp with the interval wholly negative (−2.32..−0.44). Feature enrichment repaired part of LightGBM’s long-horizon behavior, but it did not reveal a learned model capable of beating theta — and for this design, the archive-side enrichment route is now closed.',
+      },
+    ],
+    evidence: {
+      label: 'feature-ladder design and results (satellite H7_FEATURE_LADDER.md)',
+      href: satelliteDoc('H7_FEATURE_LADDER.md'),
+    },
+  },
+  {
+    id: 'what-remains-open',
+    chapter: 10,
+    kicker: 'chapter 10 · open questions',
+    title: 'what remains open',
+    lede:
+      'The gate is still closed, on purpose. Here is exactly what would reopen it — and what is now closed for good.',
+    blocks: [
+      {
+        kind: 'paragraph',
+        text: 'The serving decision stays fail-closed until a challenger passes a predeclared gate — that has not changed since the first refusal, and nothing in the satellite challenged it. One route is now closed: archive-side feature enrichment, as designed and tested in chapter 09, is closed for this design. The remaining legitimate routes are specific: accumulate genuinely new forecast origins for the future re-gate (roughly 24 calm origins, ≈ end of 2027), then re-gate with the theta method as a third benchmark beside naive and LightGBM; per-training-row historical alignment of external variables, which the ladder did not test (its external context was origin-constant); higher-frequency nowcasting inputs or a MIDAS-style design that mixes frequencies; a switching policy only if it demonstrates calibration across regime changes; alternative Chronos or NHITS configurations only under a new predeclaration and future evaluation data; and owner-confirmed prospective thresholds recorded before the re-gate window opens. Nothing in the plan revises the original gate retroactively — the re-gate design is drafted two years early precisely so no threshold gets chosen after seeing data.',
       },
       {
         kind: 'figure',
@@ -295,7 +394,7 @@ export const storyChapters: StoryChapter[] = [
       },
       {
         kind: 'paragraph',
-        text: 'The research agenda the policy layer left behind is specific: a switch only pays on regime-mixed windows, so any future attempt needs evaluation windows that actually mix regimes — and a calibrator that survives base-rate movement between windows. Isotonic on 77 out-of-fold rows collapsed to a single step and transferred badly across the regime boundary; base-rate-robust calibration is the spec for whoever tries next. Everything above is recorded, versioned, and linked — including the parts that failed. Especially those.',
+        text: 'A switch only pays on regime-mixed windows, so any future attempt needs evaluation windows that actually mix regimes — and a calibrator that survives base-rate movement between windows. Isotonic on 77 out-of-fold rows collapsed to a single step and transferred badly across the regime boundary; base-rate-robust calibration is the spec for whoever tries next. The platform keeps running while the evidence accumulates: realized-error rows mature month by month, and every additional calm origin is another block of evidence the next challenger will be judged on. Everything above is recorded, versioned, and linked — including the parts that failed. Especially those.',
       },
     ],
     evidence: {
@@ -538,7 +637,7 @@ export const m5Chapters: StoryChapter[] = [
     blocks: [
       {
         kind: 'paragraph',
-        text: 'Would the two datasets agree on a best model? No. M5 — 30,490 daily item×store series, no revisions, hierarchy everywhere — crowned the global LightGBM, by a margin (+6.5% over naive) that looks decisive until you see how the same design fared on the Census track. MRTS — 11 monthly national dollar series, revision-sensitive, forecast directly — refused its champion the moment real-time vintages replaced revised history, and the survivors there were seasonal naive and a 25-year-old per-series theta method. Same suite, same gates, same platform contracts, opposite winners. "The best forecasting model" turned out to be a property of the data and the measurement, not of the method.',
+        text: 'Would the two datasets agree on a best model? No. M5 — 30,490 daily item×store series, no revisions, hierarchy everywhere — crowned the global LightGBM, by a margin (+6.5% over naive) that looks decisive until you see how the same design fared on the Census track. MRTS — 11 monthly national dollar series, revision-sensitive, forecast directly — refused its champion the moment real-time vintages replaced revised history, and the strongest candidate that emerged there was a 25-year-old per-series theta method — ranked first among the tested Census challengers, and still refused by the predeclared promotion criterion on the frozen holdout. Same suite, same gates, same platform contracts, opposite winners. "The best forecasting model" turned out to be a property of the data and the measurement, not of the method.',
       },
       {
         kind: 'paragraph',

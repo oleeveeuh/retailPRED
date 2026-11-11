@@ -69,8 +69,10 @@ export const StoryPage: FC = () => {
           Three tabs. v1 is the pipeline that could not fail — the
           undergraduate build whose numbers meant nothing. v2 is the rebuild:
           the vintage gate refused the champion, the question moved to a
-          research satellite, and eight chapters follow, every number from a
-          frozen artifact, negative results included on purpose. m5 is the
+          research satellite, and ten chapters follow — the wider search
+          across statistical, foundation, neural, and feature-engineered
+          challengers included — every number from a frozen artifact,
+          negative results included on purpose. m5 is the
           Kaggle benchmark study that started it all — four model families on
           30,490 Walmart series, where predeclared gates stopped two
           challengers before and after the full benchmark.

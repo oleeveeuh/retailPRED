@@ -86,9 +86,18 @@ describe('showcase content', () => {
     }
   });
 
-  it('describes all five governed tableau views', () => {
-    expect(tableauViews).toHaveLength(6);
-    expect(new Set(tableauViews.map((view) => view.name)).size).toBe(6);
+  it('describes all nine governed tableau views (the local workbook)', () => {
+    expect(tableauViews).toHaveLength(9);
+    expect(new Set(tableauViews.map((view) => view.name)).size).toBe(9);
+    // The three added MRTS diagnostics are present with their frozen mark counts.
+    const names = tableauViews.map((view) => view.name);
+    expect(names).toContain('MRTS feature ladder');
+    expect(names).toContain('MRTS horizon accuracy');
+    expect(names).toContain('MRTS candidate comparisons');
+    const research = tableauViews.find((view) => view.name === 'MRTS research windows')!;
+    expect(research.oneLine).toMatch(/Chronos/);
+    expect(research.oneLine).toMatch(/NHITS/);
+    expect(research.oneLine).toMatch(/post-hoc/);
   });
 
   it('keeps the gate story honest about the failed verdict', () => {
@@ -133,7 +142,10 @@ describe('execution timeline content', () => {
     expect(detail('holdout')).toContain('Naive stands');
     expect(detail('challenge-audits')).toContain('0/11');
     expect(detail('challenge-audits')).toContain('11/11');
-    expect(detail('next-regime-classifier')).toContain('worst case ties naive');
+    // The selector is a measured negative, not "the fix" — no unmeasured
+    // downside-bound claims survive in the timeline.
+    expect(detail('next-regime-classifier')).toContain('not justified');
+    expect(detail('next-regime-classifier')).not.toContain('worst case ties naive');
   });
 
   it('links public phases to evidence that exists in the checkout', () => {

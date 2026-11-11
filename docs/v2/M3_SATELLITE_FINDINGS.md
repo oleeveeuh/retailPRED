@@ -10,9 +10,13 @@ it with explicit evaluation windows.
 Source: [oleeveeuh/retailPRED-satellite](https://github.com/oleeveeuh/retailPRED-satellite)
 (local investigation satellite; findings flow back as documents only).
 Findings documents: satellite `FINDINGS.md` (gate forensics, hypotheses
-H1–H5) and `POLICY_FINDINGS.md` (regime-switch policy layer). Protocol
-documents: satellite `PROTOCOL.md`, `POLICY.md` (predeclared before
-measurement; one commit per component).
+H1–H5, the reporting-only holdout scorecard, and the H6/H7/H8 addenda),
+`CHRONOS_MRTS.md`, `NHITS_MRTS.md`, `H7_FEATURE_LADDER.md`, and
+`POLICY_FINDINGS.md` (regime-switch policy layer). Protocol documents:
+satellite `PROTOCOL.md`, `POLICY.md`, the two benchmark predeclarations
+(`CHRONOS_PREDECLARATION.md`, `NHITS_PREDECLARATION.md`), and the drafted
+re-gate design `REGATE_DESIGN.md` (predeclared before measurement; one
+commit per component).
 
 ## What was measured
 
@@ -36,7 +40,11 @@ measurement; one commit per component).
    same stored predictions give theta a wholly positive holdout margin
    (+1.19pp, CI +0.83..+1.57) — recorded as descriptive only; the gate's
    predeclared actual source (latest_revision_vintage) is unchanged, and
-   criterion 2 still fails at 7/11.
+   criterion 2 still fails at 7/11. The scorecard also measured the
+   aggregation split that the re-gate design now guards: on the holdout,
+   mean-category WAPE puts theta at parity with naive while pooled
+   (volume-weighted) WAPE resolves in naive's favor (−0.77pp, CI
+   −1.24..−0.36).
 2. **A regime-switch policy** (capped LightGBM classifier, isotonic
    calibration on leave-one-origin-out CHOOSE scores, predeclared τ=0.50)
    choosing naive or theta per category and origin beats naive in 10/11
@@ -46,7 +54,41 @@ measurement; one commit per component).
    beat-everything guardrail failed, so no promotion document was issued;
    the measured lesson is that a switch pays only on regime-mixed
    evaluation windows and cross-regime probability calibration is the open
-   defect (Brier 0.155 CHOOSE → 0.276 REPORT).
+   defect (Brier 0.155 CHOOSE → 0.276 REPORT). The layer was not carried
+   forward.
+3. **The H7 feature-group ladder** (predeclared; owner-directed) closed
+   the archive-side enrichment question: direct per-horizon LightGBM with
+   a growth-feature extension was the only advancing rung (+0.16pp, 13/15
+   choose origins); trend, cross-category, revision (unstable, 8/15), and
+   origin-constant external-macro context (+0.00pp, 4/15) were rejected;
+   removal confirmed growth was load-bearing; an elastic-net arm trailed
+   the LightGBM on identical features. The final challenger — direct
+   LightGBM + growth — loses to theta with a wholly negative CI on every
+   window under final-vintage actuals (full exploration −1.50pp, CI
+   −2.45..−0.73; report −2.82pp, CI −4.69..−1.17), improves the recursive
+   gate model by 1.42pp at h=12, and still trails theta at every horizon.
+   No promotion; the report window was computed exactly once, after the
+   ladder concluded.
+4. **The H6 Chronos-2 benchmark** (predeclared, owner-directed):
+   zero-shot Chronos-2 on identical origins scored 7.75% mean-category
+   WAPE on exploration — second to theta (7.51%), ahead of naive (9.30%)
+   and the gate LightGBM (9.55%) — and 5.00% on the single post-hoc,
+   descriptive holdout pass. No confidence intervals, no selection or
+   promotion input (predeclared reading rules 2–3). The M5 rejection does
+   not transfer to MRTS and no cross-dataset performance claim is made;
+   cross-learning and fine-tuned variants remain untested.
+5. **The H8 NHITS benchmark** (predeclared, owner-directed): NHITS
+   trained from scratch at every origin on the as-of panel scored 8.91%
+   on exploration (behind theta and Chronos, ahead of naive on the point
+   delta, 6/11 categories) and 6.90% on the single post-hoc descriptive
+   holdout — behind naive (−1.75pp, 2/11), theta (−1.92pp, 1/11), and the
+   gate LightGBM slice, degrading monotonically with horizon (5.20% →
+   8.75%). Zero negative predictions; no clipping; no configuration
+   search (predeclaration). With H6 and H8, the same protocol has
+   evaluated all three modern families beside the classical baselines;
+   theta ranks first on both windows and Chronos second. The full
+   three-family table is in satellite `NHITS_MRTS.md` §"The three-family
+   statement".
 
 ## Evidence lineage
 
@@ -70,11 +112,15 @@ These are window-scoped research measurements on exploration/report/holdout
 origin subsets. They are **not comparable to the official full-grid MRTS
 gate metrics** in `model_performance.csv` and are therefore kept in a
 separate extract (`mrts_research_windows.csv`) whose every row carries its
-evaluation window, origin count, and source artifact. The 2026-11-10
-scorecard's additional metrics (MASE, signed bias, horizon breakdown,
-first-release re-scoring) remain in the satellite artifacts only and are
-not added to the governed extract. No candidate here is promoted,
-authorized, or served; a future re-gate (theta as third benchmark, per
-satellite FINDINGS §5 and its drafted predeclaration
-`REGATE_DESIGN.md`) remains the owner's documented path after vintage
-accumulation.
+evaluation window, origin count, source artifact, evidence class, and
+actual definition — the Chronos and NHITS holdout rows are explicitly
+labeled post-hoc and descriptive, and the H7 challenger rows carry their
+predeclared evidence classes. The 2026-11-10 scorecard's additional
+metrics (MASE, signed bias, horizon breakdown, first-release re-scoring)
+remain in the satellite artifacts only and are not added to the governed
+extract beyond the actual-definition split the extract declares. No
+candidate here is promoted, authorized, or served; a future re-gate (theta
+as third benchmark, per satellite FINDINGS §5 and its drafted
+predeclaration `REGATE_DESIGN.md`) remains the owner's documented path
+after vintage accumulation, with owner-confirmed thresholds recorded
+before the window opens.

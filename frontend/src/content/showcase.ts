@@ -49,7 +49,7 @@ export const hero = {
   chips: [
     { label: 'Databricks pipeline', value: 'executed', tone: 'mint' as const },
     { label: 'Vintage gate', value: 'refused the challenger', tone: 'amber' as const },
-    { label: 'Tableau', value: '6 governed views', tone: 'mint' as const },
+    { label: 'Tableau', value: '9 governed views (local)', tone: 'mint' as const },
     { label: 'Serving', value: 'fail-closed', tone: 'slate' as const },
   ],
 };
@@ -166,7 +166,10 @@ export const tableauViews: TableauView[] = [
   { name: 'M5 uncertainty', marks: '47 marks', oneLine: 'Coverage and interval width by level, horizon, and segment.' },
   { name: 'MRTS regimes', marks: '3 marks', oneLine: 'Pre-COVID, disruption, and post-disruption skill split.' },
   { name: 'Data freshness', marks: '2 marks', oneLine: 'Evaluation cutoffs and serving states per dataset.' },
-  { name: 'MRTS research windows', marks: '9 marks', oneLine: 'Window-scoped satellite research: naive, LightGBM, theta, and the regime-switch policy.' },
+  { name: 'MRTS research windows', marks: '22 marks', oneLine: 'Window-scoped satellite research: naive, LightGBM, theta, the regime-switch policy, zero-shot Chronos-2, trained NHITS, and the engineered challenger — post-hoc holdout rows labeled descriptive.' },
+  { name: 'MRTS feature ladder', marks: '7 marks', oneLine: 'Every choose-window feature rung with its delta, origin stability, and frozen verdict.' },
+  { name: 'MRTS horizon accuracy', marks: '24 marks', oneLine: 'Exploration WAPE at h=1/3/6/12 across classical, foundation, neural, learned, and baseline families.' },
+  { name: 'MRTS candidate comparisons', marks: '8 marks', oneLine: 'Paired deltas and confidence bounds for the engineered challenger vs naive and theta, both actual definitions.' },
 ];
 
 export const claimLadder = [

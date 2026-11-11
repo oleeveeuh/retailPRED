@@ -129,19 +129,19 @@ export const timeline: TimelineEntry[] = [
   },
   {
     id: 'h1-h4',
-    phase: 'phase 07 · H1–H4',
+    phase: 'phase 07 · repair attempts',
     headline: 'Four candidates, four refutations',
     detail:
-      'The preliminary-noise drop and revision-aware features failed; three transformations refuted — the log-ratio target is load-bearing. The naive combination helped (+1.18pp) but wasn’t gate-shaped.',
+      'The preliminary-noise drop and revision-aware features failed; three transformations refuted — the log-ratio target is load-bearing. The naive combination helped (+1.18pp) but fell short of the gate’s category breadth.',
     links: [],
     satelliteDoc: 'FINDINGS.md',
   },
   {
     id: 'h5-theta',
-    phase: 'phase 08 · H5, theta',
-    headline: 'The breakthrough',
+    phase: 'phase 08 · the theta method',
+    headline: 'A simpler method took the frontier',
     detail:
-      'Theta — a per-series method from 2000 — beat naive in 10/11 categories, +3.48pp on the report window.',
+      'Theta — a per-series classical method from 2000 — beat naive in 10/11 categories, +3.48pp on the report window. Later family benchmarks left it ranked first; nothing promoted it.',
     links: [],
     satelliteDoc: 'H5_ALTERNATIVES.md',
   },
@@ -165,10 +165,10 @@ export const timeline: TimelineEntry[] = [
   },
   {
     id: 'next-regime-classifier',
-    phase: 'phase 11 · next',
-    headline: 'A regime classifier',
+    phase: 'phase 11 · the learned selector',
+    headline: 'A learned selector, measured and not carried forward',
     detail:
-      'Trend strength, volatility, revision churn, and lagged performance route each forecast origin to naive or theta — worst case ties naive.',
+      'Trend strength, volatility, revision churn, and lagged performance routed each origin to naive or theta: it beat naive and the blend, lost to pure theta with the interval wholly below zero, and its calibration degraded across regimes (Brier 0.155 → 0.276) — the complexity was not justified.',
     links: [],
     satelliteDoc: 'PROMPT_REGIME_CLASSIFIER.md',
   },
