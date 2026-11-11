@@ -29,6 +29,18 @@ export const config = {
     import.meta.env.VITE_LATEST_SNAPSHOT_URL ?? (import.meta.env.DEV ? '' : 'live/v2-latest.json'),
 
   /**
+   * Public URL of the per-run ingest-status record (contract 2.2-status).
+   * Same-origin relative paths on GitHub Pages, empty (card hidden) in
+   * local development, overridable like the snapshot URL.
+   */
+  ingestStatusUrl:
+    import.meta.env.VITE_INGEST_STATUS_URL ?? (import.meta.env.DEV ? '' : 'live/v2-ingest-status.json'),
+
+  /** Public URL of the append-only per-run log written by the pipeline. */
+  runHistoryUrl:
+    import.meta.env.VITE_RUN_HISTORY_URL ?? (import.meta.env.DEV ? '' : 'live/runs.jsonl'),
+
+  /**
    * Enable debug logging
    */
   isDebug: import.meta.env.VITE_DEBUG === 'true',

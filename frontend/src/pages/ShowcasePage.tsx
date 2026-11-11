@@ -29,6 +29,7 @@ import {
 } from '../content/showcase';
 import { TableauEmbed } from '../components/TableauEmbed';
 import { ExecutionTimeline } from '../components/ExecutionTimeline';
+import { PipelineStatusCard } from '../components/PipelineStatusCard';
 import { SkillsProofGrid } from '../components/SkillsProofGrid';
 import { SectionEyebrow } from '../components/SectionEyebrow';
 import { entrance, skipMountAnimation } from '../lib/entrance';
@@ -136,6 +137,7 @@ export const ShowcasePage: FC = () => (
           <h2 className="text-xl text-stone-900">Four governed tasks, one scheduled pipeline</h2>
         </div>
       </div>
+      <PipelineStatusCard />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
         {pipelineTasks.map((task: PipelineTask, index) => {
           const chip = statusChip(task.status);
