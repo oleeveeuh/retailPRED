@@ -47,9 +47,9 @@ const chapter = (id: string) => {
 };
 
 describe('story content', () => {
-  it('tells exactly ten chapters with unique ordered ids', () => {
-    expect(storyChapters).toHaveLength(10);
-    expect(new Set(storyChapters.map((chapter) => chapter.id)).size).toBe(10);
+  it('tells exactly eleven chapters with unique ordered ids', () => {
+    expect(storyChapters).toHaveLength(11);
+    expect(new Set(storyChapters.map((chapter) => chapter.id)).size).toBe(11);
     storyChapters.forEach((chapter, index) => {
       expect(chapter.chapter).toBe(index + 1);
       expect(chapter.kicker.length).toBeGreaterThan(0);
@@ -67,6 +67,7 @@ describe('story content', () => {
     expect(storyChapters[7].id).toBe('the-wider-search');
     expect(storyChapters[8].id).toBe('feature-engineering-ceiling');
     expect(storyChapters[9].id).toBe('what-remains-open');
+    expect(storyChapters[10].id).toBe('the-live-loop');
   });
 
   it('carries no legacy fabricated claims', () => {
@@ -134,6 +135,13 @@ describe('story content', () => {
     expect(text('what-remains-open')).toMatch(/fail-closed/);
     expect(text('what-remains-open')).toMatch(/closed for this design/);
     expect(text('the-holdout')).toMatch(/Naive stands/);
+    // The live loop (DATABRICKS_RUN.md run log; the verified hosted-run receipt).
+    expect(text('the-live-loop')).toContain('452582046469351');
+    expect(text('the-live-loop')).toContain('2,200');
+    expect(text('the-live-loop')).toContain('2026-08-01');
+    expect(text('the-live-loop')).toContain('14:30');
+    expect(text('the-live-loop')).toMatch(/fail-closed/);
+    expect(text('the-live-loop')).toMatch(/2\.2-status/);
   });
 
   it('resolves any declared chapter figure inside frontend/public', () => {

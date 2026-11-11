@@ -402,6 +402,32 @@ export const storyChapters: StoryChapter[] = [
       href: satelliteDoc('FINDINGS.md'),
     },
   },
+  {
+    id: 'the-live-loop',
+    chapter: 11,
+    kicker: 'chapter 11 · the live loop',
+    title: 'the machine that runs while the gate stays closed',
+    lede:
+      'The research decides what may forecast; the pipeline decides what may be claimed. Both answers are running on real cloud infrastructure — and the refusals are published same as the results would be.',
+    blocks: [
+      {
+        kind: 'paragraph',
+        text: 'Every piece of evidence in the chapters above came from a platform that has to feed itself, so this last chapter is the machine itself. A scheduled job graph on Databricks runs four governed tasks in order: pull the latest Census release into immutable bronze rows and a versioned silver table; score the promoted champion on point-in-time gold — but only if the frozen portfolio decision authorizes it; evaluate realized errors once actuals mature; and publish one contract-validated snapshot to a machine-written data branch. The jobs are serverless on Databricks Free Edition, the tables live in the workspace catalog under Unity Catalog governance, and the two credentials the loop needs — the Census API key and the GitHub publisher token — stay in secret scopes, never in code or logs. The schedule is declared for 14:30 Eastern, daily, and is_live stays false until that recurring schedule has actually executed end to end.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'The whole graph has run once on the hosted workspace, and the receipts are the refusal chain working exactly as designed. On 2026-11-04, pipeline run 452582046469351: ingest merged 2,200 silver rows from live Census with a data cutoff of 2026-08-01; scoring refused — the candidate is still an unauthorized development challenger; realized-error monitoring skipped because no forecasts existed to evaluate; publication declined because there were no gold forecasts to publish. Four tasks, four honest verdicts, zero fabricated rows. That run is recorded in the execution ledger this chapter links to, and nothing has claimed more since.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'This is what fail-closed means as an operational fact, not a slogan: every task defaults to doing nothing rather than doing something unverified. Scoring can only run when a predeclared gate has promoted a champion — it has not, so the pipeline keeps serving nothing. Publication can only write contract-validated forecasts — there are none, so nothing is published. The site cannot show a forecast that was never authorized, because no stage of the machine is capable of producing one. And since the 2.2-status contract, every completed run also publishes its own verdicts — a status record and an append-only run log on the data branch, which the pipeline-status card on the showcase renders verbatim, refusals included. The status file makes no model claims, and its presence authorizes nothing; it is the machine saying, in public, what it did and did not do today.',
+      },
+    ],
+    evidence: {
+      label: 'execution ledger (docs/v2/DATABRICKS_RUN.md)',
+      href: platformDoc('docs/v2/DATABRICKS_RUN.md'),
+    },
+  },
 ];
 
 /**
