@@ -101,7 +101,10 @@ def test_run_live_ingest_captures_raw_bronze_provenance(tmp_path) -> None:
     assert len(store.read(BRONZE_MRTS)) == 2
 
 
-def test_bundle_declares_paused_scheduled_ingest() -> None:
+def test_bundle_declares_unpaused_scheduled_ingest() -> None:
+    """The schedule is live (unpaused 2026-11-11): every scheduled fire is a
+    real ingest attempt, and is_live stays false until one executes end to
+    end."""
     root = Path(__file__).resolve().parents[2]
     bundle = yaml.safe_load((root / "databricks.yml").read_text())
     assert bundle["variables"]["secret_scope"]["default"] == "retailpred"
@@ -109,7 +112,7 @@ def test_bundle_declares_paused_scheduled_ingest() -> None:
         (root / "databricks/resources/ingest_latest.job.yml").read_text()
     )
     job = resources["resources"]["jobs"]["platform_ingest_latest"]
-    assert job["schedule"]["pause_status"] == "PAUSED"
+    assert job["schedule"]["pause_status"] == "UNPAUSED"
     assert job["schedule"]["timezone_id"] == "America/New_York"
     task = job["tasks"][0]
     assert task["spark_python_task"]["python_file"] == "../jobs/ingest_latest.py"
@@ -137,3 +140,7 @@ def test_bundle_declares_paused_scheduled_ingest() -> None:
         "../jobs/publish_github_snapshot.py"
     )
     assert publish_task["depends_on"] == [{"task_key": "evaluate_realized_errors"}]
+    # The 2.2-status record's job identity comes from guarded macros.
+    assert "{{job.id}}" in publish_task["spark_python_task"]["parameters"]
+    assert "{{job.run_id}}" in publish_task["spark_python_task"]["parameters"]
+    assert "{{start_time}}" in publish_task["spark_python_task"]["parameters"]
