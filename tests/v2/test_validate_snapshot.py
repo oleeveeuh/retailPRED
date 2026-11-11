@@ -3,7 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from scripts.validate_snapshot import validate
+from scripts.validate_snapshot import validate, validate_runs_log, validate_status_record
 
 VALID = {
     "contract_version": "2.1",
@@ -107,3 +107,99 @@ def test_cli_accepts_valid_snapshot(tmp_path: Path) -> None:
         text=True,
     )
     assert result.returncode == 0
+
+
+STATUS_REFUSAL = {
+    "schema_version": "2.2-status",
+    "pipeline_run_id": "452582046469351",
+    "job_id": "326179734702237",
+    "pipeline_started_at": "2026-11-04T22:29:51+00:00",
+    "finished_at": "2026-11-04T22:33:12+00:00",
+    "ingest": {"rows_in_delta": 2200, "data_cutoff": "2026-08-01", "series_count": 11},
+    "gates": {
+        "ingest": "success",
+        "score": {
+            "status": "refused",
+            "model": "global_lightgbm",
+            "model_status": "development_challenger",
+            "required_action": "unavailable_until_point_in_time_validation",
+        },
+        "realized": {"status": "skipped", "realized_rows": 0},
+        "publish": "declined",
+    },
+    "is_live": False,
+    "generated_at": "2026-11-04T22:33:12+00:00",
+}
+
+
+def test_valid_status_record_passes() -> None:
+    assert validate_status_record(STATUS_REFUSAL, "status.json") == []
+
+
+def test_status_record_requires_every_gate_field() -> None:
+    for key in ("ingest", "score", "realized", "publish"):
+        broken = json.loads(json.dumps(STATUS_REFUSAL))
+        del broken["gates"][key]
+        assert any(f"gates.{key}" in error for error in validate_status_record(broken, "s"))
+    broken = json.loads(json.dumps(STATUS_REFUSAL))
+    del broken["ingest"]
+    assert any("ingest must be an object" in error for error in validate_status_record(broken, "s"))
+
+
+def test_status_record_makes_no_forecast_claims() -> None:
+    for key in ("prediction", "forecasts", "wape", "model_absolute_error"):
+        smuggled = json.loads(json.dumps(STATUS_REFUSAL))
+        smuggled[key] = 1000.0
+        errors = validate_status_record(smuggled, "s")
+        assert errors and "forbidden forecast-claim keys" in errors[-1]
+        assert key in errors[-1]
+    nested = json.loads(json.dumps(STATUS_REFUSAL))
+    nested["ingest"]["series"] = ["retail_total"]
+    errors = validate_status_record(nested, "s")
+    assert any("forbidden forecast-claim keys" in error for error in errors)
+
+
+def test_status_record_is_live_requires_completed_publication() -> None:
+    premature = {**STATUS_REFUSAL, "is_live": True}
+    errors = validate_status_record(premature, "s")
+    assert any("is_live=true requires" in error for error in errors)
+    completed = json.loads(json.dumps(STATUS_REFUSAL))
+    completed["is_live"] = True
+    completed["gates"]["publish"] = "published"
+    assert validate_status_record(completed, "s") == []
+
+
+def test_runs_log_validates_every_line(tmp_path: Path) -> None:
+    log = tmp_path / "runs.jsonl"
+    log.write_text(
+        json.dumps(STATUS_REFUSAL) + "\n" + json.dumps({**STATUS_REFUSAL, "is_live": "no"}) + "\n",
+        encoding="utf-8",
+    )
+    errors = validate_runs_log(log.read_text(encoding="utf-8"), str(log))
+    assert any("line 2" in error and "is_live" in error for error in errors)
+    assert validate_runs_log(json.dumps(STATUS_REFUSAL) + "\n", "log.jsonl") == []
+    assert any("empty" in error for error in validate_runs_log("\n", "log.jsonl"))
+
+
+def test_cli_passes_with_status_but_no_snapshot(tmp_path: Path) -> None:
+    """A deploy with a status file but no snapshot is the honest fail-closed state."""
+    status = tmp_path / "v2-ingest-status.json"
+    status.write_text(json.dumps(STATUS_REFUSAL))
+    result = subprocess.run(
+        [sys.executable, "scripts/validate_snapshot.py", str(status)],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    both = subprocess.run(
+        [
+            sys.executable,
+            "scripts/validate_snapshot.py",
+            str(status),
+            str(tmp_path / "v2-latest.json"),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert both.returncode == 1
+    assert "unreadable" in both.stdout

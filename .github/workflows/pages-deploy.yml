@@ -46,16 +46,37 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Retrieve and validate the public snapshot
+      - name: Retrieve and validate the public live-loop artifacts
         run: |
           mkdir -p frontend/public/live
           if [ -f live-data/live/v2-latest.json ]; then
             cp live-data/live/v2-latest.json frontend/public/live/v2-latest.json
-            python scripts/validate_snapshot.py frontend/public/live/v2-latest.json
           else
             echo "No snapshot has been published yet (the vintage gate has not authorized scoring)."
             echo "Deploying without it: the UI will report the snapshot as unavailable and keep"
             echo "the historical evaluation fixture as displayed evidence."
+          fi
+          # The 2.2-status record and run log ride alongside the snapshot;
+          # their presence (with or without a snapshot) is deployable.
+          for status_file in live/v2-ingest-status.json live/runs.jsonl; do
+            if [ -f "live-data/$status_file" ]; then
+              cp "live-data/$status_file" "frontend/public/$status_file"
+            else
+              echo "No $status_file on the data branch yet — the UI will report"
+              echo "the fail-closed state (no hosted run recorded)."
+            fi
+          done
+          artifacts=""
+          for candidate in frontend/public/live/v2-latest.json frontend/public/live/v2-ingest-status.json frontend/public/live/runs.jsonl; do
+            if [ -f "$candidate" ]; then
+              artifacts="$artifacts $candidate"
+            fi
+          done
+          if [ -n "$artifacts" ]; then
+            python scripts/validate_snapshot.py $artifacts
+          else
+            echo "No live-loop artifacts exist yet: the pipeline has never completed a run."
+            echo "This deploy ships the fail-closed UI states only, which is correct."
           fi
 
       - name: Setup Node.js 24
@@ -81,13 +102,19 @@ jobs:
           VITE_PAGES_BASE: /retailPRED/
         run: npm run build
 
-      - name: Assert subpath assets and snapshot placement
+      - name: Assert subpath assets and artifact placement
         run: |
           grep -q '/retailPRED/assets' frontend/dist/index.html
           if [ -f frontend/public/live/v2-latest.json ]; then
             test -f frontend/dist/live/v2-latest.json
           else
             echo "Snapshot absent: the forecast panel will report it as unavailable (fail-closed)."
+          fi
+          if [ -f frontend/public/live/v2-ingest-status.json ]; then
+            test -f frontend/dist/live/v2-ingest-status.json
+            test -f frontend/dist/live/runs.jsonl
+          else
+            echo "Status record absent: the pipeline card will report the fail-closed state."
           fi
 
       - name: Upload Pages artifact

@@ -1,9 +1,20 @@
 #!/usr/bin/env python3
-"""Validate a published snapshot JSON against the v2 contract, dependency-free.
+"""Validate published live-loop artifacts against their contracts, dependency-free.
 
-Runs in CI before Pages deployment so an invalid snapshot can never reach the
-public site. Schema-level only: contract version, kind, live flag, freshness,
-series structure, point invariants, and benchmark-status consistency.
+Runs in CI before Pages deployment so an invalid artifact can never reach the
+public site. Two artifact kinds are recognized by their own markers:
+
+- the forecast snapshot (``contract_version`` 2.1): contract version, kind,
+  live flag, freshness, series structure, point invariants, and
+  benchmark-status consistency;
+- the per-run ingest-status record (``schema_version`` "2.2-status") and the
+  ``runs.jsonl`` log of such records: required gate fields, is_live
+  consistency, and the absolute absence of forecast-claim keys — a status
+  file makes no model claims, and its presence or absence authorizes
+  nothing.
+
+A deploy with a status file but no snapshot passes: the snapshot's absence
+is the honest fail-closed state, not an error.
 """
 
 from __future__ import annotations
@@ -12,8 +23,35 @@ import json
 import sys
 from pathlib import Path
 
+STATUS_SCHEMA_VERSION = "2.2-status"
+
+# Keys that would turn the mechanical status record into a forecast or
+# metric claim. Forbidden at every level of the payload.
+FORBIDDEN_CLAIM_KEYS = frozenset(
+    {
+        "prediction",
+        "predictions",
+        "forecast",
+        "forecasts",
+        "series",
+        "points",
+        "lower",
+        "upper",
+        "seasonal_naive_prediction",
+        "evaluation_actual",
+        "model_absolute_error",
+        "seasonal_naive_absolute_error",
+        "model_beat_seasonal_naive",
+        "wape",
+        "wrmsse",
+        "mape",
+        "accuracy",
+    }
+)
+
 
 def validate(payload: object) -> list[str]:
+    """Validate a forecast snapshot payload against contract 2.1."""
     errors: list[str] = []
     if not isinstance(payload, dict):
         return ["snapshot must be a JSON object"]
@@ -94,23 +132,152 @@ def validate(payload: object) -> list[str]:
     return errors
 
 
-def main() -> int:
-    if len(sys.argv) != 2:
-        print("usage: validate_snapshot.py <snapshot.json>", file=sys.stderr)
-        return 1
-    path = Path(sys.argv[1])
+def _find_claim_keys(payload: object, prefix: str = "") -> list[str]:
+    found: list[str] = []
+    if isinstance(payload, dict):
+        for key, value in payload.items():
+            path = f"{prefix}.{key}" if prefix else str(key)
+            if isinstance(key, str) and key in FORBIDDEN_CLAIM_KEYS:
+                found.append(path)
+            found.extend(_find_claim_keys(value, path))
+    elif isinstance(payload, list):
+        for index, item in enumerate(payload):
+            found.extend(_find_claim_keys(item, f"{prefix}[{index}]"))
+    return found
+
+
+def validate_status_record(payload: object, source: str) -> list[str]:
+    """Validate one 2.2-status record: gates present, zero forecast claims."""
+    errors: list[str] = []
+    if not isinstance(payload, dict):
+        return [f"{source}: status record must be a JSON object"]
+
+    if payload.get("schema_version") != STATUS_SCHEMA_VERSION:
+        errors.append(
+            f"{source}: schema_version must be '{STATUS_SCHEMA_VERSION}', "
+            f"got {payload.get('schema_version')!r}"
+        )
+    for field in ("pipeline_run_id", "job_id"):
+        if not isinstance(payload.get(field), (str, type(None))):
+            errors.append(f"{source}: {field} must be a string or null")
+    for field in ("pipeline_started_at", "finished_at", "generated_at"):
+        value = payload.get(field)
+        if field == "pipeline_started_at":
+            if not isinstance(value, (str, type(None))):
+                errors.append(f"{source}: {field} must be a string or null")
+        elif not isinstance(value, str) or not value:
+            errors.append(f"{source}: {field} must be a non-empty string")
+
+    ingest = payload.get("ingest")
+    if not isinstance(ingest, dict):
+        errors.append(f"{source}: ingest must be an object")
+    else:
+        for field in ("rows_in_delta", "series_count"):
+            value = ingest.get(field)
+            if value is not None and (not isinstance(value, int) or isinstance(value, bool) or value < 0):
+                errors.append(f"{source}: ingest.{field} must be a non-negative integer or null")
+        cutoff = ingest.get("data_cutoff")
+        if cutoff is not None and (not isinstance(cutoff, str) or not cutoff):
+            errors.append(f"{source}: ingest.data_cutoff must be a non-empty string or null")
+
+    gates = payload.get("gates")
+    if not isinstance(gates, dict):
+        errors.append(f"{source}: gates must be an object with ingest, score, realized, publish")
+    else:
+        if gates.get("ingest") not in {"success", "failed"}:
+            errors.append(f"{source}: gates.ingest must be 'success' or 'failed'")
+        score = gates.get("score")
+        if not isinstance(score, dict):
+            errors.append(f"{source}: gates.score must be an object")
+        else:
+            if score.get("status") not in {"authorized", "refused"}:
+                errors.append(f"{source}: gates.score.status must be 'authorized' or 'refused'")
+            for field in ("model", "model_status", "required_action"):
+                if not isinstance(score.get(field), str) or not score.get(field):
+                    errors.append(f"{source}: gates.score.{field} must be a non-empty string")
+        realized = gates.get("realized")
+        if not isinstance(realized, dict):
+            errors.append(f"{source}: gates.realized must be an object")
+        else:
+            if realized.get("status") not in {"evaluated", "skipped"}:
+                errors.append(f"{source}: gates.realized.status must be 'evaluated' or 'skipped'")
+            rows = realized.get("realized_rows")
+            if not isinstance(rows, int) or isinstance(rows, bool) or rows < 0:
+                errors.append(f"{source}: gates.realized.realized_rows must be a non-negative integer")
+        if gates.get("publish") not in {"published", "declined", "skipped-identical"}:
+            errors.append(
+                f"{source}: gates.publish must be 'published', 'declined', or 'skipped-identical'"
+            )
+
+    is_live = payload.get("is_live")
+    if not isinstance(is_live, bool):
+        errors.append(f"{source}: is_live must be a boolean")
+    elif is_live and isinstance(gates, dict):
+        # Mirror the snapshot contract: is_live reflects the recurring
+        # schedule having executed end to end — a record may only carry
+        # is_live=true when this run ingested and completed publication.
+        if gates.get("ingest") != "success" or gates.get("publish") not in {
+            "published",
+            "skipped-identical",
+        }:
+            errors.append(
+                f"{source}: is_live=true requires a successful ingest and a completed "
+                "publish; the schedule flag cannot precede its own evidence"
+            )
+
+    claims = _find_claim_keys(payload)
+    if claims:
+        errors.append(
+            f"{source}: status record carries forbidden forecast-claim keys "
+            f"{claims} — it is a status report, not a model claim"
+        )
+    return errors
+
+
+def validate_runs_log(text: str, source: str) -> list[str]:
+    errors: list[str] = []
+    line_count = 0
+    for line in text.splitlines():
+        if not line.strip():
+            continue
+        line_count += 1
+        try:
+            payload = json.loads(line)
+        except json.JSONDecodeError as error:
+            errors.append(f"{source}: line {line_count} is not valid JSON ({error})")
+            continue
+        errors.extend(validate_status_record(payload, f"{source} line {line_count}"))
+    if line_count == 0:
+        errors.append(f"{source}: run log is empty")
+    return errors
+
+
+def _validate_path(path: Path) -> list[str]:
     try:
+        if path.suffix == ".jsonl":
+            return validate_runs_log(path.read_text(encoding="utf-8"), str(path))
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
-        print(f"Snapshot is unreadable: {error}")
-        return 1
+        return [f"{path} is unreadable: {error}"]
+    if isinstance(payload, dict) and payload.get("schema_version") == STATUS_SCHEMA_VERSION:
+        return validate_status_record(payload, str(path))
     errors = validate(payload)
-    if errors:
-        print(f"Snapshot {path} failed validation:")
-        for error in errors:
+    return [f"{path}: {error}" for error in errors]
+
+
+def main() -> int:
+    if len(sys.argv) < 2:
+        print("usage: validate_snapshot.py <artifact.json> [<more.json|.jsonl>...]", file=sys.stderr)
+        return 1
+    all_errors: list[str] = []
+    for argument in sys.argv[1:]:
+        all_errors.extend(_validate_path(Path(argument)))
+    if all_errors:
+        print("Live-loop artifact validation failed:")
+        for error in all_errors:
             print(f"- {error}")
         return 1
-    print(f"Snapshot {path} matches contract 2.1.")
+    print(f"Validated {len(sys.argv) - 1} artifact(s) against their contracts.")
     return 0
 
 

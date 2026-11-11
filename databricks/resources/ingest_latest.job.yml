@@ -58,6 +58,14 @@ resources:
               - ${var.secret_scope}
               - --repo-root
               - ${workspace.file_path}
+              # Job-identity macros for the 2.2-status record; the publish
+              # task records an unresolved macro as null, never as text.
+              - --job-id
+              - "{{job.id}}"
+              - --job-run-id
+              - "{{job.run_id}}"
+              - --pipeline-started-at-ms
+              - "{{start_time}}"
           environment_key: serverless_default
       environments:
         - environment_key: serverless_default

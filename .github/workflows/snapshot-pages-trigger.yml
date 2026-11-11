@@ -1,12 +1,18 @@
-name: Redeploy Pages on snapshot update
+name: Redeploy Pages on live-data update
 
-# The Databricks publisher commits v2-latest.json to the machine-written
-# live-data branch; this workflow forwards that change to the Pages deploy.
+# The Databricks publisher commits v2-latest.json, the 2.2-status record,
+# and the runs.jsonl log to the machine-written live-data branch; this
+# workflow forwards any of those changes to the Pages deploy. Status-only
+# runs (refusal runs that publish no snapshot) redeploy the site too, so
+# the pipeline card stays current.
 
 on:
   push:
     branches: [live-data]
-    paths: ['live/v2-latest.json']
+    paths:
+      - 'live/v2-latest.json'
+      - 'live/v2-ingest-status.json'
+      - 'live/runs.jsonl'
   workflow_dispatch:
 
 permissions:

@@ -1,9 +1,15 @@
 import base64
 import hashlib
+import json
 
 import pytest
 
-from retailpred.live_loop.publish_github import commit_snapshot, content_sha256
+from retailpred.live_loop.publish_github import (
+    append_run_line,
+    commit_snapshot,
+    content_sha256,
+    fetch_content,
+)
 
 TOKEN = "ghp_test-token-value"
 CONTENT = b'{"contract_version": "2.1"}'
@@ -132,3 +138,80 @@ def test_token_stays_out_of_urls_and_params() -> None:
 
 def test_content_hash_is_sha256() -> None:
     assert content_sha256(CONTENT) == hashlib.sha256(CONTENT).hexdigest()
+
+
+RUNS_LINE = '{"schema_version": "2.2-status", "pipeline_run_id": "run-123"}'
+
+
+def test_fetch_content_returns_decoded_bytes_when_present() -> None:
+    session = FakeSession(_existing_response(b'{"a": 1}\n'))
+    assert fetch_content(
+        session, repo="oleeveeuh/retailPRED", branch="live-data", path="live/runs.jsonl", token=TOKEN
+    ) == b'{"a": 1}\n'
+
+
+def test_fetch_content_returns_none_on_404_and_raises_on_other_errors() -> None:
+    missing = FakeSession(FakeResponse(404))
+    assert (
+        fetch_content(
+            missing, repo="oleeveeuh/retailPRED", branch="live-data", path="live/runs.jsonl", token=TOKEN
+        )
+        is None
+    )
+    broken = FakeSession(FakeResponse(403))
+    with pytest.raises(RuntimeError, match="contents lookup"):
+        fetch_content(
+            broken, repo="oleeveeuh/retailPRED", branch="live-data", path="live/runs.jsonl", token=TOKEN
+        )
+
+
+def test_append_run_line_creates_the_log_when_missing() -> None:
+    session = FakeSession(FakeResponse(404))
+    result = append_run_line(
+        session,
+        repo="oleeveeuh/retailPRED",
+        branch="live-data",
+        path="live/runs.jsonl",
+        token=TOKEN,
+        line=RUNS_LINE,
+        message="run record: pipeline run run-123",
+    )
+    assert result.action == "created"
+    body = session.puts[0]["json"]
+    assert base64.b64decode(body["content"]) == (RUNS_LINE + "\n").encode("utf-8")
+
+
+def test_append_run_line_extends_the_file_without_truncating() -> None:
+    prior = '{"schema_version": "2.2-status", "pipeline_run_id": "run-111"}\n'
+    session = FakeSession(_existing_response(prior.encode("utf-8")))
+    result = append_run_line(
+        session,
+        repo="oleeveeuh/retailPRED",
+        branch="live-data",
+        path="live/runs.jsonl",
+        token=TOKEN,
+        line=RUNS_LINE,
+        message="run record: pipeline run run-123",
+    )
+    assert result.action == "updated"
+    content = base64.b64decode(session.puts[0]["json"]["content"]).decode("utf-8")
+    lines = content.splitlines()
+    assert len(lines) == 2
+    assert json.loads(lines[0])["pipeline_run_id"] == "run-111"
+    assert json.loads(lines[1])["pipeline_run_id"] == "run-123"
+
+
+def test_append_run_line_replays_are_no_ops() -> None:
+    prior = RUNS_LINE + "\n"
+    session = FakeSession(_existing_response(prior.encode("utf-8")))
+    result = append_run_line(
+        session,
+        repo="oleeveeuh/retailPRED",
+        branch="live-data",
+        path="live/runs.jsonl",
+        token=TOKEN,
+        line=RUNS_LINE,
+        message="run record: pipeline run run-123",
+    )
+    assert result.action == "skipped"
+    assert session.puts == []

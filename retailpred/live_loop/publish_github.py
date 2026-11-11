@@ -1,9 +1,11 @@
-"""Publish the public snapshot to the machine-written ``live-data`` branch.
+"""Publish machine-written artifacts to the ``live-data`` branch.
 
-GitHub Pages is the presentation layer; this module only updates one JSON
-file on a dedicated branch through the Contents API. The credential never
-enters log output, and identical snapshots are skipped so the branch history
-records only real pipeline runs.
+GitHub Pages is the presentation layer; this module only updates JSON files
+on a dedicated branch through the Contents API — the forecast snapshot and,
+since contract ``2.2-status``, the per-run ingest-status record and the
+append-only ``runs.jsonl`` log. The credential never enters log output, and
+identical content is skipped so the branch history records only real
+pipeline runs.
 """
 
 from __future__ import annotations
@@ -28,6 +30,70 @@ def content_sha256(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def _headers(token: str) -> dict[str, str]:
+    return {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+
+
+def fetch_content(
+    session: requests.Session,
+    *,
+    repo: str,
+    branch: str,
+    path: str,
+    token: str,
+) -> bytes | None:
+    """Read a file from the data branch; None when it does not exist yet."""
+    url = CONTENTS_URL.format(repo=repo, path=path)
+    response = session.get(url, headers=_headers(token), params={"ref": branch}, timeout=30)
+    if response.status_code == 200:
+        return base64.b64decode(response.json().get("content"))
+    if response.status_code == 404:
+        return None
+    raise RuntimeError(
+        f"contents lookup for {path} failed with HTTP {response.status_code}; "
+        "check the publisher credential scope"
+    )
+
+
+def append_run_line(
+    session: requests.Session,
+    *,
+    repo: str,
+    branch: str,
+    path: str,
+    token: str,
+    line: str,
+    message: str,
+) -> PublishResult:
+    """Append one JSON line to the per-run log by rewriting prior lines + the new line.
+
+    The Contents API has no append, so the file is fetched, extended, and
+    committed whole; an exact replay of the last recorded line leaves the
+    content unchanged so commit_snapshot's identical-hash skip makes it a
+    no-op. The file is never truncated.
+    """
+    existing = fetch_content(session, repo=repo, branch=branch, path=path, token=token)
+    prior = existing.decode("utf-8").rstrip("\n") if existing else ""
+    lines = prior.split("\n") if prior else []
+    if lines and lines[-1] == line:
+        content = existing
+    else:
+        content = ("\n".join(lines + [line]) + "\n").encode("utf-8")
+    return commit_snapshot(
+        session,
+        repo=repo,
+        branch=branch,
+        path=path,
+        token=token,
+        content=content,
+        message=message,
+    )
+
+
 def commit_snapshot(
     session: requests.Session,
     *,
@@ -38,12 +104,8 @@ def commit_snapshot(
     content: bytes,
     message: str,
 ) -> PublishResult:
-    """Create, update, or skip the snapshot file on the data branch."""
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-    }
+    """Create, update, or skip a file on the data branch."""
+    headers = _headers(token)
     url = CONTENTS_URL.format(repo=repo, path=path)
     existing = session.get(url, headers=headers, params={"ref": branch}, timeout=30)
     existing_sha: str | None = None
