@@ -7,12 +7,13 @@ and no level moves silently.
 | Capability | Claim level | Evidence required to upgrade |
 |---|---|---|
 | Table contracts and Delta binding | **executed on Databricks** — 13 tables created in `workspace.bronze/silver/gold` by the bootstrap job | — |
-| Bundle deploy (bootstrap job, scheduled pipeline) | **executed on Databricks** — bundle deployed to the dev target; 3 serverless jobs registered | schedule unpaused + first scheduled run |
+| Bundle deploy (bootstrap job, scheduled pipeline) | **executed on Databricks** — bundle deployed to the dev target; 3 serverless jobs registered | first scheduled run |
 | Census ingestion task | **executed on Databricks** — 2,200 silver rows merged into `workspace.silver.monthly_observations` from live Census pulls | — |
 | Scoring task | executed on Databricks (refusal path): refuses while the candidate is an unauthorized challenger | a post-promotion run: forecast row counts, benchmark statuses |
 | Realized-error task | executed on Databricks (empty-skip path verified) | first matured-target evaluation rows |
 | Snapshot publication to `live-data` | implemented; decline path verified on Databricks | the data-branch commit with its pipeline run id |
-| Recurring schedule | declared paused | unpause commit + first scheduled-run URL, then `is_live=true` |
+| Recurring schedule | declared, unpaused (2026-11-11) — awaiting its first scheduled fire | first scheduled-run URL, then `is_live=true` |
+| Ingest-status record (2.2-status) | implemented; assembly and gate logic contract-tested without a hosted run (`--dry-run` + fixture mode) | first hosted run writing `live/v2-ingest-status.json` + `live/runs.jsonl` to `live-data` |
 | GitHub Pages retrieval | implemented (workflow defined) | first Pages deployment URL + frontend fetch check |
 
 ## Run log

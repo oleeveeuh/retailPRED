@@ -1,6 +1,6 @@
 # RetailPRED v2 Status
 
-Last updated: 2026-11-03
+Last updated: 2026-11-12
 
 ## Current state
 
@@ -38,7 +38,7 @@ Last updated: 2026-11-03
 
 ## Next checkpoint
 
-The fail-closed `/api/v2`, publication-only React forecast route, and nine-view local Tableau workbook share governed evidence and decision semantics. The three added MRTS-only views expose the predeclared H7 feature ladder, the direct-versus-recursive horizon comparison, and paired confidence intervals; the M5 views and extracts are unchanged. The publication audit removed unsupported live-demo claims, corrected the README, isolated legacy frontend routes, replaced placeholder deployment language, added a minimal v2 container contract verified by a serving-only local smoke test, added a CI container smoke job, and upgraded the frontend path from end-of-life Node 20 to Node 24 LTS. The live-loop foundation is implemented locally on `v2-live-loop`; the release state on `v2-rebuild` is ready for its first push, and the live loop executes after that in order: Java plus the local Delta proof, Databricks workspace deployment, FRED key plus series mapping plus ALFRED fetch plus the vintage backtest, secret scope plus unpausing the scheduled ingest, then a snapshot host plus `VITE_LATEST_SNAPSHOT_URL`. Public hosting (GitHub Pages) and Tableau publication are live: the owner republished workbook `retailpred_v2` on 2026-11-10 with all nine views (the 2026-11-05 release carried six), and the showcase embeds view 09 with workbook tabs. Republishing after a governed extract rebuild remains a manual owner action. Remote MLflow, Databricks execution, monitoring, and rollback remain unclaimed.
+The fail-closed `/api/v2`, publication-only React forecast route, and nine-view local Tableau workbook share governed evidence and decision semantics. The three added MRTS-only views expose the predeclared H7 feature ladder, the direct-versus-recursive horizon comparison, and paired confidence intervals; the M5 views and extracts are unchanged. The publication audit removed unsupported live-demo claims, corrected the README, isolated legacy frontend routes, replaced placeholder deployment language, added a minimal v2 container contract verified by a serving-only local smoke test, added a CI container smoke job, and upgraded the frontend path from end-of-life Node 20 to Node 24 LTS. The live loop is executed on Databricks: the workspace is deployed, the four-task graph has run end to end behind every fail-closed gate (2026-11-04), the per-run ingest-status record (contract 2.2-status) is implemented and contract-tested, and the scheduled ingest is unpaused (2026-11-11) awaiting its first scheduled fire; the vintage-gate champion remains refused, so no snapshot has been published and serving stays fail-closed. Public hosting (GitHub Pages) and Tableau publication are live: the owner republished workbook `retailpred_v2` on 2026-11-10 with all nine views (the 2026-11-05 release carried six), and the showcase embeds view 09 with workbook tabs. Republishing after a governed extract rebuild remains a manual owner action. Remote MLflow, Databricks execution, monitoring, and rollback remain unclaimed.
 
 ## Live-loop foundation evidence to date (implemented, awaiting execution)
 

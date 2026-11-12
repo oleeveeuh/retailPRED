@@ -99,13 +99,14 @@ export const PipelineCyclePanel: FC = () => {
       ) : (
         <div className="mt-4 border-t border-stone-200 pt-3 text-xs leading-relaxed text-stone-500">
           <p>
-            No snapshot is published yet — the scheduled job is declared paused
-            and scoring stays refused until the vintage gate promotes a
-            champion. The full four-task graph and every fail-closed gate are
-            verified on a real workspace run (2026-11-04, run 452582046469351):
-            ingest merged 2,200 silver rows from live Census, scoring refused
-            the unauthorized challenger, realized errors skipped with no
-            forecasts, publication declined without gold forecasts.
+            No snapshot is published yet — the scheduled job is unpaused
+            (2026-11-11) and scoring stays refused until the vintage gate
+            promotes a champion. The full four-task graph and every
+            fail-closed gate are verified on a real workspace run
+            (2026-11-04, run 452582046469351): ingest merged 2,200 silver
+            rows from live Census, scoring refused the unauthorized
+            challenger, realized errors skipped with no forecasts,
+            publication declined without gold forecasts.
           </p>
           <p className="mt-2 flex items-center gap-3">
             <a
