@@ -509,7 +509,7 @@ export const v1Chapters: StoryChapter[] = [
     blocks: [
       {
         kind: 'paragraph',
-        text: 'What survived is the complete training apparatus: all eleven pre-computed feature files as a frozen snapshot, four training scripts — including one that trains on a documented 73-feature panel (the full engineer built ~200; the trainer selected 73, explicitly dropping ‘year’ as a leakage vector) — a 52-week temporal holdout instead of a random split, fixed random seeds, and all 42 fitted model pickles committed alongside them. Data, code, and seeds: everything a re-run needs, byte for byte.',
+        text: 'What survived is the complete training apparatus: all eleven pre-computed feature files as a frozen snapshot, four training scripts — including one that trains on a documented 73-feature panel (the full engineer built ~200; the trainer selected 73, explicitly dropping ‘year’ as a leakage vector) — a holdout of the final 52 rows instead of a random split, fixed random seeds, and all 42 fitted model pickles committed alongside them. The apparatus a re-run needs — data, code, and seeds — is all there. Whether the committed models still correspond to the committed data turned out to be its own question.',
       },
       {
         kind: 'paragraph',
@@ -519,6 +519,32 @@ export const v1Chapters: StoryChapter[] = [
     evidence: {
       label: 'the preserved tag and audit (docs/v2/AUDIT.md)',
       href: platformDoc('docs/v2/AUDIT.md'),
+    },
+  },
+  {
+    id: 'v1-recovery',
+    chapter: 0,
+    kicker: 'chapter 00 · v1 · the recovery',
+    title: 'the scores come home',
+    lede:
+      'In 2026-11-12 the platform went back for v1’s numbers — predeclaration first, two identical runs, and a pickle-by-pickle audit that split the answer in two.',
+    blocks: [
+      {
+        kind: 'paragraph',
+        text: 'The recovery followed the same discipline as everything since the gate: the question, every input hash, the exact commands, and the stop-on-mismatch gates were committed before anything ran. The first gate fired immediately, and it was about the environment, not the code: the requirements file claimed scikit-learn 1.5.2, but the committed pickles record their own creation version — 1.7.1 — so the amendment pinned 1.7.1 from the pickles’ testimony, before the trainer’s first execution. After that, all 42 pickles load clean. Two identical runs of the unmodified trainer agreed: LightGBM bit-exact, RandomForest within last-bit float noise — recorded as a gate failed at byte-exactness with diagnosis, not quietly redefined.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'Then the pickle audit split history in two. Four categories — the pure-daily ones: electronics, furniture, health and personal care, sporting goods — recover at run level: the committed pickles, the committed CSVs, and the original run’s own embedded metrics agree (LightGBM to 0.0, RandomForest within five decimal places of float-parse noise). The seven mixed-grain categories do not: their committed models were trained on 2026-01-12, nine months before the tag’s data snapshot, and disagree with the frozen files by hundreds to thousands of prediction units. For those, the release is a protocol-level re-derivation on the frozen data — the original numbers survive only as the pickle-embedded metrics, released separately and labeled. One anomaly is recorded, never substituted: the total-sales LightGBM pickle is a bare booster, overwritten post-training by a later save path.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'The recovered numbers, labeled as recovery: on a holdout of the final 52 rows (≈ seven calendar weeks on the daily grid — the code comment said ‘52 weeks’; the recovery measured the grain), mean holdout MAE is 507.95 for LightGBM and 507.36 for RandomForest in target units, with a derived mean MAPE of 6.25% and 6.77% — derived, and explicitly not the pseudo-replicated snapshot’s 9.76%-against-14.11%, which measured a different metric on a different split. Every number inherits v1’s flaws — the daily expansion of monthly actuals, the inclusive windows frozen into the files. What this chapter adds is the closing proof of the rebuild’s thesis: v1 proves process, not performance — and the process is now strong enough to go back, re-derive its own predecessor behind predeclared gates, and publish the split verdict, including the parts that could not be recovered.',
+      },
+    ],
+    evidence: {
+      label: 'recovery record (satellite FINDINGS §14 + recovered scorecard)',
+      href: satelliteDoc('FINDINGS.md'),
     },
   },
   {

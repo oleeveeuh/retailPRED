@@ -189,11 +189,12 @@ describe('story content', () => {
     expect(SATELLITE_URL).toBe('https://github.com/oleeveeuh/retailPRED-satellite');
   });
 
-  it('tells exactly four v1 chapters with unique ids', () => {
-    expect(v1Chapters).toHaveLength(4);
-    expect(new Set(v1Chapters.map((chapter) => chapter.id)).size).toBe(4);
+  it('tells exactly five v1 chapters with unique ids', () => {
+    expect(v1Chapters).toHaveLength(5);
+    expect(new Set(v1Chapters.map((chapter) => chapter.id)).size).toBe(5);
     expect(v1Chapters[2].id).toBe('v1-what-survived');
-    expect(v1Chapters[3].id).toBe('v1-epistemic-not-operational');
+    expect(v1Chapters[3].id).toBe('v1-recovery');
+    expect(v1Chapters[4].id).toBe('v1-epistemic-not-operational');
     for (const chapter of v1Chapters) {
       expect(chapter.kicker.length).toBeGreaterThan(0);
       expect(chapter.title.length).toBeGreaterThan(0);
@@ -203,9 +204,13 @@ describe('story content', () => {
     }
   });
 
-  it('links every v1 chapter to platform evidence that resolves', () => {
+  it('links every v1 chapter to evidence that resolves', () => {
     for (const chapter of v1Chapters) {
-      expectPlatformHrefResolves(chapter.evidence.href);
+      if (chapter.evidence.href.startsWith('https://github.com/oleeveeuh/retailPRED/')) {
+        expectPlatformHrefResolves(chapter.evidence.href);
+      } else {
+        expectSatelliteHref(chapter.evidence.href);
+      }
     }
   });
 
@@ -232,7 +237,20 @@ describe('story content', () => {
     expect(text('v1-numbers-without-meaning')).toMatch(/not a single validated row/);
     expect(text('v1-what-survived')).toContain('42');
     expect(text('v1-what-survived')).toContain('73-feature');
-    expect(text('v1-what-survived')).toContain('52-week temporal holdout');
+    expect(text('v1-what-survived')).toContain('holdout of the final 52 rows');
     expect(text('v1-what-survived')).toMatch(/deterministic re-derivation/);
+    // The recovery (satellite FINDINGS §14, results/v1_training_73features_summary.recovered.md,
+    // 2026-11-12): environment correction from pickle testimony, run-level vs
+    // protocol-level split, and the recovered numbers — labeled, never merged.
+    expect(text('v1-recovery')).toContain('1.7.1');
+    expect(text('v1-recovery')).toContain('1.5.2');
+    expect(text('v1-recovery')).toContain('to 0.0');
+    expect(text('v1-recovery')).toContain('507.95');
+    expect(text('v1-recovery')).toContain('507.36');
+    expect(text('v1-recovery')).toContain('2026-01-12');
+    expect(text('v1-recovery')).toMatch(/run level/);
+    expect(text('v1-recovery')).toMatch(/protocol-level re-derivation/);
+    expect(text('v1-recovery')).toMatch(/seven calendar weeks/);
+    expect(text('v1-recovery')).toMatch(/predeclared gates/);
   });
 });
