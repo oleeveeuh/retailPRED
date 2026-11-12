@@ -489,9 +489,35 @@ export const v1Chapters: StoryChapter[] = [
         kind: 'paragraph',
         text: 'The neural entries in the same snapshot were heuristic outputs from a retired pipeline rather than measurements of any deployed model, and the published demo stated a headline accuracy figure that no deployed model had produced. Nothing in the stack could say what the numbers meant — and nothing in it could fail loudly enough for anyone to notice.',
       },
+      {
+        kind: 'paragraph',
+        text: 'And the hole ran deeper than one snapshot. The weekly job updated predictions from committed model pickles — training ran offline, outside any recorded process, and its summaries were never committed to version control, so the numbers the demo served existed nowhere in the repository’s history. The exported forecast file made it concrete: 3,586 future-dated predictions across a rolling twelve-month horizon, with not a single validated row among them. v1 could generate numbers on a schedule; it could not preserve, reproduce, or audit a single one of them.',
+      },
     ],
     evidence: {
       label: 'original v1 audit (docs/v2/AUDIT.md)',
+      href: platformDoc('docs/v2/AUDIT.md'),
+    },
+  },
+  {
+    id: 'v1-what-survived',
+    chapter: 0,
+    kicker: 'chapter 00 · v1 · what survived',
+    title: 'what the tag preserved',
+    lede:
+      'The numbers didn’t survive. The machine that produced them did — every input, seed, and fitted weight, frozen in git.',
+    blocks: [
+      {
+        kind: 'paragraph',
+        text: 'What survived is the complete training apparatus: all eleven pre-computed feature files as a frozen snapshot, four training scripts — including one that trains on a documented 73-feature panel (the full engineer built ~200; the trainer selected 73, explicitly dropping ‘year’ as a leakage vector) — a 52-week temporal holdout instead of a random split, fixed random seeds, and all 42 fitted model pickles committed alongside them. Data, code, and seeds: everything a re-run needs, byte for byte.',
+      },
+      {
+        kind: 'paragraph',
+        text: 'What didn’t survive is the one thing the site served: the scores. The summary file the API read was never committed, and no training date, run record, or provenance exists anywhere in the repository’s history. The distinction matters — the pipeline’s outputs are recoverable by deterministic re-derivation, verifiable against the committed pickles, but until that recovery is performed and gated, v1 has no defensible performance number: the only ones ever attached to it are the pseudo-replicated snapshot above and the fabricated headline.',
+      },
+    ],
+    evidence: {
+      label: 'the preserved tag and audit (docs/v2/AUDIT.md)',
       href: platformDoc('docs/v2/AUDIT.md'),
     },
   },

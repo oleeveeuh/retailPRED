@@ -189,9 +189,11 @@ describe('story content', () => {
     expect(SATELLITE_URL).toBe('https://github.com/oleeveeuh/retailPRED-satellite');
   });
 
-  it('tells exactly three v1 chapters with unique ids', () => {
-    expect(v1Chapters).toHaveLength(3);
-    expect(new Set(v1Chapters.map((chapter) => chapter.id)).size).toBe(3);
+  it('tells exactly four v1 chapters with unique ids', () => {
+    expect(v1Chapters).toHaveLength(4);
+    expect(new Set(v1Chapters.map((chapter) => chapter.id)).size).toBe(4);
+    expect(v1Chapters[2].id).toBe('v1-what-survived');
+    expect(v1Chapters[3].id).toBe('v1-epistemic-not-operational');
     for (const chapter of v1Chapters) {
       expect(chapter.kicker.length).toBeGreaterThan(0);
       expect(chapter.title.length).toBeGreaterThan(0);
@@ -224,5 +226,13 @@ describe('story content', () => {
     // carries it (BANNED_CLAIMS already enforces the '90.2' literal above).
     expect(text('v1-epistemic-not-operational')).toContain('29%');
     expect(text('v1-epistemic-not-operational')).toMatch(/fail-closed/);
+    // The provenance hole + the preserved apparatus (v1-undergrad tag forensics, 2026-11-11).
+    expect(text('v1-numbers-without-meaning')).toContain('never committed');
+    expect(text('v1-numbers-without-meaning')).toContain('3,586');
+    expect(text('v1-numbers-without-meaning')).toMatch(/not a single validated row/);
+    expect(text('v1-what-survived')).toContain('42');
+    expect(text('v1-what-survived')).toContain('73-feature');
+    expect(text('v1-what-survived')).toContain('52-week temporal holdout');
+    expect(text('v1-what-survived')).toMatch(/deterministic re-derivation/);
   });
 });
