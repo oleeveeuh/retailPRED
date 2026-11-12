@@ -135,6 +135,16 @@ describe('story content', () => {
     expect(text('what-remains-open')).toMatch(/fail-closed/);
     expect(text('what-remains-open')).toMatch(/closed for this design/);
     expect(text('the-holdout')).toMatch(/Naive stands/);
+    // The H9 feature revisit (satellite FINDINGS §13; results/h9_scorecard.md,
+    // 2026-11-11): the v1 families rebuilt vintage-safe — the §5 open route is
+    // measured and closed, and the second challenger is pre-qualified.
+    expect(text('what-remains-open')).toContain('56,364');
+    expect(text('what-remains-open')).toContain('+0.21pp');
+    expect(text('what-remains-open')).toContain('8.85%');
+    expect(text('what-remains-open')).toContain('−1.34pp');
+    expect(text('what-remains-open')).toContain('−2.39..−0.50');
+    expect(text('what-remains-open')).toMatch(/second pre-qualified challenger/);
+    expect(text('what-remains-open')).toMatch(/June 2027/);
     // The live loop (DATABRICKS_RUN.md run log; the verified hosted-run receipt).
     expect(text('the-live-loop')).toContain('452582046469351');
     expect(text('the-live-loop')).toContain('2,200');
