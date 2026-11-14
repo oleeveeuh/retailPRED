@@ -264,7 +264,11 @@ def fig_method_schematic() -> None:
         "text.color": ink,
     })
 
-    fig, ax = plt.subplots(figsize=(6.42, 3.60))
+    # Gallery-card density: the sibling method schematics (retailpred,
+    # pd-drawings, reviewinsight) render 1x at ~750-820px wide; the module's
+    # 300 dpi is for the story charts. Match the siblings exactly (818x408),
+    # or the card's type renders a third the visual size in the gallery.
+    fig, ax = plt.subplots(figsize=(6.42, 3.60), dpi=100)
     ax.axis("off")
     ax.set_position([0, 0, 1, 1])  # full bleed: box widths map to the real canvas
     ax.set_xlim(0, 1)
@@ -303,10 +307,10 @@ def fig_method_schematic() -> None:
     # pd-drawings, reviewinsight): a letter-spaced uppercase eyebrow title in
     # the site's mono-eyebrow voice, and a left-aligned IBM Plex Mono caption
     # line at the bottom — not a centered sans headline.
-    ax.text(0.03, 0.945, " ".join("THE M5 GATE PIPELINE"),
-            ha="left", fontsize=12.5, color=ink2)
-    ax.text(0.03, 0.055, "two stopped challengers, one champion — same rules as the census track",
-            ha="left", fontsize=8.8, color=muted, fontfamily="IBM Plex Mono")
+    ax.text(0.085, 0.945, " ".join("THE M5 GATE PIPELINE"),
+            ha="left", fontsize=14, color=ink2)
+    ax.text(0.085, 0.055, "two stopped challengers, one champion — same rules as the census track",
+            ha="left", fontsize=10, color=muted, fontfamily="IBM Plex Mono")
     _save_card(fig, "m5_method_schematic.png", "m5-benchmark-method-schematic.png")
 
 
