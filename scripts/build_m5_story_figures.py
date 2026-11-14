@@ -299,9 +299,14 @@ def fig_method_schematic() -> None:
     ax.text(0.862, 0.53, "clears", fontsize=8.5, color=muted, ha="left",
             va="center", fontfamily="IBM Plex Mono")
 
-    ax.text(0.5, 0.06, "two stopped challengers, one champion — same rules as the census track",
-            ha="center", fontsize=10.5, color=ink2)
-    ax.text(0.5, 0.945, "the m5 gate pipeline", ha="center", fontsize=13.5, color=ink)
+    # House card style, matching the sibling method schematics (retailpred,
+    # pd-drawings, reviewinsight): a letter-spaced uppercase eyebrow title in
+    # the site's mono-eyebrow voice, and a left-aligned IBM Plex Mono caption
+    # line at the bottom — not a centered sans headline.
+    ax.text(0.03, 0.945, " ".join("THE M5 GATE PIPELINE"),
+            ha="left", fontsize=12.5, color=ink2)
+    ax.text(0.03, 0.055, "two stopped challengers, one champion — same rules as the census track",
+            ha="left", fontsize=8.8, color=muted, fontfamily="IBM Plex Mono")
     _save_card(fig, "m5_method_schematic.png", "m5-benchmark-method-schematic.png")
 
 
