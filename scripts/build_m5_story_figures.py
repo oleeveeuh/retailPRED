@@ -307,9 +307,9 @@ def fig_method_schematic() -> None:
     # pd-drawings, reviewinsight): a letter-spaced uppercase eyebrow title in
     # the site's mono-eyebrow voice, and a left-aligned IBM Plex Mono caption
     # line at the bottom — not a centered sans headline.
-    ax.text(0.085, 0.945, " ".join("THE M5 GATE PIPELINE"),
+    ax.text(0.02, 0.945, " ".join("THE M5 GATE PIPELINE"),
             ha="left", fontsize=14, color=ink2)
-    ax.text(0.085, 0.055, "two stopped challengers, one champion — same rules as the census track",
+    ax.text(0.02, 0.055, "two stopped challengers, one champion — same rules as the census track",
             ha="left", fontsize=10, color=muted, fontfamily="IBM Plex Mono")
     _save_card(fig, "m5_method_schematic.png", "m5-benchmark-method-schematic.png")
 
