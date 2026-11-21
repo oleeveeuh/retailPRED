@@ -129,4 +129,30 @@ describe('shap analysis bundle', () => {
       }
     }
   });
+
+  it('shift diagnosis: the documented 29.2% -> 4.1% reversal over controlled panels', () => {
+    const shift = shapAnalysis.shift_diagnosis;
+    const refs = shift.provenance.references;
+    // docs/v2/M3_LIGHTGBM.md and docs/v2/M3_VINTAGE_BACKTEST.md, recomputed
+    expect(refs.development_validation.relative_improvement).toBeCloseTo(0.2921, 3);
+    expect(refs.vintage_gate.relative_degradation).toBeCloseTo(0.0408, 3);
+    expect(refs.vintage_gate.lightgbm_mean_category_wape).toBeCloseTo(0.084893, 5);
+    expect(refs.vintage_gate.naive_mean_category_wape).toBeCloseTo(0.081568, 5);
+    // the two fits read the same months: same cutoff, same row count
+    expect(shift.provenance.revised_history.data_cutoff).toBe(
+      shift.provenance.point_in_time.data_cutoff,
+    );
+    expect(shift.provenance.revised_history.n_rows).toBe(
+      shift.provenance.point_in_time.n_rows,
+    );
+    expect(shift.provenance.common_cutoff).toBe('2025-03-01');
+    expect(shift.provenance.as_of.startsWith('2025-05-15')).toBe(true);
+    expect(shift.rows).toHaveLength(15);
+    const drifts = shift.rows.map((r) => Math.abs(r.drift_abs));
+    expect([...drifts].sort((a, b) => b - a)).toEqual(drifts);
+    expect(shift.attribution_drift_l1).toBeGreaterThan(0);
+    for (const row of shift.rows) {
+      expect(shift.features).toContain(row.feature);
+    }
+  });
 });

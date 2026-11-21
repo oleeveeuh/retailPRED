@@ -1,4 +1,6 @@
+import json
 from datetime import datetime, timezone
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -6,7 +8,13 @@ import pytest
 import shap
 
 from forecasting.models.global_lightgbm import FEATURE_COLUMNS, GlobalLightGBM
-from scripts.build_shap_analysis import build_shap_bundle
+from scripts.build_shap_analysis import (
+    ADDITIVITY_TOLERANCE,
+    build_shap_bundle,
+    build_shift_attribution,
+    build_shift_diagnosis,
+    reference_metrics,
+)
 
 NOW = datetime(2026, 11, 20, tzinfo=timezone.utc)
 REVISION = "a" * 40
@@ -145,3 +153,147 @@ def test_builder_refuses_additivity_violation(monkeypatch: pytest.MonkeyPatch) -
     monkeypatch.setattr(shap, "TreeExplainer", BrokenExplainer)
     with pytest.raises(RuntimeError, match="additivity"):
         _bundle(_panel(15))
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+DEV_FOLDS = REPO_ROOT / "data/v2/mrts_model_folds.csv"
+GATE_FOLDS = REPO_ROOT / "data/v2/vintage_backtest_folds.csv"
+GATE_SUMMARY = REPO_ROOT / "data/v2/vintage_backtest_summary.json"
+VINTAGE_CSV = REPO_ROOT / "data/v2/alfred_mrts_vintages.csv"
+
+
+def _synthetic_dev_folds() -> pd.DataFrame:
+    rows = []
+    for series_id, actual, naive_err, lgbm_err in (("a", 100.0, 10.0, 5.0), ("b", 200.0, 40.0, 30.0)):
+        for model_name, err in (("seasonal_naive", naive_err), ("global_lightgbm", lgbm_err)):
+            rows.append(
+                {
+                    "series_id": series_id,
+                    "model_name": model_name,
+                    "prediction": actual - err,
+                    "actual": actual,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def _synthetic_gate_summary() -> dict:
+    return {
+        "global_lightgbm": {"by_series": {"a": {"wape": 0.10}, "b": {"wape": 0.14}}},
+        "seasonal_naive": {"by_series": {"a": {"wape": 0.08}, "b": {"wape": 0.12}}},
+    }
+
+
+def test_reference_metrics_reproduce_the_fold_weighted_recipe() -> None:
+    references = reference_metrics(_synthetic_dev_folds(), _synthetic_gate_summary())
+    validation = references["development_validation"]
+    # naive: (0.1 + 0.2) / 2, lightgbm: (0.05 + 0.15) / 2
+    assert validation["naive_mean_category_wape"] == pytest.approx(0.15)
+    assert validation["lightgbm_mean_category_wape"] == pytest.approx(0.10)
+    assert validation["relative_improvement"] == pytest.approx(1 / 3)
+    gate = references["vintage_gate"]
+    assert gate["naive_mean_category_wape"] == pytest.approx(0.10)
+    assert gate["lightgbm_mean_category_wape"] == pytest.approx(0.12)
+    assert gate["relative_degradation"] == pytest.approx(0.20)
+
+
+def test_shift_references_match_the_documented_measured_endpoints() -> None:
+    references = reference_metrics(
+        pd.read_csv(DEV_FOLDS), json.loads(GATE_SUMMARY.read_text())
+    )
+    # docs/v2/M3_LIGHTGBM.md: "equally weighted mean category WAPE by 29.2%"
+    assert references["development_validation"]["relative_improvement"] == pytest.approx(
+        0.2921, abs=5e-4
+    )
+    # docs/v2/M3_VINTAGE_BACKTEST.md: 8.49% vs 8.16% -> ~4.1% degradation, gate FAILED
+    assert references["vintage_gate"]["relative_degradation"] == pytest.approx(0.0408, abs=2e-4)
+
+
+def _synthetic_vintage_frame(periods: int = 30) -> pd.DataFrame:
+    """Monthly vintages that keep revising toward the truth, like ALFRED.
+
+    Thirteen monthly vintages per month shrink a +12% first-release bias
+    toward zero, and a final revision (the exact value) lands at +420 days.
+    An as-of near the cutoff therefore reads recent months from biased early
+    vintages while old months have converged — the revised panel reads the
+    final revision everywhere.
+    """
+    dates = pd.date_range("2023-01-01", periods=periods, freq="MS")
+    rows = []
+    for series_id, base, trend in (("a", 100.0, 1.0), ("b", 300.0, 2.0)):
+        for index, month in enumerate(dates):
+            value = base + index * trend + 5 * np.sin(index * 2 * np.pi / 12)
+            for step in range(13):
+                bias = 0.12 / (step + 1)
+                vintage_time = pd.Timestamp(month) + pd.Timedelta(days=15 + 30 * step)
+                rows.append(
+                    {
+                        "series_id": series_id,
+                        "observation_time": month,
+                        "value": value * (1.0 + bias),
+                        "release_time": pd.NaT,
+                        "vintage_time": vintage_time.tz_localize("UTC"),
+                        "ingested_at": vintage_time.tz_localize("UTC"),
+                        "source": "synthetic",
+                    }
+                )
+            final_vintage = pd.Timestamp(month) + pd.Timedelta(days=420)
+            rows.append(
+                {
+                    "series_id": series_id,
+                    "observation_time": month,
+                    "value": value,
+                    "release_time": pd.NaT,
+                    "vintage_time": final_vintage.tz_localize("UTC"),
+                    "ingested_at": final_vintage.tz_localize("UTC"),
+                    "source": "synthetic",
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def test_shift_attribution_moves_when_recent_months_stay_unrevised() -> None:
+    frame = _synthetic_vintage_frame()
+    cutoff = pd.Timestamp("2025-06-01")
+    as_of = datetime(2025, 6, 21, tzinfo=timezone.utc)
+    result = build_shift_attribution(frame, cutoff=cutoff, as_of=as_of)
+    assert len(result["rows"]) == len(FEATURE_COLUMNS)
+    drifts = [abs(row["drift_abs"]) for row in result["rows"]]
+    assert drifts == sorted(drifts, reverse=True)
+    assert result["attribution_drift_l1"] > 0
+    fits = result.pop("fits")
+    assert fits["revised_history"]["cutoff"] == fits["point_in_time"]["cutoff"] == "2025-06-01"
+    assert fits["revised_history"]["residual"] < ADDITIVITY_TOLERANCE
+    assert fits["point_in_time"]["residual"] < ADDITIVITY_TOLERANCE
+
+
+def test_shift_diagnosis_on_the_frozen_gate_artifacts() -> None:
+    import hashlib
+
+    digest = hashlib.sha256(VINTAGE_CSV.read_bytes()).hexdigest()
+    window_summary = json.loads(
+        (REPO_ROOT / "data/v2/evidence/mrts_research_windows/mrts_window_summary.json").read_text()
+    )
+    assert digest == window_summary["provenance"]["data_sha256"], (
+        "the diagnosis must run on the exact frozen panel the window summary pins"
+    )
+    payload = build_shift_diagnosis(
+        pd.read_csv(VINTAGE_CSV),
+        pd.read_csv(GATE_FOLDS),
+        pd.read_csv(DEV_FOLDS),
+        json.loads(GATE_SUMMARY.read_text()),
+        now=NOW,
+        revision=REVISION,
+        data_sha256=digest,
+    )
+    provenance = payload["provenance"]
+    assert pd.Timestamp(provenance["as_of"]) == pd.Timestamp("2025-05-15T00:00:00+00:00")
+    assert provenance["common_cutoff"] == "2025-03-01"
+    for fit in (provenance["revised_history"], provenance["point_in_time"]):
+        assert fit["data_cutoff"] == "2025-03-01"
+        assert fit["n_series"] == 11
+        assert fit["additivity_max_error"] < ADDITIVITY_TOLERANCE
+    assert provenance["revised_history"]["n_rows"] == provenance["point_in_time"]["n_rows"]
+    assert payload["rows"] and len(payload["rows"]) == len(FEATURE_COLUMNS)
+    drifts = [abs(row["drift_abs"]) for row in payload["rows"]]
+    assert drifts == sorted(drifts, reverse=True)
+    assert payload["attribution_drift_l1"] > 0

@@ -96,6 +96,59 @@ export interface ShapWaterfall {
   contributions: ShapContribution[];
 }
 
+export interface ShapShiftEndpoint {
+  mean_abs_shap: number;
+  mean_shap: number;
+  mean_value: number;
+}
+
+export interface ShapShiftRow {
+  feature: string;
+  revised_history: ShapShiftEndpoint;
+  point_in_time: ShapShiftEndpoint;
+  drift_abs: number;
+  drift_signed: number;
+}
+
+export interface ShapShiftReference {
+  label: string;
+  naive_mean_category_wape: number;
+  lightgbm_mean_category_wape: number;
+  relative_improvement?: number;
+  relative_degradation?: number;
+  source_artifact: string;
+  document: string;
+}
+
+export interface ShapShiftFit {
+  n_rows: number;
+  n_series: number;
+  data_cutoff: string;
+  additivity_max_error: number;
+}
+
+export interface ShapShiftData {
+  provenance: {
+    generated_at: string;
+    platform_code_revision: string;
+    input_sha256: string;
+    source_artifacts: string[];
+    documents: string[];
+    as_of: string;
+    common_cutoff: string;
+    revised_history: ShapShiftFit;
+    point_in_time: ShapShiftFit;
+    references: {
+      development_validation: ShapShiftReference;
+      vintage_gate: ShapShiftReference;
+    };
+    diagnosis: string;
+  };
+  features: string[];
+  rows: ShapShiftRow[];
+  attribution_drift_l1: number;
+}
+
 export interface ShapAnalysisData {
   provenance: {
     generated_at: string;
@@ -116,6 +169,7 @@ export interface ShapAnalysisData {
   features: string[];
   global_importance: ShapGlobalRow[];
   waterfalls: ShapWaterfall[];
+  shift_diagnosis: ShapShiftData;
 }
 
 export const shapAnalysis = shapAnalysisJson as unknown as ShapAnalysisData;

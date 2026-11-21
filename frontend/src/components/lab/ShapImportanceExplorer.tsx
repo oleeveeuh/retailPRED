@@ -1,8 +1,13 @@
-/** SHAP explorer — the governed challenger's own accounting of a forecast.
+/** SHAP explorer — the shift diagnosis, then the challenger's own ledger.
  *
- * Frozen TreeExplainer values over the refit GlobalLightGBM's training rows:
- * an in-sample explanation of the model's internal arithmetic, not a
- * performance claim. Waterfalls close exactly to the model output — the
+ * Top: the measured reversal (29.2% revised-history validation improvement
+ * into the vintage gate's 4.1% degradation) and the attribution drift
+ * between two fits of the identical architecture on revised vs point-in-time
+ * values of the same months — the model-side account of the distribution
+ * shift the documents describe.
+ *
+ * Bottom: today's refit challenger, explained in-sample with frozen
+ * TreeExplainer values. Waterfalls close exactly to the model output; the
  * residual after the top-k bars is rendered as "all other features".
  */
 
@@ -54,8 +59,17 @@ const pctOf = (value: number) => `${value >= 0 ? '+' : ''}${((Math.exp(value) - 
 
 const logDelta = (value: number) => `${value >= 0 ? '+' : ''}${value.toFixed(3)}`;
 
+const signedPct = (value: number) => `${value >= 0 ? '+' : ''}${(100 * value).toFixed(1)}%`;
+
+const SubHeading: FC<{ children: string }> = ({ children }) => (
+  <p className="mt-6 mb-3 border-t border-[#d8d1c4] pt-4 font-mono text-[11px] uppercase tracking-wide text-stone-500 first:mt-0 first:border-t-0 first:pt-0">
+    {children}
+  </p>
+);
+
 export const ShapImportanceExplorer: FC = () => {
-  const { provenance, global_importance: globalImportance, waterfalls } = shapAnalysis;
+  const { provenance, global_importance: globalImportance, waterfalls, shift_diagnosis: shift } =
+    shapAnalysis;
   const [seriesId, setSeriesId] = useState(waterfalls[0]?.series_id ?? '');
 
   const waterfall = useMemo(
@@ -71,6 +85,22 @@ export const ShapImportanceExplorer: FC = () => {
         shap: row.mean_abs_shap,
       })),
     [globalImportance],
+  );
+
+  /** Attribution drift, biggest move first (rows arrive sorted; recharts renders
+   * vertical-layout categories bottom-up, so reverse for a top-down read). */
+  const driftData = useMemo(
+    () =>
+      [...shift.rows]
+        .reverse()
+        .map((row) => ({
+          name: label(row.feature),
+          drift: row.drift_abs,
+          revised: row.revised_history.mean_abs_shap,
+          point: row.point_in_time.mean_abs_shap,
+          valueShift: row.point_in_time.mean_value - row.revised_history.mean_value,
+        })),
+    [shift.rows],
   );
 
   /** Cumulative waterfall: top-k contributions plus the closing residual. */
@@ -130,8 +160,83 @@ export const ShapImportanceExplorer: FC = () => {
     );
   }
 
+  const validation = shift.provenance.references.development_validation;
+  const gate = shift.provenance.references.vintage_gate;
+
   return (
     <div>
+      <SubHeading>the reversal — measured, from the frozen documents' own artifacts</SubHeading>
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <Readout
+          label="validation, revised history"
+          value={signedPct(validation.relative_improvement)}
+          title={`${validation.label}: naive ${(100 * validation.naive_mean_category_wape).toFixed(2)}% → lightgbm ${(100 * validation.lightgbm_mean_category_wape).toFixed(2)}% mean category wape`}
+        />
+        <Readout
+          label="point-in-time gate"
+          value={signedPct(-gate.relative_degradation)}
+          title={`${gate.label}: naive ${(100 * gate.naive_mean_category_wape).toFixed(2)}% → lightgbm ${(100 * gate.lightgbm_mean_category_wape).toFixed(2)}% mean category wape — gate FAILED`}
+        />
+        <Readout label="attribution drift (L1)" value={shift.attribution_drift_l1.toFixed(4)} />
+        <Readout
+          label="common cutoff / as-of"
+          value={`${shift.provenance.common_cutoff} / ${shift.provenance.as_of.slice(0, 10)}`}
+        />
+      </div>
+
+      <SubHeading>the diagnosis — attribution drift between identical months</SubHeading>
+      <div className="h-72">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={driftData} layout="vertical" margin={{ top: 4, right: 32, bottom: 0, left: 8 }}>
+            <CartesianGrid stroke={GRID} strokeWidth={0.8} horizontal={false} />
+            <XAxis
+              type="number"
+              tick={{ fontSize: 11, fill: MUTED }}
+              tickFormatter={(v: number) => (v > 0 ? `+${v.toFixed(3)}` : v.toFixed(3))}
+              stroke={GRID}
+            />
+            <YAxis
+              type="category"
+              dataKey="name"
+              width={118}
+              tick={{ fontSize: 11, fill: INK2 }}
+              stroke={GRID}
+            />
+            <ReferenceLine x={0} stroke={MUTED} strokeDasharray="4 3" />
+            <Tooltip
+              cursor={{ fill: 'rgba(216, 209, 196, 0.25)' }}
+              contentStyle={{ background: '#fbf9f4', border: `1px solid ${GRID}`, borderRadius: 2, fontSize: 12 }}
+              formatter={(v: number | string, _n: string, entry) => {
+                const item = entry?.payload as
+                  | { revised: number; point: number; valueShift: number }
+                  | undefined;
+                if (!item) return [String(v), 'Δ mean |SHAP|'];
+                return [
+                  `${logDelta(Number(v))} · mean |SHAP| ${item.revised.toFixed(4)} → ${item.point.toFixed(4)} · mean value ${logDelta(item.valueShift)}`,
+                  'Δ mean |SHAP|',
+                ];
+              }}
+            />
+            <Bar dataKey="drift" isAnimationActive={false} barSize={14} name="Δ mean |SHAP|">
+              {driftData.map((row) => (
+                <Cell key={row.name} fill={row.drift >= 0 ? POLICY : CRIMSON} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="mt-3 font-mono text-xs lowercase leading-relaxed text-stone-500">
+        one architecture, two fits: the same months through {shift.provenance.common_cutoff}, trained
+        on latest-revision values (the m3 setting — {(100 * validation.lightgbm_mean_category_wape).toFixed(2)}% mean
+        category wape, {(signedPct(validation.relative_improvement))} vs naive) versus point-in-time
+        values at the {shift.provenance.as_of.slice(0, 10)} as-of (the gate setting —{' '}
+        {(100 * gate.lightgbm_mean_category_wape).toFixed(2)}%, {(signedPct(-gate.relative_degradation))} vs naive,
+        refused). the bars are each feature's change in mean |shap| between the two fits: where the
+        model's weight moved when history stopped being revisable. the measured endpoints come from
+        the frozen fold artifacts the documents cite; nothing here re-runs the gate.
+      </p>
+
+      <SubHeading>today's challenger — mean |shap| share over training rows</SubHeading>
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={importanceData} layout="vertical" margin={{ top: 4, right: 32, bottom: 0, left: 8 }}>
@@ -170,7 +275,8 @@ export const ShapImportanceExplorer: FC = () => {
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3">
+      <SubHeading>one row, decomposed — {provenance.model_status.replace(/_/g, ' ')}</SubHeading>
+      <div className="mt-3 flex flex-wrap items-center gap-3">
         <label htmlFor="shap-series" className="font-mono text-[11px] lowercase text-stone-500">
           series
         </label>
@@ -263,8 +369,12 @@ export const ShapImportanceExplorer: FC = () => {
   );
 };
 
-const Readout: FC<{ label: string; value: string }> = ({ label: readoutLabel, value }) => (
-  <div className="rounded-sm border border-stone-200 bg-white px-3 py-2">
+const Readout: FC<{ label: string; value: string; title?: string }> = ({
+  label: readoutLabel,
+  value,
+  title,
+}) => (
+  <div className="rounded-sm border border-stone-200 bg-white px-3 py-2" title={title}>
     <p className="font-mono text-[10px] lowercase text-stone-500">{readoutLabel}</p>
     <p className="truncate font-mono text-sm" style={{ color: INK2 }} title={value}>
       {value}

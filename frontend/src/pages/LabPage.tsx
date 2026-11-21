@@ -44,7 +44,7 @@ const SECTIONS: { eyebrow: string; title: string; intro: string }[] = [
     eyebrow: "read the model's ledger",
     title: 'why the model predicts',
     intro:
-      'Exact SHAP values from the refit MRTS challenger over its governed training rows: which inputs move each forecast, and by how much, in the model\'s own units. This is an in-sample account of the fitted model\'s internal arithmetic — not a performance claim, and the challenger still has no live serving authorization.',
+      'i applied SHAP feature attribution to diagnose the distribution shift that reversed a 29% validation improvement into 4% degradation. Below is that diagnosis — the identical model fit on revised versus point-in-time values of the same months, its weight movement rendered feature by feature — followed by the refit challenger\'s own ledger: exact TreeExplainer values over governed training rows. In-sample, an account of internal arithmetic, not a performance claim; the challenger still has no live serving authorization.',
   },
 ];
 
