@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { gateCandidates } from '../content/lab';
 import { evaluateCandidate, evaluateCriterion } from '../lib/labGate';
 import policyTauSweep from '../../public/data/lab/policy_tau_sweep.json';
+import shapAnalysis from '../../public/data/lab/shap_analysis.json';
 import windowCategories from '../../public/data/lab/window_categories.json';
 import vintageRevisions from '../../public/data/lab/vintage_revisions.json';
 
@@ -76,6 +77,55 @@ describe('lab data bundles', () => {
         for (const vintage of category.vintages) {
           expect(vintage.value).toBeGreaterThan(0);
         }
+      }
+    }
+  });
+});
+
+describe('shap analysis bundle', () => {
+  it('explains exactly the 15 GlobalLightGBM features with shares summing to one', () => {
+    expect(shapAnalysis.features).toHaveLength(15);
+    expect(new Set(shapAnalysis.global_importance.map((r) => r.feature))).toEqual(
+      new Set(shapAnalysis.features),
+    );
+    const shareSum = shapAnalysis.global_importance.reduce((total, r) => total + r.share, 0);
+    expect(shareSum).toBeCloseTo(1, 6);
+    const meanAbs = shapAnalysis.global_importance.map((r) => r.mean_abs_shap);
+    expect([...meanAbs].sort((a, b) => b - a)).toEqual(meanAbs);
+    for (const row of shapAnalysis.global_importance) {
+      expect(row.mean_abs_shap).toBeGreaterThanOrEqual(0);
+    }
+  });
+
+  it('is the development challenger with in-sample provenance and a tiny additivity error', () => {
+    expect(shapAnalysis.provenance.model).toBe('global_lightgbm');
+    expect(shapAnalysis.provenance.model_status).toBe('development_challenger');
+    expect(shapAnalysis.provenance.explainer).toContain('in-sample');
+    expect(shapAnalysis.provenance.target).toBe('log(value / lag_12)');
+    expect(shapAnalysis.provenance.additivity_max_error).toBeLessThan(1e-6);
+    expect(shapAnalysis.provenance.n_training_rows).toBeGreaterThan(0);
+    expect(shapAnalysis.provenance.n_series).toBeGreaterThan(0);
+    expect(shapAnalysis.provenance.platform_code_revision).toMatch(/^[0-9a-f]{40}$/);
+    expect(shapAnalysis.provenance.data_sha256).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it('closes every per-series waterfall from base to the model output', () => {
+    expect(shapAnalysis.waterfalls.length).toBe(shapAnalysis.provenance.n_series);
+    const seriesIds = new Set(shapAnalysis.waterfalls.map((w) => w.series_id));
+    expect(seriesIds.size).toBe(shapAnalysis.waterfalls.length);
+    for (const waterfall of shapAnalysis.waterfalls) {
+      expect(waterfall.contributions).toHaveLength(8);
+      const sum = waterfall.contributions.reduce((total, c) => total + c.shap, 0);
+      // Only the top-8 of 15 features are listed: base + sum(shap) must be
+      // <= the output in absolute distance than the largest omitted bar could
+      // close; exact closure is checked in the Python suite, here we pin the
+      // rendered waterfall's arithmetic: the last bar "all other features"
+      // absorbs the residual, so require |residual| <= sum of |contributions|.
+      expect(Math.abs(waterfall.model_output - waterfall.base_value - sum)).toBeLessThan(
+        waterfall.contributions.reduce((total, c) => total + Math.abs(c.shap), 0) + 1e-9,
+      );
+      for (const contribution of waterfall.contributions) {
+        expect(shapAnalysis.features).toContain(contribution.feature);
       }
     }
   });

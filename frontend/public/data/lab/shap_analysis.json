@@ -1,0 +1,644 @@
+{
+  "provenance": {
+    "generated_at": "2026-11-21T00:43:03.079773+00:00",
+    "as_of": "2026-11-21T00:43:00.984507+00:00",
+    "platform_code_revision": "5f716b7a17656f0d63e5a1b7ea11dfa787f15caa",
+    "data_sha256": "390047dd8512a9843ddfb12a5c701436d0e304ff395409cd1afe5ebffe140ebb",
+    "source_artifacts": [
+      "silver/monthly_observations.parquet"
+    ],
+    "model": "global_lightgbm",
+    "model_version": "2.0.0",
+    "model_status": "development_challenger",
+    "data_cutoff": "2026-08-01",
+    "n_training_rows": 2068,
+    "n_series": 11,
+    "explainer": "shap.TreeExplainer (exact, in-sample over training rows)",
+    "target": "log(value / lag_12)",
+    "additivity_max_error": 8.604228440844963e-16
+  },
+  "features": [
+    "series_code",
+    "lag_1_ratio",
+    "lag_2_ratio",
+    "lag_3_ratio",
+    "lag_6_ratio",
+    "rolling_mean_3_ratio",
+    "rolling_std_3_ratio",
+    "rolling_mean_6_ratio",
+    "rolling_std_6_ratio",
+    "rolling_mean_12_ratio",
+    "rolling_std_12_ratio",
+    "diff_1_ratio",
+    "pct_change_1",
+    "month_sin",
+    "month_cos"
+  ],
+  "global_importance": [
+    {
+      "feature": "lag_1_ratio",
+      "mean_abs_shap": 0.027627476987724935,
+      "share": 0.5257150855235676
+    },
+    {
+      "feature": "rolling_mean_3_ratio",
+      "mean_abs_shap": 0.010463212406266192,
+      "share": 0.199101373153092
+    },
+    {
+      "feature": "rolling_mean_12_ratio",
+      "mean_abs_shap": 0.0028271232028027077,
+      "share": 0.053796490971920574
+    },
+    {
+      "feature": "lag_2_ratio",
+      "mean_abs_shap": 0.0024471092706648584,
+      "share": 0.046565318291086934
+    },
+    {
+      "feature": "rolling_mean_6_ratio",
+      "mean_abs_shap": 0.001277260908666659,
+      "share": 0.024304619930873277
+    },
+    {
+      "feature": "lag_3_ratio",
+      "mean_abs_shap": 0.0012585550066921251,
+      "share": 0.023948670856670563
+    },
+    {
+      "feature": "rolling_std_12_ratio",
+      "mean_abs_shap": 0.0011733612132525393,
+      "share": 0.022327543367393548
+    },
+    {
+      "feature": "lag_6_ratio",
+      "mean_abs_shap": 0.001139795434501139,
+      "share": 0.021688830094560206
+    },
+    {
+      "feature": "diff_1_ratio",
+      "mean_abs_shap": 0.0008844621839238175,
+      "share": 0.016830169214165396
+    },
+    {
+      "feature": "series_code",
+      "mean_abs_shap": 0.0008458345468144382,
+      "share": 0.016095135336278057
+    },
+    {
+      "feature": "pct_change_1",
+      "mean_abs_shap": 0.0007891308441230092,
+      "share": 0.015016137354552388
+    },
+    {
+      "feature": "rolling_std_6_ratio",
+      "mean_abs_shap": 0.0007105655054142282,
+      "share": 0.013521140769202735
+    },
+    {
+      "feature": "rolling_std_3_ratio",
+      "mean_abs_shap": 0.0005675714730746873,
+      "share": 0.010800149635117568
+    },
+    {
+      "feature": "month_cos",
+      "mean_abs_shap": 0.0003151801743934998,
+      "share": 0.005997470286925984
+    },
+    {
+      "feature": "month_sin",
+      "mean_abs_shap": 0.0002255468992914776,
+      "share": 0.00429186521459334
+    }
+  ],
+  "waterfalls": [
+    {
+      "series_id": "building_material_and_garden",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": 0.052134613737469304,
+      "contributions": [
+        {
+          "feature": "lag_1_ratio",
+          "shap": 0.012006522717915757,
+          "feature_value": 1.0518393455877106
+        },
+        {
+          "feature": "rolling_mean_3_ratio",
+          "shap": 0.005925377137216828,
+          "feature_value": 1.0497863806783503
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": 0.0016755588472479254,
+          "feature_value": 1.0266211685254323
+        },
+        {
+          "feature": "rolling_std_12_ratio",
+          "shap": -0.00063253174919129,
+          "feature_value": 0.020445654087425495
+        },
+        {
+          "feature": "diff_1_ratio",
+          "shap": 0.0005920292748583833,
+          "feature_value": -0.0031626756711768482
+        },
+        {
+          "feature": "rolling_mean_6_ratio",
+          "shap": 0.0005472540319808452,
+          "feature_value": 1.044447879263469
+        },
+        {
+          "feature": "rolling_std_3_ratio",
+          "shap": 0.00031874009820450543,
+          "feature_value": 0.005299377238639003
+        },
+        {
+          "feature": "lag_3_ratio",
+          "shap": 0.00022106169327268968,
+          "feature_value": 1.0425177751884527
+        }
+      ]
+    },
+    {
+      "series_id": "clothing_and_accessories",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": 0.036819310435287834,
+      "contributions": [
+        {
+          "feature": "lag_1_ratio",
+          "shap": 0.008438530328546733,
+          "feature_value": 1.036496062992126
+        },
+        {
+          "feature": "rolling_mean_3_ratio",
+          "shap": -0.003210290984006305,
+          "feature_value": 1.029527559055118
+        },
+        {
+          "feature": "lag_2_ratio",
+          "shap": -0.002422802220905496,
+          "feature_value": 1.0231102362204725
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": 0.0014302193163611345,
+          "feature_value": 1.0140944881889764
+        },
+        {
+          "feature": "diff_1_ratio",
+          "shap": 0.000551798201854588,
+          "feature_value": 0.013385826771653543
+        },
+        {
+          "feature": "lag_6_ratio",
+          "shap": -0.0005066731870287828,
+          "feature_value": 1.0235826771653542
+        },
+        {
+          "feature": "lag_3_ratio",
+          "shap": 0.0004752382758906491,
+          "feature_value": 1.0289763779527559
+        },
+        {
+          "feature": "rolling_mean_6_ratio",
+          "shap": 0.00037782762655969753,
+          "feature_value": 1.025997375328084
+        }
+      ]
+    },
+    {
+      "series_id": "electronics_and_appliances",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": 0.06277588790392254,
+      "contributions": [
+        {
+          "feature": "lag_1_ratio",
+          "shap": 0.019760452384255826,
+          "feature_value": 1.0607658157602664
+        },
+        {
+          "feature": "rolling_mean_3_ratio",
+          "shap": 0.009345037367851024,
+          "feature_value": 1.0583610802811692
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": 0.0018517096269736264,
+          "feature_value": 1.0299320199778024
+        },
+        {
+          "feature": "series_code",
+          "shap": -0.0014634478579181802,
+          "feature_value": 2.0
+        },
+        {
+          "feature": "diff_1_ratio",
+          "shap": 0.0007210824865881395,
+          "feature_value": 0.0030521642619311877
+        },
+        {
+          "feature": "rolling_mean_6_ratio",
+          "shap": 0.0006968262247762861,
+          "feature_value": 1.052233629300777
+        },
+        {
+          "feature": "rolling_std_3_ratio",
+          "shap": 0.00035778248568200553,
+          "feature_value": 0.0017597389558234955
+        },
+        {
+          "feature": "rolling_std_12_ratio",
+          "shap": -0.00034195946014895754,
+          "feature_value": 0.024084441626059445
+        }
+      ]
+    },
+    {
+      "series_id": "food_and_beverage",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": 0.00509446281562314,
+      "contributions": [
+        {
+          "feature": "lag_1_ratio",
+          "shap": -0.013429782494301337,
+          "feature_value": 1.000627196667574
+        },
+        {
+          "feature": "rolling_mean_3_ratio",
+          "shap": -0.009232033815244553,
+          "feature_value": 1.0024338386408373
+        },
+        {
+          "feature": "lag_2_ratio",
+          "shap": -0.0016203163990878746,
+          "feature_value": 1.0021774374874264
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": -0.0015268037158120925,
+          "feature_value": 0.998214067350666
+        },
+        {
+          "feature": "rolling_std_12_ratio",
+          "shap": -0.0008303256038036012,
+          "feature_value": 0.004696735023544814
+        },
+        {
+          "feature": "series_code",
+          "shap": 0.0007563137750103348,
+          "feature_value": 3.0
+        },
+        {
+          "feature": "lag_6_ratio",
+          "shap": -0.0007026035192965064,
+          "feature_value": 0.9852194596641539
+        },
+        {
+          "feature": "rolling_mean_6_ratio",
+          "shap": 0.00032996025986715727,
+          "feature_value": 0.9986193784047114
+        }
+      ]
+    },
+    {
+      "series_id": "furniture_and_home_furnishings",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": 0.002105332699770665,
+      "contributions": [
+        {
+          "feature": "lag_1_ratio",
+          "shap": -0.013928945679804674,
+          "feature_value": 0.9939634031314847
+        },
+        {
+          "feature": "rolling_mean_3_ratio",
+          "shap": -0.010784349055687852,
+          "feature_value": 0.9983650883481103
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": -0.0020945376594843647,
+          "feature_value": 0.9869207067848834
+        },
+        {
+          "feature": "lag_2_ratio",
+          "shap": -0.001386559235525937,
+          "feature_value": 0.9970760233918129
+        },
+        {
+          "feature": "lag_6_ratio",
+          "shap": -0.0007515871817243256,
+          "feature_value": 0.9748160724391625
+        },
+        {
+          "feature": "rolling_std_12_ratio",
+          "shap": -0.00036058506233493774,
+          "feature_value": 0.012092480736438219
+        },
+        {
+          "feature": "diff_1_ratio",
+          "shap": 0.00019860970665355808,
+          "feature_value": -0.00311262026032824
+        },
+        {
+          "feature": "month_sin",
+          "shap": -0.00019061524964709904,
+          "feature_value": -0.8660254037844384
+        }
+      ]
+    },
+    {
+      "series_id": "gasoline_stations",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": 0.15393660928331776,
+      "contributions": [
+        {
+          "feature": "lag_1_ratio",
+          "shap": 0.07044679447910487,
+          "feature_value": 1.1640613171839516
+        },
+        {
+          "feature": "rolling_mean_3_ratio",
+          "shap": 0.029867278604461436,
+          "feature_value": 1.1881655311632602
+        },
+        {
+          "feature": "lag_2_ratio",
+          "shap": 0.009831034886386866,
+          "feature_value": 1.166426949280848
+        },
+        {
+          "feature": "rolling_mean_6_ratio",
+          "shap": 0.005674681138190139,
+          "feature_value": 1.1535105980317941
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": 0.0034130530008342824,
+          "feature_value": 1.0820590461771384
+        },
+        {
+          "feature": "series_code",
+          "shap": 0.0010504969342254383,
+          "feature_value": 5.0
+        },
+        {
+          "feature": "lag_3_ratio",
+          "shap": 0.0008786748762897037,
+          "feature_value": 1.234008327024981
+        },
+        {
+          "feature": "rolling_std_12_ratio",
+          "shap": 0.0008753733460245444,
+          "feature_value": 0.08755628617450997
+        }
+      ]
+    },
+    {
+      "series_id": "general_merchandise",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": 0.040408759386800726,
+      "contributions": [
+        {
+          "feature": "lag_1_ratio",
+          "shap": 0.00757680768947748,
+          "feature_value": 1.0383204448137022
+        },
+        {
+          "feature": "lag_2_ratio",
+          "shap": -0.002380637315008314,
+          "feature_value": 1.033680577746533
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": 0.0014263569585489953,
+          "feature_value": 1.019086725889947
+        },
+        {
+          "feature": "rolling_mean_6_ratio",
+          "shap": 0.0008849052911779886,
+          "feature_value": 1.0306235487100828
+        },
+        {
+          "feature": "series_code",
+          "shap": 0.0005867717072453856,
+          "feature_value": 6.0
+        },
+        {
+          "feature": "diff_1_ratio",
+          "shap": 0.0005678380400923511,
+          "feature_value": 0.004639867067169425
+        },
+        {
+          "feature": "lag_3_ratio",
+          "shap": 0.0005280506841367723,
+          "feature_value": 1.0327602735348629
+        },
+        {
+          "feature": "lag_6_ratio",
+          "shap": -0.0005225074980733817,
+          "feature_value": 1.0202211286508596
+        }
+      ]
+    },
+    {
+      "series_id": "health_and_personal_care",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": -0.019821807088255008,
+      "contributions": [
+        {
+          "feature": "lag_1_ratio",
+          "shap": -0.029737604057310144,
+          "feature_value": 0.9800834070516871
+        },
+        {
+          "feature": "rolling_mean_3_ratio",
+          "shap": -0.013230827143404657,
+          "feature_value": 0.9745650617127932
+        },
+        {
+          "feature": "rolling_mean_6_ratio",
+          "shap": -0.0036659386044541223,
+          "feature_value": 0.9665445048232867
+        },
+        {
+          "feature": "lag_3_ratio",
+          "shap": -0.00264190292719805,
+          "feature_value": 0.971767976747125
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": -0.0021774463160179297,
+          "feature_value": 0.9821180336155693
+        },
+        {
+          "feature": "series_code",
+          "shap": 0.0018160254927720159,
+          "feature_value": 7.0
+        },
+        {
+          "feature": "lag_2_ratio",
+          "shap": -0.001259927481137149,
+          "feature_value": 0.9718438013395678
+        },
+        {
+          "feature": "lag_6_ratio",
+          "shap": -0.0005174594253631015,
+          "feature_value": 0.9499304941235941
+        }
+      ]
+    },
+    {
+      "series_id": "motor_vehicle_and_parts",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": 0.0214672785008747,
+      "contributions": [
+        {
+          "feature": "rolling_mean_3_ratio",
+          "shap": -0.005754031846331404,
+          "feature_value": 1.0201919481490713
+        },
+        {
+          "feature": "lag_1_ratio",
+          "shap": -0.003577866752572271,
+          "feature_value": 1.0160347823536744
+        },
+        {
+          "feature": "lag_2_ratio",
+          "shap": -0.0012818512162582716,
+          "feature_value": 1.0334626185012208
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": -0.0010252045870066573,
+          "feature_value": 1.002954129426917
+        },
+        {
+          "feature": "series_code",
+          "shap": 0.0008819851239677969,
+          "feature_value": 8.0
+        },
+        {
+          "feature": "lag_3_ratio",
+          "shap": 0.0006069586169208049,
+          "feature_value": 1.0110784435923192
+        },
+        {
+          "feature": "lag_6_ratio",
+          "shap": -0.00037956328170843693,
+          "feature_value": 1.0014517086904562
+        },
+        {
+          "feature": "diff_1_ratio",
+          "shap": 0.00032409765703191436,
+          "feature_value": -0.017427836147546394
+        }
+      ]
+    },
+    {
+      "series_id": "retail_total",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": 0.048124122837587324,
+      "contributions": [
+        {
+          "feature": "lag_1_ratio",
+          "shap": 0.010915732811398477,
+          "feature_value": 1.0418746027348142
+        },
+        {
+          "feature": "rolling_mean_3_ratio",
+          "shap": 0.001960879224944822,
+          "feature_value": 1.0452157048095572
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": 0.001359400386777585,
+          "feature_value": 1.0193136072493767
+        },
+        {
+          "feature": "rolling_mean_6_ratio",
+          "shap": 0.000986780493693908,
+          "feature_value": 1.0353178936388676
+        },
+        {
+          "feature": "lag_2_ratio",
+          "shap": -0.0009828458833347888,
+          "feature_value": 1.0476278175269325
+        },
+        {
+          "feature": "lag_3_ratio",
+          "shap": 0.0009239274034945104,
+          "feature_value": 1.0461446941669248
+        },
+        {
+          "feature": "series_code",
+          "shap": 0.0008804537310451463,
+          "feature_value": 9.0
+        },
+        {
+          "feature": "rolling_std_12_ratio",
+          "shap": -0.0005902018894857559,
+          "feature_value": 0.018431299591197815
+        }
+      ]
+    },
+    {
+      "series_id": "sporting_goods_and_hobby",
+      "month": "2026-08-01",
+      "base_value": 0.031755731612209646,
+      "model_output": 0.08491138940481806,
+      "contributions": [
+        {
+          "feature": "lag_1_ratio",
+          "shap": 0.030512704374781086,
+          "feature_value": 1.0836573435344288
+        },
+        {
+          "feature": "rolling_mean_3_ratio",
+          "shap": 0.016680898527343203,
+          "feature_value": 1.0854550775534095
+        },
+        {
+          "feature": "lag_2_ratio",
+          "shap": 0.0031951440222656104,
+          "feature_value": 1.0886742756804215
+        },
+        {
+          "feature": "rolling_mean_12_ratio",
+          "shap": 0.003154994998175325,
+          "feature_value": 1.0443893975500647
+        },
+        {
+          "feature": "series_code",
+          "shap": -0.001216078236535944,
+          "feature_value": 10.0
+        },
+        {
+          "feature": "rolling_mean_6_ratio",
+          "shap": 0.0009183399509318022,
+          "feature_value": 1.0745850579037584
+        },
+        {
+          "feature": "diff_1_ratio",
+          "shap": 0.000635382499072698,
+          "feature_value": -0.005016932145992726
+        },
+        {
+          "feature": "rolling_std_12_ratio",
+          "shap": -0.0005088295564045934,
+          "feature_value": 0.033137731609730006
+        }
+      ]
+    }
+  ]
+}

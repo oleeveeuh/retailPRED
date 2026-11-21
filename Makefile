@@ -19,7 +19,7 @@ SPARK_PYTHON := $(SPARK_VENV)/bin/python
 SPARK_PIP := $(SPARK_VENV)/bin/pip
 NPM_CACHE ?= /tmp/retailpred-npm-cache
 
-.PHONY: setup setup-experiment setup-neural setup-foundation setup-tableau setup-spark lock test milestone1-check platform-check warehouse-check fetch-mrts fetch-alfred-mrts vintage-backtest-mrts ingest-latest realized-errors publish-snapshot spark-check baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 bi-extracts tableau-workbook frontend-check publication-check verify clean-generated
+.PHONY: setup setup-experiment setup-neural setup-foundation setup-tableau setup-spark lock test milestone1-check platform-check warehouse-check fetch-mrts fetch-alfred-mrts vintage-backtest-mrts ingest-latest realized-errors shap-data publish-snapshot spark-check baseline-mrts benchmark-mrts track-mrts probabilistic-mrts regime-mrts validate-m5 baseline-m5 benchmark-m5 rolling-m5 reconcile-m5 rolling-reconcile-m5 feasibility-nhits-m5 feasibility-chronos-m5 benchmark-chronos-m5 probabilistic-m5 bi-extracts tableau-workbook frontend-check publication-check verify clean-generated
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -100,6 +100,10 @@ ingest-latest:
 
 realized-errors:
 	$(VENV_PYTHON) -m scripts.realized_errors --store data/v2/store
+
+shap-data:
+	@test -f data/v2/store/silver/monthly_observations.parquet || (echo "No silver monthly observations in the local store; run the ingest first" && exit 1)
+	$(VENV_PYTHON) -m scripts.build_shap_analysis --store data/v2/store
 
 publish-snapshot:
 	@test -f data/v2/store/gold/forecasts.parquet || (echo "No gold forecasts in the local store; snapshot publishing is unavailable" && exit 1)

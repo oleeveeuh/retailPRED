@@ -131,10 +131,8 @@ class GlobalLightGBM:
             series_id: index
             for index, series_id in enumerate(sorted(panel["series_id"].astype(str).unique()))
         }
-        featured = self._features(panel).dropna(subset=[*FEATURE_COLUMNS, "value"])
-        featured = featured[np.isfinite(featured.loc[:, FEATURE_COLUMNS]).all(axis=1)]
-        if featured.empty:
-            raise ValueError("at least 13 complete months are required to train LightGBM")
+        self._history = panel[["series_id", "observation_time", "value"]].copy()
+        featured = self.training_frame()
         x_train = featured.loc[:, FEATURE_COLUMNS]
         y_train = np.log(featured["value"].astype(float) / featured["lag_12"])
         fit_options = {"categorical_feature": ["series_code"]}
@@ -145,8 +143,28 @@ class GlobalLightGBM:
             )
             for quantile in self.quantiles
         }
-        self._history = panel[["series_id", "observation_time", "value"]].copy()
         return self
+
+    def training_frame(self) -> pd.DataFrame:
+        """The exact feature frame this instance was fit on, with keys.
+
+        Recomputed deterministically from the stored history, so post-hoc
+        explainers see row-identical data without duplicating fit() logic.
+        """
+        if self._history is None:
+            raise RuntimeError("fit must be called before the training frame exists")
+        featured = self._features(self._history).dropna(subset=[*FEATURE_COLUMNS, "value"])
+        featured = featured[np.isfinite(featured.loc[:, FEATURE_COLUMNS]).all(axis=1)]
+        if featured.empty:
+            raise ValueError("at least 13 complete months are required to train LightGBM")
+        return featured
+
+    @property
+    def point_model(self) -> LGBMRegressor:
+        """The fitted point model, exposed for exact post-hoc explainers."""
+        if self._point_model is None:
+            raise RuntimeError("fit must be called before the point model exists")
+        return self._point_model
 
     def _require_fit(self) -> tuple[pd.DataFrame, LGBMRegressor]:
         if self._history is None or self._point_model is None:
