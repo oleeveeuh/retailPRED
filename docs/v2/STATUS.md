@@ -1,6 +1,6 @@
 # RetailPRED v2 Status
 
-Last updated: 2026-11-12
+Last updated: 2026-11-21
 
 ## Current state
 
@@ -13,6 +13,7 @@ Last updated: 2026-11-12
 - Milestone 4: complete; M5 point, stability, reconciliation, neural, foundation-model, and probabilistic gates are measured, and MRTS regime behavior is documented.
 - Data-science/modeling completion: complete for the accepted local scope. Milestone 5 is complete for its local scope, including the governed Tableau workbook. Milestone 6 publication/reproducibility audit is in progress; external deployment and observability remain blocked on a selected target.
 - Live-loop completion (Milestone 6.5): implemented and locally verified on `v2-live-loop` — the four-task scheduled Databricks pipeline (ingest → fail-closed scoring → realized errors → snapshot publish), contract-2.1 snapshots carrying vintage-safe seasonal-naive benchmarks and first-release/revised realized evaluation, GitHub Pages delivery with pre-deploy contract validation, and the benchmark visualization frontend. The pipeline is now **executed on Databricks**: 13 tables bootstrapped in the workspace catalog, dbt models with 20/20 data tests green on the workspace's first pass (logged vacuous — the populated-table green is still to be logged), and the first end-to-end run verified ingestion (2,200 silver rows from live Census) plus every fail-closed gate. Live scoring stays refused by the measured vintage-gate failure; claims are tracked per capability in `DATABRICKS_RUN.md`.
+- Lab surface (2026-11-20/21): the fifth lab section, "why the model predicts", renders the frozen SHAP bundle (`make shap-data` → `frontend/public/data/lab/shap_analysis.json`) — the development challenger's exact-TreeExplainer in-sample ledger plus the distribution-shift diagnosis accounting for the vintage gate's reversal (+29.2% revised-history validation improvement → −4.1% point-in-time gate degradation, endpoints recomputed from the frozen M3 artifacts; gate never re-run, holdout untouched). In-sample arithmetic and diagnosis only, not a performance claim; live serving stays refused for the development challenger. Audit remediation (2026-11-21): pinned feature order (pytest + vitest literals), finite-drift pin, clock-free pure cores, per-artifact input digests, fail-closed guard for a missing diagnosis payload, and the lab surface added to the publication phrase scan.
 
 ## Quality verification
 

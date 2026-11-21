@@ -234,16 +234,18 @@ def build_shift_diagnosis(
     dev_folds: pd.DataFrame,
     gate_summary: dict,
     *,
-    now: datetime,
+    generated_at: str,
     revision: str,
-    data_sha256: str,
+    input_sha256s: dict[str, str],
 ) -> dict:
     """Pure core: frozen shift artifacts in, the diagnosis payload out.
 
     ``gate_folds`` supplies the final measured origin (its as-of and
     forecast origin define the point-in-time draw); ``dev_folds`` and
     ``gate_summary`` supply the two measured WAPE endpoints. Kept free of
-    filesystem access so the live publish task can adopt it verbatim.
+    filesystem and clock access — every input, including the generation
+    timestamp, arrives as a parameter — so the live publish task can adopt
+    it verbatim.
     """
     as_of = pd.Timestamp(gate_folds["origin_as_of"].max())
     if as_of.tzinfo is None or as_of.utcoffset() is None:
@@ -255,9 +257,9 @@ def build_shift_diagnosis(
 
     return {
         "provenance": {
-            "generated_at": _now(),
+            "generated_at": generated_at,
             "platform_code_revision": revision,
-            "input_sha256": data_sha256,
+            "input_sha256_by_artifact": dict(input_sha256s),
             "source_artifacts": [
                 "data/v2/alfred_mrts_vintages.csv",
                 "data/v2/mrts_model_folds.csv",
@@ -301,6 +303,7 @@ def build_shap_bundle(
     panel: pd.DataFrame,
     *,
     now: datetime,
+    generated_at: str,
     revision: str,
     data_sha256: str,
     top_k: int = 8,
@@ -308,8 +311,10 @@ def build_shap_bundle(
     """Pure core: governed gold monthly panel in, today's-challenger payload out.
 
     ``panel`` carries the gold monthly keys (series_id, observation_time,
-    value). Kept free of store and filesystem access so the live publish
-    task can adopt it verbatim if the portfolio ever promotes the champion.
+    value). Kept free of store, filesystem, and clock access — every input,
+    including the generation timestamp, arrives as a parameter — so the live
+    publish task can adopt it verbatim if the portfolio ever promotes the
+    champion.
     """
     decision = model_decision("mrts")
     model = GlobalLightGBM().fit(panel)
@@ -368,7 +373,7 @@ def build_shap_bundle(
 
     return {
         "provenance": {
-            "generated_at": _now(),
+            "generated_at": generated_at,
             "as_of": pd.Timestamp(now).isoformat(),
             "platform_code_revision": revision,
             "data_sha256": data_sha256,
@@ -419,10 +424,19 @@ def main() -> None:
     data_sha256 = _sha(args.store / SILVER_MONTHLY.layer / f"{SILVER_MONTHLY.name}.parquet")
     now = args.as_of or datetime.now(timezone.utc)
     gold = build_gold_monthly(silver, as_of=now)
+    input_sha256s = {
+        "data/v2/alfred_mrts_vintages.csv": _sha(args.vintage_csv),
+        "data/v2/mrts_model_folds.csv": _sha(args.dev_folds),
+        "data/v2/vintage_backtest_folds.csv": _sha(args.gate_folds),
+        "data/v2/vintage_backtest_summary.json": _sha(args.gate_summary),
+    }
+    generated_at = _now()
+    revision = _git()
     payload = build_shap_bundle(
         gold,
         now=now,
-        revision=_git(),
+        generated_at=generated_at,
+        revision=revision,
         data_sha256=data_sha256,
         top_k=args.top_k,
     )
@@ -431,9 +445,9 @@ def main() -> None:
         pd.read_csv(args.gate_folds),
         pd.read_csv(args.dev_folds),
         json.loads(args.gate_summary.read_text()),
-        now=now,
-        revision=_git(),
-        data_sha256=_sha(args.vintage_csv),
+        generated_at=generated_at,
+        revision=revision,
+        input_sha256s=input_sha256s,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2) + "\n")

@@ -132,7 +132,11 @@ class GlobalLightGBM:
             for index, series_id in enumerate(sorted(panel["series_id"].astype(str).unique()))
         }
         self._history = panel[["series_id", "observation_time", "value"]].copy()
-        featured = self.training_frame()
+        try:
+            featured = self.training_frame()
+        except Exception:
+            self._history = None
+            raise
         x_train = featured.loc[:, FEATURE_COLUMNS]
         y_train = np.log(featured["value"].astype(float) / featured["lag_12"])
         fit_options = {"categorical_feature": ["series_code"]}

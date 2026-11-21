@@ -91,7 +91,7 @@ export const ShapImportanceExplorer: FC = () => {
    * vertical-layout categories bottom-up, so reverse for a top-down read). */
   const driftData = useMemo(
     () =>
-      [...shift.rows]
+      [...(shift?.rows ?? [])]
         .reverse()
         .map((row) => ({
           name: label(row.feature),
@@ -100,7 +100,7 @@ export const ShapImportanceExplorer: FC = () => {
           point: row.point_in_time.mean_abs_shap,
           valueShift: row.point_in_time.mean_value - row.revised_history.mean_value,
         })),
-    [shift.rows],
+    [shift?.rows],
   );
 
   /** Cumulative waterfall: top-k contributions plus the closing residual. */
@@ -152,7 +152,7 @@ export const ShapImportanceExplorer: FC = () => {
     return [low - pad, high + pad];
   }, [waterfall, waterfallData]);
 
-  if (!waterfall) {
+  if (!waterfall || !shift) {
     return (
       <p className="font-mono text-xs lowercase text-stone-500">
         shap bundle is empty — regenerate it with `make shap-data`.

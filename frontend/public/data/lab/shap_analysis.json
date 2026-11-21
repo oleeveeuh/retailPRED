@@ -1,8 +1,8 @@
 {
   "provenance": {
-    "generated_at": "2026-11-21T01:44:09.869438+00:00",
-    "as_of": "2026-11-21T01:44:08.808218+00:00",
-    "platform_code_revision": "d0222ffce25f2e67d23227e263f94775fd45b799",
+    "generated_at": "2026-11-21T04:02:47.144680+00:00",
+    "as_of": "2026-11-21T04:02:47.062792+00:00",
+    "platform_code_revision": "e401e80d88d5be79951d62246c39f72be71e8efe",
     "data_sha256": "390047dd8512a9843ddfb12a5c701436d0e304ff395409cd1afe5ebffe140ebb",
     "source_artifacts": [
       "silver/monthly_observations.parquet"
@@ -643,9 +643,14 @@
   ],
   "shift_diagnosis": {
     "provenance": {
-      "generated_at": "2026-11-21T01:44:11.182994+00:00",
-      "platform_code_revision": "d0222ffce25f2e67d23227e263f94775fd45b799",
-      "input_sha256": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
+      "generated_at": "2026-11-21T04:02:47.144680+00:00",
+      "platform_code_revision": "e401e80d88d5be79951d62246c39f72be71e8efe",
+      "input_sha256_by_artifact": {
+        "data/v2/alfred_mrts_vintages.csv": "b754ac133667eed1dbb6a3e33d2d6a19730bddcbe727d55cb5aa08237a20ec86",
+        "data/v2/mrts_model_folds.csv": "3afe1d09931318ef1339061bbd4fc9ba75478b4d36c136815c84d140ee5fd77b",
+        "data/v2/vintage_backtest_folds.csv": "ef44397e4fe4263add03dafdf0636ac300dac06d7122b5ef45995b85f6aeb3aa",
+        "data/v2/vintage_backtest_summary.json": "f8aaa8916bcc7974ffa1bf351a6f63e23c84c62276155276304f1f3cc2b51881"
+      },
       "source_artifacts": [
         "data/v2/alfred_mrts_vintages.csv",
         "data/v2/mrts_model_folds.csv",

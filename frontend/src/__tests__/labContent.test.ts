@@ -85,6 +85,25 @@ describe('lab data bundles', () => {
 describe('shap analysis bundle', () => {
   it('explains exactly the 15 GlobalLightGBM features with shares summing to one', () => {
     expect(shapAnalysis.features).toHaveLength(15);
+    // The committed order is the model's column order; a reorder must be a
+    // reviewed bundle change, never a silent one.
+    expect(shapAnalysis.features).toEqual([
+      'series_code',
+      'lag_1_ratio',
+      'lag_2_ratio',
+      'lag_3_ratio',
+      'lag_6_ratio',
+      'rolling_mean_3_ratio',
+      'rolling_std_3_ratio',
+      'rolling_mean_6_ratio',
+      'rolling_std_6_ratio',
+      'rolling_mean_12_ratio',
+      'rolling_std_12_ratio',
+      'diff_1_ratio',
+      'pct_change_1',
+      'month_sin',
+      'month_cos',
+    ]);
     expect(new Set(shapAnalysis.global_importance.map((r) => r.feature))).toEqual(
       new Set(shapAnalysis.features),
     );
@@ -147,8 +166,12 @@ describe('shap analysis bundle', () => {
     );
     expect(shift.provenance.common_cutoff).toBe('2025-03-01');
     expect(shift.provenance.as_of.startsWith('2025-05-15')).toBe(true);
+    expect(Object.keys(shift.provenance.input_sha256_by_artifact)).toHaveLength(4);
     expect(shift.rows).toHaveLength(15);
     const drifts = shift.rows.map((r) => Math.abs(r.drift_abs));
+    // A missing or renamed drift field would surface as NaN here; the sort
+    // pin below cannot catch that on its own (Object.is(NaN, NaN)).
+    expect(drifts.every((d) => Number.isFinite(d))).toBe(true);
     expect([...drifts].sort((a, b) => b - a)).toEqual(drifts);
     expect(shift.attribution_drift_l1).toBeGreaterThan(0);
     for (const row of shift.rows) {

@@ -131,7 +131,7 @@ export interface ShapShiftData {
   provenance: {
     generated_at: string;
     platform_code_revision: string;
-    input_sha256: string;
+    input_sha256_by_artifact: Record<string, string>;
     source_artifacts: string[];
     documents: string[];
     as_of: string;

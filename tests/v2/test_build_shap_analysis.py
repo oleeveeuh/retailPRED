@@ -17,6 +17,7 @@ from scripts.build_shap_analysis import (
 )
 
 NOW = datetime(2026, 11, 20, tzinfo=timezone.utc)
+GENERATED_AT = "2026-11-20T00:00:00+00:00"
 REVISION = "a" * 40
 DATA_SHA = "0" * 64
 
@@ -48,8 +49,30 @@ def _model() -> GlobalLightGBM:
 
 def _bundle(panel: pd.DataFrame) -> dict:
     return build_shap_bundle(
-        panel, now=NOW, revision=REVISION, data_sha256=DATA_SHA, top_k=8
+        panel, now=NOW, generated_at=GENERATED_AT, revision=REVISION, data_sha256=DATA_SHA, top_k=8
     )
+
+
+def test_feature_columns_order_is_pinned() -> None:
+    """The column order feeds the booster's split indexing and the frozen
+    bundle; a reorder must fail loudly, not silently rebuild the ledger."""
+    assert list(FEATURE_COLUMNS) == [
+        "series_code",
+        "lag_1_ratio",
+        "lag_2_ratio",
+        "lag_3_ratio",
+        "lag_6_ratio",
+        "rolling_mean_3_ratio",
+        "rolling_std_3_ratio",
+        "rolling_mean_6_ratio",
+        "rolling_std_6_ratio",
+        "rolling_mean_12_ratio",
+        "rolling_std_12_ratio",
+        "diff_1_ratio",
+        "pct_change_1",
+        "month_sin",
+        "month_cos",
+    ]
 
 
 def test_bundle_contract_pins_features_shares_and_provenance() -> None:
@@ -287,14 +310,25 @@ def test_shift_diagnosis_on_the_frozen_gate_artifacts() -> None:
     assert digest == window_summary["provenance"]["data_sha256"], (
         "the diagnosis must run on the exact frozen panel the window summary pins"
     )
+    input_sha256s = {
+        "data/v2/alfred_mrts_vintages.csv": hashlib.sha256(VINTAGE_CSV.read_bytes()).hexdigest(),
+        "data/v2/mrts_model_folds.csv": hashlib.sha256(DEV_FOLDS.read_bytes()).hexdigest(),
+        "data/v2/vintage_backtest_folds.csv": hashlib.sha256(GATE_FOLDS.read_bytes()).hexdigest(),
+        "data/v2/vintage_backtest_summary.json": hashlib.sha256(GATE_SUMMARY.read_bytes()).hexdigest(),
+    }
     payload = build_shift_diagnosis(
         pd.read_csv(VINTAGE_CSV),
         pd.read_csv(GATE_FOLDS),
         pd.read_csv(DEV_FOLDS),
         json.loads(GATE_SUMMARY.read_text()),
-        now=NOW,
+        generated_at=NOW.isoformat(),
         revision=REVISION,
-        data_sha256=digest,
+        input_sha256s=input_sha256s,
+    )
+    assert set(payload["provenance"]["input_sha256_by_artifact"]) == set(input_sha256s)
+    assert (
+        payload["provenance"]["input_sha256_by_artifact"]["data/v2/alfred_mrts_vintages.csv"]
+        == digest
     )
     provenance = payload["provenance"]
     assert pd.Timestamp(provenance["as_of"]) == pd.Timestamp("2025-05-15T00:00:00+00:00")
