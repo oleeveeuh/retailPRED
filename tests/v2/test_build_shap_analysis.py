@@ -160,6 +160,15 @@ GATE_FOLDS = REPO_ROOT / "data/v2/vintage_backtest_folds.csv"
 GATE_SUMMARY = REPO_ROOT / "data/v2/vintage_backtest_summary.json"
 VINTAGE_CSV = REPO_ROOT / "data/v2/alfred_mrts_vintages.csv"
 
+# data/v2/ is gitignored by design: the frozen research artifacts are
+# local-only, so the artifact-backed tests run in the local verify gate and
+# skip in CI rather than pretending the checkout carries the data.
+LOCAL_ARTIFACTS = all(path.exists() for path in (DEV_FOLDS, GATE_FOLDS, GATE_SUMMARY, VINTAGE_CSV))
+requires_local_artifacts = pytest.mark.skipif(
+    not LOCAL_ARTIFACTS,
+    reason="frozen data/v2 artifacts are local-only; run under `make verify` on the governing machine",
+)
+
 
 def _synthetic_dev_folds() -> pd.DataFrame:
     rows = []
@@ -196,6 +205,7 @@ def test_reference_metrics_reproduce_the_fold_weighted_recipe() -> None:
     assert gate["relative_degradation"] == pytest.approx(0.20)
 
 
+@requires_local_artifacts
 def test_shift_references_match_the_documented_measured_endpoints() -> None:
     references = reference_metrics(
         pd.read_csv(DEV_FOLDS), json.loads(GATE_SUMMARY.read_text())
@@ -266,6 +276,7 @@ def test_shift_attribution_moves_when_recent_months_stay_unrevised() -> None:
     assert fits["point_in_time"]["residual"] < ADDITIVITY_TOLERANCE
 
 
+@requires_local_artifacts
 def test_shift_diagnosis_on_the_frozen_gate_artifacts() -> None:
     import hashlib
 
